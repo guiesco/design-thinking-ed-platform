@@ -1,0 +1,7 @@
+export enum ProjectSteps {
+  EMPATHY,
+  PROBLEM_DEFINITION,
+  IDEATION,
+  PROTOTYPATION,
+  TEST,
+}
