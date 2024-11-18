@@ -1,0 +1,31 @@
+<mat-sidenav-container class="sidenav-container mat-app-background">
+  <!-- Menu Lateral -->
+  <mat-sidenav #sidenav mode="side" [(opened)]="isSidenavOpen">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/">Início</a>
+      <a mat-list-item routerLink="/sobre">Sobre</a>
+      <a mat-list-item routerLink="/contato">Contato</a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <!-- Conteúdo Principal -->
+  <mat-sidenav-content>
+    <!-- Cabeçalho -->
+    <mat-toolbar color="primary">
+      <button mat-icon-button (click)="toggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>Nome do Site</span>
+    </mat-toolbar>
+
+    <!-- Conteúdo da Página -->
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+
+    <!-- Rodapé -->
+    <mat-toolbar color="primary" class="footer">
+      <span>&copy; 2024 Nome do Site. Todos os direitos reservados.</span>
+    </mat-toolbar>
+  </mat-sidenav-content>
+</mat-sidenav-container>
