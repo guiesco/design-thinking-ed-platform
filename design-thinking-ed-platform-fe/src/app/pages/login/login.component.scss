@@ -1,14 +1,24 @@
-// centraliza horizontalmente as caixas de email e senha 
-body{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.login-container{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-// centraliza verticalmente as caixas  e deixa o texto centralizados com as caixas
-.login-container{
-    display: flex;
-    padding: 30vh;
-    width: 25vh;
+h1{
     text-align: center;
 }
+
+/*
+.login-label{
+        
+}
+
+.login-password-input{
+
+}
+
+.login-email-input{
+
+}
+*/
