@@ -16,8 +16,9 @@ const pagesRoutes: Routes = [
     //   },
     children: [
       {
-        path: 'login',
-        loadChildren: () => LoginComponent,
+        path: '',
+        component: LoginComponent,
+        // loadChildren: () => LoginComponent,
         // canActivate: [NonAuthGuard],
       },
     ],

@@ -11,6 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PagesRoutingModule } from './pages-routing.module';
 import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UserStateModule } from '../stores/user-state-store/user-state.module';
 
 const angularMaterialModules = [
   MatToolbarModule,
@@ -21,7 +22,7 @@ const angularMaterialModules = [
   // BrowserAnimationsModule,
 ];
 
-const importModules = [FormsModule, ReactiveFormsModule];
+const importModules = [FormsModule, ReactiveFormsModule, UserStateModule];
 
 @NgModule({
   imports: [
