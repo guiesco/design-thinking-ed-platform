@@ -9,6 +9,22 @@ h1{
     text-align: center;
 }
 
+.remember-check{
+    margin-top: 1vh;
+    margin-left: auto;
+}
+
+input[type="submit"]{
+    height: 25px;
+    width: 50%;
+    background-color: #015294;
+    border: none;
+    color: #fff;
+    font-size: 0.75rem;
+    margin-top: 1vh;
+    margin-left: 25%;
+}
+
 /*
 .login-label{
         
