@@ -13,6 +13,8 @@ export class LoginComponent {
     password: ['', Validators.required],
   });
 
+  isRememberMe = false;
+
   constructor(readonly fb: FormBuilder, readonly userFacade: UserFacade) {}
 
   login() {

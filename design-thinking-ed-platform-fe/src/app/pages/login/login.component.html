@@ -2,15 +2,16 @@
   <form [formGroup]="loginForm" (ngSubmit)="login()">
     <h1>Log In</h1>
 
-    <label class="login-label" for="email">Email:</label><br>
-    <input type="email" name="email" class="login-email-input" /><br>
+    <label class="login-label" for="email">Email:</label>
+    <input type="email" name="email" class="login-email-input" />
 
-    <label class="login-label" for="password">Password:</label><br>
-    <input type="password" name="password" class="login-password-input" /><br>
-  
-    <input class="remember-check" type="checkbox" value="IsRememberMe" id="rememberMe"><!--colocar id para armazenar rememberMe-->
-    <label class="remember-check" for="rememberMe">Remember me</label><br>
+    <label class="login-label" for="password">Password:</label>
+    <input type="password" name="password" class="login-password-input" />
+    <div>
+      <input class="remember-check" type="checkbox" [value]="isRememberMe" id="remember-me"><!--colocar id para armazenar rememberMe-->
+      <label class="remember-check" for="remember-me">Remember me</label>
+    </div>
 
-    <input type="submit" value="Submit" onclick="IsRememberMe()"><!--colocar funcao para verificar se rememberMe esta checkado-->
+    <button type="submit">Login</button>
   </form>
 </div>

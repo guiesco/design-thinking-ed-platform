@@ -1,18 +1,16 @@
-.login-container{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+form{
+    height: 82vh;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 h1{
     text-align: center;
 }
 
-.remember-check{
-    margin-top: 1vh;
-    margin-left: auto;
-}
 
 input[type="submit"]{
     height: 25px;
