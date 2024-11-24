@@ -12,7 +12,6 @@ const passwordRegEx =
 
 export class LoginUserDto {
   @IsNotEmpty()
-  @IsEmail(null, { message: 'Please provide valid Email.' })
   email: string;
 
   @IsNotEmpty()
