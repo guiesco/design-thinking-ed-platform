@@ -2,6 +2,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { PageWrapperComponent } from './page-wrapper/page-wrapper.component';
 import { NgModule } from '@angular/core';
 import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
 const pagesRoutes: Routes = [
   {
@@ -18,8 +19,10 @@ const pagesRoutes: Routes = [
       {
         path: '',
         component: LoginComponent,
-        // loadChildren: () => LoginComponent,
-        // canActivate: [NonAuthGuard],
+      },
+      {
+        path: 'register',
+        component: RegisterComponent,
       },
     ],
   },

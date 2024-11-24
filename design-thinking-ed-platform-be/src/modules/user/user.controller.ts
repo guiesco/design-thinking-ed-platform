@@ -11,6 +11,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
+import { UserTypeEnum } from 'src/common/enum/user.enum';
 
 @Controller('user')
 export class UserController {
@@ -18,6 +19,7 @@ export class UserController {
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
+    createUserDto.userType = UserTypeEnum.STUDENT;
     return this.userService.create(createUserDto);
   }
 

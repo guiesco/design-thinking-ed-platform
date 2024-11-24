@@ -3,7 +3,7 @@
   <mat-sidenav #sidenav mode="side" [(opened)]="isSidenavOpen">
     <mat-nav-list>
       <a mat-list-item routerLink="/">Início</a>
-      <a mat-list-item routerLink="/sobre">Sobre</a>
+      <a mat-list-item [routerLink]="'/register'">Cadastro</a>
       <a mat-list-item routerLink="/contato">Contato</a>
     </mat-nav-list>
   </mat-sidenav>

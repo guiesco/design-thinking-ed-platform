@@ -2,6 +2,7 @@ import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
+  IsOptional,
   IsString,
   Matches,
   MinLength,
@@ -21,7 +22,8 @@ export class CreateUserDto {
 
   @IsString()
   @IsEnum(['student', 'professor'])
-  userType: string;
+  @IsOptional()
+  userType?: string;
 
   @IsNotEmpty()
   //   @Matches(passwordRegEx, {
