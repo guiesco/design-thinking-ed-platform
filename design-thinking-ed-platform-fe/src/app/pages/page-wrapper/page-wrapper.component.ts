@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UserFacade } from 'src/app/stores/user-state-store/user.facade';
 
 @Component({
   selector: 'app-page-wrapper',

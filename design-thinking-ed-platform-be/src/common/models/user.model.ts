@@ -6,3 +6,13 @@ export interface UserModel {
   email: string;
   password: string;
 }
+
+export interface ILoginData {
+  email: string | null;
+  password: string | null;
+}
+
+export interface IUser extends ILoginData {
+  userType: UserTypeEnum;
+  name: string;
+}
