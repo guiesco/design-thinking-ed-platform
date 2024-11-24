@@ -9,6 +9,6 @@ export class UserService {
   constructor(private readonly http: HttpClient) {}
 
   login(loginParams: ILoginData): Observable<IUser> {
-    return this.http.post<IUser>(this.api + '/login', loginParams);
+    return this.http.post<IUser>(this.api + '/user/login', loginParams);
   }
 }

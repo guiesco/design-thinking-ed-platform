@@ -3,12 +3,27 @@
     <h1>Log In</h1>
 
     <label class="login-label" for="email">Email:</label>
-    <input type="email" name="email" class="login-email-input" />
+    <input
+      type="email"
+      name="email"
+      class="login-email-input"
+      formControlName="email"
+    />
 
     <label class="login-label" for="password">Password:</label>
-    <input type="password" name="password" class="login-password-input" />
+    <input
+      type="password"
+      name="password"
+      class="login-password-input"
+      formControlName="password"
+    />
     <div>
-      <input class="remember-check" type="checkbox" [value]="isRememberMe" id="remember-me"><!--colocar id para armazenar rememberMe-->
+      <input
+        class="remember-check"
+        type="checkbox"
+        [value]="isRememberMe"
+        id="remember-me"
+      /><!--colocar id para armazenar rememberMe-->
       <label class="remember-check" for="remember-me">Remember me</label>
     </div>
 
