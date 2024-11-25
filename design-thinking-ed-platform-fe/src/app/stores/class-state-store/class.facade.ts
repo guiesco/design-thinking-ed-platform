@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import * as actions from './class.actions';
 import * as selectors from './class.selectors';
 import { AppState } from '../app-state-store/app.model';
-import { IClass } from '../../common/interfaces/class.interface';
+import { IClass, ICreateClass } from '../../common/interfaces/class.interface';
 
 import { Observable } from 'rxjs';
 
@@ -14,4 +14,8 @@ export class ClassFacade {
   class$: Observable<IClass | null> = this.store.pipe(
     select(selectors.classSelector)
   );
+
+  createClass(payload: ICreateClass) {
+    this.store.dispatch(actions.createClass(payload));
+  }
 }
