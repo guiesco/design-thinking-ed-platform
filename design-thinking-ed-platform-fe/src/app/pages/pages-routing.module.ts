@@ -3,6 +3,7 @@ import { PageWrapperComponent } from './page-wrapper/page-wrapper.component';
 import { NgModule } from '@angular/core';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { ClassComponent } from './class/class.component';
 
 const pagesRoutes: Routes = [
   {
@@ -24,6 +25,10 @@ const pagesRoutes: Routes = [
         path: 'register',
         component: RegisterComponent,
       },
+      {
+        path: 'class',
+        component: ClassComponent,
+      },
     ],
   },
 ];
@@ -33,4 +38,4 @@ const pagesRoutes: Routes = [
   exports: [RouterModule],
   declarations: [],
 })
-export class PagesRoutingModule {}
+export class PagesRoutingModule { }

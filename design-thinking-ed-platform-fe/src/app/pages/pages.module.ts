@@ -13,6 +13,7 @@ import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserStateModule } from '../stores/user-state-store/user-state.module';
 import { RegisterComponent } from './register/register.component';
+import { ClassComponent } from './class/class.component';
 
 const angularMaterialModules = [
   MatToolbarModule,
@@ -32,7 +33,7 @@ const importModules = [FormsModule, ReactiveFormsModule, UserStateModule];
     ...angularMaterialModules,
     ...importModules,
   ],
-  declarations: [PageWrapperComponent, LoginComponent, RegisterComponent],
+  declarations: [PageWrapperComponent, LoginComponent, RegisterComponent, ClassComponent],
   exports: [PageWrapperComponent],
 })
 export class PagesModule {}
