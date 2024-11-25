@@ -1,10 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { ClassEntity } from 'src/modules/class/entities/class.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class User {
-  /**
-   * this decorator will help to auto generate id for the table.
-   */
+export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -19,4 +17,7 @@ export class User {
 
   @Column({ type: 'enum', enum: ['student', 'professor'] })
   userType: string;
+
+  @OneToMany(() => ClassEntity, (classEntity) => classEntity.professor)
+  classes: ClassEntity[];
 }
