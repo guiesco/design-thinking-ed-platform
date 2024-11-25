@@ -13,8 +13,8 @@ export class ClassEntity {
   @Column({ type: 'varchar', length: 30 })
   semester: string;
 
-  @Column({ type: 'varchar', length: 40 })
-  students: string;
+  @Column({ type: 'text', nullable: true, array: true })
+  invitedStudents: string[];
 
   @ManyToOne(() => UserEntity, (user) => user.classes)
   professor: UserEntity;

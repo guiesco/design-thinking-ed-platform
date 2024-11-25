@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { take } from 'rxjs';
 import { ICreateClass } from 'src/app/common/interfaces/class.interface';
 import { ClassFacade } from 'src/app/stores/class-state-store/class.facade';
 import { UserFacade } from 'src/app/stores/user-state-store/user.facade';
@@ -16,13 +17,21 @@ export class CreateClassComponent {
     semester: ['', Validators.required],
   });
 
-  constructor(readonly fb: FormBuilder, readonly classFacade: ClassFacade) {}
+  constructor(
+    readonly fb: FormBuilder,
+    readonly classFacade: ClassFacade,
+    readonly userFacade: UserFacade
+  ) {}
 
-  createClass() {
+  async createClass() {
     const createClassPayload = this.createClassForm.getRawValue();
     const createClassDto: ICreateClass = {
       ...createClassPayload,
-      studentEmails: createClassPayload.studentEmails?.split(',') ?? null,
+      invitedStudents:
+        createClassPayload.studentEmails
+          ?.split(',')
+          .map((value) => value.trim()) ?? null,
+      professor: await this.userFacade.user$.pipe(take(1)).toPromise(),
     };
     this.classFacade.createClass(createClassDto);
   }
