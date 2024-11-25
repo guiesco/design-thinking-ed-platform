@@ -1,6 +1,6 @@
 export interface ICreateClass {
   className: string | null;
-  studentsEmail: string | null;
+  studentEmails: string[] | null;
   semester: string | null;
 }
 

@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ClassComponent } from './class/class.component';
+import { CreateClassComponent } from './create-class/create-class.component';
 
 const pagesRoutes: Routes = [
   {
@@ -28,6 +29,10 @@ const pagesRoutes: Routes = [
       {
         path: 'class',
         component: ClassComponent,
+      },
+      {
+        path: 'create-class',
+        component: CreateClassComponent,
       },
     ],
   },
