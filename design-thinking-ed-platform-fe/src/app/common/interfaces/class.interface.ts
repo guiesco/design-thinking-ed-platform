@@ -3,3 +3,7 @@ export interface ICreateClass {
   studentEmails: string | null;
   semester: string | null;
 }
+
+export interface IClass extends ICreateClass {
+  professor: string | null;
+}
