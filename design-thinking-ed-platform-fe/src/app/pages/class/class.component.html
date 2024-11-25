@@ -1,0 +1,10 @@
+<div class="class-grid">
+    <div *ngFor="let class of (classFacade.class$) | async" class="class-card">
+         <h2>Turma Teste + Semestre</h2>
+         <span>Etapa Projeto</span>
+         <span>Grupos</span>
+    </div>
+    <div class="class-card">
+        <a class="add-class-icon" [routerLink] = "'/create-class'">+</a>
+    </div>
+</div>
