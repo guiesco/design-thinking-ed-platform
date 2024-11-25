@@ -5,5 +5,5 @@ export const selectState = createFeatureSelector<ClassStoreModel>('class');
 
 export const classSelector = createSelector(
   selectState,
-  (state: ClassStoreModel) => state.class
+  (state: ClassStoreModel) => state.classes
 );

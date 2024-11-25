@@ -23,4 +23,16 @@ export class ClassEffects {
       )
     )
   );
+
+  fetchClasses$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.fetchClasses),
+      exhaustMap(() =>
+        this.classService.fetchClasses().pipe(
+          map((data) => actions.fetchClassesSuccess(data)),
+          catchError((error) => of(actions.fetchClassesError(error)))
+        )
+      )
+    )
+  );
 }

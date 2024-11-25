@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class ClassFacade {
-  constructor(private readonly store: Store<AppState>) { }
+  constructor(private readonly store: Store<AppState>) {}
 
   class$: Observable<IClass[] | null> = this.store.pipe(
     select(selectors.classSelector)
@@ -17,5 +17,9 @@ export class ClassFacade {
 
   createClass(payload: ICreateClass) {
     this.store.dispatch(actions.createClass(payload));
+  }
+
+  fetchClasses() {
+    this.store.dispatch(actions.fetchClasses());
   }
 }

@@ -1,13 +1,22 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import * as actions from './class.actions';
 import { ClassStoreModel } from './class.model';
-//install ngrx store
+import { IClass } from 'src/app/common/interfaces/class.interface';
 
 export const classInitialState: ClassStoreModel = {
-  class: null,
+  classes: null,
 };
 
-export const classReducerFn = createReducer(classInitialState);
+export const classReducerFn = createReducer(
+  classInitialState,
+  on(
+    actions.fetchClassesSuccess,
+    (state: ClassStoreModel, { payload }: { payload: IClass[] }) => ({
+      ...state,
+      classes: payload,
+    })
+  )
+);
 
 export function classReducer(
   state: ClassStoreModel,
