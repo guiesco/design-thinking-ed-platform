@@ -10,6 +10,7 @@ import {
 import { ClassService } from './class.service';
 import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
+import { ProjectSteps } from 'src/common/enum/project.enum';
 
 @Controller('class')
 export class ClassController {
@@ -17,6 +18,8 @@ export class ClassController {
 
   @Post()
   create(@Body() createClassDto: CreateClassDto) {
+    createClassDto.projectStep = ProjectSteps.EMPATHY;
+    createClassDto.invitedStudents = [createClassDto.invitedStudents].flat();
     return this.classService.create(createClassDto);
   }
 

@@ -18,4 +18,8 @@ export class ClassFacade {
   createClass(payload: ICreateClass) {
     this.store.dispatch(actions.createClass(payload));
   }
+
+  fetchClasses() {
+    this.store.dispatch(actions.fetchClasses());
+  }
 }

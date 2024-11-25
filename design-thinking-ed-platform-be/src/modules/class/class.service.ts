@@ -33,7 +33,7 @@ export class ClassService {
   }
 
   findByProfessor(id: number) {
-    this.classRepository.find({
+    return this.classRepository.find({
       relations: ['user'],
       loadRelationIds: true,
       where: {

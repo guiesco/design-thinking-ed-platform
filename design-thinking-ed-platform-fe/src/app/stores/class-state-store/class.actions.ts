@@ -25,3 +25,19 @@ export const createClassError = createAction(
     payload,
   })
 );
+
+export const fetchClasses = createAction('[Class] fetch');
+
+export const fetchClassesSuccess = createAction(
+  '[Class] fetchClassSuccess',
+  (payload: IClass[]) => ({
+    payload,
+  })
+);
+
+export const fetchClassesError = createAction(
+  '[Class] fetchClassError',
+  (payload: HttpErrorResponse) => ({
+    payload,
+  })
+);

@@ -13,9 +13,10 @@ export class ClassService {
   constructor(private readonly http: HttpClient) {}
 
   createClass(createClassParams: ICreateClass): Observable<ICreateClass> {
-    return this.http.post<ICreateClass>(
-      this.api + '/create-class',
-      createClassParams
-    );
+    return this.http.post<ICreateClass>(this.api + '/class', createClassParams);
+  }
+
+  fetchClasses(): Observable<IClass[]> {
+    return this.http.get<IClass[]>(this.api + '/class');
   }
 }
