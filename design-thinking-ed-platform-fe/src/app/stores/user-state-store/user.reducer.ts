@@ -13,9 +13,9 @@ export const userReducerFn = createReducer(
 
   on(
     actions.loginSuccess,
-    (state: UserStoreModel, { payload }: { payload: IUser }) => ({
+    (state: UserStoreModel, { payload }: { payload: IUser[] }) => ({
       ...state,
-      user: payload,
+      user: payload[0],
     })
   )
 );

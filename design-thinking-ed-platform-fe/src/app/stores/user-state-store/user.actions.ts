@@ -12,7 +12,7 @@ export const login = createAction('[User] login', (payload: ILoginData) => ({
 
 export const loginSuccess = createAction(
   '[User] loginSuccess',
-  (payload: IUser) => ({
+  (payload: IUser[]) => ({
     payload,
   })
 );
