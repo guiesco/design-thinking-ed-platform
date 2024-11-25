@@ -1,0 +1,36 @@
+<div class="create-class-container">
+  <form [formGroup]="createClassForm" (ngSubmit)="createClass()">
+    <h1>Create class</h1>
+
+    <div class="field-container">
+      <label class="create-class-label" for="password">Turma:</label>
+      <input
+        type="text"
+        name="className"
+        class="create-class-input"
+        formControlName="className"
+      />
+    </div>
+
+    <div class="field-container">
+      <label class="create-class-label" for="email">Emails:</label>
+      <textarea
+        name="studentEmails"
+        class="create-class-input"
+        formControlName="studentEmails"
+      ></textarea>
+    </div>
+
+    <div class="field-container">
+      <label class="create-class-label" for="password">Semester:</label>
+      <input
+        type="text"
+        name="semester"
+        class="create-class-input"
+        formControlName="semester"
+      />
+    </div>
+
+    <button class="submit-button" type="submit">Create</button>
+  </form>
+</div>
