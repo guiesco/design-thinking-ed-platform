@@ -12,6 +12,7 @@ import { PagesRoutingModule } from './pages-routing.module';
 import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserStateModule } from '../stores/user-state-store/user-state.module';
+import { ClassStateModule } from '../stores/class-state-store/class-state.module';
 import { RegisterComponent } from './register/register.component';
 import { ClassComponent } from './class/class.component';
 
@@ -24,7 +25,12 @@ const angularMaterialModules = [
   // BrowserAnimationsModule,
 ];
 
-const importModules = [FormsModule, ReactiveFormsModule, UserStateModule];
+const importModules = [
+  FormsModule,
+  ReactiveFormsModule,
+  UserStateModule,
+  ClassStateModule,
+];
 
 @NgModule({
   imports: [
