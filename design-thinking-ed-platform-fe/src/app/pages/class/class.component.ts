@@ -8,7 +8,7 @@ import { ClassFacade } from 'src/app/stores/class-state-store/class.facade';
   styleUrls: ['./class.component.scss'],
 })
 export class ClassComponent implements OnInit {
-  constructor(readonly classFacade: ClassFacade) {}
+  constructor(readonly classFacade: ClassFacade) { }
 
   ngOnInit(): void {
     this.classFacade.fetchClasses();
