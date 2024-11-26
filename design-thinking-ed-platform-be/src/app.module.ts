@@ -26,4 +26,4 @@ import { ClassEntity } from './modules/class/entities/class.entity';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
