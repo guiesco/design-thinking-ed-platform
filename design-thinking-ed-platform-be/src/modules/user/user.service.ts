@@ -6,13 +6,16 @@ import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { LoginUserDto } from './dto/login-user.dto';
 import { NotFoundError } from 'rxjs';
+import { MailService } from '../mail/mail.service';
+import { ClassController } from '../class/class.controller';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-  ) {}
+    private readonly mailService: MailService,
+  ) { }
 
   create(createUserDto: CreateUserDto) {
     return this.userRepository.save(createUserDto);
@@ -47,5 +50,11 @@ export class UserService {
     }
 
     return returnUser;
+  }
+
+  inviteUsers(users: string[]) {
+    users.forEach(mail => {
+      this.mailService.sendMail(mail)
+    });
   }
 }
