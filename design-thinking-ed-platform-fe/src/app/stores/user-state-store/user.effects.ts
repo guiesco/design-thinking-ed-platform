@@ -17,7 +17,7 @@ export class UserEffects {
     private readonly router: Router,
     private readonly actions$: Actions,
     private readonly userService: UserService // private readonly toastService: ToastService, // private readonly translatePipe: TranslatePipe,
-  ) { }
+  ) {}
 
   login$ = createEffect(() =>
     this.actions$.pipe(
@@ -31,18 +31,15 @@ export class UserEffects {
     )
   );
 
-  loginSuccess$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(actions.loginSuccess),
-      exhaustMap(({ payload }: { payload: IUser[] }) => {
-        if (payload[0].userType === UserTypeEnum.PROFESSOR) {
-          this.router.navigate(['/class'])
-        } else {
-          console.log('entrou aluno')
-        }
-        return ''
-      })
-    ), { dispatch: false }
+  loginSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(actions.loginSuccess),
+        exhaustMap(({ payload }: { payload: IUser[] }) => {
+          return this.router.navigate(['/home']);
+        })
+      ),
+    { dispatch: false }
   );
 
   register$ = createEffect(() =>

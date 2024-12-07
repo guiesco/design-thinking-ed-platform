@@ -9,7 +9,7 @@ import { IUser } from 'src/app/common/interfaces/user.interface';
 
 @Injectable()
 export class ClassService {
-  api = 'http://localhost:3000';
+  api = 'http://localhost:3000'; //todo: add to env
   constructor(private readonly http: HttpClient) {}
 
   createClass(createClassParams: ICreateClass): Observable<ICreateClass> {
