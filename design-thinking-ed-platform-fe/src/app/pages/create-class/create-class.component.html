@@ -1,36 +1,47 @@
 <div class="create-class-container">
   <form [formGroup]="createClassForm" (ngSubmit)="createClass()">
-    <h1>Create class</h1>
+    <h1>Criar uma turma</h1>
 
-    <div class="field-container">
-      <label class="create-class-label" for="password">Turma:</label>
+    <mat-form-field class="field-container">
+      <mat-label for="className">Turma:</mat-label>
       <input
+        matInput
         type="text"
         name="className"
         class="create-class-input"
         formControlName="className"
       />
-    </div>
+    </mat-form-field>
 
-    <div class="field-container">
-      <label class="create-class-label" for="email">Emails:</label>
+    <mat-form-field class="field-container">
+      <mat-label for="studentEmails">Emails dos alunos</mat-label>
       <textarea
+        matInput
+        placeholder="Ex. student@email.com, studant2@email..."
         name="studentEmails"
         class="create-class-input"
         formControlName="studentEmails"
       ></textarea>
-    </div>
+    </mat-form-field>
 
-    <div class="field-container">
-      <label class="create-class-label" for="password">Semester:</label>
+    <mat-form-field class="field-container">
+      <mat-label for="semester">Semestre</mat-label>
       <input
+        matInput
         type="text"
         name="semester"
         class="create-class-input"
         formControlName="semester"
       />
-    </div>
+    </mat-form-field>
 
-    <button class="submit-button" type="submit">Create</button>
+    <button
+      mat-raised-button
+      color="primary"
+      class="submit-button"
+      type="submit"
+    >
+      Create
+    </button>
   </form>
 </div>

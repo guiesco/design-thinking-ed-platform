@@ -6,7 +6,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCardModule } from '@angular/material/card';
 
 import { PagesRoutingModule } from './pages-routing.module';
 import { LoginComponent } from './login/login.component';
@@ -16,6 +18,7 @@ import { ClassStateModule } from '../stores/class-state-store/class-state.module
 import { RegisterComponent } from './register/register.component';
 import { ClassComponent } from './class/class.component';
 import { CreateClassComponent } from './create-class/create-class.component';
+import { HomepageComponent } from './homepage/homepage.component';
 
 const angularMaterialModules = [
   MatToolbarModule,
@@ -23,6 +26,9 @@ const angularMaterialModules = [
   MatIconModule,
   MatButtonModule,
   MatListModule,
+  MatInputModule,
+  MatCheckboxModule,
+  MatCardModule,
   // BrowserAnimationsModule,
 ];
 
@@ -40,7 +46,14 @@ const importModules = [
     ...angularMaterialModules,
     ...importModules,
   ],
-  declarations: [PageWrapperComponent, LoginComponent, RegisterComponent,ClassComponent, CreateClassComponent],
+  declarations: [
+    PageWrapperComponent,
+    LoginComponent,
+    RegisterComponent,
+    ClassComponent,
+    CreateClassComponent,
+    HomepageComponent,
+  ],
   exports: [PageWrapperComponent],
 })
 export class PagesModule {}
