@@ -3,7 +3,7 @@ import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ClassEntity } from './entities/class.entity';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 
 @Injectable()
 export class ClassService {
@@ -29,16 +29,36 @@ export class ClassService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} class`;
+    return this.classRepository.delete(id);
   }
 
   findByProfessor(id: number) {
     return this.classRepository.find({
-      relations: ['user'],
+      relations: ['professor'],
       loadRelationIds: true,
       where: {
         professor: { id },
       },
+    });
+  }
+
+  find(
+    query: FindOptionsWhere<ClassEntity> | FindOptionsWhere<ClassEntity>[],
+    limit: number,
+    offset: number,
+  ) {
+    const relations = [];
+    Object.keys(query).forEach((queryKey) => {
+      if (typeof query[queryKey] === 'object') {
+        relations.push(queryKey);
+      }
+    });
+    return this.classRepository.find({
+      relations,
+      loadRelationIds: true,
+      where: query,
+      take: limit,
+      skip: offset,
     });
   }
 }
