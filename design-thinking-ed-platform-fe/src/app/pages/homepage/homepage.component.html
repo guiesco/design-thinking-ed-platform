@@ -1,0 +1,9 @@
+<div *ngIf="isUserProfessor$ | async; else studentHome" class="professor-home">
+  <h1>Essa é a home do professor</h1>
+  <p>Aqui voce pode ver.....</p>
+</div>
+
+<ng-template #studentHome class="student-home">
+  <h1>Essa é a home do aluno</h1>
+  <p>Aqui voce pode ver.....</p>
+</ng-template>

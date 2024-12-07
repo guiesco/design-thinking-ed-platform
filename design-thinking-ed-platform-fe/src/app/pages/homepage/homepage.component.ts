@@ -4,20 +4,14 @@ import { UserTypeEnum } from 'src/app/common/enum/user.enum';
 import { UserFacade } from 'src/app/stores/user-state-store/user.facade';
 
 @Component({
-  selector: 'app-page-wrapper',
-  templateUrl: './page-wrapper.component.html',
-  styleUrls: ['./page-wrapper.component.scss'],
+  selector: 'app-homepage',
+  templateUrl: './homepage.component.html',
+  styleUrls: ['./homepage.component.scss'],
 })
-export class PageWrapperComponent {
-  isSidenavOpen = true;
-
+export class HomepageComponent {
   constructor(readonly userFacade: UserFacade) {}
 
   readonly isUserProfessor$ = this.userFacade.user$.pipe(
     map((user) => user?.userType === UserTypeEnum.PROFESSOR)
   );
-
-  toggleSidenav() {
-    this.isSidenavOpen = !this.isSidenavOpen;
-  }
 }

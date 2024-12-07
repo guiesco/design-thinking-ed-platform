@@ -5,21 +5,28 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ClassComponent } from './class/class.component';
 import { CreateClassComponent } from './create-class/create-class.component';
+import { hasRoleGuard } from '../common/guards/has-role.guard';
+import { UserTypeEnum } from '../common/enum/user.enum';
+import { HomepageComponent } from './homepage/homepage.component';
 
 const pagesRoutes: Routes = [
   {
     path: '',
     component: PageWrapperComponent,
-    //   resolve: {
-    //     i18nContent: TranslationResolve,
-    //   },
-    //   runGuardsAndResolvers: 'always',
-    //   data: {
-    //     i18nContentId: 'common',
-    //   },
+    runGuardsAndResolvers: 'always',
     children: [
+      { path: '', redirectTo: '/home', pathMatch: 'full' },
       {
-        path: '',
+        path: 'home',
+        component: HomepageComponent,
+        canActivate: [hasRoleGuard],
+        data: {
+          roles: [UserTypeEnum.PROFESSOR, UserTypeEnum.STUDENT],
+          redirectPath: 'login',
+        },
+      },
+      {
+        path: 'login',
         component: LoginComponent,
       },
       {
@@ -29,10 +36,20 @@ const pagesRoutes: Routes = [
       {
         path: 'class',
         component: ClassComponent,
+        canActivate: [hasRoleGuard],
+        data: {
+          roles: [UserTypeEnum.PROFESSOR],
+          redirectPath: 'home',
+        },
       },
       {
         path: 'create-class',
         component: CreateClassComponent,
+        canActivate: [hasRoleGuard],
+        data: {
+          roles: [UserTypeEnum.PROFESSOR],
+          redirectPath: 'home',
+        },
       },
     ],
   },
@@ -43,4 +60,4 @@ const pagesRoutes: Routes = [
   exports: [RouterModule],
   declarations: [],
 })
-export class PagesRoutingModule { }
+export class PagesRoutingModule {}

@@ -15,13 +15,16 @@ import { UserService } from '../user/user.service';
 
 @Controller('class')
 export class ClassController {
-  constructor(private readonly classService: ClassService, private readonly userService: UserService) { }
+  constructor(
+    private readonly classService: ClassService,
+    private readonly userService: UserService,
+  ) {}
 
   @Post()
   create(@Body() createClassDto: CreateClassDto) {
     createClassDto.projectStep = ProjectSteps.EMPATHY;
     createClassDto.invitedStudents = [createClassDto.invitedStudents].flat();
-    this.userService.inviteUsers(createClassDto.invitedStudents)
+    this.userService.inviteUsers(createClassDto.invitedStudents);
     return this.classService.create(createClassDto);
   }
 
