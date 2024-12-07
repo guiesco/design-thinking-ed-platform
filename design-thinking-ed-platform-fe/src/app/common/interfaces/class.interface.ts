@@ -2,8 +2,8 @@ import { IUser } from './user.interface';
 import { ProjectSteps } from '../enum/class.enum';
 
 export interface IFindClass extends Partial<IClass> {
-  offset: number;
-  limit: number;
+  skip: number;
+  take: number;
 }
 
 export interface ICreateClass {

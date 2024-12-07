@@ -44,8 +44,8 @@ export class ClassService {
 
   find(
     query: FindOptionsWhere<ClassEntity> | FindOptionsWhere<ClassEntity>[],
-    limit: number,
-    offset: number,
+    take: number,
+    skip: number,
   ) {
     const relations = [];
     Object.keys(query).forEach((queryKey) => {
@@ -57,8 +57,8 @@ export class ClassService {
       relations,
       loadRelationIds: true,
       where: query,
-      take: limit,
-      skip: offset,
+      take: take,
+      skip: skip,
     });
   }
 }

@@ -15,7 +15,7 @@ import { Observable } from 'rxjs';
 export class ClassFacade {
   constructor(private readonly store: Store<AppState>) {}
 
-  class$: Observable<IClass[] | null> = this.store.pipe(
+  classes$: Observable<IClass[] | null> = this.store.pipe(
     select(selectors.classSelector)
   );
 
@@ -27,7 +27,16 @@ export class ClassFacade {
     this.store.dispatch(actions.findAll());
   }
 
-  find(query: IFindClass) {
+  loadClasses(userId: number, skip: number, take: number) {
+    const findQuery: IFindClass = {
+      professor: { id: userId },
+      skip,
+      take,
+    };
+    this.find(findQuery);
+  }
+
+  private find(query: IFindClass) {
     this.store.dispatch(actions.find(query));
   }
 

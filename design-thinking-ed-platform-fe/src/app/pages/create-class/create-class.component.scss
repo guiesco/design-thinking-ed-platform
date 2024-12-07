@@ -1,4 +1,6 @@
 .create-class-container {
+  min-height: calc(100vh - 160px);
+
   form {
     height: 70vh;
     display: flex;

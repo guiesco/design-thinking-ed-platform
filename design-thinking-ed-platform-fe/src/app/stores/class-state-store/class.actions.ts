@@ -15,7 +15,7 @@ export const createClass = createAction(
 
 export const createClassSuccess = createAction(
   '[Class] createClassSuccess',
-  (payload: ICreateClass) => ({
+  (payload: IClass) => ({
     payload,
   })
 );
@@ -68,7 +68,12 @@ export const deleteClass = createAction(
   })
 );
 
-export const deleteClassSuccess = createAction('[Class] deleteClassSuccess');
+export const deleteClassSuccess = createAction(
+  '[Class] deleteClassSuccess',
+  (id: number) => ({
+    id,
+  })
+);
 
 export const deleteClassError = createAction(
   '[Class] deleteClassError',

@@ -56,7 +56,7 @@ export class ClassController {
 
   @Post('find')
   find(@Body() findClassDto: FindClassDto) {
-    const { limit, offset, ...query } = findClassDto;
-    return this.classService.find(query as any, limit, offset);
+    const { take, skip, ...query } = findClassDto;
+    return this.classService.find(query as any, take, skip);
   }
 }

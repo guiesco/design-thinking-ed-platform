@@ -12,8 +12,8 @@ export class ClassService {
   api = 'http://localhost:3000'; //todo: add to env
   constructor(private readonly http: HttpClient) {}
 
-  createClass(createClassParams: ICreateClass): Observable<ICreateClass> {
-    return this.http.post<ICreateClass>(this.api + '/class', createClassParams);
+  createClass(createClassParams: ICreateClass): Observable<IClass> {
+    return this.http.post<IClass>(this.api + '/class', createClassParams);
   }
 
   findAll(): Observable<IClass[]> {

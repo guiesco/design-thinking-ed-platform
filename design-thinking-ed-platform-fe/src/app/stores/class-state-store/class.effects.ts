@@ -53,7 +53,7 @@ export class ClassEffects {
       ofType(actions.deleteClass),
       exhaustMap(({ id }) =>
         this.classService.deleteClass(id).pipe(
-          map((data) => actions.deleteClassSuccess()),
+          map((data) => actions.deleteClassSuccess(id)),
           catchError((error) => of(actions.deleteClassError(error)))
         )
       )
