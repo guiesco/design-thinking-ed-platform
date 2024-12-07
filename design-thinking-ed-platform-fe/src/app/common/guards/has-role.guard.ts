@@ -14,7 +14,6 @@ export const hasRoleGuard: CanActivateFn = (route, state) => {
     take(1),
     map((user) => {
       const hasRole = expectedRoles.some((role) => user?.userType === role);
-      console.log('🚀 ~ map ~ hasRole:', hasRole);
       return hasRole || router.parseUrl('/login');
     })
   );
