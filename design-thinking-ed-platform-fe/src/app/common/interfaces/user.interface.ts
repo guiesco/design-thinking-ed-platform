@@ -6,6 +6,7 @@ export interface ILoginData {
 }
 
 export interface IUser extends ILoginData {
+  id: number;
   userType: UserTypeEnum;
   name: string;
 }
