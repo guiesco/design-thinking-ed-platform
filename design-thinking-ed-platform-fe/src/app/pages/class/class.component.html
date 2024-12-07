@@ -1,5 +1,8 @@
 <div class="class-grid">
-  <mat-card *ngFor="let class of classFacade.class$ | async" class="class-card">
+  <mat-card
+    *ngFor="let class of classFacade.class$ | async"
+    class="class-card space-between"
+  >
     <mat-card-header>
       <mat-card-title>
         {{ class.className }}
@@ -14,6 +17,10 @@
         >{{ parseProjectStep(class.projectStep) }}
       </p>
     </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button mat-button (click)="deleteClass(class.id)">Excluir</button>
+    </mat-card-actions>
   </mat-card>
 
   <mat-card [routerLink]="'/create-class'" class="class-card">

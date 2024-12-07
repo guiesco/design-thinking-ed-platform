@@ -3,6 +3,10 @@
     flex-wrap: wrap;
     gap: 16px;
 
+    .space-between {
+        justify-content: space-between;
+    }
+
 
     .class-card {
         flex: 1 1 calc(25% - 16px);
@@ -11,12 +15,14 @@
         max-width: calc(25% - 16px);
         background-color: #f0f0f0;
         display: flex;
-        align-items: center;
-        justify-content: flex-start;
+        align-items: flex-start;
         cursor: pointer;
 
+        mat-card-header {
+            align-self: center;
+        }
+
         mat-card-content {
-            margin-top: 25px;
             display: flex;
             flex-direction: column;
             width: 90%;
@@ -25,7 +31,9 @@
         .add-class-icon {
             margin: auto;
             font-size: 25px;
-
+            position: absolute;
+            top: 50%;
+            left: 50%;
         }
     }
 
