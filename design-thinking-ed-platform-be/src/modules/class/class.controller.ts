@@ -12,6 +12,7 @@ import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
 import { ProjectSteps } from 'src/common/enum/project.enum';
 import { UserService } from '../user/user.service';
+import { FindClassDto } from './dto/find-class.dto';
 
 @Controller('class')
 export class ClassController {
@@ -51,5 +52,11 @@ export class ClassController {
   @Get('professor/:id')
   findByProfessor(@Param('id') id: string) {
     return this.classService.findByProfessor(+id);
+  }
+
+  @Post('find')
+  find(@Body() findClassDto: FindClassDto) {
+    const { limit, offset, ...query } = findClassDto;
+    return this.classService.find(query as any, limit, offset);
   }
 }

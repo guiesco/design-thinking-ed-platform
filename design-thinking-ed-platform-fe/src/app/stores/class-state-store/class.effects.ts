@@ -24,13 +24,37 @@ export class ClassEffects {
     )
   );
 
-  fetchClasses$ = createEffect(() =>
+  findAll$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(actions.fetchClasses),
+      ofType(actions.findAll),
       exhaustMap(() =>
-        this.classService.fetchClasses().pipe(
-          map((data) => actions.fetchClassesSuccess(data)),
-          catchError((error) => of(actions.fetchClassesError(error)))
+        this.classService.findAll().pipe(
+          map((data) => actions.findAllSuccess(data)),
+          catchError((error) => of(actions.findAllError(error)))
+        )
+      )
+    )
+  );
+
+  find$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.find),
+      exhaustMap(({ query }) =>
+        this.classService.find(query).pipe(
+          map((data) => actions.findSuccess(data)),
+          catchError((error) => of(actions.findError(error)))
+        )
+      )
+    )
+  );
+
+  deleteClass$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.deleteClass),
+      exhaustMap(({ id }) =>
+        this.classService.deleteClass(id).pipe(
+          map((data) => actions.deleteClassSuccess()),
+          catchError((error) => of(actions.deleteClassError(error)))
         )
       )
     )

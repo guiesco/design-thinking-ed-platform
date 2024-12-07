@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { ICreateClass } from 'src/app/common/interfaces/class.interface';
 import { ClassFacade } from 'src/app/stores/class-state-store/class.facade';
@@ -20,7 +21,8 @@ export class CreateClassComponent {
   constructor(
     readonly fb: FormBuilder,
     readonly classFacade: ClassFacade,
-    readonly userFacade: UserFacade
+    readonly userFacade: UserFacade,
+    private router: Router
   ) {}
 
   async createClass() {
@@ -34,5 +36,6 @@ export class CreateClassComponent {
       professor: await this.userFacade.user$.pipe(take(1)).toPromise(),
     };
     this.classFacade.createClass(createClassDto);
+    this.router.navigate(['class']);
   }
 }

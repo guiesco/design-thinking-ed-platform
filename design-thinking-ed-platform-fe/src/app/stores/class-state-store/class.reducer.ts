@@ -9,8 +9,17 @@ export const classInitialState: ClassStoreModel = {
 
 export const classReducerFn = createReducer(
   classInitialState,
+
   on(
-    actions.fetchClassesSuccess,
+    actions.findAllSuccess,
+    (state: ClassStoreModel, { payload }: { payload: IClass[] }) => ({
+      ...state,
+      classes: payload,
+    })
+  ),
+
+  on(
+    actions.findSuccess,
     (state: ClassStoreModel, { payload }: { payload: IClass[] }) => ({
       ...state,
       classes: payload,
