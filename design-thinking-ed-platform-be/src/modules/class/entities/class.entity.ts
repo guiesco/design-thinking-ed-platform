@@ -27,7 +27,7 @@ export class ClassEntity {
   professor: UserEntity;
 
   @OneToMany(() => GroupsEntity, (group) => group.class)
-  groups: GroupsEntity;
+  groups: GroupsEntity[];
 
   @Column({ type: 'enum', enum: ProjectSteps })
   projectStep: ProjectSteps;
