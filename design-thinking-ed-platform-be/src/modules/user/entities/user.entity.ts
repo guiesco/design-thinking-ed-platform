@@ -1,5 +1,5 @@
 import { ClassEntity } from 'src/modules/class/entities/class.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class UserEntity {
@@ -19,5 +19,8 @@ export class UserEntity {
   userType: string;
 
   @OneToMany(() => ClassEntity, (classEntity) => classEntity.professor)
-  classes: ClassEntity[];
+  classesProfessor: ClassEntity[];
+
+  @ManyToMany(() => ClassEntity, (ClassEntity) => ClassEntity.students)
+  classesStudent: ClassEntity[];
 }
