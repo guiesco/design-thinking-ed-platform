@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClassModule } from './modules/class/class.module';
 import { UserEntity } from './modules/user/entities/user.entity';
 import { ClassEntity } from './modules/class/entities/class.entity';
+import { GroupsModule } from './modules/groups/groups.module';
 
 @Module({
   imports: [
@@ -22,8 +23,9 @@ import { ClassEntity } from './modules/class/entities/class.entity';
       logging: true,
     }),
     ClassModule,
+    GroupsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
