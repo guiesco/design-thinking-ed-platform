@@ -1,5 +1,6 @@
 import { ClassEntity } from 'src/modules/class/entities/class.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { GroupsEntity } from 'src/modules/groups/entities/group.entity';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class UserEntity {
@@ -20,4 +21,7 @@ export class UserEntity {
 
   @OneToMany(() => ClassEntity, (classEntity) => classEntity.professor)
   classes: ClassEntity[];
+
+  @ManyToOne(() => ClassEntity, (classEntity) => classEntity.professor)
+  groups: GroupsEntity;
 }
