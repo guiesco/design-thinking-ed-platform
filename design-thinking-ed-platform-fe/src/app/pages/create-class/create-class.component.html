@@ -10,6 +10,7 @@
         name="className"
         class="create-class-input"
         formControlName="className"
+        required
       />
     </mat-form-field>
 
@@ -21,6 +22,7 @@
         name="studentEmails"
         class="create-class-input"
         formControlName="studentEmails"
+        required
       ></textarea>
     </mat-form-field>
 
@@ -32,6 +34,7 @@
         name="semester"
         class="create-class-input"
         formControlName="semester"
+        required
       />
     </mat-form-field>
 
@@ -40,6 +43,7 @@
       color="primary"
       class="submit-button"
       type="submit"
+      [disabled]="createClassForm.status === 'INVALID'"
     >
       Create
     </button>
