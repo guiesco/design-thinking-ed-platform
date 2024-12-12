@@ -4,8 +4,6 @@ import { AppService } from './app.service';
 import { UserModule } from './modules/user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClassModule } from './modules/class/class.module';
-import { UserEntity } from './modules/user/entities/user.entity';
-import { ClassEntity } from './modules/class/entities/class.entity';
 import { GroupsModule } from './modules/groups/groups.module';
 
 @Module({
@@ -17,10 +15,10 @@ import { GroupsModule } from './modules/groups/groups.module';
       port: 5432,
       password: 'dtep',
       username: 'dtep',
-      entities: [UserEntity, ClassEntity],
       database: 'dtep',
       synchronize: true,
       logging: true,
+      autoLoadEntities: true,
     }),
     ClassModule,
     GroupsModule,
