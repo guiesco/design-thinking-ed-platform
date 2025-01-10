@@ -1,6 +1,6 @@
 import { ProjectSteps } from 'src/common/enum/project.enum';
 import { UserEntity } from 'src/modules/user/entities/user.entity';
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class ClassEntity {
@@ -22,6 +22,6 @@ export class ClassEntity {
   @ManyToOne(() => UserEntity, (user) => user.classesProfessor)
   professor: UserEntity;
 
-  @ManyToMany(() => UserEntity, (user) => user.classesStudent)
-  students: UserEntity;
+  @OneToMany(() => UserEntity, (user) => user.classStudent)
+  students: UserEntity[];
 }

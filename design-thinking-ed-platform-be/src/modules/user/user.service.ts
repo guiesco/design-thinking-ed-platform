@@ -57,4 +57,8 @@ export class UserService {
       this.mailService.sendMail(mail)
     });
   }
+
+  addStudent(mail: string) {
+
+  }
 }

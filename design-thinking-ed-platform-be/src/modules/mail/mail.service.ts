@@ -10,7 +10,7 @@ export class MailService {
             from: 'Giovanni Moreton <giovannimoreton@gmail.com>',
             to: email,
             subject: 'Primeiro acesso',
-            text: `http://localhost:4200/register`
+            text: `http://localhost:4200/register?userEmail=${email}`
         })
     }
 }

@@ -49,4 +49,9 @@ export class ClassController {
   findByProfessor(@Param('id') id: string) {
     return this.classService.findByProfessor(+id);
   }
+
+  @Get('student/:mail')
+  findByStudentMail(@Param('mail') mail: string) {
+    return this.classService.findByStudentMail(mail);
+  }
 }
