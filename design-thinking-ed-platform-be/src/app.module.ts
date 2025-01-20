@@ -4,7 +4,8 @@ import { AppService } from './app.service';
 import { UserModule } from './modules/user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClassModule } from './modules/class/class.module';
-import { GroupsModule } from './modules/groups/groups.module';
+import { GroupModule } from './modules/group/group.module';
+import { ProjectModule } from './modules/project/project.module';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { GroupsModule } from './modules/groups/groups.module';
       autoLoadEntities: true,
     }),
     ClassModule,
-    GroupsModule,
+    GroupModule,
+    ProjectModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -2,22 +2,22 @@ import { Injectable } from '@nestjs/common';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { GroupsEntity } from './entities/group.entity';
+import { GroupEntity } from './entities/group.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class GroupsService {
+export class GroupService {
   constructor(
-    @InjectRepository(GroupsEntity) 
-    private readonly groupsRepository: Repository<GroupsEntity>,
+    @InjectRepository(GroupEntity)
+    private readonly groupRepository: Repository<GroupEntity>,
   ) {}
 
   create(createGroupDto: CreateGroupDto) {
-    return this.groupsRepository.save(createGroupDto);
+    return this.groupRepository.save(createGroupDto);
   }
 
   findAll() {
-    return this.groupsRepository.find();
+    return this.groupRepository.find();
   }
 
   findOne(id: number) {

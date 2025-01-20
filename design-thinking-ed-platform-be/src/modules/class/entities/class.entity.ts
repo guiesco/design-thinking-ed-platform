@@ -1,5 +1,5 @@
 import { ProjectSteps } from 'src/common/enum/project.enum';
-import { GroupsEntity } from 'src/modules/groups/entities/group.entity';
+import { GroupEntity } from 'src/modules/group/entities/group.entity';
 import { UserEntity } from 'src/modules/user/entities/user.entity';
 import {
   Column,
@@ -26,8 +26,8 @@ export class ClassEntity {
   @ManyToOne(() => UserEntity, (user) => user.classes)
   professor: UserEntity;
 
-  @OneToMany(() => GroupsEntity, (group) => group.class)
-  groups: GroupsEntity[];
+  @OneToMany(() => GroupEntity, (group) => group.class)
+  groups: GroupEntity[];
 
   @Column({ type: 'enum', enum: ProjectSteps })
   projectStep: ProjectSteps;

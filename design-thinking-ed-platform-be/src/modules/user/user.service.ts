@@ -5,9 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { LoginUserDto } from './dto/login-user.dto';
-import { NotFoundError } from 'rxjs';
 import { MailService } from '../mail/mail.service';
-import { ClassController } from '../class/class.controller';
 
 @Injectable()
 export class UserService {
@@ -15,7 +13,7 @@ export class UserService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     private readonly mailService: MailService,
-  ) { }
+  ) {}
 
   create(createUserDto: CreateUserDto) {
     return this.userRepository.save(createUserDto);
@@ -53,8 +51,8 @@ export class UserService {
   }
 
   inviteUsers(users: string[]) {
-    users.forEach(mail => {
-      this.mailService.sendMail(mail)
+    users.forEach((mail) => {
+      // this.mailService.sendMail(mail);
     });
   }
 }
