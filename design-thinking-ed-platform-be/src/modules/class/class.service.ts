@@ -4,6 +4,7 @@ import { UpdateClassDto } from './dto/update-class.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ClassEntity } from './entities/class.entity';
 import { FindOptionsWhere, Repository } from 'typeorm';
+import { extractRelations } from 'src/common/utils/extractRelations';
 
 @Injectable()
 export class ClassService {
@@ -47,12 +48,8 @@ export class ClassService {
     take: number,
     skip: number,
   ) {
-    const relations = [];
-    Object.keys(query).forEach((queryKey) => {
-      if (typeof query[queryKey] === 'object') {
-        relations.push(queryKey);
-      }
-    });
+    const relations = extractRelations(query);
+
     return this.classRepository.find({
       relations,
       loadRelationIds: true,

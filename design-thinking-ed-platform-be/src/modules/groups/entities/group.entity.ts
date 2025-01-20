@@ -1,4 +1,3 @@
-import { ProjectSteps } from 'src/common/enum/project.enum';
 import { ClassEntity } from 'src/modules/class/entities/class.entity';
 import { UserEntity } from 'src/modules/user/entities/user.entity';
 import {
@@ -23,4 +22,3 @@ export class GroupsEntity {
   @ManyToOne(() => ClassEntity, (classEntity) => classEntity.groups)
   class: ClassEntity;
 }
-
