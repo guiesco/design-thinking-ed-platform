@@ -59,7 +59,6 @@ export class ClassService {
 
     return this.classRepository.find({
       relations,
-      loadRelationIds: true,
       where: query,
       take: take,
       skip: skip,
