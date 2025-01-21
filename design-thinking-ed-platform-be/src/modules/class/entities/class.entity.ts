@@ -23,12 +23,15 @@ export class ClassEntity {
   @Column({ type: 'text', nullable: true, array: true })
   invitedStudents: string[];
 
-  @ManyToOne(() => UserEntity, (user) => user.classes)
-  professor: UserEntity;
-
   @OneToMany(() => GroupEntity, (group) => group.class)
   groups: GroupEntity[];
 
   @Column({ type: 'enum', enum: ProjectSteps })
   projectStep: ProjectSteps;
+
+  @ManyToOne(() => UserEntity, (user) => user.professorClasses, { onDelete: 'SET NULL' })
+  professor: UserEntity;
+
+  @OneToMany(() => UserEntity, (user) => user.studentClass, { onDelete: 'SET NULL' })
+  students: UserEntity[];
 }

@@ -56,4 +56,4 @@ const importModules = [
   ],
   exports: [PageWrapperComponent],
 })
-export class PagesModule {}
+export class PagesModule { }

@@ -3,8 +3,8 @@ import { GroupEntity } from 'src/modules/group/entities/group.entity';
 import {
   Column,
   Entity,
-  ManyToOne,
   OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -25,9 +25,12 @@ export class UserEntity {
   @Column({ type: 'enum', enum: ['student', 'professor'] })
   userType: string;
 
-  @OneToMany(() => ClassEntity, (classEntity) => classEntity.professor)
-  classes: ClassEntity[];
+  @OneToMany(() => ClassEntity, (classEntity) => classEntity.professor, { onDelete: 'SET NULL' })
+  professorClasses: ClassEntity[];
 
-  @ManyToOne(() => GroupEntity, (groupEntity) => groupEntity.students)
+  @ManyToOne(() => ClassEntity, (ClassEntity) => ClassEntity.students, { onDelete: 'SET NULL' })
+  studentClass: ClassEntity;
+
+  @ManyToOne(() => GroupEntity, (groupEntity) => groupEntity.students, { onDelete: 'SET NULL' })
   groups: GroupEntity;
 }

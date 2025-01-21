@@ -3,6 +3,7 @@ import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ClassEntity } from './entities/class.entity';
+import { CreateUserDto } from '../user/dto/create-user.dto';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { extractRelations } from 'src/common/utils/extractRelations';
 
@@ -11,7 +12,7 @@ export class ClassService {
   constructor(
     @InjectRepository(ClassEntity)
     private readonly classRepository: Repository<ClassEntity>,
-  ) {}
+  ) { }
 
   create(createClassDto: CreateClassDto) {
     return this.classRepository.save(createClassDto);
@@ -22,11 +23,11 @@ export class ClassService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} class`;
+    return this.classRepository.findOne({ where: { id } });
   }
 
   update(id: number, updateClassDto: UpdateClassDto) {
-    return `This action updates a #${id} class`;
+    return this.classRepository.update(id, updateClassDto)
   }
 
   remove(id: number) {
@@ -41,6 +42,12 @@ export class ClassService {
         professor: { id },
       },
     });
+  }
+
+  async removeStudentMail(user: CreateUserDto) {
+    const classToEdit = await this.findOne(user.studentClass.id);
+    classToEdit.invitedStudents = classToEdit.invitedStudents.filter(studentMail => user.email !== studentMail)
+    this.update(classToEdit.id, classToEdit)
   }
 
   find(

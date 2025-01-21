@@ -1,12 +1,14 @@
 import {
   IsEmail,
   IsEnum,
+  isNotEmpty,
   IsNotEmpty,
   IsOptional,
   IsString,
   Matches,
   MinLength,
 } from 'class-validator';
+import { ClassEntity } from 'src/modules/class/entities/class.entity';
 
 const passwordRegEx =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,20}$/;
@@ -34,4 +36,8 @@ export class CreateUserDto {
   //       one special character`,
   //   })
   password: string;
+
+  @IsOptional()
+  studentClass: Partial<ClassEntity>;
+
 }

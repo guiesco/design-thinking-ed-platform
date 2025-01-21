@@ -13,7 +13,7 @@ export class UserService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     private readonly mailService: MailService,
-  ) {}
+  ) { }
 
   create(createUserDto: CreateUserDto) {
     return this.userRepository.save(createUserDto);
@@ -50,9 +50,9 @@ export class UserService {
     return returnUser;
   }
 
-  inviteUsers(users: string[]) {
-    users.forEach((mail) => {
-      // this.mailService.sendMail(mail);
+  inviteUsers(users: string[], classId: number) {
+    users.forEach(mail => {
+      this.mailService.sendMail(mail, classId)
     });
   }
 }
