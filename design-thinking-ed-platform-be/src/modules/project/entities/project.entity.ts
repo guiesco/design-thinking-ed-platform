@@ -6,7 +6,7 @@ export class ProjectEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => GroupEntity, (group) => group.project)
+  @OneToOne(() => GroupEntity, (group) => group.project, { onDelete: 'SET NULL' })
   @JoinColumn()
   group: GroupEntity;
 }

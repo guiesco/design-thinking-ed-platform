@@ -21,9 +21,9 @@ export class GroupEntity {
   @OneToMany(() => UserEntity, (user) => user.name)
   students: UserEntity[];
 
-  @ManyToOne(() => ClassEntity, (classEntity) => classEntity.groups)
+  @ManyToOne(() => ClassEntity, (classEntity) => classEntity.groups, { onDelete: 'SET NULL' })
   class: ClassEntity;
 
-  @OneToOne(() => ProjectEntity, (projectEntity) => projectEntity.group)
+  @OneToOne(() => ProjectEntity, (projectEntity) => projectEntity.group, { onDelete: 'SET NULL' })
   project: ProjectEntity;
 }
