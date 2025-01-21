@@ -1,4 +1,6 @@
 .create-class-container {
+  min-height: calc(100vh - 160px);
+
   form {
     height: 70vh;
     display: flex;
@@ -13,6 +15,7 @@
   }
 
   .field-container {
+    min-width: 42%;
     display: flex;
     flex-direction: column;
     align-items: center;

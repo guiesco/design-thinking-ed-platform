@@ -2,31 +2,39 @@
   <form [formGroup]="loginForm" (ngSubmit)="login()">
     <h1>Log In</h1>
 
-    <label class="login-label" for="email">Email:</label>
-    <input
-      type="email"
-      name="email"
-      class="login-email-input"
-      formControlName="email"
-    />
-
-    <label class="login-label" for="password">Password:</label>
-    <input
-      type="password"
-      name="password"
-      class="login-password-input"
-      formControlName="password"
-    />
-    <div>
+    <mat-form-field>
+      <mat-label class="login-label" for="email">Email:</mat-label>
       <input
+        matInput
+        type="email"
+        name="email"
+        class="login-email-input"
+        formControlName="email"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label class="login-label" for="password">Password:</mat-label>
+      <input
+        matInput
+        type="password"
+        name="password"
+        class="login-password-input"
+        formControlName="password"
+      />
+    </mat-form-field>
+
+    <div>
+      <mat-checkbox
         class="remember-check"
         type="checkbox"
-        [value]="isRememberMe"
+        [checked]="isRememberMe"
         id="remember-me"
-      /><!--colocar id para armazenar rememberMe-->
-      <label class="remember-check" for="remember-me">Remember me</label>
+      >
+        Remember me
+      </mat-checkbox>
     </div>
 
-    <button type="submit">Login</button>
+    <button mat-raised-button color="primary" type="submit">Login</button>
   </form>
 </div>

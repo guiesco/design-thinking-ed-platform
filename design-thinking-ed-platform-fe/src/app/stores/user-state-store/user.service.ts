@@ -9,8 +9,8 @@ import {
 
 @Injectable()
 export class UserService {
-  api = 'http://localhost:3000';
-  constructor(private readonly http: HttpClient) { }
+  api = 'http://localhost:3000'; //todo: add to env
+  constructor(private readonly http: HttpClient) {}
 
   login(loginParams: ILoginData): Observable<IUser[]> {
     return this.http.post<IUser[]>(this.api + '/user/login', loginParams);

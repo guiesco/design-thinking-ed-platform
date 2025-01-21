@@ -1,6 +1,13 @@
 import { ProjectSteps } from 'src/common/enum/project.enum';
+import { GroupEntity } from 'src/modules/group/entities/group.entity';
 import { UserEntity } from 'src/modules/user/entities/user.entity';
-import { Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class ClassEntity {
@@ -15,6 +22,9 @@ export class ClassEntity {
 
   @Column({ type: 'text', nullable: true, array: true })
   invitedStudents: string[];
+
+  @OneToMany(() => GroupEntity, (group) => group.class)
+  groups: GroupEntity[];
 
   @Column({ type: 'enum', enum: ProjectSteps })
   projectStep: ProjectSteps;

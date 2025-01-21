@@ -1,28 +1,56 @@
 .class-grid {
     display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    min-height: calc(100vh - 160px);
+
+    .space-between {
+        justify-content: space-between;
+    }
+
 
     .class-card {
+        flex: 1 1 calc(25% - 16px);
+        box-sizing: border-box;
+        aspect-ratio: 1.5;
+        max-width: calc(25% - 16px);
+        max-height: calc(50vh - 128px);
+        min-height: 320px;
+        background-color: #f0f0f0;
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        border: 1px solid black;
-        padding: 20px;
-        border-radius: 15px;
-        margin: 10px;
-        min-width: 90px;
-        min-height: 90px;
+        align-items: flex-start;
         cursor: pointer;
 
-        span {
-            margin: 5px;
+        mat-card-header {
+            align-self: center;
+        }
+
+        mat-card-content {
+            display: flex;
+            flex-direction: column;
+            width: 90%;
         }
 
         .add-class-icon {
-            text-decoration: none;
-            color: black;
-            font-size: 25px;
-            cursor: pointer;
             margin: auto;
+            font-size: 25px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .class-card {
+            flex: 1 1 calc(50% - 16px);
+            max-width: calc(50% - 16px);
+        }
+    }
+
+    @media (max-width: 480px) {
+        .class-card {
+            flex: 1 1 calc(100% - 16px);
+            max-width: calc(100% - 16px);
         }
     }
 }

@@ -12,11 +12,15 @@ import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
 import { ProjectSteps } from 'src/common/enum/project.enum';
 import { UserService } from '../user/user.service';
+import { FindClassDto } from './dto/find-class.dto';
 import { UpdateUserDto } from '../user/dto/update-user.dto';
 
 @Controller('class')
 export class ClassController {
-  constructor(private readonly classService: ClassService, private readonly userService: UserService) { }
+  constructor(
+    private readonly classService: ClassService,
+    private readonly userService: UserService,
+  ) { }
 
   @Post()
   async create(@Body() createClassDto: CreateClassDto): Promise<UpdateClassDto> {
@@ -50,5 +54,11 @@ export class ClassController {
   @Get('professor/:id')
   findByProfessor(@Param('id') id: string) {
     return this.classService.findByProfessor(+id);
+  }
+
+  @Post('find')
+  find(@Body() findClassDto: FindClassDto) {
+    const { take, skip, ...query } = findClassDto;
+    return this.classService.find(query as any, take, skip);
   }
 }

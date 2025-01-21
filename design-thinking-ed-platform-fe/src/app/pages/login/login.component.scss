@@ -1,5 +1,5 @@
-form{
-    height: 82vh;
+form {
+    min-height: calc(100vh - 160px);
     display: flex;
     align-content: center;
     justify-content: center;
@@ -7,12 +7,12 @@ form{
     align-items: center;
 }
 
-h1{
+h1 {
     text-align: center;
 }
 
 
-input[type="submit"]{
+input[type="submit"] {
     height: 25px;
     width: 50%;
     background-color: #015294;
@@ -22,17 +22,3 @@ input[type="submit"]{
     margin-top: 1vh;
     margin-left: 25%;
 }
-
-/*
-.login-label{
-        
-}
-
-.login-password-input{
-
-}
-
-.login-email-input{
-
-}
-*/

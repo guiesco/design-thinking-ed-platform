@@ -4,18 +4,37 @@ import { ClassStoreModel } from './class.model';
 import { IClass } from 'src/app/common/interfaces/class.interface';
 
 export const classInitialState: ClassStoreModel = {
-  classes: null,
+  classes: [],
 };
 
 export const classReducerFn = createReducer(
   classInitialState,
+
   on(
-    actions.fetchClassesSuccess,
+    actions.findAllSuccess,
     (state: ClassStoreModel, { payload }: { payload: IClass[] }) => ({
       ...state,
       classes: payload,
     })
-  )
+  ),
+
+  on(
+    actions.findSuccess,
+    (state: ClassStoreModel, { payload }: { payload: IClass[] }) => ({
+      ...state,
+      classes: payload,
+    })
+  ),
+
+  on(actions.deleteClassSuccess, (state, { id }) => ({
+    ...state,
+    classes: state?.classes?.filter((cls) => cls.id !== id) || [],
+  })),
+
+  on(actions.createClassSuccess, (state, { payload }) => ({
+    ...state,
+    classes: [...state.classes, payload],
+  }))
 );
 
 export function classReducer(

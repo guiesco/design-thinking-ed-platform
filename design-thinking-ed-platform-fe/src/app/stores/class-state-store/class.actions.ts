@@ -3,6 +3,7 @@ import { createAction } from '@ngrx/store';
 import {
   IClass,
   ICreateClass,
+  IFindClass,
 } from 'src/app/common/interfaces/class.interface';
 
 export const createClass = createAction(
@@ -14,7 +15,7 @@ export const createClass = createAction(
 
 export const createClassSuccess = createAction(
   '[Class] createClassSuccess',
-  (payload: ICreateClass) => ({
+  (payload: IClass) => ({
     payload,
   })
 );
@@ -26,17 +27,56 @@ export const createClassError = createAction(
   })
 );
 
-export const fetchClasses = createAction('[Class] fetch');
+export const findAll = createAction('[Class] findAll');
 
-export const fetchClassesSuccess = createAction(
-  '[Class] fetchClassSuccess',
+export const findAllSuccess = createAction(
+  '[Class] findAllSuccess',
   (payload: IClass[]) => ({
     payload,
   })
 );
 
-export const fetchClassesError = createAction(
-  '[Class] fetchClassError',
+export const findAllError = createAction(
+  '[Class] findAllError',
+  (payload: HttpErrorResponse) => ({
+    payload,
+  })
+);
+
+export const find = createAction('[Class] find', (query: IFindClass) => ({
+  query,
+}));
+
+export const findSuccess = createAction(
+  '[Class] findSuccess',
+  (payload: IClass[]) => ({
+    payload,
+  })
+);
+
+export const findError = createAction(
+  '[Class] findError',
+  (payload: HttpErrorResponse) => ({
+    payload,
+  })
+);
+
+export const deleteClass = createAction(
+  '[Class] deleteClass',
+  (id: number) => ({
+    id,
+  })
+);
+
+export const deleteClassSuccess = createAction(
+  '[Class] deleteClassSuccess',
+  (id: number) => ({
+    id,
+  })
+);
+
+export const deleteClassError = createAction(
+  '[Class] deleteClassError',
   (payload: HttpErrorResponse) => ({
     payload,
   })

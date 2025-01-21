@@ -1,5 +1,12 @@
 import { ClassEntity } from 'src/modules/class/entities/class.entity';
-import { Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { GroupEntity } from 'src/modules/group/entities/group.entity';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class UserEntity {
@@ -23,4 +30,7 @@ export class UserEntity {
 
   @ManyToOne(() => ClassEntity, (ClassEntity) => ClassEntity.students)
   studentClass: ClassEntity;
+
+  @ManyToOne(() => GroupEntity, (groupEntity) => groupEntity.students)
+  groups: GroupEntity;
 }

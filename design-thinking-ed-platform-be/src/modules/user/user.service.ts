@@ -5,9 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { LoginUserDto } from './dto/login-user.dto';
-import { NotFoundError } from 'rxjs';
 import { MailService } from '../mail/mail.service';
-import { ClassController } from '../class/class.controller';
 
 @Injectable()
 export class UserService {

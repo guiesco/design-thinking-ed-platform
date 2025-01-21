@@ -1,11 +1,35 @@
 <div class="class-grid">
-  <div *ngFor="let class of classFacade.class$ | async" class="class-card">
-    <h2>{{ class.className }}</h2>
-    <span>{{ parseProjectStep(class.projectStep) }}</span>
-    <span>{{ class.invitedStudents }}</span>
-    <span>{{ class.semester }}</span>
-  </div>
-  <div class="class-card" [routerLink] = "'/create-class'">
-    <a class="add-class-icon">+</a>
-  </div>
+  <mat-card
+    *ngFor="let class of classes$ | async"
+    class="class-card space-between"
+  >
+    <mat-card-header>
+      <mat-card-title>
+        {{ class.className }}
+      </mat-card-title>
+      <mat-card-subtitle>{{ class.semester }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <p><label>Alunos convidados: </label>{{ class.invitedStudents }}</p>
+      <p>
+        <label>Etapa do projeto: </label
+        >{{ parseProjectStep(class.projectStep) }}
+      </p>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button mat-button (click)="deleteClass(class.id)">Excluir</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card [routerLink]="'/create-class'" class="class-card">
+    <mat-card-header>
+      <mat-card-title> Criar nova turma </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <a class="add-class-icon">+</a>
+    </mat-card-content>
+  </mat-card>
 </div>
