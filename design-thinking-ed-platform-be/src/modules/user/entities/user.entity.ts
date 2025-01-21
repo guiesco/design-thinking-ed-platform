@@ -19,8 +19,8 @@ export class UserEntity {
   userType: string;
 
   @OneToMany(() => ClassEntity, (classEntity) => classEntity.professor)
-  classesProfessor: ClassEntity[];
+  professorClasses: ClassEntity[];
 
   @ManyToOne(() => ClassEntity, (ClassEntity) => ClassEntity.students)
-  classStudent: ClassEntity;
+  studentClass: ClassEntity;
 }

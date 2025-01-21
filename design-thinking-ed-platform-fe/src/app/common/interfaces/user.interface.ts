@@ -13,5 +13,5 @@ export interface IUser extends ILoginData {
 
 export interface IRegisterData extends ILoginData {
   name: string | null;
-  classStudent?: Partial<IClass>;
+  studentClass?: Partial<IClass>;
 }

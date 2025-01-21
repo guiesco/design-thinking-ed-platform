@@ -26,6 +26,6 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    this.userFacade.register({ ...this.registerForm.getRawValue(), classStudent: { id: this.classId } });
+    this.userFacade.register({ ...this.registerForm.getRawValue(), studentClass: { id: this.classId } });
   }
 }

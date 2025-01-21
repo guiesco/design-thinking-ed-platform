@@ -19,9 +19,9 @@ export class ClassEntity {
   @Column({ type: 'enum', enum: ProjectSteps })
   projectStep: ProjectSteps;
 
-  @ManyToOne(() => UserEntity, (user) => user.classesProfessor)
+  @ManyToOne(() => UserEntity, (user) => user.professorClasses)
   professor: UserEntity;
 
-  @OneToMany(() => UserEntity, (user) => user.classStudent)
+  @OneToMany(() => UserEntity, (user) => user.studentClass)
   students: UserEntity[];
 }
