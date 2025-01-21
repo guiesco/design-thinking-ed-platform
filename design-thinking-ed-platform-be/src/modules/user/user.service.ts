@@ -16,7 +16,6 @@ export class UserService {
   ) { }
 
   create(createUserDto: CreateUserDto) {
-    createUserDto.classStudentId = +createUserDto.classStudent.id;
     return this.userRepository.save(createUserDto);
   }
 
