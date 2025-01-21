@@ -18,6 +18,7 @@ export class UserService {
   ) { }
 
   create(createUserDto: CreateUserDto) {
+    createUserDto.classStudentId = +createUserDto.classStudent.id;
     return this.userRepository.save(createUserDto);
   }
 
@@ -56,9 +57,5 @@ export class UserService {
     users.forEach(mail => {
       this.mailService.sendMail(mail, classId)
     });
-  }
-
-  addStudent(mail: string) {
-
   }
 }

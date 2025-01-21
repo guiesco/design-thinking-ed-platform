@@ -16,6 +16,7 @@ import { ClassStateModule } from '../stores/class-state-store/class-state.module
 import { RegisterComponent } from './register/register.component';
 import { ClassComponent } from './class/class.component';
 import { CreateClassComponent } from './create-class/create-class.component';
+import { ActivatedRouteSnapshot } from '@angular/router';
 
 const angularMaterialModules = [
   MatToolbarModule,
@@ -40,7 +41,7 @@ const importModules = [
     ...angularMaterialModules,
     ...importModules,
   ],
-  declarations: [PageWrapperComponent, LoginComponent, RegisterComponent,ClassComponent, CreateClassComponent],
+  declarations: [PageWrapperComponent, LoginComponent, RegisterComponent, ClassComponent, CreateClassComponent],
   exports: [PageWrapperComponent],
 })
-export class PagesModule {}
+export class PagesModule { }

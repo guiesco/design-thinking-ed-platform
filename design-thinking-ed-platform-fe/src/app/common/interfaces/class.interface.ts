@@ -9,5 +9,6 @@ export interface ICreateClass {
 }
 
 export interface IClass extends ICreateClass {
+  id: string;
   projectStep?: ProjectSteps | null;
 }

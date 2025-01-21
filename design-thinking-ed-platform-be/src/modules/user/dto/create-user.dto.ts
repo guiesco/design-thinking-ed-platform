@@ -37,6 +37,8 @@ export class CreateUserDto {
   //   })
   password: string;
 
-  @IsNotEmpty()
-  class: ClassEntity;
+  @IsOptional()
+  classStudent: Partial<ClassEntity>;
+
+  classStudentId: number;
 }

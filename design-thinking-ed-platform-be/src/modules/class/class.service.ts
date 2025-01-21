@@ -22,11 +22,11 @@ export class ClassService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} class`;
+    return this.classRepository.findOne({ where: { id } });
   }
 
   update(id: number, updateClassDto: UpdateClassDto) {
-    return `This action updates a #${id} class`;
+    return this.classRepository.update(id, updateClassDto)
   }
 
   remove(id: number) {
@@ -43,25 +43,9 @@ export class ClassService {
     });
   }
 
-  findByStudentMail(mail: string) {
-    return this.classRepository.findOne({
-      where: {
-        invitedStudents: `${mail}`
-      }
-    })
-  }
-
-  async addStudent(mail: string, user: CreateUserDto) {
-    const classToEdit = this.findByStudentMail(mail);
-    user.class = await classToEdit
-    for (let i = 0; i < (await classToEdit).invitedStudents.length; i++) {
-      const studentEmail = (await classToEdit).invitedStudents[i];
-      if (studentEmail === mail) {
-        (await classToEdit).invitedStudents.slice(i, 1);
-        (await classToEdit).students.push()
-      }
-
-    }
-
+  async removeStudentMail(user: CreateUserDto) {
+    const classToEdit = await this.findOne(user.classStudent.id);
+    classToEdit.invitedStudents = classToEdit.invitedStudents.filter(studentMail => user.email !== studentMail)
+    this.update(classToEdit.id, classToEdit)
   }
 }
