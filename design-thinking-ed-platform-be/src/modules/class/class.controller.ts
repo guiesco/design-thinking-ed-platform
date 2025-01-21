@@ -12,17 +12,19 @@ import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
 import { ProjectSteps } from 'src/common/enum/project.enum';
 import { UserService } from '../user/user.service';
+import { UpdateUserDto } from '../user/dto/update-user.dto';
 
 @Controller('class')
 export class ClassController {
   constructor(private readonly classService: ClassService, private readonly userService: UserService) { }
 
   @Post()
-  create(@Body() createClassDto: CreateClassDto) {
+  async create(@Body() createClassDto: CreateClassDto): Promise<UpdateClassDto> {
     createClassDto.projectStep = ProjectSteps.EMPATHY;
     createClassDto.invitedStudents = [createClassDto.invitedStudents].flat();
-    this.userService.inviteUsers(createClassDto.invitedStudents)
-    return this.classService.create(createClassDto);
+    const createdClass = await this.classService.create(createClassDto);
+    this.userService.inviteUsers(createClassDto.invitedStudents, createdClass.id)
+    return createdClass;
   }
 
   @Get()

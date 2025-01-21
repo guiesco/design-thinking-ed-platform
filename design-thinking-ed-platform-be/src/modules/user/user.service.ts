@@ -52,9 +52,9 @@ export class UserService {
     return returnUser;
   }
 
-  inviteUsers(users: string[]) {
+  inviteUsers(users: string[], classId: number) {
     users.forEach(mail => {
-      this.mailService.sendMail(mail)
+      this.mailService.sendMail(mail, classId)
     });
   }
 
