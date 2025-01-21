@@ -45,7 +45,7 @@ export class ClassService {
   }
 
   async removeStudentMail(user: CreateUserDto) {
-    const classToEdit = await this.findOne(user.classStudent.id);
+    const classToEdit = await this.findOne(user.studentClass.id);
     classToEdit.invitedStudents = classToEdit.invitedStudents.filter(studentMail => user.email !== studentMail)
     this.update(classToEdit.id, classToEdit)
   }
