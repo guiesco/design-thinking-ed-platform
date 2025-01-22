@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class ClassFacade {
-  constructor(private readonly store: Store<AppState>) {}
+  constructor(private readonly store: Store<AppState>) { }
 
   classes$: Observable<IClass[] | null> = this.store.pipe(
     select(selectors.classSelector)

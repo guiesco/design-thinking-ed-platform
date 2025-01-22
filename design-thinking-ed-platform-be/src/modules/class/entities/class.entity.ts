@@ -1,3 +1,4 @@
+import { execArgv } from 'process';
 import { ProjectSteps } from 'src/common/enum/project.enum';
 import { GroupEntity } from 'src/modules/group/entities/group.entity';
 import { UserEntity } from 'src/modules/user/entities/user.entity';
@@ -23,7 +24,7 @@ export class ClassEntity {
   @Column({ type: 'text', nullable: true, array: true })
   invitedStudents: string[];
 
-  @OneToMany(() => GroupEntity, (group) => group.class)
+  @OneToMany(() => GroupEntity, (group) => group.class, { onDelete: 'SET NULL', eager: true })
   groups: GroupEntity[];
 
   @Column({ type: 'enum', enum: ProjectSteps })

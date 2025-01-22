@@ -1,5 +1,6 @@
 import { IUser } from './user.interface';
 import { ProjectSteps } from '../enum/class.enum';
+import { IGroup } from './group.interface';
 
 export interface IFindClass extends Partial<IClass> {
   skip: number;
@@ -16,4 +17,5 @@ export interface ICreateClass {
 export interface IClass extends ICreateClass {
   id: number;
   projectStep?: ProjectSteps | null;
+  groups: IGroup[] | null
 }
