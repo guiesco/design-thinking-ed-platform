@@ -37,7 +37,6 @@ export class ClassFacade {
   }
 
   private find(query: IFindClass) {
-    console.log("🚀 ~ ClassFacade ~ find ~ query:", query)
     this.store.dispatch(actions.find(query));
   }
 
