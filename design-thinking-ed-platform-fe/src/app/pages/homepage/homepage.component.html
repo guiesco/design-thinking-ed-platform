@@ -7,6 +7,51 @@
 </div>
 
 <ng-template #studentHome class="component-container student-home">
-  <h1>Essa é a home do aluno</h1>
-  <p>Aqui voce pode ver.....</p>
+  <div class="choose-group" *ngIf="step === 'chooseGroup'">
+    <div class="class-grid">
+      <mat-card
+        *ngFor="let group of groupFacade.groups$ | async"
+        class="class-card space-between"
+      >
+        <mat-card-header>
+          <mat-card-title>
+            {{ group.groupName }}
+          </mat-card-title>
+          <mat-card-subtitle>{{ "project name" }}</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <p>
+            <label>Alunos Participantes: </label>
+            <mat-list role="list">
+              <mat-list-item
+                role="listitem"
+                *ngFor="let student of group.students"
+              >
+                {{ student.name }}
+              </mat-list-item>
+            </mat-list>
+          </p>
+        </mat-card-content>
+
+        <mat-card-actions align="end">
+          <button mat-button (click)="joinGroup(group.id)">Juntar-se</button>
+        </mat-card-actions>
+      </mat-card>
+
+      <mat-card (click)="openCreateGroupDialog()" class="class-card">
+        <mat-card-header>
+          <mat-card-title> Criar novo grupo </mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <a class="add-class-icon">+</a>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="choose-group" *ngIf="step === 'showProject'">
+    Esse é o seu projeto
+  </div>
 </ng-template>

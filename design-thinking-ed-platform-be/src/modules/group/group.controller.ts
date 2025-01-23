@@ -12,6 +12,7 @@ import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { ClassEntity } from '../class/entities/class.entity';
 import { UserService } from '../user/user.service';
+import { FindGroupDto } from './dto/find-class.dto';
 
 @Controller('Group')
 export class GroupController {
@@ -21,10 +22,8 @@ export class GroupController {
   ) {}
 
   @Post()
-  create(@Body() createGroupDto: CreateGroupDto) {
-    createGroupDto.className = ClassEntity.name;
-    createGroupDto.students = [createGroupDto.students].flat();
-    return this.groupService.create(createGroupDto);
+  create(@Body() createDto: CreateGroupDto) {
+    return this.groupService.create(createDto);
   }
 
   @Get()
@@ -45,5 +44,11 @@ export class GroupController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.groupService.remove(+id);
+  }
+
+  @Post('find')
+  find(@Body() findGroupDto: FindGroupDto) {
+    const { take, skip, ...query } = findGroupDto;
+    return this.groupService.find(query as any, take, skip);
   }
 }

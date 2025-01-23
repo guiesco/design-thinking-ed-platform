@@ -25,12 +25,21 @@ export class UserEntity {
   @Column({ type: 'enum', enum: ['student', 'professor'] })
   userType: string;
 
-  @OneToMany(() => ClassEntity, (classEntity) => classEntity.professor, { onDelete: 'SET NULL' })
+  @OneToMany(() => ClassEntity, (classEntity) => classEntity.professor, {
+    onDelete: 'SET NULL',
+    eager: true,
+  })
   professorClasses: ClassEntity[];
 
-  @ManyToOne(() => ClassEntity, (ClassEntity) => ClassEntity.students, { onDelete: 'SET NULL' })
+  @ManyToOne(() => ClassEntity, (ClassEntity) => ClassEntity.students, {
+    onDelete: 'SET NULL',
+    eager: true,
+  })
   studentClass: ClassEntity;
 
-  @ManyToOne(() => GroupEntity, (groupEntity) => groupEntity.students, { onDelete: 'SET NULL' })
-  groups: GroupEntity;
+  @ManyToOne(() => GroupEntity, (groupEntity) => groupEntity.students, {
+    onDelete: 'SET NULL',
+    eager: true,
+  })
+  group: GroupEntity;
 }

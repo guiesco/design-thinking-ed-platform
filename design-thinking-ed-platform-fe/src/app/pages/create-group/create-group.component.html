@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>Criar um Grupo</h2>
+<mat-dialog-content>
+  <div class="create-group-container">
+    <form [formGroup]="createForm">
+      <mat-form-field class="field-container">
+        <mat-label for="className">Nome do Grupo:</mat-label>
+        <input
+          matInput
+          type="text"
+          name="groupName"
+          class="create-group-input"
+          formControlName="groupName"
+          required
+        />
+      </mat-form-field>
+    </form>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions class="buttons-container">
+  <button mat-button mat-dialog-close>Fechar</button>
+  <button
+    mat-raised-button
+    color="primary"
+    class="submit-button"
+    (click)="create()"
+    [disabled]="createForm.status === 'INVALID'"
+  >
+    Create
+  </button>
+</mat-dialog-actions>

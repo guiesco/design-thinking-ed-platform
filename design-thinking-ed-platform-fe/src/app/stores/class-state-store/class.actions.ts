@@ -6,22 +6,22 @@ import {
   IFindClass,
 } from 'src/app/common/interfaces/class.interface';
 
-export const createClass = createAction(
+export const create = createAction(
   '[Class] create',
   (payload: ICreateClass) => ({
     payload,
   })
 );
 
-export const createClassSuccess = createAction(
-  '[Class] createClassSuccess',
+export const createSuccess = createAction(
+  '[Class] createSuccess',
   (payload: IClass) => ({
     payload,
   })
 );
 
-export const createClassError = createAction(
-  '[Class] createClassError',
+export const createError = createAction(
+  '[Class] createError',
   (payload: HttpErrorResponse) => ({
     payload,
   })
@@ -63,14 +63,14 @@ export const findError = createAction(
 
 export const deleteClass = createAction(
   '[Class] deleteClass',
-  (id: number) => ({
+  (id: string) => ({
     id,
   })
 );
 
 export const deleteClassSuccess = createAction(
   '[Class] deleteClassSuccess',
-  (id: number) => ({
+  (id: string) => ({
     id,
   })
 );

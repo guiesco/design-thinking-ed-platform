@@ -8,6 +8,7 @@ import { CreateClassComponent } from './create-class/create-class.component';
 import { hasRoleGuard } from '../common/guards/has-role.guard';
 import { UserTypeEnum } from '../common/enum/user.enum';
 import { HomepageComponent } from './homepage/homepage.component';
+import { CreateGroupDialogComponent } from './create-group/create-group.component';
 
 const pagesRoutes: Routes = [
   {
@@ -48,6 +49,15 @@ const pagesRoutes: Routes = [
         canActivate: [hasRoleGuard],
         data: {
           roles: [UserTypeEnum.PROFESSOR],
+          redirectPath: 'home',
+        },
+      },
+      {
+        path: 'create-group',
+        component: CreateGroupDialogComponent,
+        canActivate: [hasRoleGuard],
+        data: {
+          roles: [UserTypeEnum.PROFESSOR, UserTypeEnum.STUDENT],
           redirectPath: 'home',
         },
       },

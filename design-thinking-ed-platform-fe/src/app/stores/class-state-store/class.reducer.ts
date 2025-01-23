@@ -31,7 +31,7 @@ export const classReducerFn = createReducer(
     classes: state?.classes?.filter((cls) => cls.id !== id) || [],
   })),
 
-  on(actions.createClassSuccess, (state, { payload }) => ({
+  on(actions.createSuccess, (state, { payload }) => ({
     ...state,
     classes: [...state.classes, payload],
   }))

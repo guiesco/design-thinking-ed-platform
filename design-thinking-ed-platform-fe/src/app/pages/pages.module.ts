@@ -19,6 +19,9 @@ import { RegisterComponent } from './register/register.component';
 import { ClassComponent } from './class/class.component';
 import { CreateClassComponent } from './create-class/create-class.component';
 import { HomepageComponent } from './homepage/homepage.component';
+import { GroupStateModule } from '../stores/group-state-store/group-state.module';
+import { CreateGroupDialogComponent } from './create-group/create-group.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const angularMaterialModules = [
   MatToolbarModule,
@@ -29,6 +32,7 @@ const angularMaterialModules = [
   MatInputModule,
   MatCheckboxModule,
   MatCardModule,
+  MatDialogModule,
   // BrowserAnimationsModule,
 ];
 
@@ -37,6 +41,7 @@ const importModules = [
   ReactiveFormsModule,
   UserStateModule,
   ClassStateModule,
+  GroupStateModule,
 ];
 
 @NgModule({
@@ -53,7 +58,8 @@ const importModules = [
     ClassComponent,
     CreateClassComponent,
     HomepageComponent,
+    CreateGroupDialogComponent,
   ],
   exports: [PageWrapperComponent],
 })
-export class PagesModule { }
+export class PagesModule {}

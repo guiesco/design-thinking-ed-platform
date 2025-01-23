@@ -1,5 +1,5 @@
 <div class="create-class-container">
-  <form [formGroup]="createClassForm" (ngSubmit)="createClass()">
+  <form [formGroup]="createForm" (ngSubmit)="create()">
     <h1>Criar uma turma</h1>
 
     <mat-form-field class="field-container">
@@ -43,7 +43,7 @@
       color="primary"
       class="submit-button"
       type="submit"
-      [disabled]="createClassForm.status === 'INVALID'"
+      [disabled]="createForm.status === 'INVALID'"
     >
       Create
     </button>

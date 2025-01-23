@@ -14,9 +14,7 @@ import { Observable } from 'rxjs';
 export class UserFacade {
   constructor(private readonly store: Store<AppState>) {}
 
-  user$: Observable<IUser | null> = this.store.pipe(
-    select(selectors.userSelector)
-  );
+  user$: Observable<IUser> = this.store.pipe(select(selectors.userSelector));
 
   login(payload: ILoginData) {
     this.store.dispatch(actions.login(payload));
@@ -24,5 +22,13 @@ export class UserFacade {
 
   register(payload: IRegisterData) {
     this.store.dispatch(actions.register(payload));
+  }
+
+  joinGroup(userId: string, groupId: string) {
+    this.update(userId, { group: { id: groupId } });
+  }
+
+  private update(userId: string, user: Partial<IUser>) {
+    this.store.dispatch(actions.update(userId, user));
   }
 }

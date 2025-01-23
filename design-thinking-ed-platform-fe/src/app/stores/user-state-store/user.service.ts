@@ -19,4 +19,8 @@ export class UserService {
   register(registerParams: IRegisterData): Observable<IUser> {
     return this.http.post<IUser>(this.api + '/user', registerParams);
   }
+
+  update(id: string, user: Partial<IUser>) {
+    return this.http.patch<IUser>(this.api + '/user/' + id, user);
+  }
 }

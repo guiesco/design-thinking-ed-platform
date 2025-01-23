@@ -1,0 +1,30 @@
+.create-group-container {
+    form {
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    .field-container {
+        min-width: 42%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 5px;
+    }
+
+    .submit-button {
+        margin: 10px;
+    }
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: space-between;
+}

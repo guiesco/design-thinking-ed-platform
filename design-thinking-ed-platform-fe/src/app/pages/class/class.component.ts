@@ -11,7 +11,7 @@ import { UserFacade } from 'src/app/stores/user-state-store/user.facade';
   styleUrls: ['./class.component.scss'],
 })
 export class ClassComponent implements OnInit {
-  userId!: number;
+  userId!: string;
   classes$ = this.classFacade.classes$;
   pageConfig: { skip: number; take: number } = { skip: 0, take: 10 };
 
@@ -45,7 +45,7 @@ export class ClassComponent implements OnInit {
     return ProjectSteps[projectStep];
   }
 
-  deleteClass(id: number) {
+  deleteClass(id: string) {
     this.classFacade.deleteClass(id);
   }
 }

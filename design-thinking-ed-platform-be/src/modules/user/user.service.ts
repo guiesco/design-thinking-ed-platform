@@ -13,7 +13,7 @@ export class UserService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     private readonly mailService: MailService,
-  ) { }
+  ) {}
 
   create(createUserDto: CreateUserDto) {
     return this.userRepository.save(createUserDto);
@@ -28,7 +28,7 @@ export class UserService {
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    return this.userRepository.update(id, updateUserDto);
   }
 
   remove(id: number) {
@@ -51,8 +51,8 @@ export class UserService {
   }
 
   inviteUsers(users: string[], classId: number) {
-    users.forEach(mail => {
-      this.mailService.sendMail(mail, classId)
+    users.forEach((mail) => {
+      this.mailService.sendMail(mail, classId);
     });
   }
 }

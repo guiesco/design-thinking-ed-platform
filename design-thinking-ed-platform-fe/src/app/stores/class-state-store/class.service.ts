@@ -12,8 +12,8 @@ export class ClassService {
   api = 'http://localhost:3000'; //todo: add to env
   constructor(private readonly http: HttpClient) {}
 
-  createClass(createClassParams: ICreateClass): Observable<IClass> {
-    return this.http.post<IClass>(this.api + '/class', createClassParams);
+  create(createParams: ICreateClass): Observable<IClass> {
+    return this.http.post<IClass>(this.api + '/class', createParams);
   }
 
   findAll(): Observable<IClass[]> {
@@ -24,7 +24,7 @@ export class ClassService {
     return this.http.post<IClass[]>(this.api + '/class/find', findClassDto);
   }
 
-  deleteClass(id: number) {
+  deleteClass(id: string) {
     return this.http.delete<IClass>(this.api + '/class/' + id);
   }
 }

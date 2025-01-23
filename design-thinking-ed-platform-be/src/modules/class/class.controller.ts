@@ -20,14 +20,14 @@ export class ClassController {
   constructor(
     private readonly classService: ClassService,
     private readonly userService: UserService,
-  ) { }
+  ) {}
 
   @Post()
-  async create(@Body() createClassDto: CreateClassDto): Promise<UpdateClassDto> {
-    createClassDto.projectStep = ProjectSteps.EMPATHY;
-    createClassDto.invitedStudents = [createClassDto.invitedStudents].flat();
-    const createdClass = await this.classService.create(createClassDto);
-    this.userService.inviteUsers(createClassDto.invitedStudents, createdClass.id)
+  async create(@Body() createDto: CreateClassDto): Promise<UpdateClassDto> {
+    createDto.projectStep = ProjectSteps.EMPATHY;
+    createDto.invitedStudents = [createDto.invitedStudents].flat();
+    const createdClass = await this.classService.create(createDto);
+    this.userService.inviteUsers(createDto.invitedStudents, createdClass.id);
     return createdClass;
   }
 
