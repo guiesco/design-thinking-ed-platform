@@ -12,13 +12,13 @@ export class ClassEffects {
     private readonly classService: ClassService
   ) {}
 
-  createClass$ = createEffect(() =>
+  create$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(actions.createClass),
+      ofType(actions.create),
       exhaustMap(({ payload }: { payload: ICreateClass }) =>
-        this.classService.createClass(payload).pipe(
-          map((data) => actions.createClassSuccess(data)),
-          catchError((error) => of(actions.createClassError(error)))
+        this.classService.create(payload).pipe(
+          map((data) => actions.createSuccess(data)),
+          catchError((error) => of(actions.createError(error)))
         )
       )
     )

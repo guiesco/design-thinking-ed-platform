@@ -8,7 +8,7 @@ import { UserFacade } from 'src/app/stores/user-state-store/user.facade';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  loginForm = this.fb.group({
+  loginForm = this.fb.nonNullable.group({
     email: ['', Validators.required],
     password: ['', Validators.required],
   });

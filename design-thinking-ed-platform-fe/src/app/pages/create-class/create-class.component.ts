@@ -12,7 +12,7 @@ import { UserFacade } from 'src/app/stores/user-state-store/user.facade';
   styleUrls: ['./create-class.component.scss'],
 })
 export class CreateClassComponent {
-  createClassForm = this.fb.group({
+  createForm = this.fb.nonNullable.group({
     className: ['', Validators.required],
     studentEmails: ['', Validators.required],
     semester: ['', Validators.required],
@@ -25,17 +25,16 @@ export class CreateClassComponent {
     private router: Router
   ) {}
 
-  async createClass() {
-    const createClassPayload = this.createClassForm.getRawValue();
-    const createClassDto: ICreateClass = {
-      ...createClassPayload,
+  async create() {
+    const createPayload = this.createForm.getRawValue();
+    const createDto: ICreateClass = {
+      ...createPayload,
       invitedStudents:
-        createClassPayload.studentEmails
-          ?.split(',')
-          .map((value) => value.trim()) ?? null,
-      professor: await this.userFacade.user$.pipe(take(1)).toPromise(),
+        createPayload.studentEmails?.split(',').map((value) => value.trim()) ??
+        null,
+      professor: (await this.userFacade.user$.pipe(take(1)).toPromise()) || {},
     };
-    this.classFacade.createClass(createClassDto);
+    this.classFacade.create(createDto);
     this.router.navigate(['class']);
   }
 }

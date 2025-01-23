@@ -18,12 +18,18 @@ export class GroupEntity {
   @Column({ type: 'varchar', length: 30 })
   groupName: string;
 
-  @OneToMany(() => UserEntity, (user) => user.name)
+  @OneToMany(() => UserEntity, (user) => user.group, {
+    onDelete: 'SET NULL',
+  })
   students: UserEntity[];
 
-  @ManyToOne(() => ClassEntity, (classEntity) => classEntity.groups, { onDelete: 'SET NULL' })
+  @ManyToOne(() => ClassEntity, (classEntity) => classEntity.groups, {
+    onDelete: 'SET NULL',
+  })
   class: ClassEntity;
 
-  @OneToOne(() => ProjectEntity, (projectEntity) => projectEntity.group, { onDelete: 'SET NULL' })
+  @OneToOne(() => ProjectEntity, (projectEntity) => projectEntity.group, {
+    onDelete: 'SET NULL',
+  })
   project: ProjectEntity;
 }

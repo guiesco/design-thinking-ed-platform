@@ -19,15 +19,15 @@ export class ClassFacade {
     select(selectors.classSelector)
   );
 
-  createClass(payload: ICreateClass) {
-    this.store.dispatch(actions.createClass(payload));
+  create(payload: ICreateClass) {
+    this.store.dispatch(actions.create(payload));
   }
 
   findAll() {
     this.store.dispatch(actions.findAll());
   }
 
-  loadClasses(userId: number, skip: number, take: number) {
+  loadClasses(userId: string, skip: number, take: number) {
     const findQuery: IFindClass = {
       professor: { id: userId },
       skip,
@@ -40,7 +40,7 @@ export class ClassFacade {
     this.store.dispatch(actions.find(query));
   }
 
-  deleteClass(id: number) {
+  deleteClass(id: string) {
     this.store.dispatch(actions.deleteClass(id));
   }
 }

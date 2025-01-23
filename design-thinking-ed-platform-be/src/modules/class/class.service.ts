@@ -12,10 +12,10 @@ export class ClassService {
   constructor(
     @InjectRepository(ClassEntity)
     private readonly classRepository: Repository<ClassEntity>,
-  ) { }
+  ) {}
 
-  create(createClassDto: CreateClassDto) {
-    return this.classRepository.save(createClassDto);
+  create(createDto: CreateClassDto) {
+    return this.classRepository.save(createDto);
   }
 
   findAll() {
@@ -27,7 +27,7 @@ export class ClassService {
   }
 
   update(id: number, updateClassDto: UpdateClassDto) {
-    return this.classRepository.update(id, updateClassDto)
+    return this.classRepository.update(id, updateClassDto);
   }
 
   remove(id: number) {
@@ -46,8 +46,10 @@ export class ClassService {
 
   async removeStudentMail(user: CreateUserDto) {
     const classToEdit = await this.findOne(user.studentClass.id);
-    classToEdit.invitedStudents = classToEdit.invitedStudents.filter(studentMail => user.email !== studentMail)
-    this.update(classToEdit.id, classToEdit)
+    classToEdit.invitedStudents = classToEdit.invitedStudents.filter(
+      (studentMail) => user.email !== studentMail,
+    );
+    this.update(classToEdit.id, classToEdit);
   }
 
   find(

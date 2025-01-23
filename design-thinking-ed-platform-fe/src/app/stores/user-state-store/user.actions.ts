@@ -44,3 +44,22 @@ export const registerError = createAction(
     payload,
   })
 );
+
+export const update = createAction(
+  '[User] update',
+  (userId: string, user: Partial<IUser>) => ({ userId, user })
+);
+
+export const updateSuccess = createAction(
+  '[User] updateSuccess',
+  (payload: IUser) => ({
+    payload,
+  })
+);
+
+export const updateError = createAction(
+  '[User] updateError',
+  (payload: HttpErrorResponse) => ({
+    payload,
+  })
+);

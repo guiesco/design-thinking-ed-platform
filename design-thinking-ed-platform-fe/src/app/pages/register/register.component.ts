@@ -9,23 +9,30 @@ import { UserFacade } from 'src/app/stores/user-state-store/user.facade';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
-  registerForm = this.fb.group({
+  registerForm = this.fb.nonNullable.group({
     name: ['', Validators.required],
     email: ['', Validators.required],
     password: ['', Validators.required],
   });
 
-  classId = this.activatedRoute.snapshot.queryParams['classId']
+  classId = this.activatedRoute.snapshot.queryParams['classId'];
 
-
-  constructor(readonly fb: FormBuilder, readonly userFacade: UserFacade, readonly activatedRoute: ActivatedRoute) { }
+  constructor(
+    readonly fb: FormBuilder,
+    readonly userFacade: UserFacade,
+    readonly activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    const userMail: string = this.activatedRoute.snapshot.queryParams['userEmail']
-    this.registerForm.patchValue({ email: userMail })
+    const userMail: string =
+      this.activatedRoute.snapshot.queryParams['userEmail'];
+    this.registerForm.patchValue({ email: userMail });
   }
 
   register() {
-    this.userFacade.register({ ...this.registerForm.getRawValue(), studentClass: { id: this.classId } });
+    this.userFacade.register({
+      ...this.registerForm.getRawValue(),
+      studentClass: { id: this.classId },
+    });
   }
 }

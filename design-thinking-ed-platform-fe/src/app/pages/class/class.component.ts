@@ -1,4 +1,10 @@
-import { Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { combineLatest, map, switchMap, take, tap } from 'rxjs';
 import { ProjectSteps } from 'src/app/common/enum/class.enum';
 import { IClass, IFindClass } from 'src/app/common/interfaces/class.interface';
@@ -17,14 +23,14 @@ import { __values } from 'tslib';
 })
 export class ClassComponent implements OnInit {
   readonly dialog = inject(MatDialog);
-  userId!: number;
+  userId!: string;
   classes$ = this.classFacade.classes$;
   pageConfig: { skip: number; take: number } = { skip: 0, take: 10 };
 
   constructor(
     public classFacade: ClassFacade,
     private userFacade: UserFacade
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.userFacade.user$
@@ -52,21 +58,23 @@ export class ClassComponent implements OnInit {
   }
 
   parseGroupName(groups: any) {
-    return groups.map((gp: IGroup) => gp.groupName)
+    return groups.map((gp: IGroup) => gp.groupName);
   }
 
-  deleteClass(id: number) {
+  deleteClass(id: string) {
     this.classFacade.deleteClass(id);
   }
   openDialog(classEntity: IClass) {
-    const dialogRef = this.dialog.open(ClassDialogComponent, { data: classEntity });
+    const dialogRef = this.dialog.open(ClassDialogComponent, {
+      data: classEntity,
+    });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
     });
   }
 
   logData(data: any) {
-    console.log(data.className)
+    console.log(data.className);
   }
 }

@@ -8,14 +8,14 @@ export interface IFindClass extends Partial<IClass> {
 }
 
 export interface ICreateClass {
-  className: string | null;
-  invitedStudents: string[] | null;
-  semester: string | null;
-  professor?: Partial<IUser> | null;
+  className: string;
+  invitedStudents: string[];
+  semester: string;
+  professor: Partial<IUser>;
 }
 
 export interface IClass extends ICreateClass {
-  id: number;
-  projectStep?: ProjectSteps | null;
-  groups: IGroup[] | null
+  id: string;
+  projectStep?: ProjectSteps;
+  groups: IGroup[];
 }

@@ -5,7 +5,7 @@ import { UserStoreModel } from './user.model';
 //install ngrx store
 
 export const userInitialState: UserStoreModel = {
-  user: null,
+  user: {} as IUser,
 };
 
 export const userReducerFn = createReducer(

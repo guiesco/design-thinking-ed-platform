@@ -9,9 +9,6 @@ export class CreateGroupDto {
   @IsArray()
   students: UserEntity[];
 
-  @IsString()
-  className: string;
-
   @IsObject()
   class: ClassEntity;
 }
