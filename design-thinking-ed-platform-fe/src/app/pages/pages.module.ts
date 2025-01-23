@@ -22,6 +22,7 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { GroupStateModule } from '../stores/group-state-store/group-state.module';
 import { CreateGroupDialogComponent } from './create-group/create-group.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ClassDialogComponent } from './class/class-dialog/class-dialog.component';
 
 const angularMaterialModules = [
   MatToolbarModule,
@@ -58,6 +59,7 @@ const importModules = [
     ClassComponent,
     CreateClassComponent,
     HomepageComponent,
+    ClassDialogComponent,
     CreateGroupDialogComponent,
   ],
   exports: [PageWrapperComponent],
