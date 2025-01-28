@@ -26,7 +26,6 @@ export class ClassEntity {
 
   @OneToMany(() => GroupEntity, (group) => group.class, {
     onDelete: 'SET NULL',
-    eager: true,
   })
   groups: GroupEntity[];
 
@@ -39,7 +38,7 @@ export class ClassEntity {
   professor: UserEntity;
 
   @OneToMany(() => UserEntity, (user) => user.studentClass, {
-    onDelete: 'SET NULL',
+    onDelete: 'CASCADE',
   })
   students: UserEntity[];
 }
