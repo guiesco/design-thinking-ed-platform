@@ -5,6 +5,7 @@ import { UserTypeEnum } from 'src/app/common/enum/user.enum';
 import { GroupFacade } from 'src/app/stores/group-state-store/group.facade';
 import { UserFacade } from 'src/app/stores/user-state-store/user.facade';
 import { CreateGroupDialogComponent } from '../create-group/create-group.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-homepage',
@@ -22,7 +23,8 @@ export class HomepageComponent implements OnInit {
 
   constructor(
     readonly userFacade: UserFacade,
-    readonly groupFacade: GroupFacade
+    readonly groupFacade: GroupFacade,
+    readonly router: Router
   ) {}
 
   ngOnInit(): void {
@@ -35,7 +37,9 @@ export class HomepageComponent implements OnInit {
     });
   }
 
-  loadProfessorHome() {}
+  loadProfessorHome() {
+    this.router.navigate(['class']);
+  }
 
   loadStudentHome() {
     this.userFacade.user$.pipe(take(1)).subscribe((user) => {
@@ -45,13 +49,11 @@ export class HomepageComponent implements OnInit {
         this.groupFacade.loadGroups(this.classId, 0, 10);
         this.step = 'chooseGroup';
       } else {
-        this.groupFacade.loadGroups(this.classId, 0, 10);
-        this.step = 'chooseGroup';
+        this.step = 'showProject';
       }
     });
   }
 
-  //Actions
   openCreateGroupDialog() {
     const dialogRef = this.dialog.open(CreateGroupDialogComponent);
 
