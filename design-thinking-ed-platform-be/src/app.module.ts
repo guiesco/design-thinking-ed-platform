@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClassModule } from './modules/class/class.module';
 import { GroupModule } from './modules/group/group.module';
 import { ProjectModule } from './modules/project/project.module';
+import { EmpathyMapModule } from './modules/empathy-map/empathy-map.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ProjectModule } from './modules/project/project.module';
     ClassModule,
     GroupModule,
     ProjectModule,
+    EmpathyMapModule,
   ],
   controllers: [AppController],
   providers: [AppService],

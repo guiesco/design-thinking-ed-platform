@@ -5,16 +5,28 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { GroupEntity } from './entities/group.entity';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { extractRelations } from 'src/common/utils/extractRelations';
+import { ProjectService } from '../project/project.service';
+import { CreateProjectDto } from '../project/dto/create-project.dto';
 
 @Injectable()
 export class GroupService {
   constructor(
     @InjectRepository(GroupEntity)
     private readonly groupRepository: Repository<GroupEntity>,
+    private readonly projectService: ProjectService,
   ) {}
 
-  create(createDto: CreateGroupDto) {
-    return this.groupRepository.save(createDto);
+  async create(createDto: CreateGroupDto): Promise<GroupEntity> {
+    const group = await this.groupRepository.save(createDto);
+
+    // Criar projeto para o grupo
+    const createProjectDto: CreateProjectDto = {
+      groupId: group.id,
+    };
+
+    await this.projectService.create(createProjectDto);
+
+    return group;
   }
 
   findAll() {
@@ -22,7 +34,10 @@ export class GroupService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} group`;
+    return this.groupRepository.findOne({
+      where: { id },
+      relations: ['project'],
+    });
   }
 
   update(id: number, updateGroupDto: UpdateGroupDto) {
@@ -30,7 +45,7 @@ export class GroupService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} group`;
+    return this.groupRepository.delete(id);
   }
 
   find(

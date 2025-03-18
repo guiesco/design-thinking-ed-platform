@@ -1,0 +1,154 @@
+<div class="empathy-step-container">
+  <div class="empathy-step-header">
+    <h2>Etapa de Empatia</h2>
+    <p class="description">
+      Nesta etapa, cada membro do grupo deve criar seu próprio mapa de empatia.
+      Depois, todos os membros devem votar nas melhores respostas e selecionar
+      quais farão parte do mapa final do grupo.
+    </p>
+  </div>
+
+  <div class="empathy-step-content">
+    <!-- Formulário para criar novo mapa de empatia -->
+    <mat-card class="empathy-form-card">
+      <mat-card-header>
+        <mat-card-title>Criar Mapa de Empatia</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form (ngSubmit)="onSubmit()" #empathyForm="ngForm">
+          <div class="form-grid">
+            <mat-form-field appearance="outline">
+              <mat-label>O que pensa e sente?</mat-label>
+              <textarea
+                matInput
+                [(ngModel)]="newEntry.think"
+                name="think"
+                required
+                placeholder="Quais são as principais preocupações, aspirações e sentimentos?"
+              ></textarea>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>O que vê?</mat-label>
+              <textarea
+                matInput
+                [(ngModel)]="newEntry.feel"
+                name="feel"
+                required
+                placeholder="Como é o ambiente? Quais são as ofertas do mercado?"
+              ></textarea>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>O que ouve?</mat-label>
+              <textarea
+                matInput
+                [(ngModel)]="newEntry.say"
+                name="say"
+                required
+                placeholder="O que os amigos dizem? O que o chefe diz? O que os influenciadores dizem?"
+              ></textarea>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>O que faz?</mat-label>
+              <textarea
+                matInput
+                [(ngModel)]="newEntry.do"
+                name="do"
+                required
+                placeholder="Qual sua atitude em público? Como se comporta? Qual sua aparência?"
+              ></textarea>
+            </mat-form-field>
+          </div>
+
+          <div class="form-actions">
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="!empathyForm.form.valid"
+            >
+              Criar Mapa
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Lista de mapas de empatia -->
+    <div class="empathy-maps-list">
+      <h3>Mapas de Empatia do Grupo</h3>
+
+      <div *ngIf="loading$ | async" class="loading-spinner">
+        <mat-spinner></mat-spinner>
+      </div>
+
+      <div *ngIf="error$ | async as error" class="error-message">
+        {{ error }}
+      </div>
+
+      <div class="empathy-maps-grid">
+        <mat-card
+          *ngFor="let entry of entries$ | async"
+          class="empathy-map-card"
+          [class.selected]="entry.isSelected"
+        >
+          <mat-card-header>
+            <mat-card-subtitle>
+              Criado por: {{ entry.user?.name }}
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="empathy-map-quadrants">
+              <div class="quadrant">
+                <h4>Pensa e Sente</h4>
+                <p>{{ entry.think }}</p>
+              </div>
+              <div class="quadrant">
+                <h4>Vê</h4>
+                <p>{{ entry.feel }}</p>
+              </div>
+              <div class="quadrant">
+                <h4>Ouve</h4>
+                <p>{{ entry.say }}</p>
+              </div>
+              <div class="quadrant">
+                <h4>Faz</h4>
+                <p>{{ entry.do }}</p>
+              </div>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="onUpvote(entry.id)"
+              [disabled]="isCurrentUser$(entry.userId) | async"
+            >
+              <mat-icon>thumb_up</mat-icon>
+              <span>{{ entry.upvotes }}</span>
+            </button>
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="onDownvote(entry.id)"
+              [disabled]="isCurrentUser$(entry.userId) | async"
+            >
+              <mat-icon>thumb_down</mat-icon>
+              <span>{{ entry.downvotes }}</span>
+            </button>
+            <button
+              mat-icon-button
+              [color]="entry.isSelected ? 'accent' : ''"
+              (click)="onToggleSelection(entry.id)"
+              [disabled]="isCurrentUser$(entry.userId) | async"
+            >
+              <mat-icon>check_circle</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

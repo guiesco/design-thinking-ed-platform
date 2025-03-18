@@ -78,3 +78,4 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 **/postgres
+.qodo

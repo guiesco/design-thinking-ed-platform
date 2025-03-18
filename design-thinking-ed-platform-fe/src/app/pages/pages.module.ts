@@ -3,12 +3,17 @@ import { CommonModule } from '@angular/common';
 import { PageWrapperComponent } from './page-wrapper/page-wrapper.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { PagesRoutingModule } from './pages-routing.module';
 import { LoginComponent } from './login/login.component';
@@ -23,7 +28,10 @@ import { GroupStateModule } from '../stores/group-state-store/group-state.module
 import { CreateGroupDialogComponent } from './create-group/create-group.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ClassDialogComponent } from './class/class-dialog/class-dialog.component';
-
+import { ProjectComponent } from './project/project.component';
+import { MatOptionModule } from '@angular/material/core';
+import { EmpathyStepComponent } from './project/components/empathy-step/empathy-step.component';
+import { EmpathyMapStateModule } from '../stores/empathy-map-store/empathy-map.module';
 const angularMaterialModules = [
   MatToolbarModule,
   MatSidenavModule,
@@ -34,7 +42,12 @@ const angularMaterialModules = [
   MatCheckboxModule,
   MatCardModule,
   MatDialogModule,
-  // BrowserAnimationsModule,
+  MatOptionModule,
+  MatProgressSpinnerModule,
+  MatGridListModule,
+  MatFormFieldModule,
+  MatSelectModule,
+  MatSnackBarModule,
 ];
 
 const importModules = [
@@ -43,6 +56,7 @@ const importModules = [
   UserStateModule,
   ClassStateModule,
   GroupStateModule,
+  EmpathyMapStateModule,
 ];
 
 @NgModule({
@@ -61,6 +75,8 @@ const importModules = [
     HomepageComponent,
     ClassDialogComponent,
     CreateGroupDialogComponent,
+    ProjectComponent,
+    EmpathyStepComponent,
   ],
   exports: [PageWrapperComponent],
 })

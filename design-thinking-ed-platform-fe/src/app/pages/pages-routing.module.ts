@@ -9,6 +9,8 @@ import { hasRoleGuard } from '../common/guards/has-role.guard';
 import { UserTypeEnum } from '../common/enum/user.enum';
 import { HomepageComponent } from './homepage/homepage.component';
 import { CreateGroupDialogComponent } from './create-group/create-group.component';
+import { EmpathyStepComponent } from './project/components/empathy-step/empathy-step.component';
+import { ProjectComponent } from './project/project.component';
 
 const pagesRoutes: Routes = [
   {
@@ -60,6 +62,21 @@ const pagesRoutes: Routes = [
           roles: [UserTypeEnum.PROFESSOR, UserTypeEnum.STUDENT],
           redirectPath: 'home',
         },
+      },
+      {
+        path: 'project/:projectId',
+        component: ProjectComponent,
+        children: [
+          {
+            path: 'empathy',
+            component: EmpathyStepComponent,
+          },
+          {
+            path: '',
+            redirectTo: 'empathy',
+            pathMatch: 'full',
+          },
+        ],
       },
     ],
   },

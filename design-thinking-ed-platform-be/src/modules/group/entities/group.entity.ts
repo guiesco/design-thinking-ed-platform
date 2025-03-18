@@ -8,6 +8,9 @@ import {
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
+  ManyToMany,
+  JoinTable,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity()
@@ -32,4 +35,8 @@ export class GroupEntity {
     onDelete: 'SET NULL',
   })
   project: ProjectEntity;
+
+  @ManyToMany(() => UserEntity)
+  @JoinTable()
+  users: UserEntity[];
 }

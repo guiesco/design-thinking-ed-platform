@@ -46,7 +46,7 @@ export class HomepageComponent implements OnInit {
       this.userId = user.id.toString();
       this.classId = user.studentClass.id;
       if (!user?.group) {
-        this.groupFacade.loadGroups(this.classId, 0, 10);
+        this.groupFacade.loadGroups(this.classId, 0, 999999);
         this.step = 'chooseGroup';
       } else {
         this.step = 'showProject';

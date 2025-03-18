@@ -1,0 +1,16 @@
+<div class="project-container">
+  <div class="project-header">
+    <h1>Projeto {{ projectId }}</h1>
+    <div class="step-indicator">
+      <span [class.active]="currentStep === 'empathy'">Empatia</span>
+      <span [class.active]="currentStep === 'define'">Definição</span>
+      <span [class.active]="currentStep === 'ideate'">Ideação</span>
+      <span [class.active]="currentStep === 'prototype'">Protótipo</span>
+      <span [class.active]="currentStep === 'test'">Teste</span>
+    </div>
+  </div>
+
+  <div class="project-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>
