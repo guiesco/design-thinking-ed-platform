@@ -8,6 +8,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { HttpClientModule } from '@angular/common/http';
+import { UserStateModule } from './stores/user-state-store/user-state.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,8 +16,9 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserModule,
     AppRoutingModule,
     StoreModule.forRoot({}),
-    EffectsModule.forRoot({}),
+    EffectsModule.forRoot([]),
     HttpClientModule,
+    UserStateModule,
   ],
   providers: [provideAnimations()],
   bootstrap: [AppComponent],

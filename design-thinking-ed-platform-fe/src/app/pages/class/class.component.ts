@@ -37,7 +37,7 @@ export class ClassComponent implements OnInit {
       .pipe(
         take(1),
         tap((user) => {
-          this.userId = user?.id ?? 0;
+          this.userId = user?.id ?? '0';
           this.fetchData();
         })
       )

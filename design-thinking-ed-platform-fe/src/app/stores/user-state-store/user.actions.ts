@@ -1,65 +1,68 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { createAction } from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
 import {
   ILoginData,
   IRegisterData,
   IUser,
 } from 'src/app/common/interfaces/user.interface';
 
-export const login = createAction('[User] login', (payload: ILoginData) => ({
-  payload,
-}));
+// Login Actions
+export const login = createAction(
+  '[User] Login',
+  props<{ loginData: ILoginData }>()
+);
 
 export const loginSuccess = createAction(
-  '[User] loginSuccess',
-  (payload: IUser[]) => ({
-    payload,
-  })
+  '[User] Login Success',
+  props<{ user: IUser }>()
 );
 
-export const loginError = createAction(
-  '[User] loginError',
-  (payload: HttpErrorResponse) => ({
-    payload,
-  })
+export const loginFailure = createAction(
+  '[User] Login Failure',
+  props<{ error: string }>()
 );
 
+// Register Actions
 export const register = createAction(
-  '[User] register',
-  (payload: IRegisterData) => ({
-    payload,
-  })
+  '[User] Register',
+  props<{ registerData: IRegisterData }>()
 );
 
 export const registerSuccess = createAction(
-  '[User] registerSuccess',
-  (payload: IUser) => ({
-    payload,
-  })
+  '[User] Register Success',
+  props<{ user: IUser }>()
 );
 
-export const registerError = createAction(
-  '[User] registerError',
-  (payload: HttpErrorResponse) => ({
-    payload,
-  })
+export const registerFailure = createAction(
+  '[User] Register Failure',
+  props<{ error: string }>()
 );
 
+// Update Actions
 export const update = createAction(
-  '[User] update',
-  (userId: string, user: Partial<IUser>) => ({ userId, user })
+  '[User] Update',
+  props<{ id: string; user: Partial<IUser> }>()
 );
 
 export const updateSuccess = createAction(
-  '[User] updateSuccess',
-  (payload: IUser) => ({
-    payload,
-  })
+  '[User] Update Success',
+  props<{ user: IUser }>()
 );
 
-export const updateError = createAction(
-  '[User] updateError',
-  (payload: HttpErrorResponse) => ({
-    payload,
-  })
+export const updateFailure = createAction(
+  '[User] Update Failure',
+  props<{ error: string }>()
 );
+
+// Load User from Storage Actions
+export const loadUserFromStorage = createAction(
+  '[User] Load User from Storage'
+);
+
+export const loadUserFromStorageSuccess = createAction(
+  '[User] Load User from Storage Success',
+  props<{ user: IUser }>()
+);
+
+// Logout Action
+export const logout = createAction('[User] Logout');

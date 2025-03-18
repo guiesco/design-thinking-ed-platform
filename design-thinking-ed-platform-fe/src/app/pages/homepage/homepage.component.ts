@@ -43,8 +43,8 @@ export class HomepageComponent implements OnInit {
 
   loadStudentHome() {
     this.userFacade.user$.pipe(take(1)).subscribe((user) => {
-      this.userId = user.id.toString();
-      this.classId = user.studentClass.id;
+      this.userId = user?.id?.toString() ?? '0';
+      this.classId = user?.studentClass?.id?.toString() ?? '0';
       if (!user?.group) {
         this.groupFacade.loadGroups(this.classId, 0, 999999);
         this.step = 'chooseGroup';

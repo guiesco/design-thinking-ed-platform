@@ -1,28 +1,78 @@
-import { Action, createReducer, on } from '@ngrx/store';
-import * as actions from './user.actions';
+import { createReducer, on } from '@ngrx/store';
 import { IUser } from 'src/app/common/interfaces/user.interface';
-import { UserStoreModel } from './user.model';
-//install ngrx store
+import * as UserActions from './user.actions';
 
-export const userInitialState: UserStoreModel = {
-  user: {} as IUser,
+export interface UserState {
+  user: IUser | null;
+  loading: boolean;
+  error: string | null;
+}
+
+export const initialState: UserState = {
+  user: null,
+  loading: false,
+  error: null,
 };
 
-export const userReducerFn = createReducer(
-  userInitialState,
+export const userReducer = createReducer(
+  initialState,
+  // Login
+  on(UserActions.login, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(UserActions.loginSuccess, (state, { user }) => ({
+    ...state,
+    user,
+    loading: false,
+  })),
+  on(UserActions.loginFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false,
+  })),
 
-  on(
-    actions.loginSuccess,
-    (state: UserStoreModel, { payload }: { payload: IUser[] }) => ({
-      ...state,
-      user: payload[0],
-    })
-  )
+  // Register
+  on(UserActions.register, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(UserActions.registerSuccess, (state, { user }) => ({
+    ...state,
+    user,
+    loading: false,
+  })),
+  on(UserActions.registerFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false,
+  })),
+
+  // Update
+  on(UserActions.update, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(UserActions.updateSuccess, (state, { user }) => ({
+    ...state,
+    user,
+    loading: false,
+  })),
+  on(UserActions.updateFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false,
+  })),
+
+  // Load from Storage
+  on(UserActions.loadUserFromStorageSuccess, (state, { user }) => ({
+    ...state,
+    user,
+  })),
+
+  // Logout
+  on(UserActions.logout, () => initialState)
 );
-
-export function userReducer(
-  state: UserStoreModel,
-  action: Action
-): UserStoreModel {
-  return userReducerFn(state, action);
-}
