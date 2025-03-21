@@ -2,6 +2,8 @@ import { createAction, props } from '@ngrx/store';
 import {
   EmpathyMapEntry,
   CreateEmpathyMapDto,
+  EmpathyMapResponse,
+  CreateEmpathyMapResponseDto,
 } from 'src/app/stores/empathy-map-store/empathy-map.service';
 
 export const loadEmpathyMaps = createAction(
@@ -106,5 +108,96 @@ export const toggleEmpathyMapSelectionSuccess = createAction(
 
 export const toggleEmpathyMapSelectionFailure = createAction(
   '[EmpathyMap] Toggle Empathy Map Selection Failure',
+  props<{ error: any }>()
+);
+
+// Novas actions para respostas
+export const createResponse = createAction(
+  '[EmpathyMap] Create Response',
+  props<{ response: CreateEmpathyMapResponseDto }>()
+);
+
+export const createResponseSuccess = createAction(
+  '[EmpathyMap] Create Response Success',
+  props<{ response: EmpathyMapResponse }>()
+);
+
+export const createResponseFailure = createAction(
+  '[EmpathyMap] Create Response Failure',
+  props<{ error: any }>()
+);
+
+export const loadResponses = createAction(
+  '[EmpathyMap] Load Responses',
+  props<{ projectId: number }>()
+);
+
+export const loadResponsesSuccess = createAction(
+  '[EmpathyMap] Load Responses Success',
+  props<{ responses: EmpathyMapResponse[] }>()
+);
+
+export const loadResponsesFailure = createAction(
+  '[EmpathyMap] Load Responses Failure',
+  props<{ error: any }>()
+);
+
+export const deleteResponse = createAction(
+  '[EmpathyMap] Delete Response',
+  props<{ id: number; userId: number }>()
+);
+
+export const deleteResponseSuccess = createAction(
+  '[EmpathyMap] Delete Response Success',
+  props<{ id: number }>()
+);
+
+export const deleteResponseFailure = createAction(
+  '[EmpathyMap] Delete Response Failure',
+  props<{ error: any }>()
+);
+
+export const upvoteResponse = createAction(
+  '[EmpathyMap] Upvote Response',
+  props<{ responseId: number }>()
+);
+
+export const upvoteResponseSuccess = createAction(
+  '[EmpathyMap] Upvote Response Success',
+  props<{ response: EmpathyMapResponse }>()
+);
+
+export const upvoteResponseFailure = createAction(
+  '[EmpathyMap] Upvote Response Failure',
+  props<{ error: any }>()
+);
+
+export const downvoteResponse = createAction(
+  '[EmpathyMap] Downvote Response',
+  props<{ responseId: number }>()
+);
+
+export const downvoteResponseSuccess = createAction(
+  '[EmpathyMap] Downvote Response Success',
+  props<{ response: EmpathyMapResponse }>()
+);
+
+export const downvoteResponseFailure = createAction(
+  '[EmpathyMap] Downvote Response Failure',
+  props<{ error: any }>()
+);
+
+export const toggleResponseSelection = createAction(
+  '[EmpathyMap] Toggle Response Selection',
+  props<{ responseId: number }>()
+);
+
+export const toggleResponseSelectionSuccess = createAction(
+  '[EmpathyMap] Toggle Response Selection Success',
+  props<{ response: EmpathyMapResponse }>()
+);
+
+export const toggleResponseSelectionFailure = createAction(
+  '[EmpathyMap] Toggle Response Selection Failure',
   props<{ error: any }>()
 );

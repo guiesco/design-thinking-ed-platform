@@ -14,6 +14,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTableModule } from '@angular/material/table';
 
 import { PagesRoutingModule } from './pages-routing.module';
 import { LoginComponent } from './login/login.component';
@@ -48,6 +49,7 @@ const angularMaterialModules = [
   MatFormFieldModule,
   MatSelectModule,
   MatSnackBarModule,
+  MatTableModule,
 ];
 
 const importModules = [

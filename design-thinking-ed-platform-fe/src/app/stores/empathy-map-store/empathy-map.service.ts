@@ -4,12 +4,37 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { IUser } from '../../common/interfaces/user.interface';
 
+export enum ResponseType {
+  THINK = 'think',
+  FEEL = 'feel',
+  SAY = 'say',
+  DO = 'do',
+  PAINS = 'pains',
+  NEEDS = 'needs',
+}
+
 export interface EmpathyMapEntry {
   id: number;
   think: string;
   feel: string;
   say: string;
   do: string;
+  pains: string;
+  needs: string;
+  userId: number;
+  user?: IUser;
+  projectId: number;
+  upvotes: number;
+  downvotes: number;
+  isSelected: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface EmpathyMapResponse {
+  id: number;
+  type: ResponseType;
+  content: string;
   userId: number;
   user?: IUser;
   projectId: number;
@@ -25,6 +50,15 @@ export interface CreateEmpathyMapDto {
   feel: string;
   say: string;
   do: string;
+  pains: string;
+  needs: string;
+  userId: number;
+  projectId: number;
+}
+
+export interface CreateEmpathyMapResponseDto {
+  type: ResponseType;
+  content: string;
   userId: number;
   projectId: number;
 }
@@ -89,6 +123,72 @@ export class EmpathyMapService {
   getSelectedByProject(projectId: number): Observable<EmpathyMapEntry[]> {
     return this.http.get<EmpathyMapEntry[]>(
       `${this.apiUrl}/project/${projectId}/selected`
+    );
+  }
+
+  // Novos métodos para respostas
+  createResponse(
+    response: CreateEmpathyMapResponseDto
+  ): Observable<EmpathyMapResponse> {
+    return this.http.post<EmpathyMapResponse>(
+      `${this.apiUrl}/response`,
+      response
+    );
+  }
+
+  findAllResponsesByProject(
+    projectId: number
+  ): Observable<EmpathyMapResponse[]> {
+    return this.http.get<EmpathyMapResponse[]>(
+      `${this.apiUrl}/project/${projectId}/responses`
+    );
+  }
+
+  findOneResponse(id: number): Observable<EmpathyMapResponse> {
+    return this.http.get<EmpathyMapResponse>(`${this.apiUrl}/response/${id}`);
+  }
+
+  deleteResponse(id: number, userId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/response/${id}`, {
+      params: { userId: userId.toString() },
+    });
+  }
+
+  upvoteResponse(id: number): Observable<EmpathyMapResponse> {
+    return this.http.put<EmpathyMapResponse>(
+      `${this.apiUrl}/response/${id}/upvote`,
+      {}
+    );
+  }
+
+  downvoteResponse(id: number): Observable<EmpathyMapResponse> {
+    return this.http.put<EmpathyMapResponse>(
+      `${this.apiUrl}/response/${id}/downvote`,
+      {}
+    );
+  }
+
+  toggleResponseSelection(id: number): Observable<EmpathyMapResponse> {
+    return this.http.put<EmpathyMapResponse>(
+      `${this.apiUrl}/response/${id}/toggle-selection`,
+      {}
+    );
+  }
+
+  getSelectedResponsesByProject(
+    projectId: number
+  ): Observable<EmpathyMapResponse[]> {
+    return this.http.get<EmpathyMapResponse[]>(
+      `${this.apiUrl}/project/${projectId}/selected-responses`
+    );
+  }
+
+  getResponsesByType(
+    projectId: number,
+    type: 'think' | 'feel' | 'say' | 'do' | 'pains' | 'needs'
+  ): Observable<EmpathyMapResponse[]> {
+    return this.http.get<EmpathyMapResponse[]>(
+      `${this.apiUrl}/project/${projectId}/responses/${type}`
     );
   }
 }

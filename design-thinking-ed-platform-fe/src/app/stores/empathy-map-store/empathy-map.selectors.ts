@@ -1,5 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { EmpathyMapState, empathyMapReducer } from './empathy-map.reducer';
+import { ResponseType } from './empathy-map.service';
 
 export const selectEmpathyMapState =
   createFeatureSelector<EmpathyMapState>('empathyMap');
@@ -7,6 +8,21 @@ export const selectEmpathyMapState =
 export const selectAllEntries = createSelector(
   selectEmpathyMapState,
   (state: EmpathyMapState) => state.entries
+);
+
+export const selectAllResponses = createSelector(
+  selectEmpathyMapState,
+  (state: EmpathyMapState) => state.responses
+);
+
+export const selectResponsesByType = (type: ResponseType) =>
+  createSelector(selectAllResponses, (responses) =>
+    responses.filter((response) => response.type === type)
+  );
+
+export const selectSelectedResponses = createSelector(
+  selectAllResponses,
+  (responses) => responses.filter((response) => response.isSelected)
 );
 
 export const selectLoading = createSelector(

@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { GroupEntity } from '../../group/entities/group.entity';
 import { EmpathyMap } from '../../empathy-map/entities/empathy-map.entity';
+import { EmpathyMapResponse } from '../../empathy-map/entities/empathy-map-response.entity';
 
 @Entity()
 export class ProjectEntity {
@@ -19,4 +20,7 @@ export class ProjectEntity {
 
   @OneToMany(() => EmpathyMap, (empathyMap) => empathyMap.project)
   empathyMaps: EmpathyMap[];
+
+  @OneToMany(() => EmpathyMapResponse, (response) => response.project)
+  empathyMapResponses: EmpathyMapResponse[];
 }

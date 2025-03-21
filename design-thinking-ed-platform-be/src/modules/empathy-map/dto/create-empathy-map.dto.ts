@@ -18,6 +18,14 @@ export class CreateEmpathyMapDto {
   do: string;
 
   @IsNotEmpty()
+  @IsString()
+  pains: string;
+
+  @IsNotEmpty()
+  @IsString()
+  needs: string;
+
+  @IsNotEmpty()
   @IsNumber()
   userId: number;
 

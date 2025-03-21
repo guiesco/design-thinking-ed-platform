@@ -1,10 +1,10 @@
 <div class="empathy-step-container">
   <div class="empathy-step-header">
-    <h2>Etapa de Empatia</h2>
-    <p class="description">
-      Nesta etapa, cada membro do grupo deve criar seu próprio mapa de empatia.
-      Depois, todos os membros devem votar nas melhores respostas e selecionar
-      quais farão parte do mapa final do grupo.
+    <h2>Mapa de Empatia</h2>
+    <p>
+      Nesta etapa, você deve criar um mapa de empatia para entender melhor o
+      usuário do seu projeto. O mapa de empatia é uma ferramenta que ajuda a
+      entender o que o usuário pensa, sente, vê, ouve e faz.
     </p>
   </div>
 
@@ -24,7 +24,7 @@
                 [(ngModel)]="newEntry.think"
                 name="think"
                 required
-                placeholder="Quais são as principais preocupações, aspirações e sentimentos?"
+                placeholder="Quais são as principais preocupações, aspirações e sentimentos? (Cada linha será uma resposta separada)"
               ></textarea>
             </mat-form-field>
 
@@ -35,7 +35,7 @@
                 [(ngModel)]="newEntry.feel"
                 name="feel"
                 required
-                placeholder="Como é o ambiente? Quais são as ofertas do mercado?"
+                placeholder="Como é o ambiente? Quais são as ofertas do mercado? (Cada linha será uma resposta separada)"
               ></textarea>
             </mat-form-field>
 
@@ -46,7 +46,7 @@
                 [(ngModel)]="newEntry.say"
                 name="say"
                 required
-                placeholder="O que os amigos dizem? O que o chefe diz? O que os influenciadores dizem?"
+                placeholder="O que os amigos dizem? O que o chefe diz? O que os influenciadores dizem? (Cada linha será uma resposta separada)"
               ></textarea>
             </mat-form-field>
 
@@ -57,7 +57,29 @@
                 [(ngModel)]="newEntry.do"
                 name="do"
                 required
-                placeholder="Qual sua atitude em público? Como se comporta? Qual sua aparência?"
+                placeholder="Qual sua atitude em público? Como se comporta? Qual sua aparência? (Cada linha será uma resposta separada)"
+              ></textarea>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Quais são as dores?</mat-label>
+              <textarea
+                matInput
+                [(ngModel)]="newEntry.pains"
+                name="pains"
+                required
+                placeholder="Quais são os problemas, frustrações e obstáculos enfrentados? (Cada linha será uma resposta separada)"
+              ></textarea>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Quais são as necessidades?</mat-label>
+              <textarea
+                matInput
+                [(ngModel)]="newEntry.needs"
+                name="needs"
+                required
+                placeholder="O que o usuário precisa para resolver suas dores? (Cada linha será uma resposta separada)"
               ></textarea>
             </mat-form-field>
           </div>
@@ -69,85 +91,379 @@
               type="submit"
               [disabled]="!empathyForm.form.valid"
             >
-              Criar Mapa
+              Criar Respostas
             </button>
           </div>
         </form>
       </mat-card-content>
     </mat-card>
 
-    <!-- Lista de mapas de empatia -->
-    <div class="empathy-maps-list">
-      <h3>Mapas de Empatia do Grupo</h3>
+    <!-- Lista de respostas -->
+    <div class="empathy-maps-grid">
+      <!-- Tabela para Pensa e Sente -->
+      <div class="response-table-section">
+        <h3>Pensa e Sente</h3>
+        <table mat-table [dataSource]="getResponsesByType(ResponseType.THINK)">
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let response">
+              <mat-checkbox
+                [checked]="response.isSelected"
+                (change)="onToggleResponseSelection(response.id)"
+              ></mat-checkbox>
+            </td>
+          </ng-container>
 
-      <div *ngIf="loading$ | async" class="loading-spinner">
-        <mat-spinner></mat-spinner>
+          <ng-container matColumnDef="content">
+            <th mat-header-cell *matHeaderCellDef>Resposta</th>
+            <td mat-cell *matCellDef="let response">{{ response.content }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Ações</th>
+            <td mat-cell *matCellDef="let response">
+              <div class="response-actions">
+                <button
+                  mat-icon-button
+                  color="primary"
+                  (click)="onUpvoteResponse(response.id)"
+                  [disabled]="response.hasVoted"
+                >
+                  <mat-icon>arrow_upward</mat-icon>
+                  <span>{{ response.upvotes }}</span>
+                </button>
+                <button
+                  mat-icon-button
+                  color="warn"
+                  (click)="onDownvoteResponse(response.id)"
+                  [disabled]="response.hasVoted"
+                >
+                  <mat-icon>arrow_downward</mat-icon>
+                  <span>{{ response.downvotes }}</span>
+                </button>
+                <button
+                  mat-icon-button
+                  [style.visibility]="
+                    response.userId === currentUserId ? 'visible' : 'hidden'
+                  "
+                  color="warn"
+                  (click)="onDeleteResponse(response.id)"
+                  matTooltip="Deletar resposta"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
       </div>
 
-      <div *ngIf="error$ | async as error" class="error-message">
-        {{ error }}
+      <!-- Tabela para Vê -->
+      <div class="response-table-section">
+        <h3>Vê</h3>
+        <table mat-table [dataSource]="getResponsesByType(ResponseType.FEEL)">
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let response">
+              <mat-checkbox
+                [checked]="response.isSelected"
+                (change)="onToggleResponseSelection(response.id)"
+              ></mat-checkbox>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="content">
+            <th mat-header-cell *matHeaderCellDef>Resposta</th>
+            <td mat-cell *matCellDef="let response">{{ response.content }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Ações</th>
+            <td mat-cell *matCellDef="let response">
+              <div class="response-actions">
+                <button
+                  mat-icon-button
+                  color="primary"
+                  (click)="onUpvoteResponse(response.id)"
+                  [disabled]="response.hasVoted"
+                >
+                  <mat-icon>arrow_upward</mat-icon>
+                  <span>{{ response.upvotes }}</span>
+                </button>
+                <button
+                  mat-icon-button
+                  color="warn"
+                  (click)="onDownvoteResponse(response.id)"
+                  [disabled]="response.hasVoted"
+                >
+                  <mat-icon>arrow_downward</mat-icon>
+                  <span>{{ response.downvotes }}</span>
+                </button>
+                <button
+                  mat-icon-button
+                  [style.visibility]="
+                    response.userId === currentUserId ? 'visible' : 'hidden'
+                  "
+                  color="warn"
+                  (click)="onDeleteResponse(response.id)"
+                  matTooltip="Deletar resposta"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
       </div>
 
-      <div class="empathy-maps-grid">
-        <mat-card
-          *ngFor="let entry of entries$ | async"
-          class="empathy-map-card"
-          [class.selected]="entry.isSelected"
-        >
-          <mat-card-header>
-            <mat-card-subtitle>
-              Criado por: {{ entry.user?.name }}
-            </mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
-            <div class="empathy-map-quadrants">
-              <div class="quadrant">
-                <h4>Pensa e Sente</h4>
-                <p>{{ entry.think }}</p>
+      <!-- Tabela para Ouve -->
+      <div class="response-table-section">
+        <h3>Ouve</h3>
+        <table mat-table [dataSource]="getResponsesByType(ResponseType.SAY)">
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let response">
+              <mat-checkbox
+                [checked]="response.isSelected"
+                (change)="onToggleResponseSelection(response.id)"
+              ></mat-checkbox>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="content">
+            <th mat-header-cell *matHeaderCellDef>Resposta</th>
+            <td mat-cell *matCellDef="let response">{{ response.content }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Ações</th>
+            <td mat-cell *matCellDef="let response">
+              <div class="response-actions">
+                <button
+                  mat-icon-button
+                  color="primary"
+                  (click)="onUpvoteResponse(response.id)"
+                  [disabled]="response.hasVoted"
+                >
+                  <mat-icon>arrow_upward</mat-icon>
+                  <span>{{ response.upvotes }}</span>
+                </button>
+                <button
+                  mat-icon-button
+                  color="warn"
+                  (click)="onDownvoteResponse(response.id)"
+                  [disabled]="response.hasVoted"
+                >
+                  <mat-icon>arrow_downward</mat-icon>
+                  <span>{{ response.downvotes }}</span>
+                </button>
+                <button
+                  mat-icon-button
+                  [style.visibility]="
+                    response.userId === currentUserId ? 'visible' : 'hidden'
+                  "
+                  color="warn"
+                  (click)="onDeleteResponse(response.id)"
+                  matTooltip="Deletar resposta"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
               </div>
-              <div class="quadrant">
-                <h4>Vê</h4>
-                <p>{{ entry.feel }}</p>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+
+      <!-- Tabela para Faz -->
+      <div class="response-table-section">
+        <h3>Faz</h3>
+        <table mat-table [dataSource]="getResponsesByType(ResponseType.DO)">
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let response">
+              <mat-checkbox
+                [checked]="response.isSelected"
+                (change)="onToggleResponseSelection(response.id)"
+              ></mat-checkbox>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="content">
+            <th mat-header-cell *matHeaderCellDef>Resposta</th>
+            <td mat-cell *matCellDef="let response">{{ response.content }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Ações</th>
+            <td mat-cell *matCellDef="let response">
+              <div class="response-actions">
+                <button
+                  mat-icon-button
+                  color="primary"
+                  (click)="onUpvoteResponse(response.id)"
+                  [disabled]="response.hasVoted"
+                >
+                  <mat-icon>arrow_upward</mat-icon>
+                  <span>{{ response.upvotes }}</span>
+                </button>
+                <button
+                  mat-icon-button
+                  color="warn"
+                  (click)="onDownvoteResponse(response.id)"
+                  [disabled]="response.hasVoted"
+                >
+                  <mat-icon>arrow_downward</mat-icon>
+                  <span>{{ response.downvotes }}</span>
+                </button>
+                <button
+                  mat-icon-button
+                  [style.visibility]="
+                    response.userId === currentUserId ? 'visible' : 'hidden'
+                  "
+                  color="warn"
+                  (click)="onDeleteResponse(response.id)"
+                  matTooltip="Deletar resposta"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
               </div>
-              <div class="quadrant">
-                <h4>Ouve</h4>
-                <p>{{ entry.say }}</p>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+
+      <!-- Tabela para Dores -->
+      <div class="response-table-section">
+        <h3>Dores</h3>
+        <table mat-table [dataSource]="getResponsesByType(ResponseType.PAINS)">
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let response">
+              <mat-checkbox
+                [checked]="response.isSelected"
+                (change)="onToggleResponseSelection(response.id)"
+              ></mat-checkbox>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="content">
+            <th mat-header-cell *matHeaderCellDef>Resposta</th>
+            <td mat-cell *matCellDef="let response">{{ response.content }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Ações</th>
+            <td mat-cell *matCellDef="let response">
+              <div class="response-actions">
+                <button
+                  mat-icon-button
+                  color="primary"
+                  (click)="onUpvoteResponse(response.id)"
+                  [disabled]="response.hasVoted"
+                >
+                  <mat-icon>arrow_upward</mat-icon>
+                  <span>{{ response.upvotes }}</span>
+                </button>
+                <button
+                  mat-icon-button
+                  color="warn"
+                  (click)="onDownvoteResponse(response.id)"
+                  [disabled]="response.hasVoted"
+                >
+                  <mat-icon>arrow_downward</mat-icon>
+                  <span>{{ response.downvotes }}</span>
+                </button>
+                <button
+                  mat-icon-button
+                  [style.visibility]="
+                    response.userId === currentUserId ? 'visible' : 'hidden'
+                  "
+                  color="warn"
+                  (click)="onDeleteResponse(response.id)"
+                  matTooltip="Deletar resposta"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
               </div>
-              <div class="quadrant">
-                <h4>Faz</h4>
-                <p>{{ entry.do }}</p>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+
+      <!-- Tabela para Necessidades -->
+      <div class="response-table-section">
+        <h3>Necessidades</h3>
+        <table mat-table [dataSource]="getResponsesByType(ResponseType.NEEDS)">
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let response">
+              <mat-checkbox
+                [checked]="response.isSelected"
+                (change)="onToggleResponseSelection(response.id)"
+              ></mat-checkbox>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="content">
+            <th mat-header-cell *matHeaderCellDef>Resposta</th>
+            <td mat-cell *matCellDef="let response">{{ response.content }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Ações</th>
+            <td mat-cell *matCellDef="let response">
+              <div class="response-actions">
+                <button
+                  mat-icon-button
+                  color="primary"
+                  (click)="onUpvoteResponse(response.id)"
+                  [disabled]="response.hasVoted"
+                >
+                  <mat-icon>arrow_upward</mat-icon>
+                  <span>{{ response.upvotes }}</span>
+                </button>
+                <button
+                  mat-icon-button
+                  color="warn"
+                  (click)="onDownvoteResponse(response.id)"
+                  [disabled]="response.hasVoted"
+                >
+                  <mat-icon>arrow_downward</mat-icon>
+                  <span>{{ response.downvotes }}</span>
+                </button>
+                <button
+                  mat-icon-button
+                  [style.visibility]="
+                    response.userId === currentUserId ? 'visible' : 'hidden'
+                  "
+                  color="warn"
+                  (click)="onDeleteResponse(response.id)"
+                  matTooltip="Deletar resposta"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
               </div>
-            </div>
-          </mat-card-content>
-          <mat-card-actions>
-            <button
-              mat-icon-button
-              color="primary"
-              (click)="onUpvote(entry.id)"
-              [disabled]="isCurrentUser$(entry.userId) | async"
-            >
-              <mat-icon>thumb_up</mat-icon>
-              <span>{{ entry.upvotes }}</span>
-            </button>
-            <button
-              mat-icon-button
-              color="warn"
-              (click)="onDownvote(entry.id)"
-              [disabled]="isCurrentUser$(entry.userId) | async"
-            >
-              <mat-icon>thumb_down</mat-icon>
-              <span>{{ entry.downvotes }}</span>
-            </button>
-            <button
-              mat-icon-button
-              [color]="entry.isSelected ? 'accent' : ''"
-              (click)="onToggleSelection(entry.id)"
-              [disabled]="isCurrentUser$(entry.userId) | async"
-            >
-              <mat-icon>check_circle</mat-icon>
-            </button>
-          </mat-card-actions>
-        </mat-card>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
       </div>
     </div>
   </div>

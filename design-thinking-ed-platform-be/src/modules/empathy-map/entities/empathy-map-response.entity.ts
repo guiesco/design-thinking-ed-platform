@@ -10,28 +10,28 @@ import {
 import { UserEntity } from '../../user/entities/user.entity';
 import { ProjectEntity } from '../../project/entities/project.entity';
 
-@Entity('empathy_maps')
-export class EmpathyMap {
+export enum ResponseType {
+  THINK = 'think',
+  FEEL = 'feel',
+  SAY = 'say',
+  DO = 'do',
+  PAINS = 'pains',
+  NEEDS = 'needs',
+}
+
+@Entity('empathy_map_responses')
+export class EmpathyMapResponse {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  think: string;
+  @Column({
+    type: 'enum',
+    enum: ResponseType,
+  })
+  type: ResponseType;
 
   @Column()
-  feel: string;
-
-  @Column()
-  say: string;
-
-  @Column()
-  do: string;
-
-  @Column()
-  pains: string;
-
-  @Column()
-  needs: string;
+  content: string;
 
   @Column({ default: 0 })
   upvotes: number;
@@ -49,7 +49,7 @@ export class EmpathyMap {
   @Column({ name: 'user_id' })
   userId: number;
 
-  @ManyToOne(() => ProjectEntity, (project) => project.empathyMaps)
+  @ManyToOne(() => ProjectEntity, (project) => project.empathyMapResponses)
   @JoinColumn({ name: 'project_id' })
   project: ProjectEntity;
 

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { map, mergeMap, catchError } from 'rxjs/operators';
-import { EmpathyMapService } from 'src/app/stores/empathy-map-store/empathy-map.service';
+import { EmpathyMapService } from './empathy-map.service';
 import * as EmpathyMapActions from './empathy-map.actions';
 
 @Injectable()
@@ -113,6 +113,109 @@ export class EmpathyMapEffects {
           ),
           catchError((error) =>
             of(EmpathyMapActions.toggleEmpathyMapSelectionFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  // Novos effects para respostas
+  createResponse$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(EmpathyMapActions.createResponse),
+      mergeMap(({ response }) =>
+        this.empathyMapService.createResponse(response).pipe(
+          map((createdResponse) =>
+            EmpathyMapActions.createResponseSuccess({
+              response: createdResponse,
+            })
+          ),
+          catchError((error) =>
+            of(EmpathyMapActions.createResponseFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  loadResponses$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(EmpathyMapActions.loadResponses),
+      mergeMap(({ projectId }) =>
+        this.empathyMapService.findAllResponsesByProject(projectId).pipe(
+          map((responses) =>
+            EmpathyMapActions.loadResponsesSuccess({ responses })
+          ),
+          catchError((error) =>
+            of(EmpathyMapActions.loadResponsesFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  deleteResponse$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(EmpathyMapActions.deleteResponse),
+      mergeMap(({ id, userId }) =>
+        this.empathyMapService.deleteResponse(id, userId).pipe(
+          map(() => EmpathyMapActions.deleteResponseSuccess({ id })),
+          catchError((error) =>
+            of(EmpathyMapActions.deleteResponseFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  upvoteResponse$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(EmpathyMapActions.upvoteResponse),
+      mergeMap(({ responseId }) =>
+        this.empathyMapService.upvoteResponse(responseId).pipe(
+          map((updatedResponse) =>
+            EmpathyMapActions.upvoteResponseSuccess({
+              response: updatedResponse,
+            })
+          ),
+          catchError((error) =>
+            of(EmpathyMapActions.upvoteResponseFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  downvoteResponse$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(EmpathyMapActions.downvoteResponse),
+      mergeMap(({ responseId }) =>
+        this.empathyMapService.downvoteResponse(responseId).pipe(
+          map((updatedResponse) =>
+            EmpathyMapActions.downvoteResponseSuccess({
+              response: updatedResponse,
+            })
+          ),
+          catchError((error) =>
+            of(EmpathyMapActions.downvoteResponseFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  toggleResponseSelection$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(EmpathyMapActions.toggleResponseSelection),
+      mergeMap(({ responseId }) =>
+        this.empathyMapService.toggleResponseSelection(responseId).pipe(
+          map((updatedResponse) =>
+            EmpathyMapActions.toggleResponseSelectionSuccess({
+              response: updatedResponse,
+            })
+          ),
+          catchError((error) =>
+            of(EmpathyMapActions.toggleResponseSelectionFailure({ error }))
           )
         )
       )
