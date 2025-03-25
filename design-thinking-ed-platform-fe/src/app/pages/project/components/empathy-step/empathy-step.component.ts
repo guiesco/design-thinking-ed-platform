@@ -129,10 +129,6 @@ export class EmpathyStepComponent implements OnInit {
     this.empathyMapFacade.upvoteResponse(responseId);
   }
 
-  onDownvoteResponse(responseId: number): void {
-    this.empathyMapFacade.downvoteResponse(responseId);
-  }
-
   onToggleResponseSelection(responseId: number): void {
     this.empathyMapFacade.toggleResponseSelection(responseId);
   }

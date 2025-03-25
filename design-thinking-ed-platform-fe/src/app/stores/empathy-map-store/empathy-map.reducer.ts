@@ -93,21 +93,6 @@ export const empathyMapReducer = createReducer(
     loading: false,
     error,
   })),
-  on(EmpathyMapActions.downvoteEmpathyMap, (state) => ({
-    ...state,
-    loading: true,
-    error: null,
-  })),
-  on(EmpathyMapActions.downvoteEmpathyMapSuccess, (state, { entry }) => ({
-    ...state,
-    entries: state.entries.map((e) => (e.id === entry.id ? entry : e)),
-    loading: false,
-  })),
-  on(EmpathyMapActions.downvoteEmpathyMapFailure, (state, { error }) => ({
-    ...state,
-    loading: false,
-    error,
-  })),
   on(EmpathyMapActions.toggleEmpathyMapSelection, (state) => ({
     ...state,
     loading: true,
@@ -172,23 +157,6 @@ export const empathyMapReducer = createReducer(
     loading: false,
   })),
   on(EmpathyMapActions.upvoteResponseFailure, (state, { error }) => ({
-    ...state,
-    loading: false,
-    error,
-  })),
-  on(EmpathyMapActions.downvoteResponse, (state) => ({
-    ...state,
-    loading: true,
-    error: null,
-  })),
-  on(EmpathyMapActions.downvoteResponseSuccess, (state, { response }) => ({
-    ...state,
-    responses: state.responses.map((r) =>
-      r.id === response.id ? response : r
-    ),
-    loading: false,
-  })),
-  on(EmpathyMapActions.downvoteResponseFailure, (state, { error }) => ({
     ...state,
     loading: false,
     error,

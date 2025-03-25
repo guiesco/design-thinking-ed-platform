@@ -47,10 +47,6 @@ export class EmpathyMapFacade {
     this.store.dispatch(EmpathyMapActions.upvoteEmpathyMap({ entryId }));
   }
 
-  downvoteEmpathyMap(entryId: number): void {
-    this.store.dispatch(EmpathyMapActions.downvoteEmpathyMap({ entryId }));
-  }
-
   toggleEmpathyMapSelection(entryId: number): void {
     this.store.dispatch(
       EmpathyMapActions.toggleEmpathyMapSelection({ entryId })
@@ -68,10 +64,6 @@ export class EmpathyMapFacade {
 
   upvoteResponse(responseId: number): void {
     this.store.dispatch(EmpathyMapActions.upvoteResponse({ responseId }));
-  }
-
-  downvoteResponse(responseId: number): void {
-    this.store.dispatch(EmpathyMapActions.downvoteResponse({ responseId }));
   }
 
   toggleResponseSelection(responseId: number): void {

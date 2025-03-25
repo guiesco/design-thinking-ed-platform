@@ -81,21 +81,6 @@ export const upvoteEmpathyMapFailure = createAction(
   props<{ error: any }>()
 );
 
-export const downvoteEmpathyMap = createAction(
-  '[EmpathyMap] Downvote Empathy Map',
-  props<{ entryId: number }>()
-);
-
-export const downvoteEmpathyMapSuccess = createAction(
-  '[EmpathyMap] Downvote Empathy Map Success',
-  props<{ entry: EmpathyMapEntry }>()
-);
-
-export const downvoteEmpathyMapFailure = createAction(
-  '[EmpathyMap] Downvote Empathy Map Failure',
-  props<{ error: any }>()
-);
-
 export const toggleEmpathyMapSelection = createAction(
   '[EmpathyMap] Toggle Empathy Map Selection',
   props<{ entryId: number }>()
@@ -169,21 +154,6 @@ export const upvoteResponseSuccess = createAction(
 
 export const upvoteResponseFailure = createAction(
   '[EmpathyMap] Upvote Response Failure',
-  props<{ error: any }>()
-);
-
-export const downvoteResponse = createAction(
-  '[EmpathyMap] Downvote Response',
-  props<{ responseId: number }>()
-);
-
-export const downvoteResponseSuccess = createAction(
-  '[EmpathyMap] Downvote Response Success',
-  props<{ response: EmpathyMapResponse }>()
-);
-
-export const downvoteResponseFailure = createAction(
-  '[EmpathyMap] Downvote Response Failure',
   props<{ error: any }>()
 );
 

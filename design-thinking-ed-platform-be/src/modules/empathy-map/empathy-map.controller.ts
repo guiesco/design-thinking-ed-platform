@@ -6,7 +6,6 @@ import {
   Param,
   Put,
   Delete,
-  UseGuards,
   Query,
 } from '@nestjs/common';
 import { EmpathyMapService } from './empathy-map.service';
@@ -59,11 +58,6 @@ export class EmpathyMapController {
   @Put('response/:id/upvote')
   upvoteResponse(@Param('id') id: string) {
     return this.empathyMapService.upvoteResponse(+id);
-  }
-
-  @Put('response/:id/downvote')
-  downvoteResponse(@Param('id') id: string) {
-    return this.empathyMapService.downvoteResponse(+id);
   }
 
   @Put('response/:id/toggle-selection')

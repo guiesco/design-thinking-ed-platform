@@ -96,13 +96,6 @@ export class EmpathyMapService {
     );
   }
 
-  downvoteEmpathyMap(entryId: number): Observable<EmpathyMapEntry> {
-    return this.http.post<EmpathyMapEntry>(
-      `${this.apiUrl}/${entryId}/downvote`,
-      {}
-    );
-  }
-
   toggleEmpathyMapSelection(entryId: number): Observable<EmpathyMapEntry> {
     return this.http.post<EmpathyMapEntry>(
       `${this.apiUrl}/${entryId}/toggle-selection`,
@@ -157,13 +150,6 @@ export class EmpathyMapService {
   upvoteResponse(id: number): Observable<EmpathyMapResponse> {
     return this.http.put<EmpathyMapResponse>(
       `${this.apiUrl}/response/${id}/upvote`,
-      {}
-    );
-  }
-
-  downvoteResponse(id: number): Observable<EmpathyMapResponse> {
-    return this.http.put<EmpathyMapResponse>(
-      `${this.apiUrl}/response/${id}/downvote`,
       {}
     );
   }

@@ -85,22 +85,6 @@ export class EmpathyMapEffects {
     )
   );
 
-  downvoteEmpathyMap$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(EmpathyMapActions.downvoteEmpathyMap),
-      mergeMap(({ entryId }) =>
-        this.empathyMapService.downvoteEmpathyMap(entryId).pipe(
-          map((updatedEntry) =>
-            EmpathyMapActions.downvoteEmpathyMapSuccess({ entry: updatedEntry })
-          ),
-          catchError((error) =>
-            of(EmpathyMapActions.downvoteEmpathyMapFailure({ error }))
-          )
-        )
-      )
-    )
-  );
-
   toggleEmpathyMapSelection$ = createEffect(() =>
     this.actions$.pipe(
       ofType(EmpathyMapActions.toggleEmpathyMapSelection),
@@ -180,24 +164,6 @@ export class EmpathyMapEffects {
           ),
           catchError((error) =>
             of(EmpathyMapActions.upvoteResponseFailure({ error }))
-          )
-        )
-      )
-    )
-  );
-
-  downvoteResponse$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(EmpathyMapActions.downvoteResponse),
-      mergeMap(({ responseId }) =>
-        this.empathyMapService.downvoteResponse(responseId).pipe(
-          map((updatedResponse) =>
-            EmpathyMapActions.downvoteResponseSuccess({
-              response: updatedResponse,
-            })
-          ),
-          catchError((error) =>
-            of(EmpathyMapActions.downvoteResponseFailure({ error }))
           )
         )
       )

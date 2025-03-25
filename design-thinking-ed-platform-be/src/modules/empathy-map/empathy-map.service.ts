@@ -69,12 +69,6 @@ export class EmpathyMapService {
     return this.empathyMapResponseRepository.save(response);
   }
 
-  async downvoteResponse(id: number): Promise<EmpathyMapResponse> {
-    const response = await this.findOneResponse(id);
-    response.downvotes += 1;
-    return this.empathyMapResponseRepository.save(response);
-  }
-
   async toggleResponseSelection(id: number): Promise<EmpathyMapResponse> {
     const response = await this.findOneResponse(id);
     response.isSelected = !response.isSelected;
@@ -104,12 +98,6 @@ export class EmpathyMapService {
   async upvote(id: number): Promise<EmpathyMap> {
     const empathyMap = await this.findOne(id);
     empathyMap.upvotes += 1;
-    return this.empathyMapRepository.save(empathyMap);
-  }
-
-  async downvote(id: number): Promise<EmpathyMap> {
-    const empathyMap = await this.findOne(id);
-    empathyMap.downvotes += 1;
     return this.empathyMapRepository.save(empathyMap);
   }
 
