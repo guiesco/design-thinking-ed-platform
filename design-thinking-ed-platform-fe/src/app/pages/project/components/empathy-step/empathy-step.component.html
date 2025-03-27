@@ -14,6 +14,7 @@
       <mat-card-header>
         <mat-card-title>Criar Mapa de Empatia</mat-card-title>
       </mat-card-header>
+
       <mat-card-content>
         <form (ngSubmit)="onSubmit()" #empathyForm="ngForm">
           <div class="form-grid">
@@ -23,7 +24,6 @@
                 matInput
                 [(ngModel)]="newEntry.think"
                 name="think"
-                required
                 placeholder="Quais são as principais preocupações, aspirações e sentimentos? (Cada linha será uma resposta separada)"
               ></textarea>
             </mat-form-field>
@@ -34,7 +34,6 @@
                 matInput
                 [(ngModel)]="newEntry.feel"
                 name="feel"
-                required
                 placeholder="Como é o ambiente? Quais são as ofertas do mercado? (Cada linha será uma resposta separada)"
               ></textarea>
             </mat-form-field>
@@ -45,7 +44,6 @@
                 matInput
                 [(ngModel)]="newEntry.say"
                 name="say"
-                required
                 placeholder="O que os amigos dizem? O que o chefe diz? O que os influenciadores dizem? (Cada linha será uma resposta separada)"
               ></textarea>
             </mat-form-field>
@@ -56,7 +54,6 @@
                 matInput
                 [(ngModel)]="newEntry.do"
                 name="do"
-                required
                 placeholder="Qual sua atitude em público? Como se comporta? Qual sua aparência? (Cada linha será uma resposta separada)"
               ></textarea>
             </mat-form-field>
@@ -67,7 +64,6 @@
                 matInput
                 [(ngModel)]="newEntry.pains"
                 name="pains"
-                required
                 placeholder="Quais são os problemas, frustrações e obstáculos enfrentados? (Cada linha será uma resposta separada)"
               ></textarea>
             </mat-form-field>
@@ -78,7 +74,6 @@
                 matInput
                 [(ngModel)]="newEntry.needs"
                 name="needs"
-                required
                 placeholder="O que o usuário precisa para resolver suas dores? (Cada linha será uma resposta separada)"
               ></textarea>
             </mat-form-field>
@@ -126,11 +121,13 @@
                 <button
                   mat-icon-button
                   color="primary"
-                  (click)="onUpvoteResponse(response.id)"
-                  [disabled]="response.hasVoted"
+                  (click)="onUpvoteResponse(response.id, response.hasVoted)"
+                  [matTooltip]="response.hasVoted ? 'Remover voto' : 'Votar'"
                 >
-                  <mat-icon>arrow_upward</mat-icon>
-                  <span>{{ response.upvotes }}</span>
+                  <mat-icon [class.voted]="response.hasVoted">
+                    {{ response.hasVoted ? "favorite" : "favorite_border" }}
+                  </mat-icon>
+                  <span class="vote-count">{{ response.upvotes }}</span>
                 </button>
                 <button
                   mat-icon-button
@@ -178,11 +175,13 @@
                 <button
                   mat-icon-button
                   color="primary"
-                  (click)="onUpvoteResponse(response.id)"
-                  [disabled]="response.hasVoted"
+                  (click)="onUpvoteResponse(response.id, response.hasVoted)"
+                  [matTooltip]="response.hasVoted ? 'Remover voto' : 'Votar'"
                 >
-                  <mat-icon>arrow_upward</mat-icon>
-                  <span>{{ response.upvotes }}</span>
+                  <mat-icon [class.voted]="response.hasVoted">
+                    {{ response.hasVoted ? "favorite" : "favorite_border" }}
+                  </mat-icon>
+                  <span class="vote-count">{{ response.upvotes }}</span>
                 </button>
                 <button
                   mat-icon-button
@@ -230,11 +229,13 @@
                 <button
                   mat-icon-button
                   color="primary"
-                  (click)="onUpvoteResponse(response.id)"
-                  [disabled]="response.hasVoted"
+                  (click)="onUpvoteResponse(response.id, response.hasVoted)"
+                  [matTooltip]="response.hasVoted ? 'Remover voto' : 'Votar'"
                 >
-                  <mat-icon>arrow_upward</mat-icon>
-                  <span>{{ response.upvotes }}</span>
+                  <mat-icon [class.voted]="response.hasVoted">
+                    {{ response.hasVoted ? "favorite" : "favorite_border" }}
+                  </mat-icon>
+                  <span class="vote-count">{{ response.upvotes }}</span>
                 </button>
                 <button
                   mat-icon-button
@@ -282,11 +283,13 @@
                 <button
                   mat-icon-button
                   color="primary"
-                  (click)="onUpvoteResponse(response.id)"
-                  [disabled]="response.hasVoted"
+                  (click)="onUpvoteResponse(response.id, response.hasVoted)"
+                  [matTooltip]="response.hasVoted ? 'Remover voto' : 'Votar'"
                 >
-                  <mat-icon>arrow_upward</mat-icon>
-                  <span>{{ response.upvotes }}</span>
+                  <mat-icon [class.voted]="response.hasVoted">
+                    {{ response.hasVoted ? "favorite" : "favorite_border" }}
+                  </mat-icon>
+                  <span class="vote-count">{{ response.upvotes }}</span>
                 </button>
                 <button
                   mat-icon-button
@@ -334,11 +337,13 @@
                 <button
                   mat-icon-button
                   color="primary"
-                  (click)="onUpvoteResponse(response.id)"
-                  [disabled]="response.hasVoted"
+                  (click)="onUpvoteResponse(response.id, response.hasVoted)"
+                  [matTooltip]="response.hasVoted ? 'Remover voto' : 'Votar'"
                 >
-                  <mat-icon>arrow_upward</mat-icon>
-                  <span>{{ response.upvotes }}</span>
+                  <mat-icon [class.voted]="response.hasVoted">
+                    {{ response.hasVoted ? "favorite" : "favorite_border" }}
+                  </mat-icon>
+                  <span class="vote-count">{{ response.upvotes }}</span>
                 </button>
                 <button
                   mat-icon-button
@@ -386,11 +391,13 @@
                 <button
                   mat-icon-button
                   color="primary"
-                  (click)="onUpvoteResponse(response.id)"
-                  [disabled]="response.hasVoted"
+                  (click)="onUpvoteResponse(response.id, response.hasVoted)"
+                  [matTooltip]="response.hasVoted ? 'Remover voto' : 'Votar'"
                 >
-                  <mat-icon>arrow_upward</mat-icon>
-                  <span>{{ response.upvotes }}</span>
+                  <mat-icon [class.voted]="response.hasVoted">
+                    {{ response.hasVoted ? "favorite" : "favorite_border" }}
+                  </mat-icon>
+                  <span class="vote-count">{{ response.upvotes }}</span>
                 </button>
                 <button
                   mat-icon-button

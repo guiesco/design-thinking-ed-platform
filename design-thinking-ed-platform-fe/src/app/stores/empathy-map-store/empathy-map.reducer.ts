@@ -161,6 +161,23 @@ export const empathyMapReducer = createReducer(
     loading: false,
     error,
   })),
+  on(EmpathyMapActions.removeUpvoteResponse, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(EmpathyMapActions.removeUpvoteResponseSuccess, (state, { response }) => ({
+    ...state,
+    responses: state.responses.map((r) =>
+      r.id === response.id ? response : r
+    ),
+    loading: false,
+  })),
+  on(EmpathyMapActions.removeUpvoteResponseFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  })),
   on(EmpathyMapActions.toggleResponseSelection, (state) => ({
     ...state,
     loading: true,

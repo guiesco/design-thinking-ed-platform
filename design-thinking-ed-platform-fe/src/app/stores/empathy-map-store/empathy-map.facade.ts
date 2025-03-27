@@ -27,43 +27,41 @@ export class EmpathyMapFacade {
 
   constructor(private store: Store) {}
 
-  loadEmpathyMaps(projectId: number): void {
-    this.store.dispatch(EmpathyMapActions.loadEmpathyMaps({ projectId }));
-  }
+  // loadEmpathyMaps(projectId: number): void {
+  //   this.store.dispatch(EmpathyMapActions.loadEmpathyMaps({ projectId }));
+  // }
 
-  createEmpathyMap(entry: EmpathyMapEntry): void {
-    this.store.dispatch(EmpathyMapActions.createEmpathyMap({ entry }));
-  }
+  // createEmpathyMap(entry: EmpathyMapEntry): void {
+  //   this.store.dispatch(EmpathyMapActions.createEmpathyMap({ entry }));
+  // }
 
-  updateEmpathyMap(entry: EmpathyMapEntry): void {
-    this.store.dispatch(EmpathyMapActions.updateEmpathyMap({ entry }));
-  }
+  // updateEmpathyMap(entry: EmpathyMapEntry): void {
+  //   this.store.dispatch(EmpathyMapActions.updateEmpathyMap({ entry }));
+  // }
 
-  deleteEmpathyMap(entryId: number): void {
-    this.store.dispatch(EmpathyMapActions.deleteEmpathyMap({ entryId }));
-  }
-
-  upvoteEmpathyMap(entryId: number): void {
-    this.store.dispatch(EmpathyMapActions.upvoteEmpathyMap({ entryId }));
-  }
-
-  toggleEmpathyMapSelection(entryId: number): void {
-    this.store.dispatch(
-      EmpathyMapActions.toggleEmpathyMapSelection({ entryId })
-    );
-  }
+  // deleteEmpathyMap(entryId: number): void {
+  //   this.store.dispatch(EmpathyMapActions.deleteEmpathyMap({ entryId }));
+  // }
 
   // Novos métodos para respostas
   createResponse(response: CreateEmpathyMapResponseDto): void {
     this.store.dispatch(EmpathyMapActions.createResponse({ response }));
   }
 
-  loadResponses(projectId: number): void {
-    this.store.dispatch(EmpathyMapActions.loadResponses({ projectId }));
+  loadResponses(projectId: number, userId?: number): void {
+    this.store.dispatch(EmpathyMapActions.loadResponses({ projectId, userId }));
   }
 
-  upvoteResponse(responseId: number): void {
-    this.store.dispatch(EmpathyMapActions.upvoteResponse({ responseId }));
+  upvoteResponse(responseId: number, userId: number): void {
+    this.store.dispatch(
+      EmpathyMapActions.upvoteResponse({ responseId, userId })
+    );
+  }
+
+  removeUpvoteResponse(responseId: number, userId: number): void {
+    this.store.dispatch(
+      EmpathyMapActions.removeUpvoteResponse({ responseId, userId })
+    );
   }
 
   toggleResponseSelection(responseId: number): void {

@@ -132,3 +132,12 @@
         }
     }
 }
+
+.vote-count {
+    margin-left: 4px;
+    font-size: 14px;
+}
+
+mat-icon.voted {
+    color: #f44336;
+}

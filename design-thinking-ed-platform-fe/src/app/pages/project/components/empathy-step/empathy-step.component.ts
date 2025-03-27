@@ -10,9 +10,10 @@ import {
   ResponseType,
 } from 'src/app/stores/empathy-map-store/empathy-map.service';
 import { UserFacade } from 'src/app/stores/user-state-store/user.facade';
-import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as EmpathyMapActions from 'src/app/stores/empathy-map-store/empathy-map.actions';
+import { IUser } from 'src/app/common/interfaces/user.interface';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-empathy-step',
@@ -21,17 +22,19 @@ import * as EmpathyMapActions from 'src/app/stores/empathy-map-store/empathy-map
 })
 export class EmpathyStepComponent implements OnInit {
   ResponseType = ResponseType;
-  entries$ = this.empathyMapFacade.entries$;
-  responses$ = this.empathyMapFacade.responses$;
-  loading$ = this.empathyMapFacade.loading$;
-  error$ = this.empathyMapFacade.error$;
-  currentUser$ = this.userFacade.user$;
+  entries$: Observable<EmpathyMapEntry[]> = this.empathyMapFacade.entries$;
+  responses$: Observable<EmpathyMapResponse[]> =
+    this.empathyMapFacade.responses$;
+  loading$: Observable<boolean> = this.empathyMapFacade.loading$;
+  error$: Observable<any> = this.empathyMapFacade.error$;
+  currentUserId!: number;
+  projectId: number | null = null;
   isCurrentUser$ = (userId: number) =>
-    this.currentUser$.pipe(
-      map((user) => (user?.id ? userId === Number(user.id) : false))
+    this.userFacade.user$.pipe(
+      map((user: IUser | null) =>
+        user?.id ? userId === Number(user.id) : false
+      )
     );
-  currentUserId?: number;
-
   displayedColumns: string[] = ['select', 'content', 'actions'];
 
   newEntry = {
@@ -49,29 +52,25 @@ export class EmpathyStepComponent implements OnInit {
     private empathyMapFacade: EmpathyMapFacade,
     private snackBar: MatSnackBar,
     private store: Store
-  ) {
-    this.userFacade.user$.subscribe((user) => {
+  ) {}
+
+  ngOnInit(): void {
+    this.userFacade.user$.subscribe((user: IUser | null) => {
       if (user) {
         this.currentUserId = Number(user.id);
       }
     });
-  }
 
-  ngOnInit(): void {
-    const projectId = Number(
-      this.route.parent?.snapshot.paramMap.get('projectId')
-    );
-    this.empathyMapFacade.loadEmpathyMaps(projectId);
-    this.empathyMapFacade.loadResponses(projectId);
+    this.route.params.subscribe((params) => {
+      const projectId = Number(this.route.parent?.snapshot.params['projectId']);
+      this.projectId = projectId;
+      this.empathyMapFacade.loadResponses(projectId, this.currentUserId);
 
-    this.error$.subscribe((error) => {
-      if (error) {
-        this.snackBar.open(error, 'Fechar', {
-          duration: 5000,
-          horizontalPosition: 'end',
-          verticalPosition: 'top',
-        });
-      }
+      this.error$.subscribe((error: any) => {
+        if (error) {
+          console.error('Error loading empathy map:', error);
+        }
+      });
     });
   }
 
@@ -125,8 +124,19 @@ export class EmpathyStepComponent implements OnInit {
     });
   }
 
-  onUpvoteResponse(responseId: number): void {
-    this.empathyMapFacade.upvoteResponse(responseId);
+  onUpvoteResponse(responseId: number, hasVoted: boolean): void {
+    console.log(
+      '🚀 ~ EmpathyStepComponent ~ onUpvoteResponse ~ hasVoted:',
+      hasVoted
+    );
+    if (!hasVoted) {
+      this.empathyMapFacade.upvoteResponse(responseId, this.currentUserId);
+    } else {
+      this.empathyMapFacade.removeUpvoteResponse(
+        responseId,
+        this.currentUserId
+      );
+    }
   }
 
   onToggleResponseSelection(responseId: number): void {
@@ -141,6 +151,15 @@ export class EmpathyStepComponent implements OnInit {
     if (this.currentUserId) {
       this.store.dispatch(
         EmpathyMapActions.deleteResponse({ id, userId: this.currentUserId })
+      );
+    }
+  }
+
+  loadResponses(): void {
+    if (this.projectId) {
+      this.empathyMapFacade.loadResponses(
+        this.projectId,
+        Number(this.currentUserId)
       );
     }
   }

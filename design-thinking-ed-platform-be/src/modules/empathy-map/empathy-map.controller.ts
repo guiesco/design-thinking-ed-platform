@@ -33,8 +33,14 @@ export class EmpathyMapController {
   }
 
   @Get('project/:projectId/responses')
-  findAllResponsesByProject(@Param('projectId') projectId: string) {
-    return this.empathyMapService.findAllResponsesByProject(+projectId);
+  findAllResponsesByProject(
+    @Param('projectId') projectId: string,
+    @Query('userId') userId?: string,
+  ) {
+    return this.empathyMapService.findAllResponsesByProject(
+      +projectId,
+      userId ? +userId : undefined,
+    );
   }
 
   @Get('project/:projectId/responses/:type')
@@ -55,9 +61,22 @@ export class EmpathyMapController {
     return this.empathyMapService.findOneResponse(+id);
   }
 
+  @Put(':id/upvote')
+  upvote(@Param('id') id: string, @Query('userId') userId: string) {
+    return this.empathyMapService.upvote(+id, +userId);
+  }
+
   @Put('response/:id/upvote')
-  upvoteResponse(@Param('id') id: string) {
-    return this.empathyMapService.upvoteResponse(+id);
+  upvoteResponse(@Param('id') id: string, @Query('userId') userId: string) {
+    return this.empathyMapService.upvoteResponse(+id, +userId);
+  }
+
+  @Delete('response/:id/upvote')
+  removeUpvoteResponse(
+    @Param('id') id: string,
+    @Query('userId') userId: string,
+  ) {
+    return this.empathyMapService.removeUpvoteResponse(+id, +userId);
   }
 
   @Put('response/:id/toggle-selection')

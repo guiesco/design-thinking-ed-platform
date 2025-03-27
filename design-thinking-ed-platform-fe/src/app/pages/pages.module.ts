@@ -15,6 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { PagesRoutingModule } from './pages-routing.module';
 import { LoginComponent } from './login/login.component';
@@ -50,6 +51,7 @@ const angularMaterialModules = [
   MatSelectModule,
   MatSnackBarModule,
   MatTableModule,
+  MatTooltipModule,
 ];
 
 const importModules = [

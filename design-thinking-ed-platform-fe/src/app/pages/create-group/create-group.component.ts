@@ -14,7 +14,7 @@ import { UserFacade } from 'src/app/stores/user-state-store/user.facade';
 })
 export class CreateGroupDialogComponent implements OnInit {
   classId!: string;
-  userId!: string;
+  userId!: number;
   createForm = this.fb.nonNullable.group({
     groupName: ['', Validators.required],
   });

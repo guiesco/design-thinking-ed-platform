@@ -8,7 +8,7 @@ export interface ILoginData {
 }
 
 export interface IUser extends ILoginData {
-  id: string;
+  id: number;
   userType: UserTypeEnum;
   name: string;
   group: Partial<IGroup>;

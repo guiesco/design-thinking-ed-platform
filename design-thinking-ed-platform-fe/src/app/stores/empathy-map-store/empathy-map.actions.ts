@@ -67,8 +67,8 @@ export const deleteEmpathyMapFailure = createAction(
 );
 
 export const upvoteEmpathyMap = createAction(
-  '[EmpathyMap] Upvote Empathy Map',
-  props<{ entryId: number }>()
+  '[Empathy Map] Upvote Entry',
+  props<{ entryId: number; userId: number }>()
 );
 
 export const upvoteEmpathyMapSuccess = createAction(
@@ -114,7 +114,7 @@ export const createResponseFailure = createAction(
 
 export const loadResponses = createAction(
   '[EmpathyMap] Load Responses',
-  props<{ projectId: number }>()
+  props<{ projectId: number; userId?: number }>()
 );
 
 export const loadResponsesSuccess = createAction(
@@ -143,8 +143,8 @@ export const deleteResponseFailure = createAction(
 );
 
 export const upvoteResponse = createAction(
-  '[EmpathyMap] Upvote Response',
-  props<{ responseId: number }>()
+  '[Empathy Map] Upvote Response',
+  props<{ responseId: number; userId: number }>()
 );
 
 export const upvoteResponseSuccess = createAction(
@@ -154,6 +154,21 @@ export const upvoteResponseSuccess = createAction(
 
 export const upvoteResponseFailure = createAction(
   '[EmpathyMap] Upvote Response Failure',
+  props<{ error: any }>()
+);
+
+export const removeUpvoteResponse = createAction(
+  '[Empathy Map] Remove Upvote Response',
+  props<{ responseId: number; userId: number }>()
+);
+
+export const removeUpvoteResponseSuccess = createAction(
+  '[EmpathyMap] Remove Upvote Response Success',
+  props<{ response: EmpathyMapResponse }>()
+);
+
+export const removeUpvoteResponseFailure = createAction(
+  '[EmpathyMap] Remove Upvote Response Failure',
   props<{ error: any }>()
 );
 

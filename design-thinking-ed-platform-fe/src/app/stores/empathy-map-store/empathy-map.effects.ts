@@ -72,13 +72,15 @@ export class EmpathyMapEffects {
   upvoteEmpathyMap$ = createEffect(() =>
     this.actions$.pipe(
       ofType(EmpathyMapActions.upvoteEmpathyMap),
-      mergeMap(({ entryId }) =>
-        this.empathyMapService.upvoteEmpathyMap(entryId).pipe(
-          map((updatedEntry) =>
-            EmpathyMapActions.upvoteEmpathyMapSuccess({ entry: updatedEntry })
-          ),
+      mergeMap(({ entryId, userId }) =>
+        this.empathyMapService.upvoteEmpathyMap(entryId, userId).pipe(
+          map((entry) => EmpathyMapActions.upvoteEmpathyMapSuccess({ entry })),
           catchError((error) =>
-            of(EmpathyMapActions.upvoteEmpathyMapFailure({ error }))
+            of(
+              EmpathyMapActions.upvoteEmpathyMapFailure({
+                error: error.message,
+              })
+            )
           )
         )
       )
@@ -125,15 +127,17 @@ export class EmpathyMapEffects {
   loadResponses$ = createEffect(() =>
     this.actions$.pipe(
       ofType(EmpathyMapActions.loadResponses),
-      mergeMap(({ projectId }) =>
-        this.empathyMapService.findAllResponsesByProject(projectId).pipe(
-          map((responses) =>
-            EmpathyMapActions.loadResponsesSuccess({ responses })
-          ),
-          catchError((error) =>
-            of(EmpathyMapActions.loadResponsesFailure({ error }))
+      mergeMap(({ projectId, userId }) =>
+        this.empathyMapService
+          .findAllResponsesByProject(projectId, userId)
+          .pipe(
+            map((responses) =>
+              EmpathyMapActions.loadResponsesSuccess({ responses })
+            ),
+            catchError((error) =>
+              of(EmpathyMapActions.loadResponsesFailure({ error }))
+            )
           )
-        )
       )
     )
   );
@@ -155,15 +159,35 @@ export class EmpathyMapEffects {
   upvoteResponse$ = createEffect(() =>
     this.actions$.pipe(
       ofType(EmpathyMapActions.upvoteResponse),
-      mergeMap(({ responseId }) =>
-        this.empathyMapService.upvoteResponse(responseId).pipe(
-          map((updatedResponse) =>
-            EmpathyMapActions.upvoteResponseSuccess({
-              response: updatedResponse,
-            })
+      mergeMap(({ responseId, userId }) =>
+        this.empathyMapService.upvoteResponse(responseId, userId).pipe(
+          map((response) =>
+            EmpathyMapActions.upvoteResponseSuccess({ response })
           ),
           catchError((error) =>
-            of(EmpathyMapActions.upvoteResponseFailure({ error }))
+            of(
+              EmpathyMapActions.upvoteResponseFailure({ error: error.message })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  removeUpvoteResponse$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(EmpathyMapActions.removeUpvoteResponse),
+      mergeMap(({ responseId, userId }) =>
+        this.empathyMapService.removeUpvoteResponse(responseId, userId).pipe(
+          map((response) =>
+            EmpathyMapActions.removeUpvoteResponseSuccess({ response })
+          ),
+          catchError((error) =>
+            of(
+              EmpathyMapActions.removeUpvoteResponseFailure({
+                error: error.message,
+              })
+            )
           )
         )
       )

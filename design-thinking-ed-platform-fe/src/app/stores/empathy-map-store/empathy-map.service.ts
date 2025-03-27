@@ -25,7 +25,6 @@ export interface EmpathyMapEntry {
   user?: IUser;
   projectId: number;
   upvotes: number;
-  downvotes: number;
   isSelected: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -39,8 +38,8 @@ export interface EmpathyMapResponse {
   user?: IUser;
   projectId: number;
   upvotes: number;
-  downvotes: number;
   isSelected: boolean;
+  hasVoted?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -89,9 +88,12 @@ export class EmpathyMapService {
     return this.http.delete<void>(`${this.apiUrl}/${entryId}`);
   }
 
-  upvoteEmpathyMap(entryId: number): Observable<EmpathyMapEntry> {
-    return this.http.post<EmpathyMapEntry>(
-      `${this.apiUrl}/${entryId}/upvote`,
+  upvoteEmpathyMap(
+    entryId: number,
+    userId: number
+  ): Observable<EmpathyMapEntry> {
+    return this.http.put<EmpathyMapEntry>(
+      `${this.apiUrl}/${entryId}/upvote?userId=${userId}`,
       {}
     );
   }
@@ -130,11 +132,13 @@ export class EmpathyMapService {
   }
 
   findAllResponsesByProject(
-    projectId: number
+    projectId: number,
+    userId?: number
   ): Observable<EmpathyMapResponse[]> {
-    return this.http.get<EmpathyMapResponse[]>(
-      `${this.apiUrl}/project/${projectId}/responses`
-    );
+    const url = `${this.apiUrl}/project/${projectId}/responses${
+      userId ? `?userId=${userId}` : ''
+    }`;
+    return this.http.get<EmpathyMapResponse[]>(url);
   }
 
   findOneResponse(id: number): Observable<EmpathyMapResponse> {
@@ -147,9 +151,22 @@ export class EmpathyMapService {
     });
   }
 
-  upvoteResponse(id: number): Observable<EmpathyMapResponse> {
+  upvoteResponse(
+    responseId: number,
+    userId: number
+  ): Observable<EmpathyMapResponse> {
     return this.http.put<EmpathyMapResponse>(
-      `${this.apiUrl}/response/${id}/upvote`,
+      `${this.apiUrl}/response/${responseId}/upvote?userId=${userId}`,
+      {}
+    );
+  }
+
+  removeUpvoteResponse(
+    responseId: number,
+    userId: number
+  ): Observable<EmpathyMapResponse> {
+    return this.http.delete<EmpathyMapResponse>(
+      `${this.apiUrl}/response/${responseId}/upvote?userId=${userId}`,
       {}
     );
   }

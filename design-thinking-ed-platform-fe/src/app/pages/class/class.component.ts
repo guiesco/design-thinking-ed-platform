@@ -23,7 +23,7 @@ import { __values } from 'tslib';
 })
 export class ClassComponent implements OnInit {
   readonly dialog = inject(MatDialog);
-  userId!: string;
+  userId!: number;
   classes$ = this.classFacade.classes$;
   pageConfig: { skip: number; take: number } = { skip: 0, take: 10 };
 
@@ -37,7 +37,7 @@ export class ClassComponent implements OnInit {
       .pipe(
         take(1),
         tap((user) => {
-          this.userId = user?.id ?? '0';
+          this.userId = user?.id ?? 0;
           this.fetchData();
         })
       )

@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class ClassFacade {
-  constructor(private readonly store: Store<AppState>) { }
+  constructor(private readonly store: Store<AppState>) {}
 
   classes$: Observable<IClass[] | null> = this.store.pipe(
     select(selectors.classSelector)
@@ -27,7 +27,7 @@ export class ClassFacade {
     this.store.dispatch(actions.findAll());
   }
 
-  loadClasses(userId: string, skip: number, take: number) {
+  loadClasses(userId: number, skip: number, take: number) {
     const findQuery: IFindClass = {
       professor: { id: userId },
       skip,
