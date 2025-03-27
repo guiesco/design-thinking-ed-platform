@@ -49,10 +49,6 @@ export class EmpathyMapService {
     const responses = await this.empathyMapResponseRepository.find({
       where: { projectId },
       relations: ['user'],
-      order: {
-        type: 'ASC',
-        createdAt: 'DESC',
-      },
     });
 
     // Para cada resposta, verifica se o usuário já votou
@@ -73,6 +69,9 @@ export class EmpathyMapService {
         response['hasVoted'] = hasVoted;
       }
     }
+
+    // Ordena as respostas por número de upvotes (do maior para o menor)
+    responses.sort((a, b) => b.upvotes - a.upvotes);
 
     return responses;
   }
@@ -123,13 +122,24 @@ export class EmpathyMapService {
     id: number,
     userId: number,
   ): Promise<EmpathyMapResponse> {
+    const response = await this.findOneResponse(id);
     await this.userVoteService.removeVote(
       userId,
       VoteableEntityType.EMPATHY_MAP_RESPONSE,
       id,
     );
 
-    return this.findOneResponse(id);
+    response.upvotes = await this.userVoteService.getVoteCount(
+      VoteableEntityType.EMPATHY_MAP_RESPONSE,
+      id,
+      VoteType.UPVOTE,
+    );
+
+    const empathyResponse = await this.empathyMapResponseRepository.save(
+      response,
+    );
+
+    return { ...empathyResponse, hasVoted: false };
   }
 
   async toggleResponseSelection(id: number): Promise<EmpathyMapResponse> {

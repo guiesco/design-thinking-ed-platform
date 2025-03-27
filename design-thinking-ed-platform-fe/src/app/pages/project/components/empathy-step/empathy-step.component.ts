@@ -155,6 +155,17 @@ export class EmpathyStepComponent implements OnInit {
     }
   }
 
+  refreshData(): void {
+    if (this.projectId) {
+      this.empathyMapFacade.loadResponses(this.projectId, this.currentUserId);
+      this.snackBar.open('Dados atualizados com sucesso!', 'Fechar', {
+        duration: 2000,
+        horizontalPosition: 'end',
+        verticalPosition: 'top',
+      });
+    }
+  }
+
   loadResponses(): void {
     if (this.projectId) {
       this.empathyMapFacade.loadResponses(

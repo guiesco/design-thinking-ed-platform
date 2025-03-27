@@ -97,7 +97,17 @@
     <div class="empathy-maps-grid">
       <!-- Tabela para Pensa e Sente -->
       <div class="response-table-section">
-        <h3>Pensa e Sente</h3>
+        <div class="table-header">
+          <h3>Pensa e Sente</h3>
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="refreshData()"
+            matTooltip="Atualizar dados"
+          >
+            <mat-icon>refresh</mat-icon>
+          </button>
+        </div>
         <table mat-table [dataSource]="getResponsesByType(ResponseType.THINK)">
           <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef></th>
@@ -151,7 +161,17 @@
 
       <!-- Tabela para Vê -->
       <div class="response-table-section">
-        <h3>Vê</h3>
+        <div class="table-header">
+          <h3>Vê</h3>
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="refreshData()"
+            matTooltip="Atualizar dados"
+          >
+            <mat-icon>refresh</mat-icon>
+          </button>
+        </div>
         <table mat-table [dataSource]="getResponsesByType(ResponseType.FEEL)">
           <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef></th>
@@ -205,7 +225,17 @@
 
       <!-- Tabela para Ouve -->
       <div class="response-table-section">
-        <h3>Ouve</h3>
+        <div class="table-header">
+          <h3>Ouve</h3>
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="refreshData()"
+            matTooltip="Atualizar dados"
+          >
+            <mat-icon>refresh</mat-icon>
+          </button>
+        </div>
         <table mat-table [dataSource]="getResponsesByType(ResponseType.SAY)">
           <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef></th>
@@ -259,7 +289,17 @@
 
       <!-- Tabela para Faz -->
       <div class="response-table-section">
-        <h3>Faz</h3>
+        <div class="table-header">
+          <h3>Faz</h3>
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="refreshData()"
+            matTooltip="Atualizar dados"
+          >
+            <mat-icon>refresh</mat-icon>
+          </button>
+        </div>
         <table mat-table [dataSource]="getResponsesByType(ResponseType.DO)">
           <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef></th>
@@ -313,7 +353,17 @@
 
       <!-- Tabela para Dores -->
       <div class="response-table-section">
-        <h3>Dores</h3>
+        <div class="table-header">
+          <h3>Dores</h3>
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="refreshData()"
+            matTooltip="Atualizar dados"
+          >
+            <mat-icon>refresh</mat-icon>
+          </button>
+        </div>
         <table mat-table [dataSource]="getResponsesByType(ResponseType.PAINS)">
           <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef></th>
@@ -367,7 +417,17 @@
 
       <!-- Tabela para Necessidades -->
       <div class="response-table-section">
-        <h3>Necessidades</h3>
+        <div class="table-header">
+          <h3>Necessidades</h3>
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="refreshData()"
+            matTooltip="Atualizar dados"
+          >
+            <mat-icon>refresh</mat-icon>
+          </button>
+        </div>
         <table mat-table [dataSource]="getResponsesByType(ResponseType.NEEDS)">
           <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef></th>
