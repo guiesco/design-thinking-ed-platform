@@ -121,7 +121,23 @@
 
           <ng-container matColumnDef="content">
             <th mat-header-cell *matHeaderCellDef>Resposta</th>
-            <td mat-cell *matCellDef="let response">{{ response.content }}</td>
+            <td mat-cell *matCellDef="let response">
+              <ng-container
+                *ngIf="editingResponseId === response.id; else viewContent"
+              >
+                <mat-form-field appearance="outline" class="edit-field">
+                  <textarea
+                    matInput
+                    [(ngModel)]="editingContent"
+                    (keyup.enter)="saveEdit()"
+                    (keyup.escape)="cancelEditing()"
+                  ></textarea>
+                </mat-form-field>
+              </ng-container>
+              <ng-template #viewContent>
+                {{ response.content }}
+              </ng-template>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="actions">
@@ -139,17 +155,48 @@
                   </mat-icon>
                   <span class="vote-count">{{ response.upvotes }}</span>
                 </button>
-                <button
-                  mat-icon-button
-                  [style.visibility]="
-                    response.userId === currentUserId ? 'visible' : 'hidden'
-                  "
-                  color="warn"
-                  (click)="onDeleteResponse(response.id)"
-                  matTooltip="Deletar resposta"
-                >
-                  <mat-icon>delete</mat-icon>
-                </button>
+                <ng-container *ngIf="editingResponseId === response.id">
+                  <button
+                    mat-icon-button
+                    color="primary"
+                    (click)="saveEdit()"
+                    matTooltip="Salvar"
+                  >
+                    <mat-icon>check</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    color="warn"
+                    (click)="cancelEditing()"
+                    matTooltip="Cancelar"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </ng-container>
+                <ng-container *ngIf="editingResponseId !== response.id">
+                  <button
+                    mat-icon-button
+                    [style.visibility]="
+                      response.userId === currentUserId ? 'visible' : 'hidden'
+                    "
+                    color="primary"
+                    (click)="startEditing(response)"
+                    matTooltip="Editar"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    [style.visibility]="
+                      response.userId === currentUserId ? 'visible' : 'hidden'
+                    "
+                    color="warn"
+                    (click)="onDeleteResponse(response.id)"
+                    matTooltip="Deletar resposta"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </ng-container>
               </div>
             </td>
           </ng-container>
@@ -185,7 +232,23 @@
 
           <ng-container matColumnDef="content">
             <th mat-header-cell *matHeaderCellDef>Resposta</th>
-            <td mat-cell *matCellDef="let response">{{ response.content }}</td>
+            <td mat-cell *matCellDef="let response">
+              <ng-container
+                *ngIf="editingResponseId === response.id; else viewContent"
+              >
+                <mat-form-field appearance="outline" class="edit-field">
+                  <textarea
+                    matInput
+                    [(ngModel)]="editingContent"
+                    (keyup.enter)="saveEdit()"
+                    (keyup.escape)="cancelEditing()"
+                  ></textarea>
+                </mat-form-field>
+              </ng-container>
+              <ng-template #viewContent>
+                {{ response.content }}
+              </ng-template>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="actions">
@@ -203,17 +266,48 @@
                   </mat-icon>
                   <span class="vote-count">{{ response.upvotes }}</span>
                 </button>
-                <button
-                  mat-icon-button
-                  [style.visibility]="
-                    response.userId === currentUserId ? 'visible' : 'hidden'
-                  "
-                  color="warn"
-                  (click)="onDeleteResponse(response.id)"
-                  matTooltip="Deletar resposta"
-                >
-                  <mat-icon>delete</mat-icon>
-                </button>
+                <ng-container *ngIf="editingResponseId === response.id">
+                  <button
+                    mat-icon-button
+                    color="primary"
+                    (click)="saveEdit()"
+                    matTooltip="Salvar"
+                  >
+                    <mat-icon>check</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    color="warn"
+                    (click)="cancelEditing()"
+                    matTooltip="Cancelar"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </ng-container>
+                <ng-container *ngIf="editingResponseId !== response.id">
+                  <button
+                    mat-icon-button
+                    [style.visibility]="
+                      response.userId === currentUserId ? 'visible' : 'hidden'
+                    "
+                    color="primary"
+                    (click)="startEditing(response)"
+                    matTooltip="Editar"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    [style.visibility]="
+                      response.userId === currentUserId ? 'visible' : 'hidden'
+                    "
+                    color="warn"
+                    (click)="onDeleteResponse(response.id)"
+                    matTooltip="Deletar resposta"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </ng-container>
               </div>
             </td>
           </ng-container>
@@ -249,7 +343,23 @@
 
           <ng-container matColumnDef="content">
             <th mat-header-cell *matHeaderCellDef>Resposta</th>
-            <td mat-cell *matCellDef="let response">{{ response.content }}</td>
+            <td mat-cell *matCellDef="let response">
+              <ng-container
+                *ngIf="editingResponseId === response.id; else viewContent"
+              >
+                <mat-form-field appearance="outline" class="edit-field">
+                  <textarea
+                    matInput
+                    [(ngModel)]="editingContent"
+                    (keyup.enter)="saveEdit()"
+                    (keyup.escape)="cancelEditing()"
+                  ></textarea>
+                </mat-form-field>
+              </ng-container>
+              <ng-template #viewContent>
+                {{ response.content }}
+              </ng-template>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="actions">
@@ -267,17 +377,48 @@
                   </mat-icon>
                   <span class="vote-count">{{ response.upvotes }}</span>
                 </button>
-                <button
-                  mat-icon-button
-                  [style.visibility]="
-                    response.userId === currentUserId ? 'visible' : 'hidden'
-                  "
-                  color="warn"
-                  (click)="onDeleteResponse(response.id)"
-                  matTooltip="Deletar resposta"
-                >
-                  <mat-icon>delete</mat-icon>
-                </button>
+                <ng-container *ngIf="editingResponseId === response.id">
+                  <button
+                    mat-icon-button
+                    color="primary"
+                    (click)="saveEdit()"
+                    matTooltip="Salvar"
+                  >
+                    <mat-icon>check</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    color="warn"
+                    (click)="cancelEditing()"
+                    matTooltip="Cancelar"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </ng-container>
+                <ng-container *ngIf="editingResponseId !== response.id">
+                  <button
+                    mat-icon-button
+                    [style.visibility]="
+                      response.userId === currentUserId ? 'visible' : 'hidden'
+                    "
+                    color="primary"
+                    (click)="startEditing(response)"
+                    matTooltip="Editar"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    [style.visibility]="
+                      response.userId === currentUserId ? 'visible' : 'hidden'
+                    "
+                    color="warn"
+                    (click)="onDeleteResponse(response.id)"
+                    matTooltip="Deletar resposta"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </ng-container>
               </div>
             </td>
           </ng-container>
@@ -313,7 +454,23 @@
 
           <ng-container matColumnDef="content">
             <th mat-header-cell *matHeaderCellDef>Resposta</th>
-            <td mat-cell *matCellDef="let response">{{ response.content }}</td>
+            <td mat-cell *matCellDef="let response">
+              <ng-container
+                *ngIf="editingResponseId === response.id; else viewContent"
+              >
+                <mat-form-field appearance="outline" class="edit-field">
+                  <textarea
+                    matInput
+                    [(ngModel)]="editingContent"
+                    (keyup.enter)="saveEdit()"
+                    (keyup.escape)="cancelEditing()"
+                  ></textarea>
+                </mat-form-field>
+              </ng-container>
+              <ng-template #viewContent>
+                {{ response.content }}
+              </ng-template>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="actions">
@@ -331,17 +488,48 @@
                   </mat-icon>
                   <span class="vote-count">{{ response.upvotes }}</span>
                 </button>
-                <button
-                  mat-icon-button
-                  [style.visibility]="
-                    response.userId === currentUserId ? 'visible' : 'hidden'
-                  "
-                  color="warn"
-                  (click)="onDeleteResponse(response.id)"
-                  matTooltip="Deletar resposta"
-                >
-                  <mat-icon>delete</mat-icon>
-                </button>
+                <ng-container *ngIf="editingResponseId === response.id">
+                  <button
+                    mat-icon-button
+                    color="primary"
+                    (click)="saveEdit()"
+                    matTooltip="Salvar"
+                  >
+                    <mat-icon>check</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    color="warn"
+                    (click)="cancelEditing()"
+                    matTooltip="Cancelar"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </ng-container>
+                <ng-container *ngIf="editingResponseId !== response.id">
+                  <button
+                    mat-icon-button
+                    [style.visibility]="
+                      response.userId === currentUserId ? 'visible' : 'hidden'
+                    "
+                    color="primary"
+                    (click)="startEditing(response)"
+                    matTooltip="Editar"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    [style.visibility]="
+                      response.userId === currentUserId ? 'visible' : 'hidden'
+                    "
+                    color="warn"
+                    (click)="onDeleteResponse(response.id)"
+                    matTooltip="Deletar resposta"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </ng-container>
               </div>
             </td>
           </ng-container>
@@ -377,7 +565,23 @@
 
           <ng-container matColumnDef="content">
             <th mat-header-cell *matHeaderCellDef>Resposta</th>
-            <td mat-cell *matCellDef="let response">{{ response.content }}</td>
+            <td mat-cell *matCellDef="let response">
+              <ng-container
+                *ngIf="editingResponseId === response.id; else viewContent"
+              >
+                <mat-form-field appearance="outline" class="edit-field">
+                  <textarea
+                    matInput
+                    [(ngModel)]="editingContent"
+                    (keyup.enter)="saveEdit()"
+                    (keyup.escape)="cancelEditing()"
+                  ></textarea>
+                </mat-form-field>
+              </ng-container>
+              <ng-template #viewContent>
+                {{ response.content }}
+              </ng-template>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="actions">
@@ -395,17 +599,48 @@
                   </mat-icon>
                   <span class="vote-count">{{ response.upvotes }}</span>
                 </button>
-                <button
-                  mat-icon-button
-                  [style.visibility]="
-                    response.userId === currentUserId ? 'visible' : 'hidden'
-                  "
-                  color="warn"
-                  (click)="onDeleteResponse(response.id)"
-                  matTooltip="Deletar resposta"
-                >
-                  <mat-icon>delete</mat-icon>
-                </button>
+                <ng-container *ngIf="editingResponseId === response.id">
+                  <button
+                    mat-icon-button
+                    color="primary"
+                    (click)="saveEdit()"
+                    matTooltip="Salvar"
+                  >
+                    <mat-icon>check</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    color="warn"
+                    (click)="cancelEditing()"
+                    matTooltip="Cancelar"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </ng-container>
+                <ng-container *ngIf="editingResponseId !== response.id">
+                  <button
+                    mat-icon-button
+                    [style.visibility]="
+                      response.userId === currentUserId ? 'visible' : 'hidden'
+                    "
+                    color="primary"
+                    (click)="startEditing(response)"
+                    matTooltip="Editar"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    [style.visibility]="
+                      response.userId === currentUserId ? 'visible' : 'hidden'
+                    "
+                    color="warn"
+                    (click)="onDeleteResponse(response.id)"
+                    matTooltip="Deletar resposta"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </ng-container>
               </div>
             </td>
           </ng-container>
@@ -441,7 +676,23 @@
 
           <ng-container matColumnDef="content">
             <th mat-header-cell *matHeaderCellDef>Resposta</th>
-            <td mat-cell *matCellDef="let response">{{ response.content }}</td>
+            <td mat-cell *matCellDef="let response">
+              <ng-container
+                *ngIf="editingResponseId === response.id; else viewContent"
+              >
+                <mat-form-field appearance="outline" class="edit-field">
+                  <textarea
+                    matInput
+                    [(ngModel)]="editingContent"
+                    (keyup.enter)="saveEdit()"
+                    (keyup.escape)="cancelEditing()"
+                  ></textarea>
+                </mat-form-field>
+              </ng-container>
+              <ng-template #viewContent>
+                {{ response.content }}
+              </ng-template>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="actions">
@@ -459,17 +710,48 @@
                   </mat-icon>
                   <span class="vote-count">{{ response.upvotes }}</span>
                 </button>
-                <button
-                  mat-icon-button
-                  [style.visibility]="
-                    response.userId === currentUserId ? 'visible' : 'hidden'
-                  "
-                  color="warn"
-                  (click)="onDeleteResponse(response.id)"
-                  matTooltip="Deletar resposta"
-                >
-                  <mat-icon>delete</mat-icon>
-                </button>
+                <ng-container *ngIf="editingResponseId === response.id">
+                  <button
+                    mat-icon-button
+                    color="primary"
+                    (click)="saveEdit()"
+                    matTooltip="Salvar"
+                  >
+                    <mat-icon>check</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    color="warn"
+                    (click)="cancelEditing()"
+                    matTooltip="Cancelar"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </ng-container>
+                <ng-container *ngIf="editingResponseId !== response.id">
+                  <button
+                    mat-icon-button
+                    [style.visibility]="
+                      response.userId === currentUserId ? 'visible' : 'hidden'
+                    "
+                    color="primary"
+                    (click)="startEditing(response)"
+                    matTooltip="Editar"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    [style.visibility]="
+                      response.userId === currentUserId ? 'visible' : 'hidden'
+                    "
+                    color="warn"
+                    (click)="onDeleteResponse(response.id)"
+                    matTooltip="Deletar resposta"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </ng-container>
               </div>
             </td>
           </ng-container>

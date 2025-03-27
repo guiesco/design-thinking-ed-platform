@@ -128,17 +128,32 @@ export const loadResponsesFailure = createAction(
 );
 
 export const deleteResponse = createAction(
-  '[EmpathyMap] Delete Response',
+  '[Empathy Map] Delete Response',
   props<{ id: number; userId: number }>()
 );
 
 export const deleteResponseSuccess = createAction(
-  '[EmpathyMap] Delete Response Success',
+  '[Empathy Map] Delete Response Success',
   props<{ id: number }>()
 );
 
 export const deleteResponseFailure = createAction(
-  '[EmpathyMap] Delete Response Failure',
+  '[Empathy Map] Delete Response Failure',
+  props<{ error: any }>()
+);
+
+export const updateResponse = createAction(
+  '[Empathy Map] Update Response',
+  props<{ id: number; userId: number; content: string }>()
+);
+
+export const updateResponseSuccess = createAction(
+  '[Empathy Map] Update Response Success',
+  props<{ response: EmpathyMapResponse }>()
+);
+
+export const updateResponseFailure = createAction(
+  '[Empathy Map] Update Response Failure',
   props<{ error: any }>()
 );
 

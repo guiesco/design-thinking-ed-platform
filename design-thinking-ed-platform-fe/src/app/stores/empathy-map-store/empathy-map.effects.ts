@@ -156,6 +156,22 @@ export class EmpathyMapEffects {
     )
   );
 
+  updateResponse$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(EmpathyMapActions.updateResponse),
+      mergeMap(({ id, userId, content }) =>
+        this.empathyMapService.updateResponse(id, userId, content).pipe(
+          map((response) =>
+            EmpathyMapActions.updateResponseSuccess({ response })
+          ),
+          catchError((error) =>
+            of(EmpathyMapActions.updateResponseFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
   upvoteResponse$ = createEffect(() =>
     this.actions$.pipe(
       ofType(EmpathyMapActions.upvoteResponse),

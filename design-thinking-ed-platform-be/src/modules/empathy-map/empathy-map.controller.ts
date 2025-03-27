@@ -98,4 +98,13 @@ export class EmpathyMapController {
   deleteResponse(@Param('id') id: string, @Query('userId') userId: string) {
     return this.empathyMapService.deleteResponse(+id, +userId);
   }
+
+  @Put('response/:id')
+  updateResponse(
+    @Param('id') id: string,
+    @Query('userId') userId: string,
+    @Body('content') content: string,
+  ) {
+    return this.empathyMapService.updateResponse(+id, +userId, content);
+  }
 }

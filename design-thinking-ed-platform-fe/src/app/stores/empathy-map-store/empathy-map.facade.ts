@@ -48,6 +48,12 @@ export class EmpathyMapFacade {
     this.store.dispatch(EmpathyMapActions.createResponse({ response }));
   }
 
+  updateResponse(id: number, userId: number, content: string): void {
+    this.store.dispatch(
+      EmpathyMapActions.updateResponse({ id, userId, content })
+    );
+  }
+
   loadResponses(projectId: number, userId?: number): void {
     this.store.dispatch(EmpathyMapActions.loadResponses({ projectId, userId }));
   }

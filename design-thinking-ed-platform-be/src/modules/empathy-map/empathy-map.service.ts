@@ -219,4 +219,27 @@ export class EmpathyMapService {
 
     await this.empathyMapResponseRepository.remove(response);
   }
+
+  async updateResponse(
+    id: number,
+    userId: number,
+    content: string,
+  ): Promise<EmpathyMapResponse> {
+    const response = await this.empathyMapResponseRepository.findOne({
+      where: { id },
+    });
+
+    if (!response) {
+      throw new Error('Response not found');
+    }
+
+    if (response.userId !== userId) {
+      throw new Error(
+        'Unauthorized: Only the creator can update this response',
+      );
+    }
+
+    response.content = content;
+    return this.empathyMapResponseRepository.save(response);
+  }
 }

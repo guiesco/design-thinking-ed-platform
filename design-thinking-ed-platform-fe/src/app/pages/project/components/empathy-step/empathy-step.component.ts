@@ -36,6 +36,8 @@ export class EmpathyStepComponent implements OnInit {
       )
     );
   displayedColumns: string[] = ['select', 'content', 'actions'];
+  editingResponseId: number | null = null;
+  editingContent: string = '';
 
   newEntry = {
     think: '',
@@ -152,6 +154,28 @@ export class EmpathyStepComponent implements OnInit {
       this.store.dispatch(
         EmpathyMapActions.deleteResponse({ id, userId: this.currentUserId })
       );
+    }
+  }
+
+  startEditing(response: EmpathyMapResponse): void {
+    this.editingResponseId = response.id;
+    this.editingContent = response.content;
+  }
+
+  cancelEditing(): void {
+    this.editingResponseId = null;
+    this.editingContent = '';
+  }
+
+  saveEdit(): void {
+    if (this.editingResponseId && this.currentUserId) {
+      this.empathyMapFacade.updateResponse(
+        this.editingResponseId,
+        this.currentUserId,
+        this.editingContent
+      );
+      this.editingResponseId = null;
+      this.editingContent = '';
     }
   }
 

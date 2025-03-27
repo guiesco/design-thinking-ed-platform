@@ -131,6 +131,18 @@ export class EmpathyMapService {
     );
   }
 
+  updateResponse(
+    id: number,
+    userId: number,
+    content: string
+  ): Observable<EmpathyMapResponse> {
+    return this.http.put<EmpathyMapResponse>(
+      `${this.apiUrl}/response/${id}`,
+      { content },
+      { params: { userId: userId.toString() } }
+    );
+  }
+
   findAllResponsesByProject(
     projectId: number,
     userId?: number
