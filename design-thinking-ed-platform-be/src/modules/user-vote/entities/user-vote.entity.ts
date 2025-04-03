@@ -3,23 +3,20 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  UpdateDateColumn,
   ManyToOne,
-  JoinColumn,
 } from 'typeorm';
-import { UserEntity } from '../../user/entities/user.entity';
-import { VoteType, VoteableEntityType } from '../enums/vote.enum';
-
-@Entity('user_votes')
+import { EmpathyMapResponse } from '../../empathy-map/entities/empathy-map-response.entity';
+import { ChallengeDefinitionResponse } from '../../challenge-definition/entities/challenge-definition-response.entity';
+import { VoteableEntityType } from '../enums/voteable-entity-type.enum';
+import { UserEntity } from 'src/modules/user/entities/user.entity';
+@Entity()
 export class UserVote {
   @PrimaryGeneratedColumn()
   id: number;
 
   @ManyToOne(() => UserEntity)
-  @JoinColumn({ name: 'user_id' })
   user: UserEntity;
-
-  @Column({ name: 'user_id' })
-  userId: number;
 
   @Column({
     type: 'enum',
@@ -27,15 +24,18 @@ export class UserVote {
   })
   entityType: VoteableEntityType;
 
-  @Column({ name: 'entity_id' })
+  @Column()
   entityId: number;
 
-  @Column({
-    type: 'enum',
-    enum: VoteType,
-  })
-  voteType: VoteType;
+  @ManyToOne(() => EmpathyMapResponse)
+  empathyMapResponse: EmpathyMapResponse;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @ManyToOne(() => ChallengeDefinitionResponse)
+  challengeDefinitionResponse: ChallengeDefinitionResponse;
+
+  @CreateDateColumn()
   createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

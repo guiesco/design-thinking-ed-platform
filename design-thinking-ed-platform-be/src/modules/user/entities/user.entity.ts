@@ -7,7 +7,11 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   Unique,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
+import { EmpathyMapResponse } from '../../empathy-map/entities/empathy-map-response.entity';
+import { ChallengeDefinitionResponse } from '../../challenge-definition/entities/challenge-definition-response.entity';
 
 @Entity()
 export class UserEntity {
@@ -43,4 +47,16 @@ export class UserEntity {
     eager: true,
   })
   group: GroupEntity;
+
+  @OneToMany(() => EmpathyMapResponse, (response) => response.user)
+  empathyMapResponses: EmpathyMapResponse[];
+
+  @OneToMany(() => ChallengeDefinitionResponse, (response) => response.user)
+  challengeDefinitionResponses: ChallengeDefinitionResponse[];
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

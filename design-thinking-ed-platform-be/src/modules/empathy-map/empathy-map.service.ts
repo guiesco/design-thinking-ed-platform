@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EmpathyMap } from './entities/empathy-map.entity';
@@ -9,8 +9,7 @@ import {
 } from './entities/empathy-map-response.entity';
 import { CreateEmpathyMapResponseDto } from './dto/create-empathy-map-response.dto';
 import { UserVoteService } from '../user-vote/user-vote.service';
-import { VoteType, VoteableEntityType } from '../user-vote/enums/vote.enum';
-import { UserVote } from '../user-vote/entities/user-vote.entity';
+import { VoteableEntityType } from '../user-vote/enums/voteable-entity-type.enum';
 
 @Injectable()
 export class EmpathyMapService {
@@ -56,7 +55,6 @@ export class EmpathyMapService {
       response.upvotes = await this.userVoteService.getVoteCount(
         VoteableEntityType.EMPATHY_MAP_RESPONSE,
         response.id,
-        VoteType.UPVOTE,
       );
 
       // Se um userId foi fornecido, verifica se o usuário já votou
@@ -97,18 +95,16 @@ export class EmpathyMapService {
     const response = await this.findOneResponse(id);
 
     // Registra o voto do usuário
-    await this.userVoteService.vote(
+    await this.userVoteService.createVote(
       userId,
       VoteableEntityType.EMPATHY_MAP_RESPONSE,
       id,
-      VoteType.UPVOTE,
     );
 
     // Atualiza o contador de upvotes
     response.upvotes = await this.userVoteService.getVoteCount(
       VoteableEntityType.EMPATHY_MAP_RESPONSE,
       id,
-      VoteType.UPVOTE,
     );
 
     const empathyResponse = await this.empathyMapResponseRepository.save(
@@ -132,7 +128,6 @@ export class EmpathyMapService {
     response.upvotes = await this.userVoteService.getVoteCount(
       VoteableEntityType.EMPATHY_MAP_RESPONSE,
       id,
-      VoteType.UPVOTE,
     );
 
     const empathyResponse = await this.empathyMapResponseRepository.save(
@@ -172,18 +167,16 @@ export class EmpathyMapService {
     const empathyMap = await this.findOne(id);
 
     // Registra o voto do usuário
-    await this.userVoteService.vote(
+    await this.userVoteService.createVote(
       userId,
       VoteableEntityType.EMPATHY_MAP,
       id,
-      VoteType.UPVOTE,
     );
 
     // Atualiza o contador de upvotes
     empathyMap.upvotes = await this.userVoteService.getVoteCount(
       VoteableEntityType.EMPATHY_MAP,
       id,
-      VoteType.UPVOTE,
     );
 
     return this.empathyMapRepository.save(empathyMap);

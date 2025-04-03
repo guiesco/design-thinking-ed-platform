@@ -7,6 +7,8 @@ import { ClassModule } from './modules/class/class.module';
 import { GroupModule } from './modules/group/group.module';
 import { ProjectModule } from './modules/project/project.module';
 import { EmpathyMapModule } from './modules/empathy-map/empathy-map.module';
+import { ChallengeDefinitionModule } from './modules/challenge-definition/challenge-definition.module';
+import { UserVoteModule } from './modules/user-vote/user-vote.module';
 
 @Module({
   imports: [
@@ -26,6 +28,8 @@ import { EmpathyMapModule } from './modules/empathy-map/empathy-map.module';
     GroupModule,
     ProjectModule,
     EmpathyMapModule,
+    UserVoteModule,
+    ChallengeDefinitionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
