@@ -16,6 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatChipsModule } from '@angular/material/chips';
 
 import { PagesRoutingModule } from './pages-routing.module';
 import { LoginComponent } from './login/login.component';
@@ -34,6 +35,9 @@ import { ProjectComponent } from './project/project.component';
 import { MatOptionModule } from '@angular/material/core';
 import { EmpathyStepComponent } from './project/components/empathy-step/empathy-step.component';
 import { EmpathyMapStateModule } from '../stores/empathy-map-store/empathy-map.module';
+import { ChallengeDefinitionStepComponent } from './project/components/challenge-definition-step/challenge-definition-step.component';
+import { ProjectStateModule } from '../stores/project-store/project.module';
+import { MatExpansionModule } from '@angular/material/expansion';
 const angularMaterialModules = [
   MatToolbarModule,
   MatSidenavModule,
@@ -52,16 +56,19 @@ const angularMaterialModules = [
   MatSnackBarModule,
   MatTableModule,
   MatTooltipModule,
+  MatChipsModule,
+  MatExpansionModule,
 ];
 
-const importModules = [
-  FormsModule,
-  ReactiveFormsModule,
+const stateModules = [
   UserStateModule,
   ClassStateModule,
   GroupStateModule,
   EmpathyMapStateModule,
+  ProjectStateModule,
 ];
+
+const importModules = [FormsModule, ReactiveFormsModule, ...stateModules];
 
 @NgModule({
   imports: [
@@ -81,6 +88,7 @@ const importModules = [
     CreateGroupDialogComponent,
     ProjectComponent,
     EmpathyStepComponent,
+    ChallengeDefinitionStepComponent,
   ],
   exports: [PageWrapperComponent],
 })

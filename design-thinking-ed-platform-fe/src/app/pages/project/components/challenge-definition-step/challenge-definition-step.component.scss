@@ -1,0 +1,203 @@
+.challenge-definition-step-container {
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    .challenge-definition-step-header {
+        margin-bottom: 32px;
+        text-align: center;
+
+        h2 {
+            font-size: 32px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        p {
+            font-size: 16px;
+            color: #666;
+        }
+    }
+
+    .challenge-definition-step-content {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 24px;
+
+        @media (min-width: 1024px) {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .questions-section,
+        .brainstorm-section {
+            h3 {
+                font-size: 24px;
+                font-weight: 500;
+                margin-bottom: 24px;
+                color: #333;
+            }
+        }
+
+        .question-card,
+        .brainstorm-card {
+            margin-bottom: 24px;
+
+            mat-card-header {
+                margin-bottom: 16px;
+
+                mat-card-title {
+                    font-size: 20px;
+                    font-weight: 500;
+                }
+            }
+
+            mat-card-content {
+                form {
+                    margin-bottom: 24px;
+
+                    .full-width {
+                        width: 100%;
+                    }
+
+                    .form-actions {
+                        display: flex;
+                        justify-content: flex-end;
+                        margin-top: 16px;
+                    }
+                }
+
+                .response-table-section {
+                    margin-top: 24px;
+
+                    table {
+                        width: 100%;
+
+                        .edit-field {
+                            width: 100%;
+
+                            mat-form-field {
+                                width: 100%;
+                            }
+                        }
+
+                        .response-actions {
+                            display: flex;
+                            gap: 8px;
+                            align-items: center;
+
+                            .vote-count {
+                                margin-left: 4px;
+                                font-size: 14px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    mat-spinner {
+        margin: 24px auto;
+    }
+
+    .error-message {
+        color: #f44336;
+        text-align: center;
+        margin-top: 16px;
+        padding: 16px;
+        background-color: #ffebee;
+        border-radius: 4px;
+    }
+}
+
+@media (max-width: 768px) {
+    .challenge-definition-step-container {
+        padding: 0.5rem;
+
+        .challenge-definition-step-content {
+
+            .questions-section,
+            .brainstorm-section {
+
+                .question-card,
+                .brainstorm-card {
+                    margin-bottom: 0.5rem;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .challenge-definition-step-container {
+        padding: 0.25rem;
+
+        .challenge-definition-step-content {
+            .response-table-section {
+                padding: 6px;
+
+                table {
+                    .response-actions {
+                        button {
+                            min-width: 28px;
+                            height: 28px;
+                            line-height: 20px;
+
+                            .vote-count {
+                                font-size: 10px;
+                                padding: 1px 3px;
+                                right: -2px;
+                                bottom: -2px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.vote-count {
+    font-weight: 500;
+}
+
+mat-icon.voted {
+    color: #f44336;
+}
+
+.edit-field {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+    ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+        display: none;
+    }
+
+    ::ng-deep .mat-mdc-form-field-infix {
+        padding: 0;
+        border-top: none;
+    }
+
+    textarea {
+        min-height: 40px;
+        resize: vertical;
+    }
+}
+
+.response-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.error-message {
+    color: #f44336;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+mat-spinner {
+    margin: 2rem auto;
+}

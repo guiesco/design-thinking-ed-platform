@@ -11,6 +11,7 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { CreateGroupDialogComponent } from './create-group/create-group.component';
 import { EmpathyStepComponent } from './project/components/empathy-step/empathy-step.component';
 import { ProjectComponent } from './project/project.component';
+import { ChallengeDefinitionStepComponent } from './project/components/challenge-definition-step/challenge-definition-step.component';
 
 const pagesRoutes: Routes = [
   {
@@ -70,6 +71,10 @@ const pagesRoutes: Routes = [
           {
             path: 'empathy',
             component: EmpathyStepComponent,
+          },
+          {
+            path: 'challenge-definition',
+            component: ChallengeDefinitionStepComponent,
           },
           {
             path: '',
