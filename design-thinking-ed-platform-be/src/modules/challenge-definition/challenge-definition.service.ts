@@ -62,14 +62,22 @@ export class ChallengeDefinitionService {
 
   async updateResponse(
     responseId: number,
+    userId: number,
     content: string,
   ): Promise<ChallengeDefinitionResponse> {
     const response = await this.challengeDefinitionResponseRepository.findOne({
       where: { id: responseId },
+      relations: ['user'],
     });
 
     if (!response) {
-      throw new NotFoundException('Resposta não encontrada');
+      throw new Error('Response not found');
+    }
+
+    if (response.user.id !== userId) {
+      throw new Error(
+        'Unauthorized: Only the creator can update this response',
+      );
     }
 
     response.content = content;
@@ -86,25 +94,64 @@ export class ChallengeDefinitionService {
     }
   }
 
-  async upvoteResponse(responseId: number, userId: number): Promise<void> {
+  async upvoteResponse(
+    responseId: number,
+    userId: number,
+  ): Promise<ChallengeDefinitionResponse> {
+    const response = await this.challengeDefinitionResponseRepository.findOne({
+      where: { id: responseId },
+      relations: ['user'],
+    });
+
+    // Registra o voto do usuário
     await this.userVoteService.createVote(
       userId,
       VoteableEntityType.CHALLENGE_DEFINITION_RESPONSE,
       responseId,
     );
+
+    // Atualiza o contador de upvotes
+    response.upvotes = await this.userVoteService.getVoteCount(
+      VoteableEntityType.CHALLENGE_DEFINITION_RESPONSE,
+      responseId,
+    );
+
+    const empathyResponse =
+      await this.challengeDefinitionResponseRepository.save(response);
+
+    return { ...empathyResponse, hasVoted: true };
   }
 
-  async removeVote(responseId: number, userId: number): Promise<void> {
+  async removeVote(
+    responseId: number,
+    userId: number,
+  ): Promise<ChallengeDefinitionResponse> {
+    const response = await this.challengeDefinitionResponseRepository.findOne({
+      where: { id: responseId },
+      relations: ['user'],
+    });
+
     await this.userVoteService.removeVote(
       userId,
       VoteableEntityType.CHALLENGE_DEFINITION_RESPONSE,
       responseId,
     );
+
+    response.upvotes = await this.userVoteService.getVoteCount(
+      VoteableEntityType.CHALLENGE_DEFINITION_RESPONSE,
+      responseId,
+    );
+
+    const challengeDefinitionResponse =
+      await this.challengeDefinitionResponseRepository.save(response);
+
+    return { ...challengeDefinitionResponse, hasVoted: false };
   }
 
   async toggleResponseSelection(responseId: number): Promise<void> {
     const response = await this.challengeDefinitionResponseRepository.findOne({
       where: { id: responseId },
+      relations: ['user'],
     });
 
     if (!response) {

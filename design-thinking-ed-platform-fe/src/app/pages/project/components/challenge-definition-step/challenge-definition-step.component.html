@@ -4,10 +4,10 @@
     <p>Defina claramente o desafio do seu projeto</p>
   </div>
 
-  <div class="challenge-definition-step-content">
-    <!-- Etapa 1: Perguntas -->
+  <!-- Etapa 1: Problemas, Público Alvo e Como Podemos -->
+  <div class="challenge-definition-step-content" *ngIf="currentStep === 1">
     <div class="questions-section">
-      <h3>Perguntas</h3>
+      <h3>Etapa 1: Definição do Desafio</h3>
 
       <!-- Problemas -->
       <mat-card class="question-card">
@@ -41,19 +41,50 @@
           </form>
 
           <div class="response-table-section">
+            <div class="table-header">
+              <h3>Problemas</h3>
+              <button
+                mat-icon-button
+                color="primary"
+                (click)="refreshData()"
+                matTooltip="Atualizar dados"
+              >
+                <mat-icon>refresh</mat-icon>
+              </button>
+            </div>
             <table
               mat-table
               [dataSource]="problemsDataSource"
               class="mat-elevation-z8"
             >
-              <ng-container matColumnDef="content">
-                <th mat-header-cell *matHeaderCellDef>Conteúdo</th>
+              <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let response">
-                  <div class="edit-field">
-                    <mat-form-field appearance="outline">
-                      <textarea matInput [value]="response.content"></textarea>
+                  <mat-checkbox
+                    [checked]="response.isSelected"
+                    (change)="onToggleSelection(response)"
+                  ></mat-checkbox>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="content">
+                <th mat-header-cell *matHeaderCellDef>Resposta</th>
+                <td mat-cell *matCellDef="let response">
+                  <ng-container
+                    *ngIf="editingResponseId === response.id; else viewContent"
+                  >
+                    <mat-form-field appearance="outline" class="edit-field">
+                      <textarea
+                        matInput
+                        [(ngModel)]="editingContent"
+                        (keyup.enter)="saveEdit()"
+                        (keyup.escape)="cancelEditing()"
+                      ></textarea>
                     </mat-form-field>
-                  </div>
+                  </ng-container>
+                  <ng-template #viewContent>
+                    {{ response.content }}
+                  </ng-template>
                 </td>
               </ng-container>
 
@@ -63,31 +94,68 @@
                   <div class="response-actions">
                     <button
                       mat-icon-button
-                      [color]="response.hasVoted ? 'primary' : ''"
+                      color="primary"
                       (click)="onUpvote(response)"
+                      [matTooltip]="
+                        response.hasVoted ? 'Remover voto' : 'Votar'
+                      "
                     >
-                      <mat-icon>thumb_up</mat-icon>
+                      <mat-icon [class.voted]="response.hasVoted">
+                        {{ response.hasVoted ? "favorite" : "favorite_border" }}
+                      </mat-icon>
                       <span class="vote-count">{{ response.upvotes }}</span>
                     </button>
-                    <button
-                      mat-icon-button
-                      [color]="response.isSelected ? 'primary' : ''"
-                      (click)="onToggleSelection(response)"
-                    >
-                      <mat-icon>check_circle</mat-icon>
-                    </button>
-                    <button
-                      mat-icon-button
-                      color="warn"
-                      (click)="onDelete(response)"
-                    >
-                      <mat-icon>delete</mat-icon>
-                    </button>
+                    <ng-container *ngIf="editingResponseId === response.id">
+                      <button
+                        mat-icon-button
+                        color="primary"
+                        (click)="saveEdit()"
+                        matTooltip="Salvar"
+                      >
+                        <mat-icon>check</mat-icon>
+                      </button>
+                      <button
+                        mat-icon-button
+                        color="warn"
+                        (click)="cancelEditing()"
+                        matTooltip="Cancelar"
+                      >
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </ng-container>
+                    <ng-container *ngIf="editingResponseId !== response.id">
+                      <button
+                        mat-icon-button
+                        [style.visibility]="
+                          response?.user?.id === currentUserId
+                            ? 'visible'
+                            : 'hidden'
+                        "
+                        color="primary"
+                        (click)="startEditing(response)"
+                        matTooltip="Editar"
+                      >
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button
+                        mat-icon-button
+                        [style.visibility]="
+                          response?.user?.id === currentUserId
+                            ? 'visible'
+                            : 'hidden'
+                        "
+                        color="warn"
+                        (click)="onDelete(response)"
+                        matTooltip="Deletar resposta"
+                      >
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </ng-container>
                   </div>
                 </td>
               </ng-container>
 
-              <tr mat-header-row *matHeaderRowDef="['content', 'actions']"></tr>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
             </table>
           </div>
@@ -126,19 +194,50 @@
           </form>
 
           <div class="response-table-section">
+            <div class="table-header">
+              <h3>Público Alvo</h3>
+              <button
+                mat-icon-button
+                color="primary"
+                (click)="refreshData()"
+                matTooltip="Atualizar dados"
+              >
+                <mat-icon>refresh</mat-icon>
+              </button>
+            </div>
             <table
               mat-table
               [dataSource]="targetAudienceDataSource"
               class="mat-elevation-z8"
             >
-              <ng-container matColumnDef="content">
-                <th mat-header-cell *matHeaderCellDef>Conteúdo</th>
+              <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let response">
-                  <div class="edit-field">
-                    <mat-form-field appearance="outline">
-                      <textarea matInput [value]="response.content"></textarea>
+                  <mat-checkbox
+                    [checked]="response.isSelected"
+                    (change)="onToggleSelection(response)"
+                  ></mat-checkbox>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="content">
+                <th mat-header-cell *matHeaderCellDef>Resposta</th>
+                <td mat-cell *matCellDef="let response">
+                  <ng-container
+                    *ngIf="editingResponseId === response.id; else viewContent"
+                  >
+                    <mat-form-field appearance="outline" class="edit-field">
+                      <textarea
+                        matInput
+                        [(ngModel)]="editingContent"
+                        (keyup.enter)="saveEdit()"
+                        (keyup.escape)="cancelEditing()"
+                      ></textarea>
                     </mat-form-field>
-                  </div>
+                  </ng-container>
+                  <ng-template #viewContent>
+                    {{ response.content }}
+                  </ng-template>
                 </td>
               </ng-container>
 
@@ -148,31 +247,68 @@
                   <div class="response-actions">
                     <button
                       mat-icon-button
-                      [color]="response.hasVoted ? 'primary' : ''"
+                      color="primary"
                       (click)="onUpvote(response)"
+                      [matTooltip]="
+                        response.hasVoted ? 'Remover voto' : 'Votar'
+                      "
                     >
-                      <mat-icon>thumb_up</mat-icon>
+                      <mat-icon [class.voted]="response.hasVoted">
+                        {{ response.hasVoted ? "favorite" : "favorite_border" }}
+                      </mat-icon>
                       <span class="vote-count">{{ response.upvotes }}</span>
                     </button>
-                    <button
-                      mat-icon-button
-                      [color]="response.isSelected ? 'primary' : ''"
-                      (click)="onToggleSelection(response)"
-                    >
-                      <mat-icon>check_circle</mat-icon>
-                    </button>
-                    <button
-                      mat-icon-button
-                      color="warn"
-                      (click)="onDelete(response)"
-                    >
-                      <mat-icon>delete</mat-icon>
-                    </button>
+                    <ng-container *ngIf="editingResponseId === response.id">
+                      <button
+                        mat-icon-button
+                        color="primary"
+                        (click)="saveEdit()"
+                        matTooltip="Salvar"
+                      >
+                        <mat-icon>check</mat-icon>
+                      </button>
+                      <button
+                        mat-icon-button
+                        color="warn"
+                        (click)="cancelEditing()"
+                        matTooltip="Cancelar"
+                      >
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </ng-container>
+                    <ng-container *ngIf="editingResponseId !== response.id">
+                      <button
+                        mat-icon-button
+                        [style.visibility]="
+                          response?.user?.id === currentUserId
+                            ? 'visible'
+                            : 'hidden'
+                        "
+                        color="primary"
+                        (click)="startEditing(response)"
+                        matTooltip="Editar"
+                      >
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button
+                        mat-icon-button
+                        [style.visibility]="
+                          response?.user?.id === currentUserId
+                            ? 'visible'
+                            : 'hidden'
+                        "
+                        color="warn"
+                        (click)="onDelete(response)"
+                        matTooltip="Deletar resposta"
+                      >
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </ng-container>
                   </div>
                 </td>
               </ng-container>
 
-              <tr mat-header-row *matHeaderRowDef="['content', 'actions']"></tr>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
             </table>
           </div>
@@ -190,7 +326,7 @@
             (ngSubmit)="onSubmit(ResponseType.HOW_WE_CAN)"
           >
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Descreva como podemos resolver</mat-label>
+              <mat-label>Descreva possíveis soluções</mat-label>
               <textarea
                 matInput
                 formControlName="content"
@@ -211,19 +347,50 @@
           </form>
 
           <div class="response-table-section">
+            <div class="table-header">
+              <h3>Como Podemos</h3>
+              <button
+                mat-icon-button
+                color="primary"
+                (click)="refreshData()"
+                matTooltip="Atualizar dados"
+              >
+                <mat-icon>refresh</mat-icon>
+              </button>
+            </div>
             <table
               mat-table
               [dataSource]="howWeCanDataSource"
               class="mat-elevation-z8"
             >
-              <ng-container matColumnDef="content">
-                <th mat-header-cell *matHeaderCellDef>Conteúdo</th>
+              <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let response">
-                  <div class="edit-field">
-                    <mat-form-field appearance="outline">
-                      <textarea matInput [value]="response.content"></textarea>
+                  <mat-checkbox
+                    [checked]="response.isSelected"
+                    (change)="onToggleSelection(response)"
+                  ></mat-checkbox>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="content">
+                <th mat-header-cell *matHeaderCellDef>Resposta</th>
+                <td mat-cell *matCellDef="let response">
+                  <ng-container
+                    *ngIf="editingResponseId === response.id; else viewContent"
+                  >
+                    <mat-form-field appearance="outline" class="edit-field">
+                      <textarea
+                        matInput
+                        [(ngModel)]="editingContent"
+                        (keyup.enter)="saveEdit()"
+                        (keyup.escape)="cancelEditing()"
+                      ></textarea>
                     </mat-form-field>
-                  </div>
+                  </ng-container>
+                  <ng-template #viewContent>
+                    {{ response.content }}
+                  </ng-template>
                 </td>
               </ng-container>
 
@@ -233,44 +400,97 @@
                   <div class="response-actions">
                     <button
                       mat-icon-button
-                      [color]="response.hasVoted ? 'primary' : ''"
+                      color="primary"
                       (click)="onUpvote(response)"
+                      [matTooltip]="
+                        response.hasVoted ? 'Remover voto' : 'Votar'
+                      "
                     >
-                      <mat-icon>thumb_up</mat-icon>
+                      <mat-icon [class.voted]="response.hasVoted">
+                        {{ response.hasVoted ? "favorite" : "favorite_border" }}
+                      </mat-icon>
                       <span class="vote-count">{{ response.upvotes }}</span>
                     </button>
-                    <button
-                      mat-icon-button
-                      [color]="response.isSelected ? 'primary' : ''"
-                      (click)="onToggleSelection(response)"
-                    >
-                      <mat-icon>check_circle</mat-icon>
-                    </button>
-                    <button
-                      mat-icon-button
-                      color="warn"
-                      (click)="onDelete(response)"
-                    >
-                      <mat-icon>delete</mat-icon>
-                    </button>
+                    <ng-container *ngIf="editingResponseId === response.id">
+                      <button
+                        mat-icon-button
+                        color="primary"
+                        (click)="saveEdit()"
+                        matTooltip="Salvar"
+                      >
+                        <mat-icon>check</mat-icon>
+                      </button>
+                      <button
+                        mat-icon-button
+                        color="warn"
+                        (click)="cancelEditing()"
+                        matTooltip="Cancelar"
+                      >
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </ng-container>
+                    <ng-container *ngIf="editingResponseId !== response.id">
+                      <button
+                        mat-icon-button
+                        [style.visibility]="
+                          response?.user?.id === currentUserId
+                            ? 'visible'
+                            : 'hidden'
+                        "
+                        color="primary"
+                        (click)="startEditing(response)"
+                        matTooltip="Editar"
+                      >
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button
+                        mat-icon-button
+                        [style.visibility]="
+                          response?.user?.id === currentUserId
+                            ? 'visible'
+                            : 'hidden'
+                        "
+                        color="warn"
+                        (click)="onDelete(response)"
+                        matTooltip="Deletar resposta"
+                      >
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </ng-container>
                   </div>
                 </td>
               </ng-container>
 
-              <tr mat-header-row *matHeaderRowDef="['content', 'actions']"></tr>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
             </table>
           </div>
         </mat-card-content>
       </mat-card>
-    </div>
 
-    <!-- Etapa 2: Brainstorm -->
-    <div class="brainstorm-section">
-      <h3>Brainstorm</h3>
-      <mat-card class="brainstorm-card">
+      <!-- Botão de Submit Final -->
+      <div class="final-submit-section">
+        <button mat-raised-button color="primary" (click)="onFinalSubmit()">
+          Concluir Etapa 1 e Ir para Brainstorm
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Etapa 2: Brainstorm -->
+  <div class="challenge-definition-step-content" *ngIf="currentStep === 2">
+    <div class="questions-section">
+      <div class="step-header">
+        <h3>Etapa 2: Brainstorm</h3>
+        <button mat-button color="primary" (click)="goBackToStep1()">
+          <mat-icon>arrow_back</mat-icon>
+          Voltar para Etapa 1
+        </button>
+      </div>
+
+      <mat-card class="question-card">
         <mat-card-header>
-          <mat-card-title>Gere ideias para o desafio</mat-card-title>
+          <mat-card-title>Brainstorm de Ideias</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <form
@@ -278,12 +498,12 @@
             (ngSubmit)="onSubmit(ResponseType.BRAINSTORM)"
           >
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Descreva sua ideia</mat-label>
+              <mat-label>Digite suas ideias</mat-label>
               <textarea
                 matInput
                 formControlName="content"
                 rows="3"
-                placeholder="Digite sua ideia aqui..."
+                placeholder="Digite suas ideias aqui..."
               ></textarea>
             </mat-form-field>
             <div class="form-actions">
@@ -299,19 +519,50 @@
           </form>
 
           <div class="response-table-section">
+            <div class="table-header">
+              <h3>Brainstorm</h3>
+              <button
+                mat-icon-button
+                color="primary"
+                (click)="refreshData()"
+                matTooltip="Atualizar dados"
+              >
+                <mat-icon>refresh</mat-icon>
+              </button>
+            </div>
             <table
               mat-table
               [dataSource]="brainstormDataSource"
               class="mat-elevation-z8"
             >
-              <ng-container matColumnDef="content">
-                <th mat-header-cell *matHeaderCellDef>Conteúdo</th>
+              <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let response">
-                  <div class="edit-field">
-                    <mat-form-field appearance="outline">
-                      <textarea matInput [value]="response.content"></textarea>
+                  <mat-checkbox
+                    [checked]="response.isSelected"
+                    (change)="onToggleSelection(response)"
+                  ></mat-checkbox>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="content">
+                <th mat-header-cell *matHeaderCellDef>Resposta</th>
+                <td mat-cell *matCellDef="let response">
+                  <ng-container
+                    *ngIf="editingResponseId === response.id; else viewContent"
+                  >
+                    <mat-form-field appearance="outline" class="edit-field">
+                      <textarea
+                        matInput
+                        [(ngModel)]="editingContent"
+                        (keyup.enter)="saveEdit()"
+                        (keyup.escape)="cancelEditing()"
+                      ></textarea>
                     </mat-form-field>
-                  </div>
+                  </ng-container>
+                  <ng-template #viewContent>
+                    {{ response.content }}
+                  </ng-template>
                 </td>
               </ng-container>
 
@@ -321,31 +572,68 @@
                   <div class="response-actions">
                     <button
                       mat-icon-button
-                      [color]="response.hasVoted ? 'primary' : ''"
+                      color="primary"
                       (click)="onUpvote(response)"
+                      [matTooltip]="
+                        response.hasVoted ? 'Remover voto' : 'Votar'
+                      "
                     >
-                      <mat-icon>thumb_up</mat-icon>
+                      <mat-icon [class.voted]="response.hasVoted">
+                        {{ response.hasVoted ? "favorite" : "favorite_border" }}
+                      </mat-icon>
                       <span class="vote-count">{{ response.upvotes }}</span>
                     </button>
-                    <button
-                      mat-icon-button
-                      [color]="response.isSelected ? 'primary' : ''"
-                      (click)="onToggleSelection(response)"
-                    >
-                      <mat-icon>check_circle</mat-icon>
-                    </button>
-                    <button
-                      mat-icon-button
-                      color="warn"
-                      (click)="onDelete(response)"
-                    >
-                      <mat-icon>delete</mat-icon>
-                    </button>
+                    <ng-container *ngIf="editingResponseId === response.id">
+                      <button
+                        mat-icon-button
+                        color="primary"
+                        (click)="saveEdit()"
+                        matTooltip="Salvar"
+                      >
+                        <mat-icon>check</mat-icon>
+                      </button>
+                      <button
+                        mat-icon-button
+                        color="warn"
+                        (click)="cancelEditing()"
+                        matTooltip="Cancelar"
+                      >
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </ng-container>
+                    <ng-container *ngIf="editingResponseId !== response.id">
+                      <button
+                        mat-icon-button
+                        [style.visibility]="
+                          response?.user?.id === currentUserId
+                            ? 'visible'
+                            : 'hidden'
+                        "
+                        color="primary"
+                        (click)="startEditing(response)"
+                        matTooltip="Editar"
+                      >
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button
+                        mat-icon-button
+                        [style.visibility]="
+                          response?.user?.id === currentUserId
+                            ? 'visible'
+                            : 'hidden'
+                        "
+                        color="warn"
+                        (click)="onDelete(response)"
+                        matTooltip="Deletar resposta"
+                      >
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </ng-container>
                   </div>
                 </td>
               </ng-container>
 
-              <tr mat-header-row *matHeaderRowDef="['content', 'actions']"></tr>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
             </table>
           </div>

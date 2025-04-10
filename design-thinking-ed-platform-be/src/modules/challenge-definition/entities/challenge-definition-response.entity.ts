@@ -47,6 +47,11 @@ export class ChallengeDefinitionResponse {
   @OneToMany(() => UserVote, (vote) => vote.challengeDefinitionResponse)
   votes: UserVote[];
 
+  @Column({ default: 0 })
+  upvotes: number;
+
+  hasVoted: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 

@@ -21,12 +21,13 @@ import { IUser } from '../../../../common/interfaces/user.interface';
 export class ChallengeDefinitionStepComponent implements OnInit {
   projectId: number | null = null;
   currentUserId!: number;
+  currentStep: number = 1;
   problemsForm: FormGroup;
   targetAudienceForm: FormGroup;
   howWeCanForm: FormGroup;
   brainstormForm: FormGroup;
 
-  displayedColumns: string[] = ['content', 'actions'];
+  displayedColumns: string[] = ['select', 'content', 'actions'];
 
   problemsResponses$: Observable<ChallengeDefinitionResponse[]>;
   targetAudienceResponses$: Observable<ChallengeDefinitionResponse[]>;
@@ -45,6 +46,9 @@ export class ChallengeDefinitionStepComponent implements OnInit {
   error$: Observable<string | null>;
 
   ResponseType = ResponseType;
+
+  editingResponseId: number | null = null;
+  editingContent: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -188,13 +192,58 @@ export class ChallengeDefinitionStepComponent implements OnInit {
     }
   }
 
-  onUpdate(response: ChallengeDefinitionResponse, newContent: string): void {
-    if (newContent.trim() !== response.content) {
+  startEditing(response: ChallengeDefinitionResponse): void {
+    this.editingResponseId = response.id;
+    this.editingContent = response.content;
+  }
+
+  cancelEditing(): void {
+    this.editingResponseId = null;
+    this.editingContent = '';
+  }
+
+  saveEdit(): void {
+    if (this.editingResponseId && this.editingContent.trim()) {
       this.challengeDefinitionFacade.updateResponse(
-        response.id,
-        newContent,
+        this.editingResponseId,
+        this.editingContent,
         this.currentUserId
       );
+      this.editingResponseId = null;
+      this.editingContent = '';
     }
+  }
+
+  refreshData(): void {
+    if (this.projectId) {
+      this.challengeDefinitionFacade.loadResponses(
+        this.projectId,
+        this.currentUserId
+      );
+      this.snackBar.open('Dados atualizados com sucesso!', 'Fechar', {
+        duration: 2000,
+        horizontalPosition: 'end',
+        verticalPosition: 'top',
+      });
+    }
+  }
+
+  onFinalSubmit(): void {
+    if (this.projectId) {
+      this.currentStep = 2;
+      this.snackBar.open(
+        'Etapa 1 concluída! Agora vamos para o Brainstorm.',
+        'Fechar',
+        {
+          duration: 3000,
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+        }
+      );
+    }
+  }
+
+  goBackToStep1(): void {
+    this.currentStep = 1;
   }
 }

@@ -39,7 +39,6 @@ export class EmpathyMapResponse {
   @Column({ default: false })
   isSelected: boolean;
 
-  @Column({ default: false })
   hasVoted: boolean;
 
   @ManyToOne(() => UserEntity)

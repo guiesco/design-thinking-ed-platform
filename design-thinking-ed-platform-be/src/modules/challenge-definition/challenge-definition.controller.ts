@@ -39,9 +39,11 @@ export class ChallengeDefinitionController {
   updateResponse(
     @Param('id') id: string,
     @Body() updateResponseDto: { content: string },
+    @Query('userId') userId: string,
   ) {
     return this.challengeDefinitionService.updateResponse(
       Number(id),
+      Number(userId),
       updateResponseDto.content,
     );
   }

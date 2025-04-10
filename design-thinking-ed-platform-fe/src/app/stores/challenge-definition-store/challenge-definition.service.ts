@@ -54,7 +54,7 @@ export class ChallengeDefinitionService {
     content: string,
     userId: number
   ): Observable<ChallengeDefinitionResponse> {
-    return this.http.put<ChallengeDefinitionResponse>(
+    return this.http.patch<ChallengeDefinitionResponse>(
       `${this.apiUrl}/response/${id}`,
       {
         content,

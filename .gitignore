@@ -79,3 +79,4 @@ lerna-debug.log*
 
 **/postgres
 .qodo
+.cursorrules
