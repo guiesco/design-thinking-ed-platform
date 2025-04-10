@@ -39,40 +39,53 @@ export class ChallengeDefinitionFacade {
     );
   }
 
-  loadResponses(): void {
-    this.store.dispatch(ChallengeDefinitionActions.loadResponses());
+  loadResponses(projectId: number, userId?: number): void {
+    this.store.dispatch(
+      ChallengeDefinitionActions.loadResponses({ projectId, userId })
+    );
   }
 
-  createResponse(responseType: ResponseType, content: string): void {
+  createResponse(
+    responseType: ResponseType,
+    content: string,
+    userId: number,
+    projectId: number
+  ): void {
     this.store.dispatch(
       ChallengeDefinitionActions.createResponse({
         responseType,
         content,
+        userId,
+        projectId,
       })
     );
   }
 
-  updateResponse(id: number, content: string): void {
+  updateResponse(id: number, content: string, userId: number): void {
     this.store.dispatch(
-      ChallengeDefinitionActions.updateResponse({ id, content })
+      ChallengeDefinitionActions.updateResponse({ id, content, userId })
     );
   }
 
-  deleteResponse(id: number): void {
-    this.store.dispatch(ChallengeDefinitionActions.deleteResponse({ id }));
-  }
-
-  upvoteResponse(id: number): void {
-    this.store.dispatch(ChallengeDefinitionActions.upvoteResponse({ id }));
-  }
-
-  removeVote(id: number): void {
-    this.store.dispatch(ChallengeDefinitionActions.removeVote({ id }));
-  }
-
-  toggleResponseSelection(id: number): void {
+  deleteResponse(id: number, userId: number): void {
     this.store.dispatch(
-      ChallengeDefinitionActions.toggleResponseSelection({ id })
+      ChallengeDefinitionActions.deleteResponse({ id, userId })
+    );
+  }
+
+  upvoteResponse(id: number, userId: number): void {
+    this.store.dispatch(
+      ChallengeDefinitionActions.upvoteResponse({ id, userId })
+    );
+  }
+
+  removeVote(id: number, userId: number): void {
+    this.store.dispatch(ChallengeDefinitionActions.removeVote({ id, userId }));
+  }
+
+  toggleResponseSelection(id: number, userId: number): void {
+    this.store.dispatch(
+      ChallengeDefinitionActions.toggleResponseSelection({ id, userId })
     );
   }
 }

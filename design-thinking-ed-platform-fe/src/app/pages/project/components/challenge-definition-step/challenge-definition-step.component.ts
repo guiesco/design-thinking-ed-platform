@@ -4,11 +4,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 import {
   ChallengeDefinitionResponse,
   ResponseType,
 } from '../../../../common/interfaces/challenge-definition-response.interface';
 import { ChallengeDefinitionFacade } from '../../../../stores/challenge-definition-store/challenge-definition.facade';
+import { UserFacade } from '../../../../stores/user-state-store/user.facade';
+import { IUser } from '../../../../common/interfaces/user.interface';
 
 @Component({
   selector: 'app-challenge-definition-step',
@@ -16,6 +19,8 @@ import { ChallengeDefinitionFacade } from '../../../../stores/challenge-definiti
   styleUrls: ['./challenge-definition-step.component.scss'],
 })
 export class ChallengeDefinitionStepComponent implements OnInit {
+  projectId: number | null = null;
+  currentUserId!: number;
   problemsForm: FormGroup;
   targetAudienceForm: FormGroup;
   howWeCanForm: FormGroup;
@@ -44,7 +49,9 @@ export class ChallengeDefinitionStepComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private challengeDefinitionFacade: ChallengeDefinitionFacade,
-    private snackBar: MatSnackBar
+    private userFacade: UserFacade,
+    private snackBar: MatSnackBar,
+    private route: ActivatedRoute
   ) {
     this.problemsForm = this.fb.group({
       content: ['', Validators.required],
@@ -82,7 +89,26 @@ export class ChallengeDefinitionStepComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.challengeDefinitionFacade.loadResponses();
+    this.userFacade.user$.subscribe((user: IUser | null) => {
+      if (user) {
+        this.currentUserId = Number(user.id);
+      }
+    });
+
+    this.route.params.subscribe((params) => {
+      const projectId = Number(this.route.parent?.snapshot.params['projectId']);
+      this.projectId = projectId;
+      this.challengeDefinitionFacade.loadResponses(
+        projectId,
+        this.currentUserId
+      );
+
+      this.error$.subscribe((error: any) => {
+        if (error) {
+          console.error('Error loading challenge definition:', error);
+        }
+      });
+    });
 
     this.problemsResponses$.subscribe((responses) => {
       this.problemsDataSource.data = responses || [];
@@ -120,34 +146,55 @@ export class ChallengeDefinitionStepComponent implements OnInit {
         return;
     }
 
-    if (form.valid) {
+    if (form.valid && this.projectId) {
       const { content } = form.value;
-      this.challengeDefinitionFacade.createResponse(responseType, content);
+      this.challengeDefinitionFacade.createResponse(
+        responseType,
+        content,
+        this.currentUserId,
+        this.projectId
+      );
       form.reset();
     }
   }
 
   onUpvote(response: ChallengeDefinitionResponse): void {
     if (response.hasVoted) {
-      this.challengeDefinitionFacade.removeVote(response.id);
+      this.challengeDefinitionFacade.removeVote(
+        response.id,
+        this.currentUserId
+      );
     } else {
-      this.challengeDefinitionFacade.upvoteResponse(response.id);
+      this.challengeDefinitionFacade.upvoteResponse(
+        response.id,
+        this.currentUserId
+      );
     }
   }
 
   onToggleSelection(response: ChallengeDefinitionResponse): void {
-    this.challengeDefinitionFacade.toggleResponseSelection(response.id);
+    this.challengeDefinitionFacade.toggleResponseSelection(
+      response.id,
+      this.currentUserId
+    );
   }
 
   onDelete(response: ChallengeDefinitionResponse): void {
     if (confirm('Tem certeza que deseja excluir esta resposta?')) {
-      this.challengeDefinitionFacade.deleteResponse(response.id);
+      this.challengeDefinitionFacade.deleteResponse(
+        response.id,
+        this.currentUserId
+      );
     }
   }
 
   onUpdate(response: ChallengeDefinitionResponse, newContent: string): void {
     if (newContent.trim() !== response.content) {
-      this.challengeDefinitionFacade.updateResponse(response.id, newContent);
+      this.challengeDefinitionFacade.updateResponse(
+        response.id,
+        newContent,
+        this.currentUserId
+      );
     }
   }
 }

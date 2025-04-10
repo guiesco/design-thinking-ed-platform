@@ -3,7 +3,8 @@ import { ChallengeDefinitionResponse } from '../../common/interfaces/challenge-d
 import { ResponseType } from '../../common/interfaces/challenge-definition-response.interface';
 
 export const loadResponses = createAction(
-  '[Challenge Definition] Load Responses'
+  '[Challenge Definition] Load Responses',
+  props<{ projectId: number; userId?: number }>()
 );
 
 export const loadResponsesSuccess = createAction(
@@ -18,7 +19,12 @@ export const loadResponsesFailure = createAction(
 
 export const createResponse = createAction(
   '[Challenge Definition] Create Response',
-  props<{ responseType: ResponseType; content: string }>()
+  props<{
+    responseType: ResponseType;
+    content: string;
+    userId: number;
+    projectId: number;
+  }>()
 );
 
 export const createResponseSuccess = createAction(
@@ -33,7 +39,7 @@ export const createResponseFailure = createAction(
 
 export const updateResponse = createAction(
   '[Challenge Definition] Update Response',
-  props<{ id: number; content: string }>()
+  props<{ id: number; content: string; userId: number }>()
 );
 
 export const updateResponseSuccess = createAction(
@@ -48,7 +54,7 @@ export const updateResponseFailure = createAction(
 
 export const deleteResponse = createAction(
   '[Challenge Definition] Delete Response',
-  props<{ id: number }>()
+  props<{ id: number; userId: number }>()
 );
 
 export const deleteResponseSuccess = createAction(
@@ -63,7 +69,7 @@ export const deleteResponseFailure = createAction(
 
 export const upvoteResponse = createAction(
   '[Challenge Definition] Upvote Response',
-  props<{ id: number }>()
+  props<{ id: number; userId: number }>()
 );
 
 export const upvoteResponseSuccess = createAction(
@@ -78,7 +84,7 @@ export const upvoteResponseFailure = createAction(
 
 export const removeVote = createAction(
   '[Challenge Definition] Remove Vote',
-  props<{ id: number }>()
+  props<{ id: number; userId: number }>()
 );
 
 export const removeVoteSuccess = createAction(
@@ -93,7 +99,7 @@ export const removeVoteFailure = createAction(
 
 export const toggleResponseSelection = createAction(
   '[Challenge Definition] Toggle Response Selection',
-  props<{ id: number }>()
+  props<{ id: number; userId: number }>()
 );
 
 export const toggleResponseSelectionSuccess = createAction(

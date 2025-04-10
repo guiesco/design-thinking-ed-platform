@@ -5,6 +5,13 @@ import { environment } from '../../../environments/environment';
 import { ChallengeDefinitionResponse } from '../../common/interfaces/challenge-definition-response.interface';
 import { ResponseType } from '../../common/interfaces/challenge-definition-response.interface';
 
+interface CreateResponseDto {
+  type: ResponseType;
+  content: string;
+  projectId: number;
+  userId: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -13,58 +20,80 @@ export class ChallengeDefinitionService {
 
   constructor(private http: HttpClient) {}
 
-  getResponses(): Observable<ChallengeDefinitionResponse[]> {
+  getResponses(
+    projectId: number,
+    userId?: number
+  ): Observable<ChallengeDefinitionResponse[]> {
     return this.http.get<ChallengeDefinitionResponse[]>(
-      `${this.apiUrl}/responses`
+      `${this.apiUrl}/response/project/${projectId}${
+        userId ? `?userId=${userId}` : ''
+      }`
     );
   }
 
   createResponse(
     responseType: ResponseType,
-    content: string
+    content: string,
+    userId: number,
+    projectId: number
   ): Observable<ChallengeDefinitionResponse> {
+    const createResponseDto: CreateResponseDto = {
+      type: responseType,
+      content,
+      userId,
+      projectId,
+    };
     return this.http.post<ChallengeDefinitionResponse>(
-      `${this.apiUrl}/responses`,
-      {
-        responseType,
-        content,
-      }
+      `${this.apiUrl}/response`,
+      createResponseDto
     );
   }
 
   updateResponse(
     id: number,
-    content: string
+    content: string,
+    userId: number
   ): Observable<ChallengeDefinitionResponse> {
     return this.http.put<ChallengeDefinitionResponse>(
-      `${this.apiUrl}/responses/${id}`,
+      `${this.apiUrl}/response/${id}`,
       {
         content,
+        userId,
       }
     );
   }
 
-  deleteResponse(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/responses/${id}`);
+  deleteResponse(id: number, userId: number): Observable<void> {
+    return this.http.delete<void>(
+      `${this.apiUrl}/response/${id}?userId=${userId}`
+    );
   }
 
-  upvoteResponse(id: number): Observable<ChallengeDefinitionResponse> {
+  upvoteResponse(
+    id: number,
+    userId: number
+  ): Observable<ChallengeDefinitionResponse> {
     return this.http.post<ChallengeDefinitionResponse>(
-      `${this.apiUrl}/responses/${id}/upvote`,
+      `${this.apiUrl}/response/${id}/upvote?userId=${userId}`,
       {}
     );
   }
 
-  removeVote(id: number): Observable<ChallengeDefinitionResponse> {
-    return this.http.post<ChallengeDefinitionResponse>(
-      `${this.apiUrl}/responses/${id}/remove-vote`,
-      {}
+  removeVote(
+    id: number,
+    userId: number
+  ): Observable<ChallengeDefinitionResponse> {
+    return this.http.delete<ChallengeDefinitionResponse>(
+      `${this.apiUrl}/response/${id}/upvote?userId=${userId}`
     );
   }
 
-  toggleResponseSelection(id: number): Observable<ChallengeDefinitionResponse> {
+  toggleResponseSelection(
+    id: number,
+    userId: number
+  ): Observable<ChallengeDefinitionResponse> {
     return this.http.post<ChallengeDefinitionResponse>(
-      `${this.apiUrl}/responses/${id}/toggle-selection`,
+      `${this.apiUrl}/response/${id}/toggle-selection?userId=${userId}`,
       {}
     );
   }

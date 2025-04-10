@@ -16,8 +16,8 @@ export class ChallengeDefinitionEffects {
   loadResponses$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ChallengeDefinitionActions.loadResponses),
-      switchMap(() =>
-        this.challengeDefinitionService.getResponses().pipe(
+      switchMap(({ projectId, userId }) =>
+        this.challengeDefinitionService.getResponses(projectId, userId).pipe(
           map((responses) =>
             ChallengeDefinitionActions.loadResponsesSuccess({ responses })
           ),
@@ -32,9 +32,9 @@ export class ChallengeDefinitionEffects {
   createResponse$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ChallengeDefinitionActions.createResponse),
-      switchMap(({ responseType, content }) =>
+      switchMap(({ responseType, content, userId, projectId }) =>
         this.challengeDefinitionService
-          .createResponse(responseType, content)
+          .createResponse(responseType, content, userId, projectId)
           .pipe(
             map((response) =>
               ChallengeDefinitionActions.createResponseSuccess({ response })
@@ -50,15 +50,17 @@ export class ChallengeDefinitionEffects {
   updateResponse$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ChallengeDefinitionActions.updateResponse),
-      switchMap(({ id, content }) =>
-        this.challengeDefinitionService.updateResponse(id, content).pipe(
-          map((response) =>
-            ChallengeDefinitionActions.updateResponseSuccess({ response })
-          ),
-          catchError((error) =>
-            of(ChallengeDefinitionActions.updateResponseFailure({ error }))
+      switchMap(({ id, content, userId }) =>
+        this.challengeDefinitionService
+          .updateResponse(id, content, userId)
+          .pipe(
+            map((response) =>
+              ChallengeDefinitionActions.updateResponseSuccess({ response })
+            ),
+            catchError((error) =>
+              of(ChallengeDefinitionActions.updateResponseFailure({ error }))
+            )
           )
-        )
       )
     )
   );
@@ -66,8 +68,8 @@ export class ChallengeDefinitionEffects {
   deleteResponse$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ChallengeDefinitionActions.deleteResponse),
-      switchMap(({ id }) =>
-        this.challengeDefinitionService.deleteResponse(id).pipe(
+      switchMap(({ id, userId }) =>
+        this.challengeDefinitionService.deleteResponse(id, userId).pipe(
           map(() => ChallengeDefinitionActions.deleteResponseSuccess({ id })),
           catchError((error) =>
             of(ChallengeDefinitionActions.deleteResponseFailure({ error }))
@@ -80,8 +82,8 @@ export class ChallengeDefinitionEffects {
   upvoteResponse$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ChallengeDefinitionActions.upvoteResponse),
-      switchMap(({ id }) =>
-        this.challengeDefinitionService.upvoteResponse(id).pipe(
+      switchMap(({ id, userId }) =>
+        this.challengeDefinitionService.upvoteResponse(id, userId).pipe(
           map((response) =>
             ChallengeDefinitionActions.upvoteResponseSuccess({ response })
           ),
@@ -96,8 +98,8 @@ export class ChallengeDefinitionEffects {
   removeVote$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ChallengeDefinitionActions.removeVote),
-      switchMap(({ id }) =>
-        this.challengeDefinitionService.removeVote(id).pipe(
+      switchMap(({ id, userId }) =>
+        this.challengeDefinitionService.removeVote(id, userId).pipe(
           map((response) =>
             ChallengeDefinitionActions.removeVoteSuccess({ response })
           ),
@@ -112,21 +114,23 @@ export class ChallengeDefinitionEffects {
   toggleResponseSelection$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ChallengeDefinitionActions.toggleResponseSelection),
-      switchMap(({ id }) =>
-        this.challengeDefinitionService.toggleResponseSelection(id).pipe(
-          map((response) =>
-            ChallengeDefinitionActions.toggleResponseSelectionSuccess({
-              response,
-            })
-          ),
-          catchError((error) =>
-            of(
-              ChallengeDefinitionActions.toggleResponseSelectionFailure({
-                error,
+      switchMap(({ id, userId }) =>
+        this.challengeDefinitionService
+          .toggleResponseSelection(id, userId)
+          .pipe(
+            map((response) =>
+              ChallengeDefinitionActions.toggleResponseSelectionSuccess({
+                response,
               })
+            ),
+            catchError((error) =>
+              of(
+                ChallengeDefinitionActions.toggleResponseSelectionFailure({
+                  error,
+                })
+              )
             )
           )
-        )
       )
     )
   );

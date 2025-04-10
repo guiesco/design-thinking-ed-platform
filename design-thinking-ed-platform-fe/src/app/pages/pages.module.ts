@@ -38,6 +38,8 @@ import { EmpathyMapStateModule } from '../stores/empathy-map-store/empathy-map.m
 import { ChallengeDefinitionStepComponent } from './project/components/challenge-definition-step/challenge-definition-step.component';
 import { ProjectStateModule } from '../stores/project-store/project.module';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { ChallengeDefinitionModule } from '../stores/challenge-definition-store/challenge-definition.module';
+
 const angularMaterialModules = [
   MatToolbarModule,
   MatSidenavModule,
@@ -66,6 +68,7 @@ const stateModules = [
   GroupStateModule,
   EmpathyMapStateModule,
   ProjectStateModule,
+  ChallengeDefinitionModule,
 ];
 
 const importModules = [FormsModule, ReactiveFormsModule, ...stateModules];
