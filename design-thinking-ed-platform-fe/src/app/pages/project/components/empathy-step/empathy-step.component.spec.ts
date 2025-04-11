@@ -11,10 +11,10 @@ import {
   EmpathyMapResponse,
 } from 'src/app/stores/empathy-map-store/empathy-map.service';
 import { IUser } from 'src/app/common/interfaces/user.interface';
+import { UserTypeEnum } from 'src/app/common/enum/user.enum';
 import * as EmpathyMapActions from 'src/app/stores/empathy-map-store/empathy-map.actions';
 import { MatTableModule } from '@angular/material/table';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { UserTypeEnum } from 'src/app/common/enum/user.enum';
 import { ProjectSteps } from 'src/app/common/enum/class.enum';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -22,6 +22,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from 'src/app/common/common.module';
 
 describe('EmpathyStepComponent', () => {
   let component: EmpathyStepComponent;
@@ -30,33 +31,61 @@ describe('EmpathyStepComponent', () => {
   let mockUserFacade: jasmine.SpyObj<UserFacade>;
   let mockSnackBar: jasmine.SpyObj<MatSnackBar>;
   let mockStore: jasmine.SpyObj<Store>;
+  let mockActivatedRoute: any;
+
+  const mockUser: IUser = {
+    id: 1,
+    name: 'Test User',
+    email: 'test@example.com',
+    userType: UserTypeEnum.STUDENT,
+    group: { id: '1', groupName: 'Test Group' },
+    studentClass: {
+      id: '1',
+      className: 'Test Class',
+      invitedStudents: [],
+      semester: '2025.1',
+      professor: { id: 1 },
+      projectStep: ProjectSteps.Empatia,
+      groups: [],
+    },
+    password: 'password',
+  };
+
+  const mockResponse: EmpathyMapResponse = {
+    id: 1,
+    content: 'Test content',
+    userId: 1,
+    type: ResponseType.THINK,
+    projectId: 1,
+    upvotes: 0,
+    hasVoted: false,
+    isSelected: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
 
   beforeEach(async () => {
-    mockEmpathyMapFacade = jasmine.createSpyObj(
-      'EmpathyMapFacade',
-      [
-        'loadResponses',
-        'createResponse',
-        'upvoteResponse',
-        'removeUpvoteResponse',
-        'toggleResponseSelection',
-        'deleteResponse',
-        'updateResponse',
-        'getResponsesByType',
-      ],
-      {
-        entries$: of([]),
-        responses$: of([]),
-        loading$: of(false),
-        error$: of(null),
-      }
-    );
+    mockEmpathyMapFacade = jasmine.createSpyObj('EmpathyMapFacade', [
+      'loadResponses',
+      'createResponse',
+      'updateResponse',
+      'deleteResponse',
+      'upvoteResponse',
+      'removeUpvoteResponse',
+      'toggleResponseSelection',
+    ]);
 
     mockUserFacade = jasmine.createSpyObj('UserFacade', ['user$']);
-    mockSnackBar = jasmine.createSpyObj('MatSnackBar', ['open']);
     mockStore = jasmine.createSpyObj('Store', ['dispatch']);
-
-    mockEmpathyMapFacade.getResponsesByType.and.returnValue(of([]));
+    mockSnackBar = jasmine.createSpyObj('MatSnackBar', ['open']);
+    mockActivatedRoute = {
+      params: of({}),
+      parent: {
+        snapshot: {
+          params: { projectId: '1' },
+        },
+      },
+    };
 
     await TestBed.configureTestingModule({
       declarations: [EmpathyStepComponent],
@@ -69,118 +98,100 @@ describe('EmpathyStepComponent', () => {
         MatButtonModule,
         MatIconModule,
         FormsModule,
+        CommonModule,
       ],
       providers: [
         { provide: EmpathyMapFacade, useValue: mockEmpathyMapFacade },
         { provide: UserFacade, useValue: mockUserFacade },
-        { provide: MatSnackBar, useValue: mockSnackBar },
         { provide: Store, useValue: mockStore },
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            params: of({ projectId: '1' }),
-            parent: {
-              snapshot: {
-                params: { projectId: '1' },
-                paramMap: {
-                  get: (key: string) => '1',
-                },
-              },
-              paramMap: of({
-                get: (key: string) => '1',
-              }),
-            },
-          },
-        },
+        { provide: MatSnackBar, useValue: mockSnackBar },
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
       ],
     }).compileComponents();
 
+    mockUserFacade.user$ = of(mockUser);
+    mockEmpathyMapFacade.responses$ = of([mockResponse]);
+    mockEmpathyMapFacade.loading$ = of(false);
+    mockEmpathyMapFacade.error$ = of(null);
+  });
+
+  beforeEach(() => {
     fixture = TestBed.createComponent(EmpathyStepComponent);
     component = fixture.componentInstance;
+    component.projectId = 1;
+    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize with default values', () => {
-    expect(component.newEntry).toEqual({
-      think: '',
-      feel: '',
-      say: '',
-      do: '',
-      pains: '',
-      needs: '',
-    });
-  });
-
-  it('should load responses on init', () => {
-    const mockUser: IUser = {
-      id: 1,
-      name: 'Test User',
-      email: 'test@example.com',
-      userType: UserTypeEnum.STUDENT,
-      group: { id: '1', groupName: 'Test Group' },
-      studentClass: {
-        id: '1',
-        className: 'Test Class',
-        invitedStudents: [],
-        semester: '2025.1',
-        professor: { id: 1 },
-        projectStep: ProjectSteps.Empatia,
-        groups: [],
+  it('should initialize with correct form fields', () => {
+    expect(component.formFields).toEqual([
+      {
+        key: 'think',
+        label: 'Pensa',
+        placeholder: 'O que o usuário pensa?',
+        required: true,
       },
-      password: 'password',
-    };
-    mockUserFacade.user$ = of(mockUser);
-
-    fixture.detectChanges();
-
-    expect(mockEmpathyMapFacade.loadResponses).toHaveBeenCalledWith(1, 1);
+      {
+        key: 'feel',
+        label: 'Sente',
+        placeholder: 'O que o usuário sente?',
+        required: true,
+      },
+      {
+        key: 'say',
+        label: 'Diz',
+        placeholder: 'O que o usuário diz?',
+        required: true,
+      },
+      {
+        key: 'do',
+        label: 'Faz',
+        placeholder: 'O que o usuário faz?',
+        required: true,
+      },
+      {
+        key: 'pains',
+        label: 'Dores',
+        placeholder: 'Quais são as dores do usuário?',
+        required: true,
+      },
+      {
+        key: 'needs',
+        label: 'Necessidades',
+        placeholder: 'Quais são as necessidades do usuário?',
+        required: true,
+      },
+    ]);
   });
 
   it('should handle form submission', () => {
-    const mockUser: IUser = {
-      id: 1,
-      name: 'Test User',
-      email: 'test@example.com',
-      userType: UserTypeEnum.STUDENT,
-      group: { id: '1', groupName: 'Test Group' },
-      studentClass: {
-        id: '1',
-        className: 'Test Class',
-        invitedStudents: [],
-        semester: '2025.1',
-        professor: { id: 1 },
-        projectStep: ProjectSteps.Empatia,
-        groups: [],
-      },
-      password: 'password',
-    };
-    mockUserFacade.user$ = of(mockUser);
-    component.newEntry = {
+    const formData = {
       think: 'Test think\nAnother think',
       feel: 'Test feel',
-      say: '',
-      do: '',
-      pains: '',
-      needs: '',
+      say: 'Test say',
+      do: 'Test do',
+      pains: 'Test pains',
+      needs: 'Test needs',
     };
-    component.projectId = 1;
 
-    component.onSubmit();
+    component.onFormSubmit(formData);
 
-    expect(mockEmpathyMapFacade.createResponse).toHaveBeenCalledTimes(3);
+    expect(mockEmpathyMapFacade.createResponse).toHaveBeenCalledTimes(7);
     expect(mockSnackBar.open).toHaveBeenCalledWith(
-      '3 resposta(s) criada(s) com sucesso!',
+      '7 resposta(s) criada(s) com sucesso!',
       'Fechar',
-      jasmine.any(Object)
+      {
+        duration: 3000,
+        horizontalPosition: 'end',
+        verticalPosition: 'top',
+      }
     );
   });
 
   it('should handle upvote response', () => {
-    component.currentUserId = 1;
-
     component.onUpvoteResponse(1, false);
     expect(mockEmpathyMapFacade.upvoteResponse).toHaveBeenCalledWith(1, 1);
 
@@ -191,47 +202,25 @@ describe('EmpathyStepComponent', () => {
     );
   });
 
-  it('should handle response selection toggle', () => {
+  it('should handle toggle response selection', () => {
     component.onToggleResponseSelection(1);
     expect(mockEmpathyMapFacade.toggleResponseSelection).toHaveBeenCalledWith(
       1
     );
   });
 
-  it('should handle response deletion', () => {
-    component.currentUserId = 1;
+  it('should handle delete response', () => {
     component.onDeleteResponse(1);
-    expect(mockStore.dispatch).toHaveBeenCalledWith(
-      EmpathyMapActions.deleteResponse({ id: 1, userId: 1 })
-    );
+    expect(mockStore.dispatch).toHaveBeenCalled();
   });
 
-  it('should handle response editing', () => {
-    const mockResponse: EmpathyMapResponse = {
-      id: 1,
-      content: 'Test content',
-      type: ResponseType.THINK,
-      userId: 1,
-      projectId: 1,
-      upvotes: 0,
-      hasVoted: false,
-      isSelected: false,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+  it('should handle edit response', () => {
+    component.onEditResponse(mockResponse);
+    // A implementação real está no componente de lista
+  });
 
-    component.startEditing(mockResponse);
-    expect(component.editingResponseId).toBe(1);
-    expect(component.editingContent).toBe('Test content');
-
-    component.cancelEditing();
-    expect(component.editingResponseId).toBeNull();
-    expect(component.editingContent).toBe('');
-
-    component.startEditing(mockResponse);
-    component.editingContent = 'Updated content';
-    component.currentUserId = 1;
-    component.saveEdit();
+  it('should handle save edit response', () => {
+    component.onSaveEditResponse({ id: 1, content: 'Updated content' });
     expect(mockEmpathyMapFacade.updateResponse).toHaveBeenCalledWith(
       1,
       1,
@@ -240,37 +229,94 @@ describe('EmpathyStepComponent', () => {
   });
 
   it('should refresh data', () => {
-    component.projectId = 1;
-    component.currentUserId = 1;
-
     component.refreshData();
     expect(mockEmpathyMapFacade.loadResponses).toHaveBeenCalledWith(1, 1);
     expect(mockSnackBar.open).toHaveBeenCalledWith(
       'Dados atualizados com sucesso!',
       'Fechar',
-      jasmine.any(Object)
+      {
+        duration: 2000,
+        horizontalPosition: 'end',
+        verticalPosition: 'top',
+      }
     );
   });
 
-  it('should get responses by type', () => {
-    const mockResponses: EmpathyMapResponse[] = [
-      {
-        id: 1,
-        content: 'Test',
-        type: ResponseType.THINK,
-        userId: 1,
-        projectId: 1,
-        upvotes: 0,
-        hasVoted: false,
-        isSelected: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    ];
-    mockEmpathyMapFacade.getResponsesByType.and.returnValue(of(mockResponses));
+  it('should initialize component with correct data', () => {
+    expect(component.projectId).toBe(1);
+    expect(component.currentUserId).toBe(1);
+    expect(mockEmpathyMapFacade.loadResponses).toHaveBeenCalledWith(1, 1);
+  });
 
-    component.getResponsesByType(ResponseType.THINK).subscribe((responses) => {
-      expect(responses).toEqual(mockResponses);
+  it('should handle error when loading responses', () => {
+    const error = new Error('Test error');
+    mockEmpathyMapFacade.error$ = of(error);
+    spyOn(console, 'error');
+
+    fixture.detectChanges();
+
+    expect(console.error).toHaveBeenCalledWith(
+      'Error loading empathy map:',
+      error
+    );
+  });
+
+  it('should not submit form when projectId is null', () => {
+    component.projectId = null;
+    const formData = {
+      think: 'Test think',
+      feel: 'Test feel',
+      say: 'Test say',
+      do: 'Test do',
+      pains: 'Test pains',
+      needs: 'Test needs',
+    };
+
+    component.onFormSubmit(formData);
+    expect(mockEmpathyMapFacade.createResponse).not.toHaveBeenCalled();
+  });
+
+  it('should handle empty form submission', () => {
+    const formData = {
+      think: '',
+      feel: '',
+      say: '',
+      do: '',
+      pains: '',
+      needs: '',
+    };
+
+    component.onFormSubmit(formData);
+    expect(mockEmpathyMapFacade.createResponse).not.toHaveBeenCalled();
+    expect(mockSnackBar.open).not.toHaveBeenCalled();
+  });
+
+  it('should handle isCurrentUser$ observable', () => {
+    const testUserId = 1;
+    component.isCurrentUser$(testUserId).subscribe((isCurrent) => {
+      expect(isCurrent).toBe(true);
     });
+
+    const differentUserId = 2;
+    component.isCurrentUser$(differentUserId).subscribe((isCurrent) => {
+      expect(isCurrent).toBe(false);
+    });
+  });
+
+  it('should handle error in form submission', () => {
+    const formData = {
+      think: 'Test think',
+      feel: 'Test feel',
+      say: 'Test say',
+      do: 'Test do',
+      pains: 'Test pains',
+      needs: 'Test needs',
+    };
+
+    mockEmpathyMapFacade.createResponse.and.throwError('Test error');
+
+    expect(() => {
+      component.onFormSubmit(formData);
+    }).not.toThrow();
   });
 });

@@ -1,7 +1,19 @@
 .empathy-step-container {
+    width: 100%;
     padding: 1rem;
-    max-width: 1200px;
-    margin: 0 auto;
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+
+        h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 500;
+        }
+    }
 
     .empathy-step-header {
         margin-bottom: 1.5rem;

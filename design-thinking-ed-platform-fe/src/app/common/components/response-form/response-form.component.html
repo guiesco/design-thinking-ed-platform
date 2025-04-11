@@ -1,0 +1,28 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="response-form">
+  <div class="form-fields">
+    <div class="form-grid">
+      <div class="form-field" *ngFor="let field of fields">
+        <h3>{{ field.label }}</h3>
+        <p class="field-description">{{ field.placeholder }}</p>
+        <mat-form-field appearance="outline">
+          <textarea matInput [formControlName]="field.key" rows="3"></textarea>
+          <mat-error *ngIf="form.get(field.key)?.hasError('required')">
+            {{ field.label }} é obrigatório
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="!form.valid || loading"
+    >
+      <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+      <span *ngIf="!loading">{{ submitButtonText }}</span>
+    </button>
+  </div>
+</form>

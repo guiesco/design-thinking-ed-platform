@@ -39,6 +39,7 @@ import { ChallengeDefinitionStepComponent } from './project/components/challenge
 import { ProjectStateModule } from '../stores/project-store/project.module';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ChallengeDefinitionModule } from '../stores/challenge-definition-store/challenge-definition.module';
+import { CommonModule as AppCommonModule } from '../common/common.module';
 
 const angularMaterialModules = [
   MatToolbarModule,
@@ -76,6 +77,7 @@ const importModules = [FormsModule, ReactiveFormsModule, ...stateModules];
 @NgModule({
   imports: [
     CommonModule,
+    AppCommonModule,
     PagesRoutingModule,
     ...angularMaterialModules,
     ...importModules,
