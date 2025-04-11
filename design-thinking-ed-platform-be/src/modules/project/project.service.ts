@@ -27,7 +27,6 @@ export class ProjectService {
     const project = this.projectRepository.create({
       group,
     });
-    console.log('🚀 ~ ProjectService ~ create ~ project:', project);
 
     return this.projectRepository.save(project);
   }

@@ -127,10 +127,6 @@ export class EmpathyStepComponent implements OnInit {
   }
 
   onUpvoteResponse(responseId: number, hasVoted: boolean): void {
-    console.log(
-      '🚀 ~ EmpathyStepComponent ~ onUpvoteResponse ~ hasVoted:',
-      hasVoted
-    );
     if (!hasVoted) {
       this.empathyMapFacade.upvoteResponse(responseId, this.currentUserId);
     } else {
