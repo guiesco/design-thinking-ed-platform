@@ -12,9 +12,25 @@
       <!-- Problemas -->
       <mat-card class="question-card">
         <mat-card-header>
-          <mat-card-title>Quais são os problemas?</mat-card-title>
+          <mat-card-title
+            >Que problemas temos hoje na sociedade? Que coisas poderiam ser
+            melhores?</mat-card-title
+          >
         </mat-card-header>
         <mat-card-content>
+          <div class="instructions-section">
+            <h4>Instruções para Identificação de Problemas</h4>
+            <p>Considere os seguintes aspectos ao identificar os problemas:</p>
+            <ul>
+              <li>
+                Quais são os problemas mais relevantes na sociedade atual?
+              </li>
+              <li>Quais situações poderiam ser melhoradas?</li>
+              <li>Quais são as dores e necessidades não atendidas?</li>
+              <li>Quais são os desafios que precisam ser superados?</li>
+            </ul>
+          </div>
+
           <form
             [formGroup]="problemsForm"
             (ngSubmit)="onSubmit(ResponseType.PROBLEMS)"
@@ -94,7 +110,7 @@
                   <div class="response-actions">
                     <button
                       mat-icon-button
-                      color="primary"
+                      color="warn"
                       (click)="onUpvote(response)"
                       [matTooltip]="
                         response.hasVoted ? 'Remover voto' : 'Votar'
@@ -165,9 +181,26 @@
       <!-- Público Alvo -->
       <mat-card class="question-card">
         <mat-card-header>
-          <mat-card-title>Quem é o público alvo?</mat-card-title>
+          <mat-card-title
+            >Quem é o público alvo? Quem são os afetados por esses
+            problemas?</mat-card-title
+          >
         </mat-card-header>
         <mat-card-content>
+          <div class="instructions-section">
+            <h4>Instruções para Definição do Público Alvo</h4>
+            <p>Considere os seguintes aspectos ao definir o público alvo:</p>
+            <ul>
+              <li>
+                Quem são as pessoas diretamente afetadas pelos problemas
+                identificados?
+              </li>
+              <li>Quais são as características demográficas do público?</li>
+              <li>Quais são os comportamentos e hábitos desse público?</li>
+              <li>Quais são as necessidades específicas desse grupo?</li>
+            </ul>
+          </div>
+
           <form
             [formGroup]="targetAudienceForm"
             (ngSubmit)="onSubmit(ResponseType.TARGET_AUDIENCE)"
@@ -247,7 +280,7 @@
                   <div class="response-actions">
                     <button
                       mat-icon-button
-                      color="primary"
+                      color="warn"
                       (click)="onUpvote(response)"
                       [matTooltip]="
                         response.hasVoted ? 'Remover voto' : 'Votar'
@@ -318,15 +351,28 @@
       <!-- Como Podemos -->
       <mat-card class="question-card">
         <mat-card-header>
-          <mat-card-title>Como podemos resolver?</mat-card-title>
+          <mat-card-title>Como podemos...?</mat-card-title>
         </mat-card-header>
         <mat-card-content>
+          <div class="instructions-section">
+            <h4>Instruções para Formulação de Soluções</h4>
+            <p>Considere os seguintes aspectos ao formular soluções:</p>
+            <ul>
+              <li>Crie perguntas que comecem com "Como podemos..."</li>
+              <li>
+                Deve ser uma descrição do que se deseja melhorar dos problemas
+                identificados
+              </li>
+              <li>Ex: "Como podemos melhorar a saúde mental dos alunos?"</li>
+            </ul>
+          </div>
+
           <form
             [formGroup]="howWeCanForm"
             (ngSubmit)="onSubmit(ResponseType.HOW_WE_CAN)"
           >
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Descreva possíveis soluções</mat-label>
+              <mat-label>Como podemos...?</mat-label>
               <textarea
                 matInput
                 formControlName="content"
@@ -400,7 +446,7 @@
                   <div class="response-actions">
                     <button
                       mat-icon-button
-                      color="primary"
+                      color="warn"
                       (click)="onUpvote(response)"
                       [matTooltip]="
                         response.hasVoted ? 'Remover voto' : 'Votar'
@@ -493,6 +539,17 @@
           <mat-card-title>Brainstorm de Ideias</mat-card-title>
         </mat-card-header>
         <mat-card-content>
+          <div class="instructions-section">
+            <h4>Instruções para o Brainstorm</h4>
+            <p>Considere os seguintes aspectos ao gerar suas ideias:</p>
+            <ul>
+              <li>O que a equipe já sabe sobre o desafio?</li>
+              <li>O que ainda não sabemos e precisamos descobrir?</li>
+              <li>Quais são as ideias-chave que surgiram até agora?</li>
+              <li>Quais são as restrições e barreiras identificadas?</li>
+            </ul>
+          </div>
+
           <form
             [formGroup]="brainstormForm"
             (ngSubmit)="onSubmit(ResponseType.BRAINSTORM)"
@@ -572,7 +629,7 @@
                   <div class="response-actions">
                     <button
                       mat-icon-button
-                      color="primary"
+                      color="warn"
                       (click)="onUpvote(response)"
                       [matTooltip]="
                         response.hasVoted ? 'Remover voto' : 'Votar'

@@ -152,13 +152,35 @@ export class ChallengeDefinitionStepComponent implements OnInit {
 
     if (form.valid && this.projectId) {
       const { content } = form.value;
-      this.challengeDefinitionFacade.createResponse(
-        responseType,
-        content,
-        this.currentUserId,
-        this.projectId
-      );
+      const lines: string[] = content
+        .split('\n')
+        .filter((line: string) => line.trim());
+      let responsesCreated = 0;
+
+      lines.forEach((line: string) => {
+        this.challengeDefinitionFacade.createResponse(
+          responseType,
+          line.trim(),
+          this.currentUserId,
+          this.projectId as number
+        );
+        responsesCreated++;
+      });
+
       form.reset();
+      form.markAsUntouched();
+
+      if (responsesCreated > 0) {
+        this.snackBar.open(
+          `${responsesCreated} resposta(s) criada(s) com sucesso!`,
+          'Fechar',
+          {
+            duration: 3000,
+            horizontalPosition: 'end',
+            verticalPosition: 'top',
+          }
+        );
+      }
     }
   }
 

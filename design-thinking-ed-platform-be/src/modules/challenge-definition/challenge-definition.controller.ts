@@ -38,12 +38,11 @@ export class ChallengeDefinitionController {
   @Patch('response/:id')
   updateResponse(
     @Param('id') id: string,
-    @Body() updateResponseDto: { content: string },
-    @Query('userId') userId: string,
+    @Body() updateResponseDto: { content: string; userId: string },
   ) {
     return this.challengeDefinitionService.updateResponse(
       Number(id),
-      Number(userId),
+      Number(updateResponseDto.userId),
       updateResponseDto.content,
     );
   }
