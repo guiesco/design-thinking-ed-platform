@@ -14,6 +14,7 @@ import * as EmpathyMapActions from 'src/app/stores/empathy-map-store/empathy-map
 import { IUser } from 'src/app/common/interfaces/user.interface';
 import { map, Observable } from 'rxjs';
 import { IResponseFormField } from 'src/app/common/components/response-form/response-form.component';
+import { IResponse } from 'src/app/common/interfaces/response.interface';
 
 @Component({
   selector: 'app-empathy-step',
@@ -23,8 +24,15 @@ import { IResponseFormField } from 'src/app/common/components/response-form/resp
 export class EmpathyStepComponent implements OnInit {
   ResponseType = ResponseType;
   responseTypes = Object.values(ResponseType);
-  responses$: Observable<EmpathyMapResponse[]> =
-    this.empathyMapFacade.responses$;
+  responses$: Observable<IResponse[]> = this.empathyMapFacade.responses$.pipe(
+    map((responses) =>
+      responses.map((response) => ({
+        ...response,
+        votesCount: response.upvotes || 0,
+        hasVoted: response.hasVoted || false,
+      }))
+    )
+  );
   loading$: Observable<boolean> = this.empathyMapFacade.loading$.pipe(
     map((loading) => loading ?? false)
   );
@@ -44,37 +52,37 @@ export class EmpathyStepComponent implements OnInit {
       key: 'think',
       label: 'Pensa',
       placeholder: 'O que o usuário pensa?',
-      required: true,
+      required: false,
     },
     {
       key: 'feel',
       label: 'Sente',
       placeholder: 'O que o usuário sente?',
-      required: true,
+      required: false,
     },
     {
       key: 'say',
       label: 'Diz',
       placeholder: 'O que o usuário diz?',
-      required: true,
+      required: false,
     },
     {
       key: 'do',
       label: 'Faz',
       placeholder: 'O que o usuário faz?',
-      required: true,
+      required: false,
     },
     {
       key: 'pains',
       label: 'Dores',
       placeholder: 'Quais são as dores do usuário?',
-      required: true,
+      required: false,
     },
     {
       key: 'needs',
       label: 'Necessidades',
       placeholder: 'Quais são as necessidades do usuário?',
-      required: true,
+      required: false,
     },
   ];
 
@@ -106,7 +114,7 @@ export class EmpathyStepComponent implements OnInit {
     });
   }
 
-  getResponsesByType(type: ResponseType): Observable<EmpathyMapResponse[]> {
+  getResponsesByType(type: ResponseType): Observable<IResponse[]> {
     return this.responses$.pipe(
       map((responses) => responses.filter((response) => response.type === type))
     );
@@ -201,7 +209,7 @@ export class EmpathyStepComponent implements OnInit {
     }
   }
 
-  onEditResponse(response: EmpathyMapResponse): void {
+  onEditResponse(response: IResponse): void {
     // Implementação será feita no componente de lista
   }
 

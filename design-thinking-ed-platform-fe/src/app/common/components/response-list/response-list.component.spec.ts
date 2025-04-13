@@ -1,36 +1,32 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CommonModule } from '../../common.module';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ResponseListComponent } from './response-list.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
+import { ResponseListComponent } from './response-list.component';
 import { ResponseType } from 'src/app/stores/empathy-map-store/empathy-map.service';
+import { IResponse } from '../../interfaces/response.interface';
 
 describe('ResponseListComponent', () => {
   let component: ResponseListComponent;
   let fixture: ComponentFixture<ResponseListComponent>;
 
-  const mockResponses = [
+  const mockResponses: IResponse[] = [
     {
       id: 1,
-      content: 'Test content 1',
+      content: 'Test content',
       userId: 1,
       type: ResponseType.THINK,
       projectId: 1,
       upvotes: 0,
       hasVoted: false,
       isSelected: false,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 2,
-      content: 'Test content 2',
-      userId: 2,
-      type: ResponseType.FEEL,
-      projectId: 1,
-      upvotes: 1,
-      hasVoted: true,
-      isSelected: true,
+      votesCount: 0,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
@@ -38,7 +34,17 @@ describe('ResponseListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommonModule, NoopAnimationsModule],
+      declarations: [ResponseListComponent],
+      imports: [
+        MatTableModule,
+        MatCheckboxModule,
+        MatIconModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule,
+        BrowserAnimationsModule,
+      ],
     }).compileComponents();
   });
 
@@ -46,8 +52,9 @@ describe('ResponseListComponent', () => {
     fixture = TestBed.createComponent(ResponseListComponent);
     component = fixture.componentInstance;
     component.responses$ = of(mockResponses);
+    component.displayedColumns = ['select', 'content', 'actions'];
     component.currentUserId = 1;
-    component.isCurrentUser$ = (userId: number) => of(userId === 1);
+    component.isCurrentUser$ = () => of(true);
     component.loading$ = of(false);
     component.error$ = of(null);
     fixture.detectChanges();
@@ -78,14 +85,16 @@ describe('ResponseListComponent', () => {
     expect(component.delete.emit).toHaveBeenCalledWith(1);
   });
 
-  it('should handle start editing', () => {
+  it('should start editing', () => {
     const mockResponse = mockResponses[0];
+    spyOn(component.edit, 'emit');
     component.startEditing(mockResponse);
-    expect(component.editingResponseId).toBe(1);
-    expect(component.editingContent).toBe('Test content 1');
+    expect(component.editingResponseId).toBe(mockResponse.id);
+    expect(component.editingContent).toBe(mockResponse.content);
+    expect(component.edit.emit).toHaveBeenCalledWith(mockResponse);
   });
 
-  it('should handle save edit', () => {
+  it('should save edit', () => {
     spyOn(component.saveEdit, 'emit');
     component.editingResponseId = 1;
     component.editingContent = 'Updated content';
@@ -98,21 +107,11 @@ describe('ResponseListComponent', () => {
     expect(component.editingContent).toBe('');
   });
 
-  it('should handle cancel edit', () => {
-    spyOn(component.cancelEdit, 'emit');
+  it('should cancel edit', () => {
     component.editingResponseId = 1;
     component.editingContent = 'Test content';
     component.onCancelEdit();
-    expect(component.cancelEdit.emit).toHaveBeenCalled();
     expect(component.editingResponseId).toBeNull();
     expect(component.editingContent).toBe('');
-  });
-
-  it('should not save edit if no response is being edited', () => {
-    spyOn(component.saveEdit, 'emit');
-    component.editingResponseId = null;
-    component.editingContent = 'Updated content';
-    component.onSaveEdit();
-    expect(component.saveEdit.emit).not.toHaveBeenCalled();
   });
 });

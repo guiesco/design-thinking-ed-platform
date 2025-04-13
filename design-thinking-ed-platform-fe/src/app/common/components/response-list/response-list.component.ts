@@ -1,7 +1,7 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
-import { EmpathyMapResponse } from 'src/app/stores/empathy-map-store/empathy-map.service';
+import { IResponse } from '../../interfaces/response.interface';
 
 @Component({
   selector: 'app-response-list',
@@ -9,14 +9,12 @@ import { EmpathyMapResponse } from 'src/app/stores/empathy-map-store/empathy-map
   styleUrls: ['./response-list.component.scss'],
 })
 export class ResponseListComponent implements OnInit {
-  @Input() responses$!: Observable<EmpathyMapResponse[]>;
+  @Input() responses$!: Observable<IResponse[]>;
   @Input() displayedColumns: string[] = ['select', 'content', 'actions'];
   @Input() currentUserId!: number;
   @Input() isCurrentUser$!: (userId: number) => Observable<boolean>;
   @Input() loading$!: Observable<boolean>;
   @Input() error$!: Observable<any>;
-
-  dataSource = new MatTableDataSource<EmpathyMapResponse>();
 
   @Output() upvote = new EventEmitter<{
     responseId: number;
@@ -24,10 +22,11 @@ export class ResponseListComponent implements OnInit {
   }>();
   @Output() toggleSelection = new EventEmitter<number>();
   @Output() delete = new EventEmitter<number>();
-  @Output() edit = new EventEmitter<EmpathyMapResponse>();
+  @Output() edit = new EventEmitter<IResponse>();
   @Output() saveEdit = new EventEmitter<{ id: number; content: string }>();
-  @Output() cancelEdit = new EventEmitter<void>();
+  @Output() refresh = new EventEmitter<void>();
 
+  dataSource = new MatTableDataSource<IResponse>();
   editingResponseId: number | null = null;
   editingContent: string = '';
 
@@ -45,11 +44,11 @@ export class ResponseListComponent implements OnInit {
     this.toggleSelection.emit(responseId);
   }
 
-  onDelete(id: number): void {
-    this.delete.emit(id);
+  onDelete(responseId: number): void {
+    this.delete.emit(responseId);
   }
 
-  startEditing(response: EmpathyMapResponse): void {
+  startEditing(response: IResponse): void {
     this.editingResponseId = response.id;
     this.editingContent = response.content;
     this.edit.emit(response);
@@ -69,6 +68,9 @@ export class ResponseListComponent implements OnInit {
   onCancelEdit(): void {
     this.editingResponseId = null;
     this.editingContent = '';
-    this.cancelEdit.emit();
+  }
+
+  refreshData(): void {
+    this.refresh.emit();
   }
 }

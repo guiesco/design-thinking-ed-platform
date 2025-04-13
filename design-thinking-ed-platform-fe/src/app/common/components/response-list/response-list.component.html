@@ -1,4 +1,15 @@
 <div class="response-list-container">
+  <div class="table-header">
+    <button
+      mat-icon-button
+      (click)="refreshData()"
+      matTooltip="Atualizar dados"
+      class="refresh-button"
+    >
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </div>
+
   <mat-table [dataSource]="dataSource" class="response-table">
     <!-- Select Column -->
     <ng-container matColumnDef="select">
@@ -41,13 +52,14 @@
         <div class="actions-container">
           <button
             mat-icon-button
-            [color]="response.hasVoted ? 'primary' : 'basic'"
+            color="warn"
             (click)="onUpvote(response.id, response.hasVoted || false)"
-            [disabled]="!(isCurrentUser$(response.userId) | async)"
             matTooltip="Curtir"
             class="vote-button"
           >
-            <mat-icon>thumb_up</mat-icon>
+            <mat-icon>
+              {{ response.hasVoted ? "favorite" : "favorite_border" }}
+            </mat-icon>
             <span class="vote-count" *ngIf="response.votesCount > 0">
               {{ response.votesCount }}
             </span>

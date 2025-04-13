@@ -1,13 +1,6 @@
 <div class="empathy-step-container">
   <div class="header">
     <h1>Mapa de Empatia</h1>
-    <button
-      mat-icon-button
-      (click)="refreshData()"
-      matTooltip="Atualizar dados"
-    >
-      <mat-icon>refresh</mat-icon>
-    </button>
   </div>
 
   <div class="empathy-step-header">
@@ -44,6 +37,7 @@
           (delete)="onDeleteResponse($event)"
           (edit)="onEditResponse($event)"
           (saveEdit)="onSaveEditResponse($event)"
+          (refresh)="refreshData()"
         ></app-response-list>
       </div>
     </div>
