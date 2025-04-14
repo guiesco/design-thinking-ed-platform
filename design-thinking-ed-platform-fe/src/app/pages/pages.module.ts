@@ -40,6 +40,7 @@ import { ProjectStateModule } from '../stores/project-store/project.module';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ChallengeDefinitionModule } from '../stores/challenge-definition-store/challenge-definition.module';
 import { CommonModule as AppCommonModule } from '../common/common.module';
+import { MatStepperModule } from '@angular/material/stepper';
 
 const angularMaterialModules = [
   MatToolbarModule,
@@ -61,6 +62,7 @@ const angularMaterialModules = [
   MatTooltipModule,
   MatChipsModule,
   MatExpansionModule,
+  MatStepperModule,
 ];
 
 const stateModules = [

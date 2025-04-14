@@ -1,3 +1,7 @@
+import { ResponseType as EmpathyMapResponseType } from 'src/app/stores/empathy-map-store/empathy-map.service';
+import { IUser } from './user.interface';
+import { IResponse } from './response.interface';
+
 export enum ResponseType {
   PROBLEMS = 'PROBLEMS',
   TARGET_AUDIENCE = 'TARGET_AUDIENCE',
@@ -5,13 +9,6 @@ export enum ResponseType {
   BRAINSTORM = 'BRAINSTORM',
 }
 
-export interface ChallengeDefinitionResponse {
-  id: number;
+export interface ChallengeDefinitionResponse extends Omit<IResponse, 'type'> {
   type: ResponseType;
-  content: string;
-  isSelected: boolean;
-  upvotes: number;
-  hasVoted: boolean;
-  createdAt: Date;
-  updatedAt: Date;
 }

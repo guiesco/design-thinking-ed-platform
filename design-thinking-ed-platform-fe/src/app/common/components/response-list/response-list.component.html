@@ -68,7 +68,9 @@
             mat-icon-button
             color="primary"
             (click)="startEditing(response)"
-            *ngIf="isCurrentUser$(response.userId) | async"
+            *ngIf="
+              isCurrentUser$(response?.userId || response?.user?.id) | async
+            "
             matTooltip="Editar"
           >
             <mat-icon>edit</mat-icon>
@@ -77,7 +79,9 @@
             mat-icon-button
             color="warn"
             (click)="onDelete(response.id)"
-            *ngIf="isCurrentUser$(response.userId) | async"
+            *ngIf="
+              isCurrentUser$(response?.userId || response?.user?.id) | async
+            "
             matTooltip="Excluir"
           >
             <mat-icon>delete</mat-icon>

@@ -17,6 +17,7 @@ export class ResponseFormComponent implements OnInit {
   @Input() fields: IResponseFormField[] = [];
   @Input() submitButtonText: string = 'Enviar';
   @Input() loading = false;
+  @Input() error: any = null;
 
   @Output() submitForm = new EventEmitter<Record<string, string>>();
 

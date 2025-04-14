@@ -15,6 +15,7 @@ import { IUser } from 'src/app/common/interfaces/user.interface';
 import { map, Observable } from 'rxjs';
 import { IResponseFormField } from 'src/app/common/components/response-form/response-form.component';
 import { IResponse } from 'src/app/common/interfaces/response.interface';
+import { ChallengeDefinitionResponse } from 'src/app/common/interfaces/challenge-definition-response.interface';
 
 @Component({
   selector: 'app-empathy-step',
@@ -101,16 +102,14 @@ export class EmpathyStepComponent implements OnInit {
       }
     });
 
-    this.route.params.subscribe((params) => {
-      const projectId = Number(this.route.parent?.snapshot.params['projectId']);
-      this.projectId = projectId;
-      this.empathyMapFacade.loadResponses(projectId, this.currentUserId);
+    const projectId = Number(this.route.parent?.snapshot.params['projectId']);
+    this.projectId = projectId;
+    this.empathyMapFacade.loadResponses(projectId, this.currentUserId);
 
-      this.error$.subscribe((error: any) => {
-        if (error) {
-          console.error('Error loading empathy map:', error);
-        }
-      });
+    this.error$.subscribe((error: any) => {
+      if (error) {
+        console.error('Error loading empathy map:', error);
+      }
     });
   }
 

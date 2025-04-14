@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { IResponse } from '../../interfaces/response.interface';
+import { ChallengeDefinitionResponse } from '../../interfaces/challenge-definition-response.interface';
 
 @Component({
   selector: 'app-response-list',
