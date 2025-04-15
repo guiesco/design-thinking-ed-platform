@@ -17,7 +17,7 @@
     <app-response-form
       [fields]="formFields"
       [loading]="(loading$ | async) ?? false"
-      (submitForm)="onFormSubmit($event)"
+      (submitForm)="onSubmit($event)"
     ></app-response-form>
 
     <div class="empathy-maps-grid">
@@ -31,12 +31,11 @@
           [currentUserId]="currentUserId"
           [isCurrentUser$]="isCurrentUser$"
           [loading$]="loading$"
-          [error$]="error$"
-          (upvote)="onUpvoteResponse($event.responseId, $event.hasVoted)"
-          (toggleSelection)="onToggleResponseSelection($event)"
-          (delete)="onDeleteResponse($event)"
-          (edit)="onEditResponse($event)"
-          (saveEdit)="onSaveEditResponse($event)"
+          (upvote)="onUpvote($event)"
+          (toggleSelection)="onToggleSelection($event)"
+          (delete)="onDelete($event)"
+          (edit)="onEdit($event)"
+          (saveEdit)="onSaveEdit($event)"
           (refresh)="refreshData()"
         ></app-response-list>
       </div>

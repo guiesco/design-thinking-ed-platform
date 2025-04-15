@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { map, mergeMap, catchError } from 'rxjs/operators';
+import { map, mergeMap, catchError, switchMap } from 'rxjs/operators';
 import { EmpathyMapService } from './empathy-map.service';
 import * as EmpathyMapActions from './empathy-map.actions';
 
@@ -109,11 +109,29 @@ export class EmpathyMapEffects {
   createResponse$ = createEffect(() =>
     this.actions$.pipe(
       ofType(EmpathyMapActions.createResponse),
-      mergeMap(({ response }) =>
+      switchMap(({ response }) =>
         this.empathyMapService.createResponse(response).pipe(
           map((createdResponse) =>
             EmpathyMapActions.createResponseSuccess({
               response: createdResponse,
+            })
+          ),
+          catchError((error) =>
+            of(EmpathyMapActions.createResponseFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  createResponses$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(EmpathyMapActions.createResponses),
+      switchMap(({ responses }) =>
+        this.empathyMapService.createResponses(responses).pipe(
+          map((createdResponses) =>
+            EmpathyMapActions.createResponsesSuccess({
+              responses: createdResponses,
             })
           ),
           catchError((error) =>

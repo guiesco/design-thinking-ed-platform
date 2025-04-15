@@ -50,14 +50,20 @@ export class ChallengeDefinitionService {
   async createResponse(
     createResponseDto: CreateChallengeDefinitionResponseDto,
   ): Promise<ChallengeDefinitionResponse> {
-    const response = this.challengeDefinitionResponseRepository.create({
-      type: createResponseDto.type,
-      content: createResponseDto.content,
-      user: { id: createResponseDto.userId },
-      project: { id: createResponseDto.projectId },
-    });
+    const response =
+      this.challengeDefinitionResponseRepository.create(createResponseDto);
+    const savedResponse = await this.challengeDefinitionResponseRepository.save(
+      response,
+    );
+    return { ...savedResponse, hasVoted: false };
+  }
 
-    return this.challengeDefinitionResponseRepository.save(response);
+  async createResponses(responses: CreateChallengeDefinitionResponseDto[]) {
+    const createdResponses =
+      this.challengeDefinitionResponseRepository.create(responses);
+    const savedResponses =
+      await this.challengeDefinitionResponseRepository.save(createdResponses);
+    return savedResponses.map((response) => ({ ...response, hasVoted: false }));
   }
 
   async updateResponse(
@@ -81,7 +87,17 @@ export class ChallengeDefinitionService {
     }
 
     response.content = content;
-    return this.challengeDefinitionResponseRepository.save(response);
+    const updatedResponse =
+      await this.challengeDefinitionResponseRepository.save(response);
+
+    // Verifica se o usuário já votou
+    const hasVoted = await this.userVoteService.hasVoted(
+      userId,
+      VoteableEntityType.CHALLENGE_DEFINITION_RESPONSE,
+      responseId,
+    );
+
+    return { ...updatedResponse, hasVoted };
   }
 
   async deleteResponse(responseId: number): Promise<void> {
@@ -148,7 +164,10 @@ export class ChallengeDefinitionService {
     return { ...challengeDefinitionResponse, hasVoted: false };
   }
 
-  async toggleResponseSelection(responseId: number): Promise<void> {
+  async toggleResponseSelection(
+    responseId: number,
+    userId: number,
+  ): Promise<ChallengeDefinitionResponse> {
     const response = await this.challengeDefinitionResponseRepository.findOne({
       where: { id: responseId },
       relations: ['user'],
@@ -159,6 +178,16 @@ export class ChallengeDefinitionService {
     }
 
     response.isSelected = !response.isSelected;
-    await this.challengeDefinitionResponseRepository.save(response);
+    const updatedResponse =
+      await this.challengeDefinitionResponseRepository.save(response);
+
+    // Verifica se o usuário já votou
+    const hasVoted = await this.userVoteService.hasVoted(
+      userId,
+      VoteableEntityType.CHALLENGE_DEFINITION_RESPONSE,
+      responseId,
+    );
+
+    return { ...updatedResponse, hasVoted };
   }
 }

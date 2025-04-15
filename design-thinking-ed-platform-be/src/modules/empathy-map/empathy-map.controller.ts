@@ -10,7 +10,10 @@ import {
 } from '@nestjs/common';
 import { EmpathyMapService } from './empathy-map.service';
 import { CreateEmpathyMapDto } from './dto/create-empathy-map.dto';
-import { CreateEmpathyMapResponseDto } from './dto/create-empathy-map-response.dto';
+import {
+  CreateEmpathyMapResponseDto,
+  CreateEmpathyMapResponsesDto,
+} from './dto/create-empathy-map-response.dto';
 import { ResponseType } from './entities/empathy-map-response.entity';
 
 @Controller('empathy-map')
@@ -25,6 +28,11 @@ export class EmpathyMapController {
   @Post('response')
   createResponse(@Body() createDto: CreateEmpathyMapResponseDto) {
     return this.empathyMapService.createResponse(createDto);
+  }
+
+  @Post('responses')
+  createResponses(@Body() createDto: CreateEmpathyMapResponsesDto) {
+    return this.empathyMapService.createResponses(createDto.responses);
   }
 
   @Get('project/:projectId')

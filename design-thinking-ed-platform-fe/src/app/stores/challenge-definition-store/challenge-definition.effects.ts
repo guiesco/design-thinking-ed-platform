@@ -47,6 +47,22 @@ export class ChallengeDefinitionEffects {
     )
   );
 
+  createResponses$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ChallengeDefinitionActions.createResponses),
+      switchMap(({ responses }) =>
+        this.challengeDefinitionService.createResponses(responses).pipe(
+          map((responses) =>
+            ChallengeDefinitionActions.createResponsesSuccess({ responses })
+          ),
+          catchError((error) =>
+            of(ChallengeDefinitionActions.createResponsesFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
   updateResponse$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ChallengeDefinitionActions.updateResponse),

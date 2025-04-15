@@ -1,3 +1,101 @@
+// Variáveis comuns
+$spacing-unit: 8px;
+$border-radius: 4px;
+$transition-duration: 0.3s;
+
+// Mixins
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin card-style {
+    background: white;
+    border-radius: $border-radius;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: $spacing-unit * 2;
+    margin-bottom: $spacing-unit * 2;
+}
+
+// Estilos base
+.step-container {
+    padding: $spacing-unit * 3;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+// Cabeçalho
+.step-header {
+    @include flex-center;
+    margin-bottom: $spacing-unit * 4;
+
+    h2 {
+        margin: 0;
+        color: #333;
+    }
+}
+
+// Formulário
+.response-form {
+    @include card-style;
+
+    .form-field {
+        margin-bottom: $spacing-unit * 2;
+    }
+}
+
+// Lista de respostas
+.response-list {
+    @include card-style;
+
+    .response-item {
+        padding: $spacing-unit * 2;
+        border-bottom: 1px solid #eee;
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+}
+
+// Botões de ação
+.action-buttons {
+    @include flex-center;
+    gap: $spacing-unit;
+    margin-top: $spacing-unit * 2;
+
+    button {
+        min-width: 100px;
+    }
+}
+
+// Transições
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity $transition-duration;
+}
+
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+}
+
+// Responsividade
+@media (max-width: 768px) {
+    .step-container {
+        padding: $spacing-unit * 2;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+
+        button {
+            width: 100%;
+        }
+    }
+}
+
 .challenge-definition-container {
     padding: 24px;
     max-width: 1200px;

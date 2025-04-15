@@ -9,6 +9,7 @@ import * as ChallengeDefinitionActions from './challenge-definition.actions';
 import * as ChallengeDefinitionSelectors from './challenge-definition.selectors';
 import { ChallengeDefinitionState } from './challenge-definition.state';
 import { ChallengeDefinitionService } from './challenge-definition.service';
+import { CreateChallengeDefinitionResponseDto } from '../../common/interfaces/create-challenge-definition-response.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -46,18 +47,24 @@ export class ChallengeDefinitionFacade {
   }
 
   createResponse(
-    responseType: ResponseType,
+    type: ResponseType,
     content: string,
     userId: number,
     projectId: number
   ): void {
     this.store.dispatch(
       ChallengeDefinitionActions.createResponse({
-        responseType,
+        responseType: type,
         content,
         userId,
         projectId,
       })
+    );
+  }
+
+  createResponses(responses: CreateChallengeDefinitionResponseDto[]): void {
+    this.store.dispatch(
+      ChallengeDefinitionActions.createResponses({ responses })
     );
   }
 

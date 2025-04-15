@@ -9,7 +9,11 @@ import {
   Query,
 } from '@nestjs/common';
 import { ChallengeDefinitionService } from './challenge-definition.service';
-import { CreateChallengeDefinitionResponseDto } from './dto/create-challenge-definition-response.dto';
+import {
+  CreateChallengeDefinitionResponseDto,
+  CreateChallengeDefinitionResponsesDto,
+} from './dto/create-challenge-definition-response.dto';
+import { ChallengeDefinitionResponse } from './entities/challenge-definition-response.entity';
 
 @Controller('challenge-definition')
 export class ChallengeDefinitionController {
@@ -33,6 +37,19 @@ export class ChallengeDefinitionController {
     @Body() createResponseDto: CreateChallengeDefinitionResponseDto,
   ) {
     return this.challengeDefinitionService.createResponse(createResponseDto);
+  }
+
+  @Post('responses')
+  createResponses(
+    @Body() createResponsesDto: CreateChallengeDefinitionResponsesDto,
+  ) {
+    console.log(
+      '🚀 ~ ChallengeDefinitionController ~ createResponsesDto:',
+      createResponsesDto,
+    );
+    return this.challengeDefinitionService.createResponses(
+      createResponsesDto.responses,
+    );
   }
 
   @Patch('response/:id')
@@ -69,7 +86,13 @@ export class ChallengeDefinitionController {
   }
 
   @Post('response/:id/toggle-selection')
-  toggleResponseSelection(@Param('id') id: string) {
-    return this.challengeDefinitionService.toggleResponseSelection(Number(id));
+  async toggleResponseSelection(
+    @Param('id') id: string,
+    @Query('userId') userId: string,
+  ): Promise<ChallengeDefinitionResponse> {
+    return this.challengeDefinitionService.toggleResponseSelection(
+      parseInt(id),
+      parseInt(userId),
+    );
   }
 }

@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import { UserVote } from '../../user-vote/entities/user-vote.entity';
 import { UserEntity } from 'src/modules/user/entities/user.entity';
@@ -36,13 +37,21 @@ export class ChallengeDefinitionResponse {
   isSelected: boolean;
 
   @ManyToOne(() => UserEntity, (user) => user.challengeDefinitionResponses)
+  @JoinColumn({ name: 'user_id' })
   user: UserEntity;
+
+  @Column({ name: 'user_id' })
+  userId: number;
 
   @ManyToOne(
     () => ProjectEntity,
     (project) => project.challengeDefinitionResponses,
   )
+  @JoinColumn({ name: 'project_id' })
   project: ProjectEntity;
+
+  @Column({ name: 'project_id' })
+  projectId: number;
 
   @OneToMany(() => UserVote, (vote) => vote.challengeDefinitionResponse)
   votes: UserVote[];

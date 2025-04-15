@@ -1,37 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import {
   ChallengeDefinitionResponse,
   ResponseType,
 } from '../../../../common/interfaces/challenge-definition-response.interface';
 import { ChallengeDefinitionFacade } from '../../../../stores/challenge-definition-store/challenge-definition.facade';
 import { UserFacade } from '../../../../stores/user-state-store/user.facade';
-import { IUser } from '../../../../common/interfaces/user.interface';
 import { IResponseFormField } from '../../../../common/components/response-form/response-form.component';
 import { IResponse } from '../../../../common/interfaces/response.interface';
-import { map, take } from 'rxjs/operators';
-import * as ChallengeDefinitionActions from '../../../../stores/challenge-definition-store/challenge-definition.actions';
-import * as ChallengeDefinitionSelectors from '../../../../stores/challenge-definition-store/challenge-definition.selectors';
+import { CreateChallengeDefinitionResponseDto } from '../../../../common/interfaces/create-challenge-definition-response.interface';
+import { BaseStepComponent } from '../../../../common/components/base-step/base-step.component';
 
 @Component({
   selector: 'app-challenge-definition-step',
   templateUrl: './challenge-definition-step.component.html',
   styleUrls: ['./challenge-definition-step.component.scss'],
 })
-export class ChallengeDefinitionStepComponent implements OnInit {
-  projectId!: number;
-  currentUserId!: number;
+export class ChallengeDefinitionStepComponent extends BaseStepComponent {
   currentStep: number = 1;
   showBrainstormStep: boolean = false;
 
   ResponseType = ResponseType;
   responseTypes = Object.values(ResponseType);
 
-  // Para agrupar os tipos de resposta por etapa
   firstStepResponseTypes = [
     ResponseType.PROBLEMS,
     ResponseType.TARGET_AUDIENCE,
@@ -39,22 +33,12 @@ export class ChallengeDefinitionStepComponent implements OnInit {
   ];
   secondStepResponseTypes = [ResponseType.BRAINSTORM];
 
-  responses$: Observable<IResponse[]> = this.store.select(
-    ChallengeDefinitionSelectors.selectResponses
-  );
-  loading$: Observable<boolean> = this.store.select(
-    ChallengeDefinitionSelectors.selectLoading
-  );
-  error$: Observable<string | null> = this.store.select(
-    ChallengeDefinitionSelectors.selectError
-  );
+  responses$: Observable<IResponse[]> =
+    this.challengeDefinitionFacade.responses$;
+  loading$: Observable<boolean> = this.challengeDefinitionFacade.loading$;
+  error$: Observable<string | null> = this.challengeDefinitionFacade.error$;
 
-  isCurrentUser$ = (userId: number): Observable<boolean> =>
-    this.userFacade.user$.pipe(map((user) => user?.id === userId));
-
-  displayedColumns = ['content', 'actions'];
-
-  formFields: IResponseFormField[] = [
+  override formFields: IResponseFormField[] = [
     {
       key: 'content',
       label: 'Resposta',
@@ -64,33 +48,31 @@ export class ChallengeDefinitionStepComponent implements OnInit {
   ];
 
   constructor(
-    private store: Store,
-    private userFacade: UserFacade,
-    private route: ActivatedRoute,
-    private snackBar: MatSnackBar
-  ) {}
+    private challengeDefinitionFacade: ChallengeDefinitionFacade,
+    userFacade: UserFacade,
+    route: ActivatedRoute,
+    snackBar: MatSnackBar
+  ) {
+    super(userFacade, route, snackBar);
+  }
 
-  ngOnInit(): void {
-    this.userFacade.user$.pipe(take(1)).subscribe((user) => {
-      if (user?.id) {
-        this.currentUserId = Number(user.id);
-      }
-    });
-
+  override ngOnInit(): void {
+    super.ngOnInit();
+    this.loadResponses();
     this.error$.subscribe((error) => {
       if (error) {
-        this.snackBar.open(`Erro ao carregar respostas: ${error}`, 'Fechar', {
-          duration: 5000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-        });
+        this.showError(`Erro ao carregar respostas: ${error}`);
       }
     });
+  }
 
-    const projectId = Number(this.route.parent?.snapshot.params['projectId']);
-    this.store.dispatch(
-      ChallengeDefinitionActions.loadResponses({ projectId })
-    );
+  loadResponses(): void {
+    if (this.projectId && this.currentUserId) {
+      this.challengeDefinitionFacade.loadResponses(
+        this.projectId,
+        this.currentUserId
+      );
+    }
   }
 
   getResponsesByType(type: ResponseType): Observable<IResponse[]> {
@@ -110,93 +92,92 @@ export class ChallengeDefinitionStepComponent implements OnInit {
   }
 
   onSubmit(type: ResponseType, formData: any): void {
-    if (!this.currentUserId) {
-      this.snackBar.open('Usuário não identificado', 'Fechar', {
-        duration: 3000,
-        horizontalPosition: 'right',
-        verticalPosition: 'top',
-      });
+    if (!this.currentUserId || !this.projectId) {
+      this.showError('Usuário ou projeto não identificado');
       return;
     }
 
-    const projectId = Number(this.route.snapshot.params['id']);
-    this.store.dispatch(
-      ChallengeDefinitionActions.createResponse({
-        responseType: type,
-        content: formData.content,
+    const content = formData.content;
+    if (!content.trim()) return;
+
+    const lines = content.split('\n').filter((line: string) => line.trim());
+    const responses: CreateChallengeDefinitionResponseDto[] = [];
+
+    lines.forEach((line: string) => {
+      responses.push({
+        type: type,
+        content: line.trim(),
         userId: this.currentUserId,
-        projectId,
-      })
-    );
+        projectId: this.projectId,
+      });
+    });
+
+    if (responses.length > 0) {
+      this.challengeDefinitionFacade.createResponses(responses);
+      this.showSuccess(
+        `${responses.length} resposta(s) criada(s) com sucesso!`
+      );
+    }
   }
 
   onUpvote(event: { responseId: number; hasVoted: boolean }): void {
     if (!this.currentUserId) return;
 
     if (event.hasVoted) {
-      this.store.dispatch(
-        ChallengeDefinitionActions.removeVote({
-          id: event.responseId,
-          userId: this.currentUserId,
-        })
+      this.challengeDefinitionFacade.removeVote(
+        event.responseId,
+        this.currentUserId
       );
     } else {
-      this.store.dispatch(
-        ChallengeDefinitionActions.upvoteResponse({
-          id: event.responseId,
-          userId: this.currentUserId,
-        })
+      this.challengeDefinitionFacade.upvoteResponse(
+        event.responseId,
+        this.currentUserId
       );
     }
   }
 
   onToggleSelection(responseId: number): void {
     if (!this.currentUserId) return;
-    this.store.dispatch(
-      ChallengeDefinitionActions.toggleResponseSelection({
-        id: responseId,
-        userId: this.currentUserId,
-      })
+    this.challengeDefinitionFacade.toggleResponseSelection(
+      responseId,
+      this.currentUserId
     );
   }
 
   onDelete(responseId: number): void {
     if (!this.currentUserId) return;
-    this.store.dispatch(
-      ChallengeDefinitionActions.deleteResponse({
-        id: responseId,
-        userId: this.currentUserId,
-      })
+    this.challengeDefinitionFacade.deleteResponse(
+      responseId,
+      this.currentUserId
     );
   }
 
   onEdit(response: IResponse): void {
     if (!this.currentUserId) return;
-    this.store.dispatch(
-      ChallengeDefinitionActions.updateResponse({
-        id: response.id,
-        content: response.content,
-        userId: this.currentUserId,
-      })
+    this.challengeDefinitionFacade.updateResponse(
+      response.id,
+      response.content,
+      this.currentUserId
     );
   }
 
   onSaveEdit(event: { id: number; content: string }): void {
     if (!this.currentUserId) return;
-    this.store.dispatch(
-      ChallengeDefinitionActions.updateResponse({
-        id: event.id,
-        content: event.content,
-        userId: this.currentUserId,
-      })
+    this.challengeDefinitionFacade.updateResponse(
+      event.id,
+      event.content,
+      this.currentUserId
     );
   }
 
   refreshData(): void {
-    const projectId = Number(this.route.snapshot.params['id']);
-    this.store.dispatch(
-      ChallengeDefinitionActions.loadResponses({ projectId })
-    );
+    if (this.projectId && this.currentUserId) {
+      this.challengeDefinitionFacade.loadResponses(
+        this.projectId,
+        this.currentUserId
+      );
+      this.showSuccess('Dados atualizados com sucesso!');
+    }
   }
 
   goToBrainstorm(): void {

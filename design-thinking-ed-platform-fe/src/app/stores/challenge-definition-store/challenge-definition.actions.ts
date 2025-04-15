@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { ChallengeDefinitionResponse } from '../../common/interfaces/challenge-definition-response.interface';
+import { CreateChallengeDefinitionResponseDto } from '../../common/interfaces/create-challenge-definition-response.interface';
 import { ResponseType } from '../../common/interfaces/challenge-definition-response.interface';
 
 export const loadResponses = createAction(
@@ -27,9 +28,24 @@ export const createResponse = createAction(
   }>()
 );
 
+export const createResponses = createAction(
+  '[Challenge Definition] Create Responses',
+  props<{ responses: CreateChallengeDefinitionResponseDto[] }>()
+);
+
 export const createResponseSuccess = createAction(
   '[Challenge Definition] Create Response Success',
   props<{ response: ChallengeDefinitionResponse }>()
+);
+
+export const createResponsesSuccess = createAction(
+  '[Challenge Definition] Create Responses Success',
+  props<{ responses: ChallengeDefinitionResponse[] }>()
+);
+
+export const createResponsesFailure = createAction(
+  '[Challenge Definition] Create Responses Failure',
+  props<{ error: any }>()
 );
 
 export const createResponseFailure = createAction(

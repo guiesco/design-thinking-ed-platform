@@ -4,12 +4,13 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { ChallengeDefinitionResponse } from '../../common/interfaces/challenge-definition-response.interface';
 import { ResponseType } from '../../common/interfaces/challenge-definition-response.interface';
+import { CreateChallengeDefinitionResponseDto } from '../../common/interfaces/create-challenge-definition-response.interface';
 
 interface CreateResponseDto {
   type: ResponseType;
   content: string;
-  projectId: number;
   userId: number;
+  projectId: number;
 }
 
 @Injectable({
@@ -32,13 +33,13 @@ export class ChallengeDefinitionService {
   }
 
   createResponse(
-    responseType: ResponseType,
+    type: ResponseType,
     content: string,
     userId: number,
     projectId: number
   ): Observable<ChallengeDefinitionResponse> {
     const createResponseDto: CreateResponseDto = {
-      type: responseType,
+      type,
       content,
       userId,
       projectId,
@@ -95,6 +96,15 @@ export class ChallengeDefinitionService {
     return this.http.post<ChallengeDefinitionResponse>(
       `${this.apiUrl}/response/${id}/toggle-selection?userId=${userId}`,
       {}
+    );
+  }
+
+  createResponses(
+    responses: CreateChallengeDefinitionResponseDto[]
+  ): Observable<ChallengeDefinitionResponse[]> {
+    return this.http.post<ChallengeDefinitionResponse[]>(
+      `${this.apiUrl}/responses`,
+      { responses }
     );
   }
 }
