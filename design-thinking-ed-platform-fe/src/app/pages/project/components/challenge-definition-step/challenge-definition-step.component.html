@@ -26,7 +26,6 @@
       <app-response-list
         [responses$]="getResponsesByType(ResponseType.PROBLEMS)"
         [currentUserId]="currentUserId"
-        [isCurrentUser$]="isCurrentUser$"
         [loading$]="loading$"
         [displayedColumns]="displayedColumns"
         (upvote)="onUpvote($event)"
@@ -59,7 +58,6 @@
       <app-response-list
         [responses$]="getResponsesByType(ResponseType.TARGET_AUDIENCE)"
         [currentUserId]="currentUserId"
-        [isCurrentUser$]="isCurrentUser$"
         [loading$]="loading$"
         [displayedColumns]="displayedColumns"
         (upvote)="onUpvote($event)"
@@ -95,7 +93,6 @@
       <app-response-list
         [responses$]="getResponsesByType(ResponseType.HOW_WE_CAN)"
         [currentUserId]="currentUserId"
-        [isCurrentUser$]="isCurrentUser$"
         [loading$]="loading$"
         [displayedColumns]="displayedColumns"
         (upvote)="onUpvote($event)"
@@ -139,7 +136,6 @@
       <app-response-list
         [responses$]="getResponsesByType(ResponseType.BRAINSTORM)"
         [currentUserId]="currentUserId"
-        [isCurrentUser$]="isCurrentUser$"
         [loading$]="loading$"
         [displayedColumns]="displayedColumns"
         (upvote)="onUpvote($event)"

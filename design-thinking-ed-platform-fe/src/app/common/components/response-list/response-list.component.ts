@@ -13,7 +13,6 @@ export class ResponseListComponent implements OnInit {
   @Input() responses$!: Observable<IResponse[]>;
   @Input() displayedColumns: string[] = ['select', 'content', 'actions'];
   @Input() currentUserId!: number;
-  @Input() isCurrentUser$!: (userId: number) => Observable<boolean>;
   @Input() loading$!: Observable<boolean>;
   @Input() error$!: Observable<any>;
 

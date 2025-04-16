@@ -33,14 +33,6 @@
           <mat-form-field appearance="outline" class="full-width">
             <textarea matInput [(ngModel)]="editingContent" rows="2"></textarea>
           </mat-form-field>
-          <div class="edit-actions">
-            <button mat-icon-button color="primary" (click)="onSaveEdit()">
-              <mat-icon>check</mat-icon>
-            </button>
-            <button mat-icon-button color="warn" (click)="onCancelEdit()">
-              <mat-icon>close</mat-icon>
-            </button>
-          </div>
         </div>
       </mat-cell>
     </ng-container>
@@ -60,8 +52,8 @@
             <mat-icon>
               {{ response.hasVoted ? "favorite" : "favorite_border" }}
             </mat-icon>
-            <span class="vote-count" *ngIf="response.votesCount > 0">
-              {{ response.votesCount }}
+            <span class="vote-count" *ngIf="response.upvotes !== undefined">
+              {{ response.upvotes }}
             </span>
           </button>
           <button
@@ -69,7 +61,8 @@
             color="primary"
             (click)="startEditing(response)"
             *ngIf="
-              isCurrentUser$(response?.userId || response?.user?.id) | async
+              currentUserId === response.userId &&
+              editingResponseId !== response.id
             "
             matTooltip="Editar"
           >
@@ -80,12 +73,21 @@
             color="warn"
             (click)="onDelete(response.id)"
             *ngIf="
-              isCurrentUser$(response?.userId || response?.user?.id) | async
+              currentUserId === response.userId &&
+              editingResponseId !== response.id
             "
             matTooltip="Excluir"
           >
             <mat-icon>delete</mat-icon>
           </button>
+          <div class="edit-actions" *ngIf="editingResponseId === response.id">
+            <button mat-icon-button color="primary" (click)="onSaveEdit()">
+              <mat-icon>check</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="onCancelEdit()">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
         </div>
       </mat-cell>
     </ng-container>
