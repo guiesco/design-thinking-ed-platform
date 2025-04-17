@@ -39,6 +39,10 @@ import { ChallengeDefinitionStepComponent } from './project/components/challenge
 import { ProjectStateModule } from '../stores/project-store/project.module';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ChallengeDefinitionModule } from '../stores/challenge-definition-store/challenge-definition.module';
+import { CommonModule as AppCommonModule } from '../common/common.module';
+import { MatStepperModule } from '@angular/material/stepper';
+import { ProblemDefinitionStepComponent } from './project/components/problem-definition-step/problem-definition-step.component';
+import { ProblemDefinitionStoreModule } from '../stores/problem-definition-store/problem-definition.module';
 
 const angularMaterialModules = [
   MatToolbarModule,
@@ -60,6 +64,7 @@ const angularMaterialModules = [
   MatTooltipModule,
   MatChipsModule,
   MatExpansionModule,
+  MatStepperModule,
 ];
 
 const stateModules = [
@@ -69,6 +74,7 @@ const stateModules = [
   EmpathyMapStateModule,
   ProjectStateModule,
   ChallengeDefinitionModule,
+  ProblemDefinitionStoreModule,
 ];
 
 const importModules = [FormsModule, ReactiveFormsModule, ...stateModules];
@@ -76,6 +82,7 @@ const importModules = [FormsModule, ReactiveFormsModule, ...stateModules];
 @NgModule({
   imports: [
     CommonModule,
+    AppCommonModule,
     PagesRoutingModule,
     ...angularMaterialModules,
     ...importModules,
@@ -92,6 +99,7 @@ const importModules = [FormsModule, ReactiveFormsModule, ...stateModules];
     ProjectComponent,
     EmpathyStepComponent,
     ChallengeDefinitionStepComponent,
+    ProblemDefinitionStepComponent,
   ],
   exports: [PageWrapperComponent],
 })

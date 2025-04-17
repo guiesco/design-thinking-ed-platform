@@ -9,6 +9,7 @@ import { ProjectModule } from './modules/project/project.module';
 import { EmpathyMapModule } from './modules/empathy-map/empathy-map.module';
 import { ChallengeDefinitionModule } from './modules/challenge-definition/challenge-definition.module';
 import { UserVoteModule } from './modules/user-vote/user-vote.module';
+import { ProblemDefinitionModule } from './modules/problem-definition/problem-definition.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { UserVoteModule } from './modules/user-vote/user-vote.module';
     EmpathyMapModule,
     UserVoteModule,
     ChallengeDefinitionModule,
+    ProblemDefinitionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

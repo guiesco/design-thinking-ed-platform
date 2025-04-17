@@ -1,7 +1,19 @@
 .empathy-step-container {
+    width: 100%;
     padding: 1rem;
-    max-width: 1200px;
-    margin: 0 auto;
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+
+        h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 500;
+        }
+    }
 
     .empathy-step-header {
         margin-bottom: 1.5rem;
@@ -328,4 +340,23 @@ mat-icon.voted {
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+// Estilos específicos do componente
+.empathy-step {
+    .responses-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+}
+
+// Responsividade
+@media (max-width: 768px) {
+    .empathy-step {
+        .responses-grid {
+            grid-template-columns: 1fr;
+        }
+    }
 }

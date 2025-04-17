@@ -131,6 +131,14 @@ export class EmpathyMapService {
     );
   }
 
+  createResponses(
+    responses: CreateEmpathyMapResponseDto[]
+  ): Observable<EmpathyMapResponse[]> {
+    return this.http.post<EmpathyMapResponse[]>(`${this.apiUrl}/responses`, {
+      responses,
+    });
+  }
+
   updateResponse(
     id: number,
     userId: number,

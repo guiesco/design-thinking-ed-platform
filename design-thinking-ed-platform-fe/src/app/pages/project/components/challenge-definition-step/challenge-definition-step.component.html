@@ -1,707 +1,164 @@
-<div class="challenge-definition-step-container">
-  <div class="challenge-definition-step-header">
-    <h2>Definição do Desafio</h2>
-    <p>Defina claramente o desafio do seu projeto</p>
-  </div>
+<div class="step-container">
+  <div *ngIf="!showBrainstormStep">
+    <div class="step-header">
+      <h1>Definição do Desafio</h1>
+    </div>
 
-  <!-- Etapa 1: Problemas, Público Alvo e Como Podemos -->
-  <div class="challenge-definition-step-content" *ngIf="currentStep === 1">
-    <div class="questions-section">
-      <h3>Etapa 1: Definição do Desafio</h3>
-
-      <!-- Problemas -->
-      <mat-card class="question-card">
-        <mat-card-header>
-          <mat-card-title
-            >Que problemas temos hoje na sociedade? Que coisas poderiam ser
-            melhores?</mat-card-title
-          >
-        </mat-card-header>
-        <mat-card-content>
-          <div class="instructions-section">
-            <h4>Instruções para Identificação de Problemas</h4>
-            <p>Considere os seguintes aspectos ao identificar os problemas:</p>
-            <ul>
-              <li>
-                Quais são os problemas mais relevantes na sociedade atual?
-              </li>
-              <li>Quais situações poderiam ser melhoradas?</li>
-              <li>Quais são as dores e necessidades não atendidas?</li>
-              <li>Quais são os desafios que precisam ser superados?</li>
-            </ul>
-          </div>
-
-          <form
-            [formGroup]="problemsForm"
-            (ngSubmit)="onSubmit(ResponseType.PROBLEMS)"
-          >
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Descreva os problemas</mat-label>
-              <textarea
-                matInput
-                formControlName="content"
-                rows="3"
-                placeholder="Digite sua resposta aqui..."
-              ></textarea>
-            </mat-form-field>
-            <div class="form-actions">
-              <button
-                mat-raised-button
-                color="primary"
-                type="submit"
-                [disabled]="!problemsForm.valid || (loading$ | async)"
-              >
-                Enviar
-              </button>
-            </div>
-          </form>
-
-          <div class="response-table-section">
-            <div class="table-header">
-              <h3>Problemas</h3>
-              <button
-                mat-icon-button
-                color="primary"
-                (click)="refreshData()"
-                matTooltip="Atualizar dados"
-              >
-                <mat-icon>refresh</mat-icon>
-              </button>
-            </div>
-            <table
-              mat-table
-              [dataSource]="problemsDataSource"
-              class="mat-elevation-z8"
-            >
-              <ng-container matColumnDef="select">
-                <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let response">
-                  <mat-checkbox
-                    [checked]="response.isSelected"
-                    (change)="onToggleSelection(response)"
-                  ></mat-checkbox>
-                </td>
-              </ng-container>
-
-              <ng-container matColumnDef="content">
-                <th mat-header-cell *matHeaderCellDef>Resposta</th>
-                <td mat-cell *matCellDef="let response">
-                  <ng-container
-                    *ngIf="editingResponseId === response.id; else viewContent"
-                  >
-                    <mat-form-field appearance="outline" class="edit-field">
-                      <textarea
-                        matInput
-                        [(ngModel)]="editingContent"
-                        (keyup.enter)="saveEdit()"
-                        (keyup.escape)="cancelEditing()"
-                      ></textarea>
-                    </mat-form-field>
-                  </ng-container>
-                  <ng-template #viewContent>
-                    {{ response.content }}
-                  </ng-template>
-                </td>
-              </ng-container>
-
-              <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef>Ações</th>
-                <td mat-cell *matCellDef="let response">
-                  <div class="response-actions">
-                    <button
-                      mat-icon-button
-                      color="warn"
-                      (click)="onUpvote(response)"
-                      [matTooltip]="
-                        response.hasVoted ? 'Remover voto' : 'Votar'
-                      "
-                    >
-                      <mat-icon [class.voted]="response.hasVoted">
-                        {{ response.hasVoted ? "favorite" : "favorite_border" }}
-                      </mat-icon>
-                      <span class="vote-count">{{ response.upvotes }}</span>
-                    </button>
-                    <ng-container *ngIf="editingResponseId === response.id">
-                      <button
-                        mat-icon-button
-                        color="primary"
-                        (click)="saveEdit()"
-                        matTooltip="Salvar"
-                      >
-                        <mat-icon>check</mat-icon>
-                      </button>
-                      <button
-                        mat-icon-button
-                        color="warn"
-                        (click)="cancelEditing()"
-                        matTooltip="Cancelar"
-                      >
-                        <mat-icon>close</mat-icon>
-                      </button>
-                    </ng-container>
-                    <ng-container *ngIf="editingResponseId !== response.id">
-                      <button
-                        mat-icon-button
-                        [style.visibility]="
-                          response?.user?.id === currentUserId
-                            ? 'visible'
-                            : 'hidden'
-                        "
-                        color="primary"
-                        (click)="startEditing(response)"
-                        matTooltip="Editar"
-                      >
-                        <mat-icon>edit</mat-icon>
-                      </button>
-                      <button
-                        mat-icon-button
-                        [style.visibility]="
-                          response?.user?.id === currentUserId
-                            ? 'visible'
-                            : 'hidden'
-                        "
-                        color="warn"
-                        (click)="onDelete(response)"
-                        matTooltip="Deletar resposta"
-                      >
-                        <mat-icon>delete</mat-icon>
-                      </button>
-                    </ng-container>
-                  </div>
-                </td>
-              </ng-container>
-
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-            </table>
-          </div>
-        </mat-card-content>
-      </mat-card>
-
-      <!-- Público Alvo -->
-      <mat-card class="question-card">
-        <mat-card-header>
-          <mat-card-title
-            >Quem é o público alvo? Quem são os afetados por esses
-            problemas?</mat-card-title
-          >
-        </mat-card-header>
-        <mat-card-content>
-          <div class="instructions-section">
-            <h4>Instruções para Definição do Público Alvo</h4>
-            <p>Considere os seguintes aspectos ao definir o público alvo:</p>
-            <ul>
-              <li>
-                Quem são as pessoas diretamente afetadas pelos problemas
-                identificados?
-              </li>
-              <li>Quais são as características demográficas do público?</li>
-              <li>Quais são os comportamentos e hábitos desse público?</li>
-              <li>Quais são as necessidades específicas desse grupo?</li>
-            </ul>
-          </div>
-
-          <form
-            [formGroup]="targetAudienceForm"
-            (ngSubmit)="onSubmit(ResponseType.TARGET_AUDIENCE)"
-          >
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Descreva o público alvo</mat-label>
-              <textarea
-                matInput
-                formControlName="content"
-                rows="3"
-                placeholder="Digite sua resposta aqui..."
-              ></textarea>
-            </mat-form-field>
-            <div class="form-actions">
-              <button
-                mat-raised-button
-                color="primary"
-                type="submit"
-                [disabled]="!targetAudienceForm.valid || (loading$ | async)"
-              >
-                Enviar
-              </button>
-            </div>
-          </form>
-
-          <div class="response-table-section">
-            <div class="table-header">
-              <h3>Público Alvo</h3>
-              <button
-                mat-icon-button
-                color="primary"
-                (click)="refreshData()"
-                matTooltip="Atualizar dados"
-              >
-                <mat-icon>refresh</mat-icon>
-              </button>
-            </div>
-            <table
-              mat-table
-              [dataSource]="targetAudienceDataSource"
-              class="mat-elevation-z8"
-            >
-              <ng-container matColumnDef="select">
-                <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let response">
-                  <mat-checkbox
-                    [checked]="response.isSelected"
-                    (change)="onToggleSelection(response)"
-                  ></mat-checkbox>
-                </td>
-              </ng-container>
-
-              <ng-container matColumnDef="content">
-                <th mat-header-cell *matHeaderCellDef>Resposta</th>
-                <td mat-cell *matCellDef="let response">
-                  <ng-container
-                    *ngIf="editingResponseId === response.id; else viewContent"
-                  >
-                    <mat-form-field appearance="outline" class="edit-field">
-                      <textarea
-                        matInput
-                        [(ngModel)]="editingContent"
-                        (keyup.enter)="saveEdit()"
-                        (keyup.escape)="cancelEditing()"
-                      ></textarea>
-                    </mat-form-field>
-                  </ng-container>
-                  <ng-template #viewContent>
-                    {{ response.content }}
-                  </ng-template>
-                </td>
-              </ng-container>
-
-              <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef>Ações</th>
-                <td mat-cell *matCellDef="let response">
-                  <div class="response-actions">
-                    <button
-                      mat-icon-button
-                      color="warn"
-                      (click)="onUpvote(response)"
-                      [matTooltip]="
-                        response.hasVoted ? 'Remover voto' : 'Votar'
-                      "
-                    >
-                      <mat-icon [class.voted]="response.hasVoted">
-                        {{ response.hasVoted ? "favorite" : "favorite_border" }}
-                      </mat-icon>
-                      <span class="vote-count">{{ response.upvotes }}</span>
-                    </button>
-                    <ng-container *ngIf="editingResponseId === response.id">
-                      <button
-                        mat-icon-button
-                        color="primary"
-                        (click)="saveEdit()"
-                        matTooltip="Salvar"
-                      >
-                        <mat-icon>check</mat-icon>
-                      </button>
-                      <button
-                        mat-icon-button
-                        color="warn"
-                        (click)="cancelEditing()"
-                        matTooltip="Cancelar"
-                      >
-                        <mat-icon>close</mat-icon>
-                      </button>
-                    </ng-container>
-                    <ng-container *ngIf="editingResponseId !== response.id">
-                      <button
-                        mat-icon-button
-                        [style.visibility]="
-                          response?.user?.id === currentUserId
-                            ? 'visible'
-                            : 'hidden'
-                        "
-                        color="primary"
-                        (click)="startEditing(response)"
-                        matTooltip="Editar"
-                      >
-                        <mat-icon>edit</mat-icon>
-                      </button>
-                      <button
-                        mat-icon-button
-                        [style.visibility]="
-                          response?.user?.id === currentUserId
-                            ? 'visible'
-                            : 'hidden'
-                        "
-                        color="warn"
-                        (click)="onDelete(response)"
-                        matTooltip="Deletar resposta"
-                      >
-                        <mat-icon>delete</mat-icon>
-                      </button>
-                    </ng-container>
-                  </div>
-                </td>
-              </ng-container>
-
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-            </table>
-          </div>
-        </mat-card-content>
-      </mat-card>
-
-      <!-- Como Podemos -->
-      <mat-card class="question-card">
-        <mat-card-header>
-          <mat-card-title>Como podemos...?</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="instructions-section">
-            <h4>Instruções para Formulação de Soluções</h4>
-            <p>Considere os seguintes aspectos ao formular soluções:</p>
-            <ul>
-              <li>Crie perguntas que comecem com "Como podemos..."</li>
-              <li>
-                Deve ser uma descrição do que se deseja melhorar dos problemas
-                identificados
-              </li>
-              <li>Ex: "Como podemos melhorar a saúde mental dos alunos?"</li>
-            </ul>
-          </div>
-
-          <form
-            [formGroup]="howWeCanForm"
-            (ngSubmit)="onSubmit(ResponseType.HOW_WE_CAN)"
-          >
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Como podemos...?</mat-label>
-              <textarea
-                matInput
-                formControlName="content"
-                rows="3"
-                placeholder="Digite sua resposta aqui..."
-              ></textarea>
-            </mat-form-field>
-            <div class="form-actions">
-              <button
-                mat-raised-button
-                color="primary"
-                type="submit"
-                [disabled]="!howWeCanForm.valid || (loading$ | async)"
-              >
-                Enviar
-              </button>
-            </div>
-          </form>
-
-          <div class="response-table-section">
-            <div class="table-header">
-              <h3>Como Podemos</h3>
-              <button
-                mat-icon-button
-                color="primary"
-                (click)="refreshData()"
-                matTooltip="Atualizar dados"
-              >
-                <mat-icon>refresh</mat-icon>
-              </button>
-            </div>
-            <table
-              mat-table
-              [dataSource]="howWeCanDataSource"
-              class="mat-elevation-z8"
-            >
-              <ng-container matColumnDef="select">
-                <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let response">
-                  <mat-checkbox
-                    [checked]="response.isSelected"
-                    (change)="onToggleSelection(response)"
-                  ></mat-checkbox>
-                </td>
-              </ng-container>
-
-              <ng-container matColumnDef="content">
-                <th mat-header-cell *matHeaderCellDef>Resposta</th>
-                <td mat-cell *matCellDef="let response">
-                  <ng-container
-                    *ngIf="editingResponseId === response.id; else viewContent"
-                  >
-                    <mat-form-field appearance="outline" class="edit-field">
-                      <textarea
-                        matInput
-                        [(ngModel)]="editingContent"
-                        (keyup.enter)="saveEdit()"
-                        (keyup.escape)="cancelEditing()"
-                      ></textarea>
-                    </mat-form-field>
-                  </ng-container>
-                  <ng-template #viewContent>
-                    {{ response.content }}
-                  </ng-template>
-                </td>
-              </ng-container>
-
-              <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef>Ações</th>
-                <td mat-cell *matCellDef="let response">
-                  <div class="response-actions">
-                    <button
-                      mat-icon-button
-                      color="warn"
-                      (click)="onUpvote(response)"
-                      [matTooltip]="
-                        response.hasVoted ? 'Remover voto' : 'Votar'
-                      "
-                    >
-                      <mat-icon [class.voted]="response.hasVoted">
-                        {{ response.hasVoted ? "favorite" : "favorite_border" }}
-                      </mat-icon>
-                      <span class="vote-count">{{ response.upvotes }}</span>
-                    </button>
-                    <ng-container *ngIf="editingResponseId === response.id">
-                      <button
-                        mat-icon-button
-                        color="primary"
-                        (click)="saveEdit()"
-                        matTooltip="Salvar"
-                      >
-                        <mat-icon>check</mat-icon>
-                      </button>
-                      <button
-                        mat-icon-button
-                        color="warn"
-                        (click)="cancelEditing()"
-                        matTooltip="Cancelar"
-                      >
-                        <mat-icon>close</mat-icon>
-                      </button>
-                    </ng-container>
-                    <ng-container *ngIf="editingResponseId !== response.id">
-                      <button
-                        mat-icon-button
-                        [style.visibility]="
-                          response?.user?.id === currentUserId
-                            ? 'visible'
-                            : 'hidden'
-                        "
-                        color="primary"
-                        (click)="startEditing(response)"
-                        matTooltip="Editar"
-                      >
-                        <mat-icon>edit</mat-icon>
-                      </button>
-                      <button
-                        mat-icon-button
-                        [style.visibility]="
-                          response?.user?.id === currentUserId
-                            ? 'visible'
-                            : 'hidden'
-                        "
-                        color="warn"
-                        (click)="onDelete(response)"
-                        matTooltip="Deletar resposta"
-                      >
-                        <mat-icon>delete</mat-icon>
-                      </button>
-                    </ng-container>
-                  </div>
-                </td>
-              </ng-container>
-
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-            </table>
-          </div>
-        </mat-card-content>
-      </mat-card>
-
-      <!-- Botão de Submit Final -->
-      <div class="final-submit-section">
-        <button mat-raised-button color="primary" (click)="onFinalSubmit()">
-          Concluir Etapa 1 e Ir para Brainstorm
-        </button>
+    <!-- Perguntas - Problemas -->
+    <div class="step-section">
+      <h2>Problemas</h2>
+      <div class="instructions-section">
+        <h4>Instruções:</h4>
+        <p>
+          Identifique os problemas principais que afetam o seu público-alvo.
+          Considere:
+        </p>
+        <ul>
+          <li>Quais são as dificuldades encontradas?</li>
+          <li>Quais são as necessidades não atendidas?</li>
+          <li>Quais são as dores mais significativas?</li>
+        </ul>
       </div>
+      <app-response-form
+        [fields]="formFields"
+        [loading]="(loading$ | async) === true"
+        [error]="error$ | async"
+        (submitForm)="onSubmit(ResponseType.PROBLEMS, $event)"
+      ></app-response-form>
+      <app-response-list
+        [responses$]="getResponsesByType(ResponseType.PROBLEMS)"
+        [currentUserId]="currentUserId"
+        [loading$]="loading$"
+        [displayedColumns]="displayedColumns"
+        (upvote)="onUpvote($event)"
+        (toggleSelection)="onToggleSelection($event)"
+        (delete)="onDelete($event)"
+        (edit)="onEdit($event)"
+        (saveEdit)="onSaveEdit($event)"
+        (refresh)="refreshData()"
+      ></app-response-list>
+    </div>
+
+    <!-- Perguntas - Público-Alvo -->
+    <div class="step-section">
+      <h2>Público-Alvo</h2>
+      <div class="instructions-section">
+        <h4>Instruções:</h4>
+        <p>Defina quem são as pessoas afetadas pelo problema. Considere:</p>
+        <ul>
+          <li>Quais são as características demográficas deste grupo?</li>
+          <li>Quais são seus comportamentos e hábitos?</li>
+          <li>Em que contexto eles enfrentam o problema?</li>
+        </ul>
+      </div>
+      <app-response-form
+        [fields]="formFields"
+        [loading]="(loading$ | async) === true"
+        [error]="error$ | async"
+        (submitForm)="onSubmit(ResponseType.TARGET_AUDIENCE, $event)"
+      ></app-response-form>
+      <app-response-list
+        [responses$]="getResponsesByType(ResponseType.TARGET_AUDIENCE)"
+        [currentUserId]="currentUserId"
+        [loading$]="loading$"
+        [displayedColumns]="displayedColumns"
+        (upvote)="onUpvote($event)"
+        (toggleSelection)="onToggleSelection($event)"
+        (delete)="onDelete($event)"
+        (edit)="onEdit($event)"
+        (saveEdit)="onSaveEdit($event)"
+        (refresh)="refreshData()"
+      ></app-response-list>
+    </div>
+
+    <!-- Perguntas - Como Podemos -->
+    <div class="step-section">
+      <h2>Como Podemos</h2>
+      <div class="instructions-section">
+        <h4>Instruções:</h4>
+        <p>
+          Formule perguntas "Como podemos..." para direcionar o brainstorm.
+          Considere:
+        </p>
+        <ul>
+          <li>Como podemos resolver o problema X para o público Y?</li>
+          <li>Como podemos melhorar a experiência de Z?</li>
+          <li>Como podemos eliminar a barreira W para o grupo K?</li>
+        </ul>
+      </div>
+      <app-response-form
+        [fields]="formFields"
+        [loading]="(loading$ | async) === true"
+        [error]="error$ | async"
+        (submitForm)="onSubmit(ResponseType.HOW_WE_CAN, $event)"
+      ></app-response-form>
+      <app-response-list
+        [responses$]="getResponsesByType(ResponseType.HOW_WE_CAN)"
+        [currentUserId]="currentUserId"
+        [loading$]="loading$"
+        [displayedColumns]="displayedColumns"
+        (upvote)="onUpvote($event)"
+        (toggleSelection)="onToggleSelection($event)"
+        (delete)="onDelete($event)"
+        (edit)="onEdit($event)"
+        (saveEdit)="onSaveEdit($event)"
+        (refresh)="refreshData()"
+      ></app-response-list>
+    </div>
+
+    <div class="navigation-buttons">
+      <button mat-raised-button color="primary" (click)="goToBrainstorm()">
+        Próximo: Brainstorm
+      </button>
     </div>
   </div>
 
-  <!-- Etapa 2: Brainstorm -->
-  <div class="challenge-definition-step-content" *ngIf="currentStep === 2">
-    <div class="questions-section">
-      <div class="step-header">
-        <h3>Etapa 2: Brainstorm</h3>
-        <button mat-button color="primary" (click)="goBackToStep1()">
-          <mat-icon>arrow_back</mat-icon>
-          Voltar para Etapa 1
-        </button>
-      </div>
-
-      <mat-card class="question-card">
-        <mat-card-header>
-          <mat-card-title>Brainstorm de Ideias</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="instructions-section">
-            <h4>Instruções para o Brainstorm</h4>
-            <p>Considere os seguintes aspectos ao gerar suas ideias:</p>
-            <ul>
-              <li>O que a equipe já sabe sobre o desafio?</li>
-              <li>O que ainda não sabemos e precisamos descobrir?</li>
-              <li>Quais são as ideias-chave que surgiram até agora?</li>
-              <li>Quais são as restrições e barreiras identificadas?</li>
-            </ul>
-          </div>
-
-          <form
-            [formGroup]="brainstormForm"
-            (ngSubmit)="onSubmit(ResponseType.BRAINSTORM)"
-          >
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Digite suas ideias</mat-label>
-              <textarea
-                matInput
-                formControlName="content"
-                rows="3"
-                placeholder="Digite suas ideias aqui..."
-              ></textarea>
-            </mat-form-field>
-            <div class="form-actions">
-              <button
-                mat-raised-button
-                color="primary"
-                type="submit"
-                [disabled]="!brainstormForm.valid || (loading$ | async)"
-              >
-                Enviar
-              </button>
-            </div>
-          </form>
-
-          <div class="response-table-section">
-            <div class="table-header">
-              <h3>Brainstorm</h3>
-              <button
-                mat-icon-button
-                color="primary"
-                (click)="refreshData()"
-                matTooltip="Atualizar dados"
-              >
-                <mat-icon>refresh</mat-icon>
-              </button>
-            </div>
-            <table
-              mat-table
-              [dataSource]="brainstormDataSource"
-              class="mat-elevation-z8"
-            >
-              <ng-container matColumnDef="select">
-                <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let response">
-                  <mat-checkbox
-                    [checked]="response.isSelected"
-                    (change)="onToggleSelection(response)"
-                  ></mat-checkbox>
-                </td>
-              </ng-container>
-
-              <ng-container matColumnDef="content">
-                <th mat-header-cell *matHeaderCellDef>Resposta</th>
-                <td mat-cell *matCellDef="let response">
-                  <ng-container
-                    *ngIf="editingResponseId === response.id; else viewContent"
-                  >
-                    <mat-form-field appearance="outline" class="edit-field">
-                      <textarea
-                        matInput
-                        [(ngModel)]="editingContent"
-                        (keyup.enter)="saveEdit()"
-                        (keyup.escape)="cancelEditing()"
-                      ></textarea>
-                    </mat-form-field>
-                  </ng-container>
-                  <ng-template #viewContent>
-                    {{ response.content }}
-                  </ng-template>
-                </td>
-              </ng-container>
-
-              <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef>Ações</th>
-                <td mat-cell *matCellDef="let response">
-                  <div class="response-actions">
-                    <button
-                      mat-icon-button
-                      color="warn"
-                      (click)="onUpvote(response)"
-                      [matTooltip]="
-                        response.hasVoted ? 'Remover voto' : 'Votar'
-                      "
-                    >
-                      <mat-icon [class.voted]="response.hasVoted">
-                        {{ response.hasVoted ? "favorite" : "favorite_border" }}
-                      </mat-icon>
-                      <span class="vote-count">{{ response.upvotes }}</span>
-                    </button>
-                    <ng-container *ngIf="editingResponseId === response.id">
-                      <button
-                        mat-icon-button
-                        color="primary"
-                        (click)="saveEdit()"
-                        matTooltip="Salvar"
-                      >
-                        <mat-icon>check</mat-icon>
-                      </button>
-                      <button
-                        mat-icon-button
-                        color="warn"
-                        (click)="cancelEditing()"
-                        matTooltip="Cancelar"
-                      >
-                        <mat-icon>close</mat-icon>
-                      </button>
-                    </ng-container>
-                    <ng-container *ngIf="editingResponseId !== response.id">
-                      <button
-                        mat-icon-button
-                        [style.visibility]="
-                          response?.user?.id === currentUserId
-                            ? 'visible'
-                            : 'hidden'
-                        "
-                        color="primary"
-                        (click)="startEditing(response)"
-                        matTooltip="Editar"
-                      >
-                        <mat-icon>edit</mat-icon>
-                      </button>
-                      <button
-                        mat-icon-button
-                        [style.visibility]="
-                          response?.user?.id === currentUserId
-                            ? 'visible'
-                            : 'hidden'
-                        "
-                        color="warn"
-                        (click)="onDelete(response)"
-                        matTooltip="Deletar resposta"
-                      >
-                        <mat-icon>delete</mat-icon>
-                      </button>
-                    </ng-container>
-                  </div>
-                </td>
-              </ng-container>
-
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-            </table>
-          </div>
-        </mat-card-content>
-      </mat-card>
+  <div *ngIf="showBrainstormStep">
+    <div class="step-header">
+      <h1>Brainstorm</h1>
     </div>
-  </div>
 
-  <mat-spinner *ngIf="loading$ | async"></mat-spinner>
+    <div class="step-section">
+      <div class="instructions-section">
+        <h4>Instruções:</h4>
+        <p>
+          Agora é o momento de propor soluções! Baseado nas questões "Como
+          podemos...", crie ideias para solucionar os problemas identificados.
+        </p>
+        <ul>
+          <li>Pense livremente, sem julgamentos</li>
+          <li>Quantidade é mais importante que qualidade nesta fase</li>
+          <li>Construa sobre as ideias dos outros</li>
+          <li>Incentive ideias diferentes e até improváveis</li>
+        </ul>
+      </div>
+      <app-response-form
+        [fields]="formFields"
+        [loading]="(loading$ | async) === true"
+        [error]="error$ | async"
+        (submitForm)="onSubmit(ResponseType.BRAINSTORM, $event)"
+      ></app-response-form>
+      <app-response-list
+        [responses$]="getResponsesByType(ResponseType.BRAINSTORM)"
+        [currentUserId]="currentUserId"
+        [loading$]="loading$"
+        [displayedColumns]="displayedColumns"
+        (upvote)="onUpvote($event)"
+        (toggleSelection)="onToggleSelection($event)"
+        (delete)="onDelete($event)"
+        (edit)="onEdit($event)"
+        (saveEdit)="onSaveEdit($event)"
+        (refresh)="refreshData()"
+      ></app-response-list>
+    </div>
 
-  <div *ngIf="error$ | async as error" class="error-message">
-    {{ error }}
+    <div class="navigation-buttons">
+      <button mat-raised-button (click)="goBackToDefinition()">
+        Voltar para Definição
+      </button>
+      <button mat-raised-button color="accent" (click)="onFinalSubmit()">
+        Finalizar
+      </button>
+    </div>
   </div>
 </div>

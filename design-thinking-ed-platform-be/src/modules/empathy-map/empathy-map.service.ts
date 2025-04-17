@@ -33,6 +33,12 @@ export class EmpathyMapService {
     return this.empathyMapResponseRepository.save(response);
   }
 
+  async createResponses(responses: CreateEmpathyMapResponseDto[]) {
+    const createdResponses =
+      this.empathyMapResponseRepository.create(responses);
+    return await this.empathyMapResponseRepository.save(createdResponses);
+  }
+
   findAllByProject(projectId: number): Promise<EmpathyMap[]> {
     return this.empathyMapRepository.find({
       where: { projectId },

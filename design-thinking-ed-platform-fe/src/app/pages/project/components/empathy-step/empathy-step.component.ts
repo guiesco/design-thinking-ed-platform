@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
 import { EmpathyMapFacade } from 'src/app/stores/empathy-map-store/empathy-map.facade';
 import {
   EmpathyMapEntry,
@@ -12,186 +13,200 @@ import {
 import { UserFacade } from 'src/app/stores/user-state-store/user.facade';
 import { Store } from '@ngrx/store';
 import * as EmpathyMapActions from 'src/app/stores/empathy-map-store/empathy-map.actions';
-import { IUser } from 'src/app/common/interfaces/user.interface';
-import { map, Observable } from 'rxjs';
+import { IResponseFormField } from 'src/app/common/components/response-form/response-form.component';
+import { IResponse } from 'src/app/common/interfaces/response.interface';
+import { BaseStepComponent } from 'src/app/common/components/base-step/base-step.component';
 
 @Component({
   selector: 'app-empathy-step',
   templateUrl: './empathy-step.component.html',
-  styleUrls: ['./empathy-step.component.scss'],
+  styleUrls: ['./empathy-step.component.scss', '../../project.component.scss'],
 })
-export class EmpathyStepComponent implements OnInit {
+export class EmpathyStepComponent extends BaseStepComponent {
   ResponseType = ResponseType;
-  entries$: Observable<EmpathyMapEntry[]> = this.empathyMapFacade.entries$;
-  responses$: Observable<EmpathyMapResponse[]> =
-    this.empathyMapFacade.responses$;
-  loading$: Observable<boolean> = this.empathyMapFacade.loading$;
-  error$: Observable<any> = this.empathyMapFacade.error$;
-  currentUserId!: number;
-  projectId: number | null = null;
-  isCurrentUser$ = (userId: number) =>
-    this.userFacade.user$.pipe(
-      map((user: IUser | null) =>
-        user?.id ? userId === Number(user.id) : false
-      )
-    );
-  displayedColumns: string[] = ['select', 'content', 'actions'];
-  editingResponseId: number | null = null;
-  editingContent: string = '';
+  responseTypes = Object.values(ResponseType);
 
-  newEntry = {
-    think: '',
-    feel: '',
-    say: '',
-    do: '',
-    pains: '',
-    needs: '',
-  };
+  responses$: Observable<IResponse[]> = this.empathyMapFacade.responses$.pipe(
+    map((responses) =>
+      responses.map((response) => ({
+        ...response,
+        votesCount: response.upvotes || 0,
+        hasVoted: response.hasVoted || false,
+      }))
+    )
+  );
+  loading$: Observable<boolean> = this.empathyMapFacade.loading$.pipe(
+    map((loading) => loading ?? false)
+  );
+  error$: Observable<any> = this.empathyMapFacade.error$;
+
+  override formFields: IResponseFormField[] = [
+    {
+      key: 'think',
+      label: 'Pensa',
+      placeholder: 'O que o usuário pensa?',
+      required: false,
+    },
+    {
+      key: 'feel',
+      label: 'Sente',
+      placeholder: 'O que o usuário sente?',
+      required: false,
+    },
+    {
+      key: 'say',
+      label: 'Diz',
+      placeholder: 'O que o usuário diz?',
+      required: false,
+    },
+    {
+      key: 'do',
+      label: 'Faz',
+      placeholder: 'O que o usuário faz?',
+      required: false,
+    },
+    {
+      key: 'pains',
+      label: 'Dores',
+      placeholder: 'Quais são as dores do usuário?',
+      required: false,
+    },
+    {
+      key: 'needs',
+      label: 'Necessidades',
+      placeholder: 'Quais são as necessidades do usuário?',
+      required: false,
+    },
+  ];
 
   constructor(
-    private route: ActivatedRoute,
-    private userFacade: UserFacade,
     private empathyMapFacade: EmpathyMapFacade,
-    private snackBar: MatSnackBar,
-    private store: Store
-  ) {}
+    private store: Store,
+    userFacade: UserFacade,
+    route: ActivatedRoute,
+    snackBar: MatSnackBar
+  ) {
+    super(userFacade, route, snackBar);
+  }
 
-  ngOnInit(): void {
-    this.userFacade.user$.subscribe((user: IUser | null) => {
-      if (user) {
-        this.currentUserId = Number(user.id);
+  override ngOnInit(): void {
+    super.ngOnInit();
+    this.loadResponses();
+    this.error$.subscribe((error: any) => {
+      if (error) {
+        this.showError('Erro ao carregar mapa de empatia: ' + error);
       }
-    });
-
-    this.route.params.subscribe((params) => {
-      const projectId = Number(this.route.parent?.snapshot.params['projectId']);
-      this.projectId = projectId;
-      this.empathyMapFacade.loadResponses(projectId, this.currentUserId);
-
-      this.error$.subscribe((error: any) => {
-        if (error) {
-          console.error('Error loading empathy map:', error);
-        }
-      });
     });
   }
 
-  onSubmit(): void {
-    const projectId = Number(
-      this.route.parent?.snapshot.paramMap.get('projectId')
-    );
-    this.userFacade.user$.subscribe((user) => {
-      if (user) {
-        const userId = Number(user.id);
-        let responsesCreated = 0;
+  loadResponses(): void {
+    if (this.projectId && this.currentUserId) {
+      this.empathyMapFacade.loadResponses(this.projectId, this.currentUserId);
+    }
+  }
 
-        // Processa cada campo e cria respostas para cada linha não vazia
-        Object.entries(this.newEntry).forEach(([type, content]) => {
-          const lines = content.split('\n').filter((line) => line.trim());
-          lines.forEach((line) => {
-            const newResponse: CreateEmpathyMapResponseDto = {
-              type: ResponseType[
-                type.toUpperCase() as keyof typeof ResponseType
-              ],
-              content: line.trim(),
-              userId,
-              projectId,
-            };
-            this.empathyMapFacade.createResponse(newResponse);
-            responsesCreated++;
+  getResponsesByType(type: ResponseType): Observable<IResponse[]> {
+    return this.responses$.pipe(
+      map((responses) => responses.filter((response) => response.type === type))
+    );
+  }
+
+  getTypeLabel(type: ResponseType): string {
+    const labels: Record<ResponseType, string> = {
+      [ResponseType.THINK]: 'Pensa',
+      [ResponseType.FEEL]: 'Sente',
+      [ResponseType.SAY]: 'Diz',
+      [ResponseType.DO]: 'Faz',
+      [ResponseType.PAINS]: 'Dores',
+      [ResponseType.NEEDS]: 'Necessidades',
+    };
+    return labels[type];
+  }
+
+  onSubmit(formData: Record<string, string>): void {
+    if (!this.currentUserId || !this.projectId) {
+      this.showError('Usuário ou projeto não identificado');
+      return;
+    }
+
+    const responses: CreateEmpathyMapResponseDto[] = [];
+
+    try {
+      Object.entries(formData).forEach(([type, content]) => {
+        if (!content?.trim()) return;
+
+        const lines = content?.split('\n').filter((line) => line?.trim());
+        lines.forEach((line) => {
+          responses.push({
+            type: ResponseType[type.toUpperCase() as keyof typeof ResponseType],
+            content: line?.trim(),
+            userId: this.currentUserId,
+            projectId: this.projectId,
           });
         });
+      });
 
-        // Limpa o formulário
-        this.newEntry = {
-          think: '',
-          feel: '',
-          say: '',
-          do: '',
-          pains: '',
-          needs: '',
-        };
-
-        // Mostra mensagem de sucesso
-        this.snackBar.open(
-          `${responsesCreated} resposta(s) criada(s) com sucesso!`,
-          'Fechar',
-          {
-            duration: 3000,
-            horizontalPosition: 'end',
-            verticalPosition: 'top',
-          }
+      if (responses.length > 0) {
+        this.empathyMapFacade.createResponses(responses);
+        this.showSuccess(
+          `${responses.length} resposta(s) criada(s) com sucesso!`
         );
       }
-    });
+    } catch (error) {
+      console.error('Error creating responses:', error);
+      this.showError('Erro ao criar respostas. Tente novamente.');
+    }
   }
 
-  onUpvoteResponse(responseId: number, hasVoted: boolean): void {
-    if (!hasVoted) {
-      this.empathyMapFacade.upvoteResponse(responseId, this.currentUserId);
-    } else {
+  onUpvote(event: { responseId: number; hasVoted: boolean }): void {
+    if (!this.currentUserId) return;
+
+    if (event.hasVoted) {
       this.empathyMapFacade.removeUpvoteResponse(
-        responseId,
+        event.responseId,
+        this.currentUserId
+      );
+    } else {
+      this.empathyMapFacade.upvoteResponse(
+        event.responseId,
         this.currentUserId
       );
     }
   }
 
-  onToggleResponseSelection(responseId: number): void {
+  onToggleSelection(responseId: number): void {
     this.empathyMapFacade.toggleResponseSelection(responseId);
   }
 
-  getResponsesByType(type: ResponseType) {
-    return this.empathyMapFacade.getResponsesByType(type);
-  }
-
-  onDeleteResponse(id: number): void {
+  onDelete(responseId: number): void {
     if (this.currentUserId) {
       this.store.dispatch(
-        EmpathyMapActions.deleteResponse({ id, userId: this.currentUserId })
+        EmpathyMapActions.deleteResponse({
+          id: responseId,
+          userId: this.currentUserId,
+        })
       );
     }
   }
 
-  startEditing(response: EmpathyMapResponse): void {
-    this.editingResponseId = response.id;
-    this.editingContent = response.content;
+  onEdit(response: IResponse): void {
+    // Implementação será feita no componente de lista
   }
 
-  cancelEditing(): void {
-    this.editingResponseId = null;
-    this.editingContent = '';
-  }
-
-  saveEdit(): void {
-    if (this.editingResponseId && this.currentUserId) {
+  onSaveEdit(event: { id: number; content: string }): void {
+    if (this.currentUserId) {
       this.empathyMapFacade.updateResponse(
-        this.editingResponseId,
+        event.id,
         this.currentUserId,
-        this.editingContent
+        event.content
       );
-      this.editingResponseId = null;
-      this.editingContent = '';
     }
   }
 
   refreshData(): void {
-    if (this.projectId) {
+    if (this.projectId && this.currentUserId) {
       this.empathyMapFacade.loadResponses(this.projectId, this.currentUserId);
-      this.snackBar.open('Dados atualizados com sucesso!', 'Fechar', {
-        duration: 2000,
-        horizontalPosition: 'end',
-        verticalPosition: 'top',
-      });
-    }
-  }
-
-  loadResponses(): void {
-    if (this.projectId) {
-      this.empathyMapFacade.loadResponses(
-        this.projectId,
-        Number(this.currentUserId)
-      );
+      this.showSuccess('Dados atualizados com sucesso!');
     }
   }
 }

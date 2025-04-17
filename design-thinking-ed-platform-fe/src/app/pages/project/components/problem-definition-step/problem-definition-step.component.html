@@ -1,0 +1,34 @@
+<div class="step-container">
+  <div class="step-header">
+    <h1>Definição do Problema</h1>
+    <p>
+      Use os campos abaixo para definir o problema usando as perguntas: Quem? O
+      quê? Onde? Quando? Por quê? Como?
+    </p>
+  </div>
+
+  <div class="step-section">
+    <app-response-form
+      [fields]="formFields"
+      [loading]="(loading$ | async) === true"
+      (submitForm)="onSubmit($event)"
+    ></app-response-form>
+  </div>
+
+  <div class="responses-grid">
+    <div class="step-section" *ngFor="let quadrant of quadrants">
+      <h2>{{ getTypeLabel(quadrant) }}</h2>
+      <app-response-list
+        [responses$]="getResponsesByType(quadrant)"
+        [loading$]="loading$"
+        [currentUserId]="currentUserId"
+        (upvote)="onUpvote($event)"
+        (toggleSelection)="onToggleSelection($event)"
+        (delete)="onDelete($event)"
+        (edit)="onEdit($event)"
+        (saveEdit)="onSaveEdit($event)"
+        (refresh)="refreshData()"
+      ></app-response-list>
+    </div>
+  </div>
+</div>

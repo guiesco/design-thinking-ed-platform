@@ -80,3 +80,4 @@ lerna-debug.log*
 **/postgres
 .qodo
 .cursorrules
+/memory-bank

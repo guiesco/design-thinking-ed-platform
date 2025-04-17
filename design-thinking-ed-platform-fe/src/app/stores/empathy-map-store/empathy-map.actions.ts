@@ -98,13 +98,23 @@ export const toggleEmpathyMapSelectionFailure = createAction(
 
 // Novas actions para respostas
 export const createResponse = createAction(
-  '[EmpathyMap] Create Response',
+  '[Empathy Map] Create Response',
   props<{ response: CreateEmpathyMapResponseDto }>()
 );
 
+export const createResponses = createAction(
+  '[Empathy Map] Create Responses',
+  props<{ responses: CreateEmpathyMapResponseDto[] }>()
+);
+
 export const createResponseSuccess = createAction(
-  '[EmpathyMap] Create Response Success',
+  '[Empathy Map] Create Response Success',
   props<{ response: EmpathyMapResponse }>()
+);
+
+export const createResponsesSuccess = createAction(
+  '[Empathy Map] Create Responses Success',
+  props<{ responses: EmpathyMapResponse[] }>()
 );
 
 export const createResponseFailure = createAction(

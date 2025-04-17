@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
-import { Store } from '@ngrx/store';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import {
   ChallengeDefinitionResponse,
@@ -11,261 +9,189 @@ import {
 } from '../../../../common/interfaces/challenge-definition-response.interface';
 import { ChallengeDefinitionFacade } from '../../../../stores/challenge-definition-store/challenge-definition.facade';
 import { UserFacade } from '../../../../stores/user-state-store/user.facade';
-import { IUser } from '../../../../common/interfaces/user.interface';
+import { IResponseFormField } from '../../../../common/components/response-form/response-form.component';
+import { IResponse } from '../../../../common/interfaces/response.interface';
+import { CreateChallengeDefinitionResponseDto } from '../../../../common/interfaces/create-challenge-definition-response.interface';
+import { BaseStepComponent } from '../../../../common/components/base-step/base-step.component';
 
 @Component({
   selector: 'app-challenge-definition-step',
   templateUrl: './challenge-definition-step.component.html',
-  styleUrls: ['./challenge-definition-step.component.scss'],
+  styleUrls: [
+    './challenge-definition-step.component.scss',
+    '../../project.component.scss',
+  ],
 })
-export class ChallengeDefinitionStepComponent implements OnInit {
-  projectId: number | null = null;
-  currentUserId!: number;
+export class ChallengeDefinitionStepComponent extends BaseStepComponent {
   currentStep: number = 1;
-  problemsForm: FormGroup;
-  targetAudienceForm: FormGroup;
-  howWeCanForm: FormGroup;
-  brainstormForm: FormGroup;
-
-  displayedColumns: string[] = ['select', 'content', 'actions'];
-
-  problemsResponses$: Observable<ChallengeDefinitionResponse[]>;
-  targetAudienceResponses$: Observable<ChallengeDefinitionResponse[]>;
-  howWeCanResponses$: Observable<ChallengeDefinitionResponse[]>;
-  brainstormResponses$: Observable<ChallengeDefinitionResponse[]>;
-
-  problemsDataSource = new MatTableDataSource<ChallengeDefinitionResponse>([]);
-  targetAudienceDataSource =
-    new MatTableDataSource<ChallengeDefinitionResponse>([]);
-  howWeCanDataSource = new MatTableDataSource<ChallengeDefinitionResponse>([]);
-  brainstormDataSource = new MatTableDataSource<ChallengeDefinitionResponse>(
-    []
-  );
-
-  loading$: Observable<boolean>;
-  error$: Observable<string | null>;
+  showBrainstormStep: boolean = false;
 
   ResponseType = ResponseType;
+  responseTypes = Object.values(ResponseType);
 
-  editingResponseId: number | null = null;
-  editingContent: string = '';
+  firstStepResponseTypes = [
+    ResponseType.PROBLEMS,
+    ResponseType.TARGET_AUDIENCE,
+    ResponseType.HOW_WE_CAN,
+  ];
+  secondStepResponseTypes = [ResponseType.BRAINSTORM];
+
+  responses$: Observable<IResponse[]> =
+    this.challengeDefinitionFacade.responses$;
+  loading$: Observable<boolean> = this.challengeDefinitionFacade.loading$;
+  error$: Observable<string | null> = this.challengeDefinitionFacade.error$;
+
+  override formFields: IResponseFormField[] = [
+    {
+      key: 'content',
+      label: 'Resposta',
+      placeholder: 'Digite sua resposta...',
+      required: true,
+    },
+  ];
 
   constructor(
-    private fb: FormBuilder,
     private challengeDefinitionFacade: ChallengeDefinitionFacade,
-    private userFacade: UserFacade,
-    private snackBar: MatSnackBar,
-    private route: ActivatedRoute
+    userFacade: UserFacade,
+    route: ActivatedRoute,
+    snackBar: MatSnackBar
   ) {
-    this.problemsForm = this.fb.group({
-      content: ['', Validators.required],
-    });
-
-    this.targetAudienceForm = this.fb.group({
-      content: ['', Validators.required],
-    });
-
-    this.howWeCanForm = this.fb.group({
-      content: ['', Validators.required],
-    });
-
-    this.brainstormForm = this.fb.group({
-      content: ['', Validators.required],
-    });
-
-    this.problemsResponses$ = this.challengeDefinitionFacade.getResponsesByType(
-      ResponseType.PROBLEMS
-    );
-    this.targetAudienceResponses$ =
-      this.challengeDefinitionFacade.getResponsesByType(
-        ResponseType.TARGET_AUDIENCE
-      );
-    this.howWeCanResponses$ = this.challengeDefinitionFacade.getResponsesByType(
-      ResponseType.HOW_WE_CAN
-    );
-    this.brainstormResponses$ =
-      this.challengeDefinitionFacade.getResponsesByType(
-        ResponseType.BRAINSTORM
-      );
-
-    this.loading$ = this.challengeDefinitionFacade.loading$;
-    this.error$ = this.challengeDefinitionFacade.error$;
+    super(userFacade, route, snackBar);
   }
 
-  ngOnInit(): void {
-    this.userFacade.user$.subscribe((user: IUser | null) => {
-      if (user) {
-        this.currentUserId = Number(user.id);
+  override ngOnInit(): void {
+    super.ngOnInit();
+    this.loadResponses();
+    this.error$.subscribe((error) => {
+      if (error) {
+        this.showError(`Erro ao carregar respostas: ${error}`);
       }
     });
-
-    this.route.params.subscribe((params) => {
-      const projectId = Number(this.route.parent?.snapshot.params['projectId']);
-      this.projectId = projectId;
-      this.challengeDefinitionFacade.loadResponses(
-        projectId,
-        this.currentUserId
-      );
-
-      this.error$.subscribe((error: any) => {
-        if (error) {
-          console.error('Error loading challenge definition:', error);
-        }
-      });
-    });
-
-    this.problemsResponses$.subscribe((responses) => {
-      this.problemsDataSource.data = responses || [];
-    });
-
-    this.targetAudienceResponses$.subscribe((responses) => {
-      this.targetAudienceDataSource.data = responses || [];
-    });
-
-    this.howWeCanResponses$.subscribe((responses) => {
-      this.howWeCanDataSource.data = responses || [];
-    });
-
-    this.brainstormResponses$.subscribe((responses) => {
-      this.brainstormDataSource.data = responses || [];
-    });
   }
 
-  onSubmit(responseType: ResponseType): void {
-    let form: FormGroup;
-    switch (responseType) {
-      case ResponseType.PROBLEMS:
-        form = this.problemsForm;
-        break;
-      case ResponseType.TARGET_AUDIENCE:
-        form = this.targetAudienceForm;
-        break;
-      case ResponseType.HOW_WE_CAN:
-        form = this.howWeCanForm;
-        break;
-      case ResponseType.BRAINSTORM:
-        form = this.brainstormForm;
-        break;
-      default:
-        return;
-    }
-
-    if (form.valid && this.projectId) {
-      const { content } = form.value;
-      const lines: string[] = content
-        .split('\n')
-        .filter((line: string) => line.trim());
-      let responsesCreated = 0;
-
-      lines.forEach((line: string) => {
-        this.challengeDefinitionFacade.createResponse(
-          responseType,
-          line.trim(),
-          this.currentUserId,
-          this.projectId as number
-        );
-        responsesCreated++;
-      });
-
-      form.reset();
-      form.markAsUntouched();
-
-      if (responsesCreated > 0) {
-        this.snackBar.open(
-          `${responsesCreated} resposta(s) criada(s) com sucesso!`,
-          'Fechar',
-          {
-            duration: 3000,
-            horizontalPosition: 'end',
-            verticalPosition: 'top',
-          }
-        );
-      }
-    }
-  }
-
-  onUpvote(response: ChallengeDefinitionResponse): void {
-    if (response.hasVoted) {
-      this.challengeDefinitionFacade.removeVote(
-        response.id,
-        this.currentUserId
-      );
-    } else {
-      this.challengeDefinitionFacade.upvoteResponse(
-        response.id,
-        this.currentUserId
-      );
-    }
-  }
-
-  onToggleSelection(response: ChallengeDefinitionResponse): void {
-    this.challengeDefinitionFacade.toggleResponseSelection(
-      response.id,
-      this.currentUserId
-    );
-  }
-
-  onDelete(response: ChallengeDefinitionResponse): void {
-    if (confirm('Tem certeza que deseja excluir esta resposta?')) {
-      this.challengeDefinitionFacade.deleteResponse(
-        response.id,
-        this.currentUserId
-      );
-    }
-  }
-
-  startEditing(response: ChallengeDefinitionResponse): void {
-    this.editingResponseId = response.id;
-    this.editingContent = response.content;
-  }
-
-  cancelEditing(): void {
-    this.editingResponseId = null;
-    this.editingContent = '';
-  }
-
-  saveEdit(): void {
-    if (this.editingResponseId && this.editingContent.trim()) {
-      this.challengeDefinitionFacade.updateResponse(
-        this.editingResponseId,
-        this.editingContent,
-        this.currentUserId
-      );
-      this.editingResponseId = null;
-      this.editingContent = '';
-    }
-  }
-
-  refreshData(): void {
-    if (this.projectId) {
+  loadResponses(): void {
+    if (this.projectId && this.currentUserId) {
       this.challengeDefinitionFacade.loadResponses(
         this.projectId,
         this.currentUserId
       );
-      this.snackBar.open('Dados atualizados com sucesso!', 'Fechar', {
-        duration: 2000,
-        horizontalPosition: 'end',
-        verticalPosition: 'top',
-      });
     }
   }
 
-  onFinalSubmit(): void {
-    if (this.projectId) {
-      this.currentStep = 2;
-      this.snackBar.open(
-        'Etapa 1 concluída! Agora vamos para o Brainstorm.',
-        'Fechar',
-        {
-          duration: 3000,
-          horizontalPosition: 'end',
-          verticalPosition: 'top',
-        }
+  getResponsesByType(type: ResponseType): Observable<IResponse[]> {
+    return this.responses$.pipe(
+      map((responses) => responses.filter((response) => response.type === type))
+    );
+  }
+
+  getTypeLabel(type: ResponseType): string {
+    const labels: Record<ResponseType, string> = {
+      [ResponseType.PROBLEMS]: 'Problemas',
+      [ResponseType.TARGET_AUDIENCE]: 'Público-Alvo',
+      [ResponseType.HOW_WE_CAN]: 'Como Podemos',
+      [ResponseType.BRAINSTORM]: 'Brainstorm',
+    };
+    return labels[type];
+  }
+
+  onSubmit(type: ResponseType, formData: any): void {
+    if (!this.currentUserId || !this.projectId) {
+      this.showError('Usuário ou projeto não identificado');
+      return;
+    }
+
+    const content = formData.content;
+    if (!content.trim()) return;
+
+    const lines = content.split('\n').filter((line: string) => line.trim());
+    const responses: CreateChallengeDefinitionResponseDto[] = [];
+
+    lines.forEach((line: string) => {
+      responses.push({
+        type: type,
+        content: line.trim(),
+        userId: this.currentUserId,
+        projectId: this.projectId,
+      });
+    });
+
+    if (responses.length > 0) {
+      this.challengeDefinitionFacade.createResponses(responses);
+      this.showSuccess(
+        `${responses.length} resposta(s) criada(s) com sucesso!`
       );
     }
   }
 
-  goBackToStep1(): void {
-    this.currentStep = 1;
+  onUpvote(event: { responseId: number; hasVoted: boolean }): void {
+    if (!this.currentUserId) return;
+
+    if (event.hasVoted) {
+      this.challengeDefinitionFacade.removeVote(
+        event.responseId,
+        this.currentUserId
+      );
+    } else {
+      this.challengeDefinitionFacade.upvoteResponse(
+        event.responseId,
+        this.currentUserId
+      );
+    }
+  }
+
+  onToggleSelection(responseId: number): void {
+    if (!this.currentUserId) return;
+    this.challengeDefinitionFacade.toggleResponseSelection(
+      responseId,
+      this.currentUserId
+    );
+  }
+
+  onDelete(responseId: number): void {
+    if (!this.currentUserId) return;
+    this.challengeDefinitionFacade.deleteResponse(
+      responseId,
+      this.currentUserId
+    );
+  }
+
+  onEdit(response: IResponse): void {
+    if (!this.currentUserId) return;
+    this.challengeDefinitionFacade.updateResponse(
+      response.id,
+      response.content,
+      this.currentUserId
+    );
+  }
+
+  onSaveEdit(event: { id: number; content: string }): void {
+    if (!this.currentUserId) return;
+    this.challengeDefinitionFacade.updateResponse(
+      event.id,
+      event.content,
+      this.currentUserId
+    );
+  }
+
+  refreshData(): void {
+    if (this.projectId && this.currentUserId) {
+      this.challengeDefinitionFacade.loadResponses(
+        this.projectId,
+        this.currentUserId
+      );
+      this.showSuccess('Dados atualizados com sucesso!');
+    }
+  }
+
+  goToBrainstorm(): void {
+    this.showBrainstormStep = true;
+  }
+
+  goBackToDefinition(): void {
+    this.showBrainstormStep = false;
+  }
+
+  onFinalSubmit(): void {
+    // Implementar lógica de finalização
   }
 }

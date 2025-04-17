@@ -119,9 +119,9 @@ export const empathyMapReducer = createReducer(
     loading: true,
     error: null,
   })),
-  on(EmpathyMapActions.createResponseSuccess, (state, { response }) => ({
+  on(EmpathyMapActions.createResponsesSuccess, (state, { responses }) => ({
     ...state,
-    responses: [response, ...state.responses],
+    responses: [...responses, ...state.responses],
     loading: false,
   })),
   on(EmpathyMapActions.createResponseFailure, (state, { error }) => ({

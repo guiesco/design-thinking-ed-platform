@@ -40,13 +40,19 @@ export const challengeDefinitionReducer = createReducer(
   })),
 
   on(
-    ChallengeDefinitionActions.createResponseSuccess,
-    (state, { response }) => ({
+    ChallengeDefinitionActions.createResponsesSuccess,
+    (state, { responses }) => ({
       ...state,
-      responses: [...state.responses, response],
+      responses: [...responses, ...state.responses],
       loading: false,
     })
   ),
+
+  on(ChallengeDefinitionActions.createResponsesFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  })),
 
   on(ChallengeDefinitionActions.createResponseFailure, (state, { error }) => ({
     ...state,
