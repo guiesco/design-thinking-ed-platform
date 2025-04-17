@@ -12,9 +12,12 @@ export class ProblemDefinitionService {
 
   constructor(private http: HttpClient) {}
 
-  getResponses(projectId: string): Observable<ProblemDefinitionResponse[]> {
+  getResponses(
+    projectId: number,
+    userId?: number
+  ): Observable<ProblemDefinitionResponse[]> {
     return this.http.get<ProblemDefinitionResponse[]>(
-      `${this.apiUrl}/responses/${projectId}`
+      `${this.apiUrl}/project/${projectId}/responses?userId=${userId}`
     );
   }
 

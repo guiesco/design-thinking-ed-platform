@@ -20,7 +20,7 @@ import { BaseStepComponent } from 'src/app/common/components/base-step/base-step
 @Component({
   selector: 'app-empathy-step',
   templateUrl: './empathy-step.component.html',
-  styleUrls: ['./empathy-step.component.scss'],
+  styleUrls: ['./empathy-step.component.scss', '../../project.component.scss'],
 })
 export class EmpathyStepComponent extends BaseStepComponent {
   ResponseType = ResponseType;

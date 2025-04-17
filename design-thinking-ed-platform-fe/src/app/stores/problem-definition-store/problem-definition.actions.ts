@@ -3,7 +3,7 @@ import { ProblemDefinitionResponse } from '../../common/interfaces/problem-defin
 
 export const loadProblemDefinitionResponses = createAction(
   '[Problem Definition] Load Responses',
-  props<{ projectId: string }>()
+  props<{ projectId: number; userId?: number }>()
 );
 
 export const loadProblemDefinitionResponsesSuccess = createAction(

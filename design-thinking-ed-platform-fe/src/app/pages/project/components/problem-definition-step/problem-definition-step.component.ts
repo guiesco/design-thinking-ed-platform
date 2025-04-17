@@ -14,7 +14,10 @@ import { IResponse } from '../../../../common/interfaces/response.interface';
 @Component({
   selector: 'app-problem-definition-step',
   templateUrl: './problem-definition-step.component.html',
-  styleUrls: ['./problem-definition-step.component.scss'],
+  styleUrls: [
+    './problem-definition-step.component.scss',
+    '../../project.component.scss',
+  ],
 })
 export class ProblemDefinitionStepComponent
   extends BaseStepComponent
@@ -82,7 +85,10 @@ export class ProblemDefinitionStepComponent
   }
 
   protected override loadResponses(): void {
-    this.problemDefinitionFacade.loadResponses(this.projectId.toString());
+    this.problemDefinitionFacade.loadResponses(
+      this.projectId,
+      this.currentUserId
+    );
   }
 
   protected override getResponsesByType(

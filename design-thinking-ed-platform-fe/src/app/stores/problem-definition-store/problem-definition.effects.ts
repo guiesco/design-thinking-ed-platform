@@ -10,8 +10,8 @@ export class ProblemDefinitionEffects {
   loadResponses$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ProblemDefinitionActions.loadProblemDefinitionResponses),
-      switchMap(({ projectId }) =>
-        this.problemDefinitionService.getResponses(projectId).pipe(
+      switchMap(({ projectId, userId }) =>
+        this.problemDefinitionService.getResponses(projectId, userId).pipe(
           map((responses) =>
             ProblemDefinitionActions.loadProblemDefinitionResponsesSuccess({
               responses,

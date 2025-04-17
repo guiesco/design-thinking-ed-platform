@@ -17,7 +17,10 @@ import { BaseStepComponent } from '../../../../common/components/base-step/base-
 @Component({
   selector: 'app-challenge-definition-step',
   templateUrl: './challenge-definition-step.component.html',
-  styleUrls: ['./challenge-definition-step.component.scss'],
+  styleUrls: [
+    './challenge-definition-step.component.scss',
+    '../../project.component.scss',
+  ],
 })
 export class ChallengeDefinitionStepComponent extends BaseStepComponent {
   currentStep: number = 1;

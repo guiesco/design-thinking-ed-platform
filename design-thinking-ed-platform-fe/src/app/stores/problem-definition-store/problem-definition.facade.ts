@@ -22,9 +22,12 @@ export class ProblemDefinitionFacade {
 
   constructor(private store: Store) {}
 
-  loadResponses(projectId: string): void {
+  loadResponses(projectId: number, userId?: number): void {
     this.store.dispatch(
-      ProblemDefinitionActions.loadProblemDefinitionResponses({ projectId })
+      ProblemDefinitionActions.loadProblemDefinitionResponses({
+        projectId,
+        userId,
+      })
     );
   }
 
