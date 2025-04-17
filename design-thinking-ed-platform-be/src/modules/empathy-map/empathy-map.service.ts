@@ -179,24 +179,12 @@ export class EmpathyMapService {
       id,
     );
 
-    // Atualiza o contador de upvotes
-    empathyMap.upvotes = await this.userVoteService.getVoteCount(
-      VoteableEntityType.EMPATHY_MAP,
-      id,
-    );
-
-    return this.empathyMapRepository.save(empathyMap);
-  }
-
-  async toggleSelection(id: number): Promise<EmpathyMap> {
-    const empathyMap = await this.findOne(id);
-    empathyMap.isSelected = !empathyMap.isSelected;
     return this.empathyMapRepository.save(empathyMap);
   }
 
   async getSelectedByProject(projectId: number): Promise<EmpathyMap[]> {
     return this.empathyMapRepository.find({
-      where: { projectId, isSelected: true },
+      where: { projectId },
       relations: ['user'],
     });
   }

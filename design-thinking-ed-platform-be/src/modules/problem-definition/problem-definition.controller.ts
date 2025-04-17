@@ -14,12 +14,19 @@ import {
   CreateProblemDefinitionResponsesDto,
 } from './dto/create-problem-definition-response.dto';
 import { ProblemDefinitionType } from './entities/problem-definition-response.entity';
+import { CreateProblemDefinitionDto } from './dto/create-problem-definition.dto';
+import { UpdateProblemDefinitionDto } from './dto/update-problem-definition.dto';
 
 @Controller('problem-definition')
 export class ProblemDefinitionController {
   constructor(
     private readonly problemDefinitionService: ProblemDefinitionService,
   ) {}
+
+  @Post()
+  create(@Body() dto: CreateProblemDefinitionDto) {
+    return this.problemDefinitionService.create(dto);
+  }
 
   @Post('response')
   createResponse(@Body() createDto: CreateProblemDefinitionResponseDto) {
@@ -92,5 +99,20 @@ export class ProblemDefinitionController {
     @Body('content') content: string,
   ) {
     return this.problemDefinitionService.updateResponse(+id, +userId, content);
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.problemDefinitionService.findOne(+id);
+  }
+
+  @Get()
+  findByProject(@Query('projectId') projectId: string) {
+    return this.problemDefinitionService.findByProject(+projectId);
+  }
+
+  @Put(':id')
+  update(@Param('id') id: string, @Body() dto: UpdateProblemDefinitionDto) {
+    return this.problemDefinitionService.update(+id, dto);
   }
 }

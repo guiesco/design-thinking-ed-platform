@@ -2,47 +2,46 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  CreateDateColumn,
-  UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
   OneToOne,
   OneToMany,
 } from 'typeorm';
 import { UserEntity } from '../../user/entities/user.entity';
 import { ProjectEntity } from '../../project/entities/project.entity';
-
-@Entity('empathy_maps')
-export class EmpathyMap {
+@Entity('problem_definitions')
+export class ProblemDefinition {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  think: string;
+  mainQuestion: string;
 
   @Column()
-  feel: string;
+  targetAudience: string;
 
   @Column()
-  say: string;
+  consequences: string;
 
   @Column()
-  do: string;
+  alternativeView: string;
 
   @Column()
-  pains: string;
+  socialFactors: string;
 
   @Column()
-  needs: string;
+  problemDefinition: string;
 
-  @OneToMany(() => UserEntity, (user) => user.empathyMap)
+  @OneToMany(() => UserEntity, (user) => user.problemDefinition)
   @JoinColumn({ name: 'user_id' })
   user: UserEntity;
 
   @Column({ name: 'user_id' })
   userId: number;
 
-  @OneToOne(() => ProjectEntity, (project) => project.empathyMap)
+  @OneToOne(() => ProjectEntity, (project) => project.problemDefinition)
   @JoinColumn({ name: 'project_id' })
   project: ProjectEntity;
 

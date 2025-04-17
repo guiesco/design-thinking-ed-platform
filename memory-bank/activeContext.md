@@ -1,42 +1,29 @@
-# Contexto Ativo
+# Contexto Atual
 
 ## Foco Atual
 
-- Testes do store da Matriz de Definição de Problema
-- Testes dos componentes da Matriz de Definição de Problema
-- Testes E2E da Matriz de Definição de Problema
+- Implementação dos componentes frontend para ProblemDefinition e ChallengeDefinition
+- Integração com os novos endpoints do backend
+- Implementação da verificação de etapas na navegação
 
-## Decisões Recentes
+## Decisões Ativas
 
-- Adoção de Angular 16 para frontend
-- Uso de NestJS para backend
-- Implementação de NgRx para estado
-- Autenticação via queryParams
-- Reutilização de componentes base (@response-list, @response-form, @base-step)
-- Implementação do store da Matriz de Definição de Problema
-- Implementação do componente da Matriz de Definição de Problema
-- Integração com o módulo PagesModule
+- Estrutura de backend completa com entidades, DTOs, serviços e controladores
+- Padrão REST seguido em todos os endpoints
+- Validações implementadas nos DTOs
+- Serviço de verificação de etapas pronto para integração
 
 ## Próximos Passos
 
-1. Implementar testes do store
-2. Implementar testes dos componentes
-3. Implementar testes E2E
-4. Validar fluxo completo
+1. Criar componentes frontend para ProblemDefinition
+2. Criar componentes frontend para ChallengeDefinition
+3. Implementar integração com os endpoints
+4. Adicionar verificação de etapas na navegação
 
-## Considerações Ativas
+## Considerações
 
-- Padrões de código existentes
-- Estrutura de componentes reutilizáveis
-- Gerenciamento de estado consistente
-- Manutenção da experiência do usuário
-- Performance da aplicação
-- Testes automatizados
-
-## Desafios Atuais
-
-- Implementação dos testes do store
-- Implementação dos testes dos componentes
-- Implementação dos testes E2E
-- Consistência com padrões existentes
-- Experiência do usuário fluida
+- Manter consistência com os componentes existentes
+- Implementar validações nos formulários frontend
+- Garantir feedback visual para o usuário
+- Seguir padrões de UX estabelecidos
+- Manter tipagem forte em todo o código

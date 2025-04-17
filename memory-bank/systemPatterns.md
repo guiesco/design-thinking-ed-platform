@@ -2,102 +2,78 @@
 
 ## Arquitetura
 
-- Frontend: Angular 16 com arquitetura modular
-- Backend: NestJS com arquitetura limpa
-- Banco de Dados: PostgreSQL com TypeORM
-- Gerenciamento de Estado: NgRx
+### Backend
 
-## Padrões de Design
-
-- Componentização reutilizável
-- Injeção de dependência
-- Repository Pattern
+- NestJS com TypeORM
+- PostgreSQL como banco de dados
 - Clean Architecture
-- SOLID Principles
-
-## Estrutura de Código
+- Repository Pattern
+- DTOs para transferência de dados
 
 ### Frontend
 
-- Módulos lazy-loaded
+- Angular 16
+- Material UI
+- NgRx para gerenciamento de estado
+- Lazy loading para módulos
 - Componentes reutilizáveis
-- Stores centralizados
-- Interfaces tipadas
-- Serviços especializados
 
-### Backend
+## Padrões de Entidades
 
-- Controllers RESTful
-- Services com lógica de negócio
-- Repositories para acesso a dados
-- DTOs para transferência
-- Entidades ORM
+### Entidades de Resposta
+
+- Todas as entidades de resposta seguem o mesmo padrão:
+  - ID
+  - Tipo (enum)
+  - Conteúdo
+  - Upvotes
+  - isSelected
+  - Relacionamentos com User e Project
+  - Timestamps
+
+### Entidades Finais
+
+- Cada etapa tem uma entidade final que:
+  - Consolida as respostas selecionadas
+  - Mantém relacionamento com User e Project
+  - Inclui timestamps
+  - Campos específicos baseados no enum da etapa
+
+## Padrões de Navegação
+
+- Verificação de etapas anteriores antes de avançar
+- Manutenção do contexto entre etapas
+- Exibição de artefatos finais das etapas anteriores
 
 ## Padrões de Estado
 
-- Store centralizado
-- Actions tipadas
-- Reducers puros
-- Effects para side-effects
-- Selectors para queries
+- Store por módulo
+- Interfaces centralizadas em @stores
+- Ações padronizadas (load, create, update, delete)
+- Efeitos para operações assíncronas
+
+## Padrões de Componentes
+
+- BaseStep como componente base
+- ResponseList para listagem
+- ResponseForm para criação/edição
+- Reutilização de componentes comuns
+
+## Padrões de API
+
+- RESTful
+- Endpoints padronizados por recurso
+- DTOs para validação
+- Tratamento de erros consistente
 
 ## Padrões de Segurança
 
 - Autenticação via queryParams
-- Validação de dados
-- Sanitização de inputs
-- Proteção contra XSS
-- Rate limiting
-
-## Padrões de Componentes
-
-### Base Step Component
-
-- Estende BaseStepComponent
-- Implementa métodos abstratos
-- Gerencia estado via facade
-- Usa componentes comuns
-
-### Response Components
-
-- @response-list para listagem
-- @response-form para entrada
-- Upvote e seleção
-- Edição inline
-
-### Matriz de Definição
-
-- Grid responsivo 3x2
-- Campos de texto expansíveis
-- Lista de respostas por quadrante
-- Botões de ação consistentes
-
-## Padrões de Dados
-
-### Responses
-
-- Tipo específico por quadrante
-- Conteúdo em texto
-- Metadados do usuário
-- Sistema de votos
-
-### Estados
-
-- Loading por quadrante
-- Erro global e por ação
-- Seleção múltipla
-- Cache de respostas
-
-## Padrões de Navegação
-
-- Roteamento por módulo
-- Guards de autenticação
-- Transições suaves
-- Breadcrumb navigation
+- Validação de propriedade de recursos
+- Verificação de etapas completas
 
 ## Padrões de Teste
 
-- Testes unitários por componente
-- Testes de integração
-- Testes E2E
-- Mocks de serviços
+- Testes unitários para serviços
+- Testes de componentes
+- Testes E2E para fluxos completos

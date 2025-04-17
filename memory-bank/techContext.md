@@ -1,30 +1,57 @@
 # Contexto Técnico
 
-## Stack Tecnológico
+## Stack Principal
 
 ### Frontend
 
 - Angular 16
 - Material UI
-- NgRx
-- Karma (Testes)
-- ESLint + Prettier
+- NgRx para gerenciamento de estado
+- Karma para testes
+- Estrutura baseada em módulos
+- Lazy loading implementado
 
 ### Backend
 
 - NestJS
 - TypeORM
 - PostgreSQL
-- Jest (Testes)
-- Swagger
+- Jest para testes
+- Clean Architecture
+- Repository Pattern
 
-## Configuração de Desenvolvimento
+## Estrutura de Dados
 
-- Node.js 18+
-- npm/yarn
-- Docker
-- PostgreSQL 14+
-- VS Code
+### Entidades Existentes
+
+- EmpathyMap
+- ProblemDefinitionResponse
+- ChallengeDefinitionResponse
+- User
+- Project
+
+### Novas Entidades
+
+- ProblemDefinitionFinal
+- ChallengeDefinitionFinal
+
+## Padrões de Desenvolvimento
+
+### Frontend
+
+- Componentes reutilizáveis
+- Stores centralizados
+- Interfaces tipadas
+- Serviços especializados
+- Rotas lazy-loaded
+
+### Backend
+
+- Controllers RESTful
+- Services com lógica de negócio
+- Repositories para acesso a dados
+- DTOs para validação
+- Entidades ORM
 
 ## Dependências Principais
 
@@ -38,24 +65,33 @@
 
 ### Backend
 
-- @nestjs/core
+- @nestjs/common
+- @nestjs/typeorm
 - typeorm
 - pg
 - class-validator
 - class-transformer
 
-## Ferramentas de Desenvolvimento
-
-- Git
-- Docker
-- VS Code
-- Postman
-- pgAdmin
-
 ## Configurações
 
-- ESLint
-- Prettier
+### Frontend
+
+- ESLint + Prettier
 - tsconfig.json
 - angular.json
+- karma.conf.js
+
+### Backend
+
 - nest-cli.json
+- ormconfig.json
+- package.json
+- tsconfig.json
+
+## Ambiente de Desenvolvimento
+
+- Node.js 18+
+- PostgreSQL 14+
+- Angular CLI
+- NestJS CLI
+- Git para controle de versão
