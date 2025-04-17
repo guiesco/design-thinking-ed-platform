@@ -16,18 +16,18 @@ export const loadProblemDefinitionResponsesFailure = createAction(
   props<{ error: string }>()
 );
 
-export const createProblemDefinitionResponse = createAction(
-  '[Problem Definition] Create Response',
-  props<{ response: Omit<ProblemDefinitionResponse, 'id'> }>()
+export const createProblemDefinitionResponses = createAction(
+  '[Problem Definition] Create Responses',
+  props<{ responses: Omit<ProblemDefinitionResponse, 'id'>[] }>()
 );
 
-export const createProblemDefinitionResponseSuccess = createAction(
-  '[Problem Definition] Create Response Success',
-  props<{ response: ProblemDefinitionResponse }>()
+export const createProblemDefinitionResponsesSuccess = createAction(
+  '[Problem Definition] Create Responses Success',
+  props<{ responses: ProblemDefinitionResponse[] }>()
 );
 
-export const createProblemDefinitionResponseFailure = createAction(
-  '[Problem Definition] Create Response Failure',
+export const createProblemDefinitionResponsesFailure = createAction(
+  '[Problem Definition] Create Responses Failure',
   props<{ error: string }>()
 );
 
@@ -48,12 +48,12 @@ export const updateProblemDefinitionResponseFailure = createAction(
 
 export const deleteProblemDefinitionResponse = createAction(
   '[Problem Definition] Delete Response',
-  props<{ responseId: string }>()
+  props<{ responseId: number }>()
 );
 
 export const deleteProblemDefinitionResponseSuccess = createAction(
   '[Problem Definition] Delete Response Success',
-  props<{ responseId: string }>()
+  props<{ responseId: number }>()
 );
 
 export const deleteProblemDefinitionResponseFailure = createAction(
@@ -63,7 +63,7 @@ export const deleteProblemDefinitionResponseFailure = createAction(
 
 export const upvoteProblemDefinitionResponse = createAction(
   '[Problem Definition] Upvote Response',
-  props<{ responseId: string }>()
+  props<{ responseId: number }>()
 );
 
 export const upvoteProblemDefinitionResponseSuccess = createAction(

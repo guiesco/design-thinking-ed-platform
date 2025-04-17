@@ -1,10 +1,12 @@
-<div class="challenge-definition-step">
+<div class="step-container">
   <div *ngIf="!showBrainstormStep">
-    <h2 class="main-title">Definição do Desafio</h2>
+    <div class="step-header">
+      <h1>Definição do Desafio</h1>
+    </div>
 
     <!-- Perguntas - Problemas -->
     <div class="step-section">
-      <h3>Problemas</h3>
+      <h2>Problemas</h2>
       <div class="instructions-section">
         <h4>Instruções:</h4>
         <p>
@@ -39,7 +41,7 @@
 
     <!-- Perguntas - Público-Alvo -->
     <div class="step-section">
-      <h3>Público-Alvo</h3>
+      <h2>Público-Alvo</h2>
       <div class="instructions-section">
         <h4>Instruções:</h4>
         <p>Defina quem são as pessoas afetadas pelo problema. Considere:</p>
@@ -71,7 +73,7 @@
 
     <!-- Perguntas - Como Podemos -->
     <div class="step-section">
-      <h3>Como Podemos</h3>
+      <h2>Como Podemos</h2>
       <div class="instructions-section">
         <h4>Instruções:</h4>
         <p>
@@ -112,7 +114,10 @@
   </div>
 
   <div *ngIf="showBrainstormStep">
-    <h2 class="main-title">Brainstorm</h2>
+    <div class="step-header">
+      <h1>Brainstorm</h1>
+    </div>
+
     <div class="step-section">
       <div class="instructions-section">
         <h4>Instruções:</h4>

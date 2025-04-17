@@ -2,9 +2,9 @@
 
 ## Foco Atual
 
-- Implementação dos Componentes da Matriz de Definição de Problema
-- Integração com fluxo de Design Thinking
-- Testes do store implementado
+- Testes do store da Matriz de Definição de Problema
+- Testes dos componentes da Matriz de Definição de Problema
+- Testes E2E da Matriz de Definição de Problema
 
 ## Decisões Recentes
 
@@ -14,12 +14,14 @@
 - Autenticação via queryParams
 - Reutilização de componentes base (@response-list, @response-form, @base-step)
 - Implementação do store da Matriz de Definição de Problema
+- Implementação do componente da Matriz de Definição de Problema
+- Integração com o módulo PagesModule
 
 ## Próximos Passos
 
-1. Implementar componentes da interface
-2. Criar testes do store
-3. Integrar com etapa de empatia
+1. Implementar testes do store
+2. Implementar testes dos componentes
+3. Implementar testes E2E
 4. Validar fluxo completo
 
 ## Considerações Ativas
@@ -33,7 +35,8 @@
 
 ## Desafios Atuais
 
-- Implementação dos componentes da interface
-- Testes do store
+- Implementação dos testes do store
+- Implementação dos testes dos componentes
+- Implementação dos testes E2E
 - Consistência com padrões existentes
 - Experiência do usuário fluida

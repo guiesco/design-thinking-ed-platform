@@ -29,19 +29,19 @@ export class ProblemDefinitionEffects {
     )
   );
 
-  createResponse$ = createEffect(() =>
+  createResponses$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(ProblemDefinitionActions.createProblemDefinitionResponse),
-      switchMap(({ response }) =>
-        this.problemDefinitionService.createResponse(response).pipe(
-          map((createdResponse) =>
-            ProblemDefinitionActions.createProblemDefinitionResponseSuccess({
-              response: createdResponse,
+      ofType(ProblemDefinitionActions.createProblemDefinitionResponses),
+      switchMap(({ responses }) =>
+        this.problemDefinitionService.createResponses(responses).pipe(
+          map((createdResponses) =>
+            ProblemDefinitionActions.createProblemDefinitionResponsesSuccess({
+              responses: createdResponses,
             })
           ),
           catchError((error) =>
             of(
-              ProblemDefinitionActions.createProblemDefinitionResponseFailure({
+              ProblemDefinitionActions.createProblemDefinitionResponsesFailure({
                 error: error.message,
               })
             )

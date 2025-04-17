@@ -25,10 +25,10 @@ export const selectProblemDefinitionResponsesByQuadrant = (
   quadrant: ProblemDefinitionQuadrant
 ) =>
   createSelector(selectProblemDefinitionResponses, (responses) =>
-    responses.filter((response) => response.quadrant === quadrant)
+    responses.filter((response) => response.type === quadrant)
   );
 
-export const selectProblemDefinitionResponseById = (responseId: string) =>
+export const selectProblemDefinitionResponseById = (responseId: number) =>
   createSelector(selectProblemDefinitionResponses, (responses) =>
     responses.find((response) => response.id === responseId)
   );

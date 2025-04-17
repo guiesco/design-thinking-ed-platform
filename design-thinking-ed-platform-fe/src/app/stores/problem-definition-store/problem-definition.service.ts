@@ -18,12 +18,12 @@ export class ProblemDefinitionService {
     );
   }
 
-  createResponse(
-    response: Omit<ProblemDefinitionResponse, 'id'>
-  ): Observable<ProblemDefinitionResponse> {
-    return this.http.post<ProblemDefinitionResponse>(
+  createResponses(
+    responses: Omit<ProblemDefinitionResponse, 'id'>[]
+  ): Observable<ProblemDefinitionResponse[]> {
+    return this.http.post<ProblemDefinitionResponse[]>(
       `${this.apiUrl}/responses`,
-      response
+      { responses }
     );
   }
 
@@ -36,11 +36,11 @@ export class ProblemDefinitionService {
     );
   }
 
-  deleteResponse(responseId: string): Observable<void> {
+  deleteResponse(responseId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/responses/${responseId}`);
   }
 
-  upvoteResponse(responseId: string): Observable<ProblemDefinitionResponse> {
+  upvoteResponse(responseId: number): Observable<ProblemDefinitionResponse> {
     return this.http.post<ProblemDefinitionResponse>(
       `${this.apiUrl}/responses/${responseId}/upvote`,
       {}

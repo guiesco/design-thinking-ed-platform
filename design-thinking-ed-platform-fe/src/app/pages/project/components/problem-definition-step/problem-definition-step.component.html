@@ -1,30 +1,27 @@
 <div class="step-container">
   <div class="step-header">
-    <h1>Mapa de Empatia</h1>
+    <h1>Definição do Problema</h1>
     <p>
-      O Mapa de Empatia é uma ferramenta que nos ajuda a entender profundamente
-      o usuário, mapeando seus pensamentos, sentimentos, ações e necessidades.
-      Preencha cada seção com as observações e insights coletados durante a fase
-      de empatia.
+      Use os campos abaixo para definir o problema usando as perguntas: Quem? O
+      quê? Onde? Quando? Por quê? Como?
     </p>
   </div>
 
   <div class="step-section">
     <app-response-form
       [fields]="formFields"
-      [loading]="(loading$ | async) ?? false"
+      [loading]="(loading$ | async) === true"
       (submitForm)="onSubmit($event)"
     ></app-response-form>
   </div>
 
   <div class="responses-grid">
-    <div class="step-section" *ngFor="let type of responseTypes">
-      <h3>{{ getTypeLabel(type) }}</h3>
+    <div class="step-section" *ngFor="let quadrant of quadrants">
+      <h2>{{ getTypeLabel(quadrant) }}</h2>
       <app-response-list
-        [responses$]="getResponsesByType(type)"
-        [displayedColumns]="displayedColumns"
-        [currentUserId]="currentUserId"
+        [responses$]="getResponsesByType(quadrant)"
         [loading$]="loading$"
+        [currentUserId]="currentUserId"
         (upvote)="onUpvote($event)"
         (toggleSelection)="onToggleSelection($event)"
         (delete)="onDelete($event)"

@@ -341,3 +341,22 @@ mat-icon.voted {
     align-items: center;
     gap: 8px;
 }
+
+// Estilos específicos do componente
+.empathy-step {
+    .responses-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+}
+
+// Responsividade
+@media (max-width: 768px) {
+    .empathy-step {
+        .responses-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+}

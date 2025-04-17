@@ -11,12 +11,12 @@ import { UserEntity } from '../../user/entities/user.entity';
 import { ProjectEntity } from '../../project/entities/project.entity';
 
 export enum ProblemDefinitionType {
-  MAIN_QUESTION = 'main_question',
-  TARGET_AUDIENCE = 'target_audience',
-  CONSEQUENCES = 'consequences',
-  DIFFERENT_PERSPECTIVE = 'different_perspective',
-  SOCIAL_FACTORS = 'social_factors',
-  ONE_SENTENCE = 'one_sentence',
+  MAIN_QUESTION = 'MAIN_QUESTION',
+  TARGET_AUDIENCE = 'TARGET_AUDIENCE',
+  CONSEQUENCES = 'CONSEQUENCES',
+  ALTERNATIVE_VIEW = 'ALTERNATIVE_VIEW',
+  SOCIAL_FACTORS = 'SOCIAL_FACTORS',
+  PROBLEM_DEFINITION = 'PROBLEM_DEFINITION',
 }
 
 @Entity('problem_definition_responses')

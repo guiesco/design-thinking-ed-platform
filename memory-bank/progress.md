@@ -9,6 +9,7 @@
 - Componentes base implementados (@response-list, @response-form, @base-step)
 - Etapa de empatia funcional
 - Store da Matriz de Definição de Problema implementado
+- Componente da Matriz de Definição de Problema implementado
 
 ## Matriz de Definição de Problema - Tarefas
 
@@ -62,45 +63,45 @@
    - Testes unitários dos effects
    - Testes do facade
 
-### Frontend Components [Não Iniciado]
+### Frontend Components [Concluído]
 
-1. **Componente Principal**
+1. **Componente Principal** [Concluído]
 
-   - Criar ProblemDefinitionStepComponent
-   - Estender BaseStepComponent
-   - Implementar métodos abstratos
-   - Configurar injeção do facade
+   - Criar ProblemDefinitionStepComponent [Concluído]
+   - Estender BaseStepComponent [Concluído]
+   - Implementar métodos abstratos [Concluído]
+   - Configurar injeção do facade [Concluído]
 
-2. **Template e Estilos**
+2. **Template e Estilos** [Concluído]
 
-   - Criar layout da matriz
-   - Implementar grid responsivo
-   - Estilizar componentes
-   - Garantir consistência visual
+   - Criar layout da matriz [Concluído]
+   - Implementar grid responsivo [Concluído]
+   - Estilizar componentes [Concluído]
+   - Garantir consistência visual [Concluído]
 
-3. **Integração**
+3. **Integração** [Concluído]
 
-   - Conectar com @response-list
-   - Integrar com @response-form
-   - Implementar lógica de upvote
-   - Configurar navegação
+   - Conectar com @response-list [Concluído]
+   - Integrar com @response-form [Concluído]
+   - Implementar lógica de upvote [Concluído]
+   - Configurar navegação [Concluído]
 
-4. **Testes Components**
+4. **Testes Components** [Próximo]
    - Testes unitários do componente
    - Testes de integração
    - Testes de UI
    - Testes de navegação
 
-### Integração e Validação [Não Iniciado]
+### Integração e Validação [Em Andamento]
 
-1. **Fluxo de Navegação**
+1. **Fluxo de Navegação** [Concluído]
 
-   - Adicionar rota no módulo
-   - Configurar guards se necessário
-   - Implementar transições
-   - Testar navegação
+   - Adicionar rota no módulo [Concluído]
+   - Configurar guards se necessário [Concluído]
+   - Implementar transições [Concluído]
+   - Testar navegação [Concluído]
 
-2. **Testes E2E**
+2. **Testes E2E** [Próximo]
    - Testar fluxo completo
    - Validar casos de erro
    - Testar responsividade
@@ -109,8 +110,8 @@
 ## Status Atual
 
 - Fase: Implementação da Matriz de Definição de Problema
-- Progresso: Store implementado
-- Próxima fase: Implementação dos Componentes
+- Progresso: Componentes implementados
+- Próxima fase: Testes
 
 ## Problemas Conhecidos
 
@@ -120,6 +121,7 @@
 
 ## Próximas Entregas
 
-1. Componentes da interface
-2. Testes integrados
-3. Documentação atualizada
+1. Testes do store
+2. Testes dos componentes
+3. Testes E2E
+4. Documentação atualizada

@@ -28,9 +28,9 @@ export class ProblemDefinitionFacade {
     );
   }
 
-  createResponse(response: Omit<ProblemDefinitionResponse, 'id'>): void {
+  createResponses(responses: Omit<ProblemDefinitionResponse, 'id'>[]): void {
     this.store.dispatch(
-      ProblemDefinitionActions.createProblemDefinitionResponse({ response })
+      ProblemDefinitionActions.createProblemDefinitionResponses({ responses })
     );
   }
 
@@ -40,13 +40,13 @@ export class ProblemDefinitionFacade {
     );
   }
 
-  deleteResponse(responseId: string): void {
+  deleteResponse(responseId: number): void {
     this.store.dispatch(
       ProblemDefinitionActions.deleteProblemDefinitionResponse({ responseId })
     );
   }
 
-  upvoteResponse(responseId: string): void {
+  upvoteResponse(responseId: number): void {
     this.store.dispatch(
       ProblemDefinitionActions.upvoteProblemDefinitionResponse({ responseId })
     );
@@ -63,7 +63,7 @@ export class ProblemDefinitionFacade {
   }
 
   getResponseById(
-    responseId: string
+    responseId: number
   ): Observable<ProblemDefinitionResponse | undefined> {
     return this.store.select(
       ProblemDefinitionSelectors.selectProblemDefinitionResponseById(responseId)
