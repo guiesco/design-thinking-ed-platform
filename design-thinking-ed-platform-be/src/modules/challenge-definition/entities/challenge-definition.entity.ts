@@ -4,13 +4,12 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  ManyToMany,
   JoinColumn,
   OneToOne,
   OneToMany,
 } from 'typeorm';
 
-@Entity('challenge_definitions')
+@Entity('challenge_definition')
 export class ChallengeDefinition {
   @PrimaryGeneratedColumn()
   id: number;
