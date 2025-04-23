@@ -27,21 +27,21 @@ export class EmpathyMapFacade {
 
   constructor(private store: Store) {}
 
-  // loadEmpathyMaps(projectId: number): void {
-  //   this.store.dispatch(EmpathyMapActions.loadEmpathyMaps({ projectId }));
-  // }
+  loadEmpathyMaps(projectId: number): void {
+    this.store.dispatch(EmpathyMapActions.loadEmpathyMaps({ projectId }));
+  }
 
-  // createEmpathyMap(entry: EmpathyMapEntry): void {
-  //   this.store.dispatch(EmpathyMapActions.createEmpathyMap({ entry }));
-  // }
+  createEmpathyMap(entry: EmpathyMapEntry): void {
+    this.store.dispatch(EmpathyMapActions.createEmpathyMap({ entry }));
+  }
 
-  // updateEmpathyMap(entry: EmpathyMapEntry): void {
-  //   this.store.dispatch(EmpathyMapActions.updateEmpathyMap({ entry }));
-  // }
+  updateEmpathyMap(entry: EmpathyMapEntry): void {
+    this.store.dispatch(EmpathyMapActions.updateEmpathyMap({ entry }));
+  }
 
-  // deleteEmpathyMap(entryId: number): void {
-  //   this.store.dispatch(EmpathyMapActions.deleteEmpathyMap({ entryId }));
-  // }
+  deleteEmpathyMap(entryId: number): void {
+    this.store.dispatch(EmpathyMapActions.deleteEmpathyMap({ entryId }));
+  }
 
   // Novos métodos para respostas
   createResponse(response: CreateEmpathyMapResponseDto): void {

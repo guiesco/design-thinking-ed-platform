@@ -98,8 +98,8 @@ export class ProblemDefinitionEffects {
   upvoteResponse$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ProblemDefinitionActions.upvoteProblemDefinitionResponse),
-      switchMap(({ responseId }) =>
-        this.problemDefinitionService.upvoteResponse(responseId).pipe(
+      switchMap(({ responseId, userId }) =>
+        this.problemDefinitionService.upvoteResponse(responseId, userId).pipe(
           map((updatedResponse) =>
             ProblemDefinitionActions.upvoteProblemDefinitionResponseSuccess({
               response: updatedResponse,
@@ -113,6 +113,59 @@ export class ProblemDefinitionEffects {
             )
           )
         )
+      )
+    )
+  );
+
+  toggleResponseSelection$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ProblemDefinitionActions.toggleProblemDefinitionResponseSelection),
+      switchMap(({ responseId, userId }) =>
+        this.problemDefinitionService
+          .toggleResponseSelection(responseId, userId)
+          .pipe(
+            map((updatedResponse) =>
+              ProblemDefinitionActions.toggleProblemDefinitionResponseSelectionSuccess(
+                {
+                  response: updatedResponse,
+                }
+              )
+            ),
+            catchError((error) =>
+              of(
+                ProblemDefinitionActions.toggleProblemDefinitionResponseSelectionFailure(
+                  {
+                    error: error.message,
+                  }
+                )
+              )
+            )
+          )
+      )
+    )
+  );
+
+  // Effect para criar uma definição de problema
+  createProblemDefinition$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ProblemDefinitionActions.createProblemDefinition),
+      switchMap(({ problemDefinition }) =>
+        this.problemDefinitionService
+          .createProblemDefinition(problemDefinition)
+          .pipe(
+            map((response) =>
+              ProblemDefinitionActions.createProblemDefinitionSuccess({
+                problemDefinition: response,
+              })
+            ),
+            catchError((error) =>
+              of(
+                ProblemDefinitionActions.createProblemDefinitionFailure({
+                  error: error.message,
+                })
+              )
+            )
+          )
       )
     )
   );

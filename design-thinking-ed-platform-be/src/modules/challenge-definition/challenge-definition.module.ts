@@ -7,10 +7,14 @@ import { UserModule } from '../user/user.module';
 import { ProjectModule } from '../project/project.module';
 import { ChallengeDefinitionController } from './challenge-definition.controller';
 import { ChallengeDefinitionService } from './challenge-definition.service';
+import { ChallengeDefinition } from './entities/challenge-definition.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ChallengeDefinitionResponse]),
+    TypeOrmModule.forFeature([
+      ChallengeDefinitionResponse,
+      ChallengeDefinition,
+    ]),
     UserVoteModule,
     UserModule,
     ProjectModule,

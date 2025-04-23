@@ -5,12 +5,16 @@ import { ChallengeDefinitionResponse } from './entities/challenge-definition-res
 import { UserVoteService } from '../user-vote/user-vote.service';
 import { VoteableEntityType } from '../user-vote/enums/voteable-entity-type.enum';
 import { CreateChallengeDefinitionResponseDto } from './dto/create-challenge-definition-response.dto';
+import { ChallengeDefinition } from './entities/challenge-definition.entity';
+import { CreateChallengeDefinitionDto } from './dto/create-challenge-definition.dto';
 
 @Injectable()
 export class ChallengeDefinitionService {
   constructor(
     @InjectRepository(ChallengeDefinitionResponse)
     private challengeDefinitionResponseRepository: Repository<ChallengeDefinitionResponse>,
+    @InjectRepository(ChallengeDefinition)
+    private challengeDefinitionRepository: Repository<ChallengeDefinition>,
     private userVoteService: UserVoteService,
   ) {}
 
@@ -189,5 +193,12 @@ export class ChallengeDefinitionService {
     );
 
     return { ...updatedResponse, hasVoted };
+  }
+
+  async create(
+    dto: CreateChallengeDefinitionDto,
+  ): Promise<ChallengeDefinition> {
+    const challengeDefinition = this.challengeDefinitionRepository.create(dto);
+    return this.challengeDefinitionRepository.save(challengeDefinition);
   }
 }

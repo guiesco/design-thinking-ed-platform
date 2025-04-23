@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<mat-dialog-content>
+  <p>{{ data.message }}</p>
+  <div class="entity-preview">
+    <h3>Detalhes da submissão:</h3>
+    <pre>{{ getFormattedEntity() }}</pre>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="onYesClick()">
+    Confirmar
+  </button>
+</mat-dialog-actions>

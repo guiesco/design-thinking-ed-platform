@@ -1,127 +1,123 @@
 # Progresso do Projeto
 
-## O que está Funcionando
+## Tarefas Atuais
 
-- Estrutura inicial do projeto
-- Memory-bank configurado
-- Definição de arquitetura
-- Padrões estabelecidos
-- Componentes base implementados (@response-list, @response-form, @base-step)
-- Etapa de empatia funcional
-- Store da Matriz de Definição de Problema implementado
-- Componente da Matriz de Definição de Problema implementado
+### 1. Entidades Finais
 
-## Matriz de Definição de Problema - Tarefas
+#### ProblemDefinition Entity
 
-### Backend [Concluído]
+✅ Criada a entidade ProblemDefinition com:
 
-1. **Configuração Inicial** [Concluído]
+- Campos principais (mainQuestion, targetAudience, consequences, etc.)
+- Relacionamentos com User e Project
+- Timestamps
 
-   - Criar entidade ProblemDefinitionResponse [Concluído]
-   - Definir enums para tipos de resposta [Concluído]
-   - Configurar relacionamentos com User e Project [Concluído]
+#### ChallengeDefinition Entity
 
-2. **API** [Concluído]
+✅ Criada a entidade ChallengeDefinition com:
 
-   - Implementar ProblemDefinitionController [Concluído]
-   - Criar DTOs necessários [Concluído]
-   - Definir rotas REST [Concluído]
-   - Documentar endpoints [Concluído]
+- Campos principais (problems, targetAudience, howWeCan, brainstorm)
+- Relacionamentos com User e Project
+- Timestamps
 
-3. **Serviços** [Concluído]
+#### Project Entity
 
-   - Implementar ProblemDefinitionService [Concluído]
-   - Criar métodos CRUD [Concluído]
-   - Adicionar regras de negócio [Concluído]
-   - Implementar validações [Concluído]
+✅ Atualizada a entidade Project com:
 
-4. **Testes Backend** [Concluído]
-   - Testes unitários do controller [Concluído]
-   - Testes unitários do service [Concluído]
-   - Testes de integração [Concluído]
-   - Validar casos de erro [Concluído]
+- Relacionamentos OneToMany com ProblemDefinition e ChallengeDefinition
+- Campos existentes mantidos
 
-### Frontend Store [Concluído]
+### 2. DTOs
 
-1. **Store Base** [Concluído]
+#### ProblemDefinition DTOs
 
-   - Criar problem-definition.actions.ts [Concluído]
-   - Implementar problem-definition.reducer.ts [Concluído]
-   - Definir problem-definition.selectors.ts [Concluído]
-   - Configurar problem-definition.effects.ts [Concluído]
+✅ Criados os DTOs para ProblemDefinition:
 
-2. **Serviços e Facade** [Concluído]
+- CreateProblemDefinitionDto
+- UpdateProblemDefinitionDto
+- Validações implementadas
 
-   - Implementar ProblemDefinitionService [Concluído]
-   - Criar ProblemDefinitionFacade [Concluído]
-   - Definir interfaces e tipos [Concluído]
-   - Configurar injeção de dependências [Concluído]
+#### ChallengeDefinition DTOs
 
-3. **Testes Store** [Próximo]
-   - Testes unitários das actions
-   - Testes unitários do reducer
-   - Testes unitários dos effects
-   - Testes do facade
+✅ Criados os DTOs para ChallengeDefinition:
 
-### Frontend Components [Concluído]
+- CreateChallengeDefinitionDto
+- UpdateChallengeDefinitionDto
+- Validações implementadas
 
-1. **Componente Principal** [Concluído]
+### 3. Serviços
 
-   - Criar ProblemDefinitionStepComponent [Concluído]
-   - Estender BaseStepComponent [Concluído]
-   - Implementar métodos abstratos [Concluído]
-   - Configurar injeção do facade [Concluído]
+#### ProblemDefinitionService
 
-2. **Template e Estilos** [Concluído]
+✅ Criado o serviço com:
 
-   - Criar layout da matriz [Concluído]
-   - Implementar grid responsivo [Concluído]
-   - Estilizar componentes [Concluído]
-   - Garantir consistência visual [Concluído]
+- Método create
+- Método findOne
+- Método findByProject
+- Método update
 
-3. **Integração** [Concluído]
+#### ChallengeDefinitionService
 
-   - Conectar com @response-list [Concluído]
-   - Integrar com @response-form [Concluído]
-   - Implementar lógica de upvote [Concluído]
-   - Configurar navegação [Concluído]
+✅ Criado o serviço com:
 
-4. **Testes Components** [Próximo]
-   - Testes unitários do componente
-   - Testes de integração
-   - Testes de UI
-   - Testes de navegação
+- Método create
+- Método findOne
+- Método findByProject
+- Método update
 
-### Integração e Validação [Em Andamento]
+#### StepVerificationService
 
-1. **Fluxo de Navegação** [Concluído]
+✅ Criado o serviço de verificação de etapas com:
 
-   - Adicionar rota no módulo [Concluído]
-   - Configurar guards se necessário [Concluído]
-   - Implementar transições [Concluído]
-   - Testar navegação [Concluído]
+- Enum DesignThinkingStep
+- Interface StepStatus
+- Métodos para verificação de etapas
+- Lógica de acesso às etapas
 
-2. **Testes E2E** [Próximo]
-   - Testar fluxo completo
-   - Validar casos de erro
-   - Testar responsividade
-   - Documentar resultados
+### 4. Controladores
+
+#### ProblemDefinitionController
+
+✅ Criado o controlador com endpoints:
+
+- POST /problem-definition
+- GET /problem-definition/:id
+- GET /problem-definition?projectId=:id
+- PUT /problem-definition/:id
+
+#### ChallengeDefinitionController
+
+✅ Criado o controlador com endpoints:
+
+- POST /challenge-definition
+- GET /challenge-definition/:id
+- GET /challenge-definition?projectId=:id
+- PUT /challenge-definition/:id
 
 ## Status Atual
 
-- Fase: Implementação da Matriz de Definição de Problema
-- Progresso: Componentes implementados
-- Próxima fase: Testes
+- ✅ Estrutura de diretórios criada
+- ✅ Entidades principais implementadas
+- ✅ DTOs criados e validados
+- ✅ Serviços implementados
+- ✅ Controladores REST criados
+- ⏳ Frontend pendente
 
-## Problemas Conhecidos
+## Próximas Ações
 
-- Nenhum problema crítico identificado
-- Necessidade de manter consistência com padrões existentes
-- Garantir performance com múltiplas listas de resposta
+1. Atualizar componentes frontend para ProblemDefinition
+2. Atualizar componentes frontend para ChallengeDefinition
+3. Atualizar componentes frontend para EmpathyMap
+4. Implementar integração com os novos endpoints
+5. Adicionar verificação de etapas na navegação
 
-## Próximas Entregas
+## Bloqueadores
 
-1. Testes do store
-2. Testes dos componentes
-3. Testes E2E
-4. Documentação atualizada
+- Nenhum no momento
+
+## Notas
+
+- Manter consistência com EmpathyMap entity
+- Seguir padrões existentes de relacionamentos
+- Garantir integração com o fluxo de navegação
+- Implementar validações nos formulários frontend

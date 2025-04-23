@@ -14,12 +14,18 @@ import {
   CreateChallengeDefinitionResponsesDto,
 } from './dto/create-challenge-definition-response.dto';
 import { ChallengeDefinitionResponse } from './entities/challenge-definition-response.entity';
+import { CreateChallengeDefinitionDto } from './dto/create-challenge-definition.dto';
 
 @Controller('challenge-definition')
 export class ChallengeDefinitionController {
   constructor(
     private readonly challengeDefinitionService: ChallengeDefinitionService,
   ) {}
+
+  @Post()
+  create(@Body() dto: CreateChallengeDefinitionDto) {
+    return this.challengeDefinitionService.create(dto);
+  }
 
   @Get('response/project/:projectId')
   findAllResponsesByProject(

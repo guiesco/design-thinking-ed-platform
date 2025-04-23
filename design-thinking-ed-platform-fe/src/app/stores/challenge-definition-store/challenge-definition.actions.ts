@@ -127,3 +127,18 @@ export const toggleResponseSelectionFailure = createAction(
   '[Challenge Definition] Toggle Response Selection Failure',
   props<{ error: string }>()
 );
+
+export const createChallengeDefinition = createAction(
+  '[Challenge Definition] Create Challenge Definition',
+  props<{ challengeDefinition: any }>()
+);
+
+export const createChallengeDefinitionSuccess = createAction(
+  '[Challenge Definition] Create Challenge Definition Success',
+  props<{ challengeDefinition: any }>()
+);
+
+export const createChallengeDefinitionFailure = createAction(
+  '[Challenge Definition] Create Challenge Definition Failure',
+  props<{ error: string }>()
+);

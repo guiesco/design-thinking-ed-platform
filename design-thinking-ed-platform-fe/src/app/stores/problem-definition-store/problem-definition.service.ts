@@ -34,19 +34,36 @@ export class ProblemDefinitionService {
     response: ProblemDefinitionResponse
   ): Observable<ProblemDefinitionResponse> {
     return this.http.put<ProblemDefinitionResponse>(
-      `${this.apiUrl}/responses/${response.id}`,
+      `${this.apiUrl}/response/${response.id}`,
       response
     );
   }
 
   deleteResponse(responseId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/responses/${responseId}`);
+    return this.http.delete<void>(`${this.apiUrl}/response/${responseId}`);
   }
 
-  upvoteResponse(responseId: number): Observable<ProblemDefinitionResponse> {
-    return this.http.post<ProblemDefinitionResponse>(
-      `${this.apiUrl}/responses/${responseId}/upvote`,
+  upvoteResponse(
+    responseId: number,
+    userId: number
+  ): Observable<ProblemDefinitionResponse> {
+    return this.http.put<ProblemDefinitionResponse>(
+      `${this.apiUrl}/response/${responseId}/upvote?userId=${userId}`,
       {}
     );
+  }
+
+  toggleResponseSelection(
+    responseId: number,
+    userId: number
+  ): Observable<ProblemDefinitionResponse> {
+    return this.http.put<ProblemDefinitionResponse>(
+      `${this.apiUrl}/response/${responseId}/toggle-selection`,
+      { userId }
+    );
+  }
+
+  createProblemDefinition(problemDefinition: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}`, problemDefinition);
   }
 }

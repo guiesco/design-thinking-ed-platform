@@ -12,6 +12,10 @@ import {
 } from 'typeorm';
 import { EmpathyMapResponse } from '../../empathy-map/entities/empathy-map-response.entity';
 import { ChallengeDefinitionResponse } from '../../challenge-definition/entities/challenge-definition-response.entity';
+import { ChallengeDefinition } from 'src/modules/challenge-definition/entities/challenge-definition.entity';
+import { ProblemDefinitionResponse } from 'src/modules/problem-definition/entities/problem-definition-response.entity';
+import { EmpathyMap } from 'src/modules/empathy-map/entities/empathy-map.entity';
+import { ProblemDefinition } from 'src/modules/problem-definition/entities/problem-definition.entity';
 
 @Entity()
 export class UserEntity {
@@ -51,8 +55,26 @@ export class UserEntity {
   @OneToMany(() => EmpathyMapResponse, (response) => response.user)
   empathyMapResponses: EmpathyMapResponse[];
 
+  @OneToMany(() => ProblemDefinitionResponse, (response) => response.user)
+  problemDefinitionResponses: ProblemDefinitionResponse[];
+
   @OneToMany(() => ChallengeDefinitionResponse, (response) => response.user)
   challengeDefinitionResponses: ChallengeDefinitionResponse[];
+
+  @ManyToOne(
+    () => ChallengeDefinition,
+    (challengeDefinition) => challengeDefinition.user,
+  )
+  challengeDefinition: ChallengeDefinition[];
+
+  @ManyToOne(
+    () => ProblemDefinition,
+    (problemDefinition) => problemDefinition.user,
+  )
+  problemDefinition: ProblemDefinition[];
+
+  @ManyToOne(() => EmpathyMap, (empathyMap) => empathyMap.user)
+  empathyMap: EmpathyMap[];
 
   @CreateDateColumn()
   createdAt: Date;

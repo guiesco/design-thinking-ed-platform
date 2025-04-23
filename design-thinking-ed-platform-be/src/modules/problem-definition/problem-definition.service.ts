@@ -8,6 +8,9 @@ import {
 import { CreateProblemDefinitionResponseDto } from './dto/create-problem-definition-response.dto';
 import { UserVoteService } from '../user-vote/user-vote.service';
 import { VoteableEntityType } from '../user-vote/enums/voteable-entity-type.enum';
+import { ProblemDefinition } from './entities/problem-definition.entity';
+import { CreateProblemDefinitionDto } from './dto/create-problem-definition.dto';
+import { UpdateProblemDefinitionDto } from './dto/update-problem-definition.dto';
 
 @Injectable()
 export class ProblemDefinitionService {
@@ -15,6 +18,8 @@ export class ProblemDefinitionService {
     @InjectRepository(ProblemDefinitionResponse)
     private readonly problemDefinitionResponseRepository: Repository<ProblemDefinitionResponse>,
     private userVoteService: UserVoteService,
+    @InjectRepository(ProblemDefinition)
+    private repository: Repository<ProblemDefinition>,
   ) {}
 
   createResponse(
@@ -167,5 +172,26 @@ export class ProblemDefinitionService {
       return this.problemDefinitionResponseRepository.save(response);
     }
     return response;
+  }
+
+  async create(dto: CreateProblemDefinitionDto): Promise<ProblemDefinition> {
+    const problemDefinition = this.repository.create(dto);
+    return this.repository.save(problemDefinition);
+  }
+
+  async findOne(id: number): Promise<ProblemDefinition> {
+    return this.repository.findOne({ where: { id } });
+  }
+
+  async findByProject(projectId: number): Promise<ProblemDefinition[]> {
+    return this.repository.find({ where: { projectId } });
+  }
+
+  async update(
+    id: number,
+    dto: UpdateProblemDefinitionDto,
+  ): Promise<ProblemDefinition> {
+    await this.repository.update(id, dto);
+    return this.findOne(id);
   }
 }

@@ -63,7 +63,7 @@ export const deleteProblemDefinitionResponseFailure = createAction(
 
 export const upvoteProblemDefinitionResponse = createAction(
   '[Problem Definition] Upvote Response',
-  props<{ responseId: number }>()
+  props<{ responseId: number; userId: number }>()
 );
 
 export const upvoteProblemDefinitionResponseSuccess = createAction(
@@ -73,5 +73,35 @@ export const upvoteProblemDefinitionResponseSuccess = createAction(
 
 export const upvoteProblemDefinitionResponseFailure = createAction(
   '[Problem Definition] Upvote Response Failure',
+  props<{ error: string }>()
+);
+
+export const createProblemDefinition = createAction(
+  '[Problem Definition] Create Problem Definition',
+  props<{ problemDefinition: any }>()
+);
+
+export const createProblemDefinitionSuccess = createAction(
+  '[Problem Definition] Create Problem Definition Success',
+  props<{ problemDefinition: any }>()
+);
+
+export const createProblemDefinitionFailure = createAction(
+  '[Problem Definition] Create Problem Definition Failure',
+  props<{ error: string }>()
+);
+
+export const toggleProblemDefinitionResponseSelection = createAction(
+  '[Problem Definition] Toggle Response Selection',
+  props<{ responseId: number; userId: number }>()
+);
+
+export const toggleProblemDefinitionResponseSelectionSuccess = createAction(
+  '[Problem Definition] Toggle Response Selection Success',
+  props<{ response: ProblemDefinitionResponse }>()
+);
+
+export const toggleProblemDefinitionResponseSelectionFailure = createAction(
+  '[Problem Definition] Toggle Response Selection Failure',
   props<{ error: string }>()
 );
