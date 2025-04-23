@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { EmpathyMapFacade } from 'src/app/stores/empathy-map-store/empathy-map.facade';
 import {
@@ -84,9 +85,10 @@ export class EmpathyStepComponent extends BaseStepComponent {
     private store: Store,
     userFacade: UserFacade,
     route: ActivatedRoute,
-    snackBar: MatSnackBar
+    snackBar: MatSnackBar,
+    protected override dialog: MatDialog
   ) {
-    super(userFacade, route, snackBar);
+    super(userFacade, route, snackBar, dialog);
   }
 
   override ngOnInit(): void {
@@ -108,6 +110,16 @@ export class EmpathyStepComponent extends BaseStepComponent {
   getResponsesByType(type: ResponseType): Observable<IResponse[]> {
     return this.responses$.pipe(
       map((responses) => responses.filter((response) => response.type === type))
+    );
+  }
+
+  getSelectedResponsesByType(type: ResponseType): Observable<IResponse[]> {
+    return this.responses$.pipe(
+      map((responses) =>
+        responses.filter(
+          (response) => response.type === type && response.isSelected
+        )
+      )
     );
   }
 
@@ -174,7 +186,7 @@ export class EmpathyStepComponent extends BaseStepComponent {
     }
   }
 
-  onToggleSelection(responseId: number): void {
+  override onToggleSelection(responseId: number): void {
     this.empathyMapFacade.toggleResponseSelection(responseId);
   }
 
@@ -208,5 +220,59 @@ export class EmpathyStepComponent extends BaseStepComponent {
       this.empathyMapFacade.loadResponses(this.projectId, this.currentUserId);
       this.showSuccess('Dados atualizados com sucesso!');
     }
+  }
+
+  protected prepareEntity(): any {
+    const entity: any = {
+      projectId: this.projectId,
+      userId: this.currentUserId,
+      think: [],
+      feel: [],
+      say: [],
+      do: [],
+      pains: [],
+      needs: [],
+    };
+
+    Object.values(ResponseType).forEach((type) => {
+      this.getSelectedResponsesByType(type).subscribe((selectedResponses) => {
+        if (selectedResponses.length > 0) {
+          selectedResponses.forEach((response) => {
+            const content = response.content;
+
+            switch (type) {
+              case ResponseType.THINK:
+                entity.think.push(content);
+                break;
+              case ResponseType.FEEL:
+                entity.feel.push(content);
+                break;
+              case ResponseType.SAY:
+                entity.say.push(content);
+                break;
+              case ResponseType.DO:
+                entity.do.push(content);
+                break;
+              case ResponseType.PAINS:
+                entity.pains.push(content);
+                break;
+              case ResponseType.NEEDS:
+                entity.needs.push(content);
+                break;
+            }
+          });
+        }
+      });
+    });
+
+    return entity;
+  }
+
+  protected createEntity(entity: any): void {
+    this.empathyMapFacade.createEmpathyMap(entity);
+  }
+
+  onSubmitEmpathyMap(): void {
+    this.submitResponses(this.responseTypes);
   }
 }

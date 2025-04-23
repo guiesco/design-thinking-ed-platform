@@ -1,10 +1,12 @@
 import { ResponseType as EmpathyMapResponseType } from 'src/app/stores/empathy-map-store/empathy-map.service';
 import { ResponseType as ChallengeResponseType } from './challenge-definition-response.interface';
 import { IUser } from './user.interface';
+import { ProblemDefinitionQuadrant } from '../enum/problem-definition-quadrant.enum';
 
 export type ResponseTypeUnion =
   | EmpathyMapResponseType
   | ChallengeResponseType
+  | ProblemDefinitionQuadrant
   | string;
 
 export interface IResponse {
@@ -15,9 +17,8 @@ export interface IResponse {
   user?: IUser;
   projectId: number;
   upvotes: number;
-  isSelected: boolean;
-  hasVoted: boolean;
-  votesCount: number;
+  isSelected?: boolean;
+  hasVoted?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -107,4 +107,13 @@ export class ChallengeDefinitionService {
       { responses }
     );
   }
+
+  createChallengeDefinition(
+    challengeDefinition: CreateChallengeDefinitionResponseDto
+  ): Observable<ChallengeDefinitionResponse> {
+    return this.http.post<ChallengeDefinitionResponse>(
+      `${this.apiUrl}`,
+      challengeDefinition
+    );
+  }
 }

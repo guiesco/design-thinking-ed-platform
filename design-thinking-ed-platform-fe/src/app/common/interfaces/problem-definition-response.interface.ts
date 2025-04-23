@@ -7,6 +7,8 @@ export interface ProblemDefinitionResponse {
   type: ProblemDefinitionQuadrant;
   content: string;
   upvotes: number;
+  isSelected?: boolean;
+  hasVoted?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

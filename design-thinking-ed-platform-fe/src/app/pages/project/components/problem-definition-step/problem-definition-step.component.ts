@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 import { ProblemDefinitionFacade } from '../../../../stores/problem-definition-store/problem-definition.facade';
 import { UserFacade } from '../../../../stores/user-state-store/user.facade';
 import { ProblemDefinitionResponse } from '../../../../common/interfaces/problem-definition-response.interface';
@@ -71,9 +72,10 @@ export class ProblemDefinitionStepComponent
     protected override userFacade: UserFacade,
     protected override route: ActivatedRoute,
     protected override snackBar: MatSnackBar,
+    protected override dialog: MatDialog,
     private problemDefinitionFacade: ProblemDefinitionFacade
   ) {
-    super(userFacade, route, snackBar);
+    super(userFacade, route, snackBar, dialog);
     this.responses$ = this.problemDefinitionFacade.responses$;
     this.loading$ = this.problemDefinitionFacade.loading$;
     this.error$ = this.problemDefinitionFacade.error$;
@@ -94,23 +96,7 @@ export class ProblemDefinitionStepComponent
   protected override getResponsesByType(
     type: ProblemDefinitionQuadrant
   ): Observable<IResponse[]> {
-    return this.problemDefinitionFacade.getResponsesByQuadrant(type).pipe(
-      map((responses) =>
-        responses.map((response) => ({
-          id: response.id,
-          type: response.type,
-          content: response.content,
-          userId: response.userId,
-          projectId: response.projectId,
-          upvotes: response.upvotes,
-          isSelected: false,
-          hasVoted: false,
-          votesCount: response.upvotes,
-          createdAt: response.createdAt,
-          updatedAt: response.updatedAt,
-        }))
-      )
-    );
+    return this.problemDefinitionFacade.getResponsesByQuadrant(type);
   }
 
   protected override getTypeLabel(type: ProblemDefinitionQuadrant): string {
@@ -169,11 +155,18 @@ export class ProblemDefinitionStepComponent
     responseId: number;
     hasVoted: boolean;
   }): void {
-    this.problemDefinitionFacade.upvoteResponse(event.responseId);
+    this.problemDefinitionFacade.upvoteResponse(
+      event.responseId,
+      this.currentUserId
+    );
   }
 
   protected override onToggleSelection(responseId: number): void {
-    // Implementação específica se necessário
+    if (!this.currentUserId) return;
+    this.problemDefinitionFacade.toggleResponseSelection(
+      responseId,
+      this.currentUserId
+    );
   }
 
   protected override onDelete(responseId: number): void {
@@ -211,5 +204,76 @@ export class ProblemDefinitionStepComponent
       duration: 3000,
       panelClass: ['success-snackbar'],
     });
+  }
+
+  getSelectedResponsesByType(
+    type: ProblemDefinitionQuadrant
+  ): Observable<IResponse[]> {
+    return this.responses$.pipe(
+      map((responses) =>
+        responses.filter(
+          (response) => response.type === type && response.isSelected
+        )
+      )
+    );
+  }
+
+  protected prepareEntity(): any {
+    const entity: any = {
+      projectId: this.projectId,
+      userId: this.currentUserId,
+      mainQuestion: [],
+      targetAudience: [],
+      consequences: [],
+      alternativeView: [],
+      socialFactors: [],
+      problemDefinition: [],
+    };
+
+    Object.values(ProblemDefinitionQuadrant).forEach((quadrant) => {
+      this.getSelectedResponsesByType(quadrant).subscribe(
+        (selectedResponses) => {
+          if (selectedResponses.length > 0) {
+            // Pegar a primeira resposta selecionada
+            selectedResponses.forEach((selectedResponse) => {
+              const selectedContent = selectedResponse.content;
+
+              switch (quadrant) {
+                case ProblemDefinitionQuadrant.MAIN_QUESTION:
+                  entity.mainQuestion.push(selectedContent);
+                  break;
+                case ProblemDefinitionQuadrant.TARGET_AUDIENCE:
+                  entity.targetAudience.push(selectedContent);
+                  break;
+                case ProblemDefinitionQuadrant.CONSEQUENCES:
+                  entity.consequences.push(selectedContent);
+                  break;
+                case ProblemDefinitionQuadrant.ALTERNATIVE_VIEW:
+                  entity.alternativeView.push(selectedContent);
+                  break;
+                case ProblemDefinitionQuadrant.SOCIAL_FACTORS:
+                  entity.socialFactors.push(selectedContent);
+                  break;
+                case ProblemDefinitionQuadrant.PROBLEM_DEFINITION:
+                  entity.problemDefinition.push(selectedContent);
+                  break;
+              }
+            });
+          }
+        }
+      );
+    });
+
+    return entity;
+  }
+
+  protected createEntity(entity: any): void {
+    this.problemDefinitionFacade.createProblemDefinition(entity);
+    this.showSuccess('Definição do problema criada com sucesso!');
+  }
+
+  // Adicionar novo método para submeter a definição do problema
+  onSubmitDefinition(): void {
+    this.submitResponses(this.quadrants);
   }
 }

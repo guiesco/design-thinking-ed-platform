@@ -34,4 +34,16 @@
       ></app-response-list>
     </div>
   </div>
+
+  <div class="submit-container">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="onSubmitEmpathyMap()"
+      class="submit-button"
+      [disabled]="(loading$ | async) === true"
+    >
+      Submeter Mapa de Empatia
+    </button>
+  </div>
 </div>

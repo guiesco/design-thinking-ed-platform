@@ -590,12 +590,14 @@ h3 {
 
     .navigation-buttons {
         display: flex;
-        gap: 1rem;
-        justify-content: flex-end;
-        margin-top: 1.5rem;
+        justify-content: space-between;
+        margin-top: 20px;
+        margin-bottom: 30px;
 
-        button {
-            min-width: 150px;
+        .submit-button {
+            margin-left: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
         }
     }
 

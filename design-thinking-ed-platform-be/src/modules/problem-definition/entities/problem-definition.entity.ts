@@ -2,7 +2,6 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
   JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
@@ -16,23 +15,23 @@ export class ProblemDefinition {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  mainQuestion: string;
+  @Column({ type: 'text', nullable: true, array: true })
+  mainQuestion: string[];
 
-  @Column()
-  targetAudience: string;
+  @Column({ type: 'text', nullable: true, array: true })
+  targetAudience: string[];
 
-  @Column()
-  consequences: string;
+  @Column({ type: 'text', nullable: true, array: true })
+  consequences: string[];
 
-  @Column()
-  alternativeView: string;
+  @Column({ type: 'text', nullable: true, array: true })
+  alternativeView: string[];
 
-  @Column()
-  socialFactors: string;
+  @Column({ type: 'text', nullable: true, array: true })
+  socialFactors: string[];
 
-  @Column()
-  problemDefinition: string;
+  @Column({ type: 'text', nullable: true, array: true })
+  problemDefinition: string[];
 
   @OneToMany(() => UserEntity, (user) => user.problemDefinition)
   @JoinColumn({ name: 'user_id' })

@@ -95,4 +95,12 @@ export class ChallengeDefinitionFacade {
       ChallengeDefinitionActions.toggleResponseSelection({ id, userId })
     );
   }
+
+  createChallengeDefinition(challengeDefinition: any): void {
+    this.store.dispatch(
+      ChallengeDefinitionActions.createChallengeDefinition({
+        challengeDefinition,
+      })
+    );
+  }
 }

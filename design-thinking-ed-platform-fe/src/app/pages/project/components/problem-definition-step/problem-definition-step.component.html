@@ -31,4 +31,16 @@
       ></app-response-list>
     </div>
   </div>
+
+  <div class="submit-container">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="onSubmitDefinition()"
+      class="submit-button"
+      [disabled]="(loading$ | async) === true"
+    >
+      Submeter Definição do Problema
+    </button>
+  </div>
 </div>

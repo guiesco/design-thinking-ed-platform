@@ -17,23 +17,23 @@ export class EmpathyMap {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  think: string;
+  @Column({ type: 'text', nullable: true, array: true })
+  think: string[];
 
-  @Column()
-  feel: string;
+  @Column({ type: 'text', nullable: true, array: true })
+  feel: string[];
 
-  @Column()
-  say: string;
+  @Column({ type: 'text', nullable: true, array: true })
+  say: string[];
 
-  @Column()
-  do: string;
+  @Column({ type: 'text', nullable: true, array: true })
+  do: string[];
 
-  @Column()
-  pains: string;
+  @Column({ type: 'text', nullable: true, array: true })
+  pains: string[];
 
-  @Column()
-  needs: string;
+  @Column({ type: 'text', nullable: true, array: true })
+  needs: string[];
 
   @OneToMany(() => UserEntity, (user) => user.empathyMap)
   @JoinColumn({ name: 'user_id' })

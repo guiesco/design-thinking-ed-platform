@@ -49,9 +49,12 @@ export class ProblemDefinitionFacade {
     );
   }
 
-  upvoteResponse(responseId: number): void {
+  upvoteResponse(responseId: number, userId: number): void {
     this.store.dispatch(
-      ProblemDefinitionActions.upvoteProblemDefinitionResponse({ responseId })
+      ProblemDefinitionActions.upvoteProblemDefinitionResponse({
+        responseId,
+        userId,
+      })
     );
   }
 
@@ -70,6 +73,21 @@ export class ProblemDefinitionFacade {
   ): Observable<ProblemDefinitionResponse | undefined> {
     return this.store.select(
       ProblemDefinitionSelectors.selectProblemDefinitionResponseById(responseId)
+    );
+  }
+
+  createProblemDefinition(problemDefinition: any): void {
+    this.store.dispatch(
+      ProblemDefinitionActions.createProblemDefinition({ problemDefinition })
+    );
+  }
+
+  toggleResponseSelection(responseId: number, userId: number): void {
+    this.store.dispatch(
+      ProblemDefinitionActions.toggleProblemDefinitionResponseSelection({
+        responseId,
+        userId,
+      })
     );
   }
 }

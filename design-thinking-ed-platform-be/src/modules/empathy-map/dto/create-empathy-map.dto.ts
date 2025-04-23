@@ -1,29 +1,29 @@
-import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsArray, IsNumber, IsString } from 'class-validator';
 
 export class CreateEmpathyMapDto {
   @IsNotEmpty()
-  @IsString()
-  think: string;
+  @IsArray()
+  think: string[];
 
   @IsNotEmpty()
-  @IsString()
-  feel: string;
+  @IsArray()
+  feel: string[];
 
   @IsNotEmpty()
-  @IsString()
-  say: string;
+  @IsArray()
+  say: string[];
 
   @IsNotEmpty()
-  @IsString()
-  do: string;
+  @IsArray()
+  do: string[];
 
   @IsNotEmpty()
-  @IsString()
-  pains: string;
+  @IsArray()
+  pains: string[];
 
   @IsNotEmpty()
-  @IsString()
-  needs: string;
+  @IsArray()
+  needs: string[];
 
   @IsNotEmpty()
   @IsNumber()

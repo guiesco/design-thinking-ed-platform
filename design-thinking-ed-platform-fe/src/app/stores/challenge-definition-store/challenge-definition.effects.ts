@@ -150,4 +150,28 @@ export class ChallengeDefinitionEffects {
       )
     )
   );
+
+  createChallengeDefinition$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ChallengeDefinitionActions.createChallengeDefinition),
+      switchMap(({ challengeDefinition }) =>
+        this.challengeDefinitionService
+          .createChallengeDefinition(challengeDefinition)
+          .pipe(
+            map((response) =>
+              ChallengeDefinitionActions.createChallengeDefinitionSuccess({
+                challengeDefinition,
+              })
+            ),
+            catchError((error) =>
+              of(
+                ChallengeDefinitionActions.createChallengeDefinitionFailure({
+                  error,
+                })
+              )
+            )
+          )
+      )
+    )
+  );
 }

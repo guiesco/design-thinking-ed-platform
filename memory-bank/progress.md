@@ -107,8 +107,9 @@
 
 1. Atualizar componentes frontend para ProblemDefinition
 2. Atualizar componentes frontend para ChallengeDefinition
-3. Implementar integração com os novos endpoints
-4. Adicionar verificação de etapas na navegação
+3. Atualizar componentes frontend para EmpathyMap
+4. Implementar integração com os novos endpoints
+5. Adicionar verificação de etapas na navegação
 
 ## Bloqueadores
 

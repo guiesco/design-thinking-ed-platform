@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import {
   ChallengeDefinitionResponse,
@@ -54,9 +55,10 @@ export class ChallengeDefinitionStepComponent extends BaseStepComponent {
     private challengeDefinitionFacade: ChallengeDefinitionFacade,
     userFacade: UserFacade,
     route: ActivatedRoute,
-    snackBar: MatSnackBar
+    snackBar: MatSnackBar,
+    protected override dialog: MatDialog
   ) {
-    super(userFacade, route, snackBar);
+    super(userFacade, route, snackBar, dialog);
   }
 
   override ngOnInit(): void {
@@ -81,6 +83,16 @@ export class ChallengeDefinitionStepComponent extends BaseStepComponent {
   getResponsesByType(type: ResponseType): Observable<IResponse[]> {
     return this.responses$.pipe(
       map((responses) => responses.filter((response) => response.type === type))
+    );
+  }
+
+  getSelectedResponsesByType(type: ResponseType): Observable<IResponse[]> {
+    return this.responses$.pipe(
+      map((responses) =>
+        responses.filter(
+          (response) => response.type === type && response.isSelected
+        )
+      )
     );
   }
 
@@ -139,7 +151,7 @@ export class ChallengeDefinitionStepComponent extends BaseStepComponent {
     }
   }
 
-  onToggleSelection(responseId: number): void {
+  override onToggleSelection(responseId: number): void {
     if (!this.currentUserId) return;
     this.challengeDefinitionFacade.toggleResponseSelection(
       responseId,
@@ -192,6 +204,56 @@ export class ChallengeDefinitionStepComponent extends BaseStepComponent {
   }
 
   onFinalSubmit(): void {
-    // Implementar lógica de finalização
+    if (this.showBrainstormStep) {
+      this.submitResponses(this.secondStepResponseTypes);
+    } else {
+      this.submitResponses(this.firstStepResponseTypes);
+    }
+  }
+
+  protected prepareEntity(): any {
+    const entity: any = {
+      projectId: this.projectId,
+      userId: this.currentUserId,
+      problems: [],
+      targetAudience: [],
+      howWeCan: [],
+      brainstorm: [],
+    };
+
+    // Usar o Observable para obter respostas selecionadas de cada tipo
+    Object.values(ResponseType).forEach((type) => {
+      this.getSelectedResponsesByType(type).subscribe((selectedResponses) => {
+        if (selectedResponses.length > 0) {
+          // Pegar a primeira resposta selecionada
+          selectedResponses.forEach((selectedResponse) => {
+            const content = selectedResponse.content;
+
+            switch (type) {
+              case ResponseType.PROBLEMS:
+                entity.problems.push(content);
+                break;
+              case ResponseType.TARGET_AUDIENCE:
+                entity.targetAudience.push(content);
+                break;
+              case ResponseType.HOW_WE_CAN:
+                entity.howWeCan.push(content);
+                break;
+              case ResponseType.BRAINSTORM:
+                entity.brainstorm.push(content);
+                break;
+            }
+          });
+        }
+      });
+    });
+
+    return entity;
+  }
+
+  protected createEntity(entity: any): void {
+    // Aqui você deve chamar o método da facade para criar a entidade
+    this.challengeDefinitionFacade.createChallengeDefinition(entity);
+    this.showSuccess('Definição do desafio criada com sucesso!');
   }
 }

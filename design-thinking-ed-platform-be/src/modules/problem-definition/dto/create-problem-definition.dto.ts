@@ -1,29 +1,29 @@
-import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsArray } from 'class-validator';
 
 export class CreateProblemDefinitionDto {
-  @IsString()
+  @IsArray()
   @IsNotEmpty()
-  mainQuestion: string;
+  mainQuestion: string[];
 
-  @IsString()
+  @IsArray()
   @IsNotEmpty()
-  targetAudience: string;
+  targetAudience: string[];
 
-  @IsString()
+  @IsArray()
   @IsNotEmpty()
-  consequences: string;
+  consequences: string[];
 
-  @IsString()
+  @IsArray()
   @IsNotEmpty()
-  alternativeView: string;
+  alternativeView: string[];
 
-  @IsString()
+  @IsArray()
   @IsNotEmpty()
-  socialFactors: string;
+  socialFactors: string[];
 
-  @IsString()
+  @IsArray()
   @IsNotEmpty()
-  problemDefinition: string;
+  problemDefinition: string[];
 
   @IsNumber()
   @IsNotEmpty()
