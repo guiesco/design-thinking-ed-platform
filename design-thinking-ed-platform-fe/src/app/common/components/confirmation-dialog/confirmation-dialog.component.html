@@ -1,14 +1,65 @@
-<h2 mat-dialog-title>{{ data.title }}</h2>
-<mat-dialog-content>
-  <p>{{ data.message }}</p>
-  <div class="entity-preview">
-    <h3>Detalhes da submissão:</h3>
-    <pre>{{ getFormattedEntity() }}</pre>
-  </div>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-button (click)="onNoClick()">Cancelar</button>
-  <button mat-raised-button color="primary" (click)="onYesClick()">
-    Confirmar
-  </button>
-</mat-dialog-actions>
+<div class="dialog-container">
+  <h2 mat-dialog-title class="dialog-title">
+    <mat-icon class="title-icon">info</mat-icon>
+    {{ data.title }}
+  </h2>
+  <mat-dialog-content class="dialog-content">
+    <p class="dialog-message">{{ data.message }}</p>
+    <div class="entity-preview" *ngIf="entityFields.length > 0">
+      <h3 class="preview-title">
+        <mat-icon class="section-icon">description</mat-icon>
+        Detalhes da submissão
+      </h3>
+      <div class="entity-fields">
+        <div
+          class="field-row"
+          *ngFor="let field of entityFields; let odd = odd"
+          [ngClass]="{ 'odd-row': odd }"
+        >
+          <div class="field-label">
+            <span class="label-text">{{ field.label }}</span>
+          </div>
+          <div class="field-value">
+            <!-- Valor simples -->
+            <ng-container *ngIf="field.type === 'simple'">
+              <span class="value-text">{{ formatValue(field.value) }}</span>
+            </ng-container>
+
+            <!-- Array -->
+            <ng-container *ngIf="field.type === 'array'">
+              <div *ngIf="field.value.length === 0" class="empty-list">
+                Lista vazia
+              </div>
+              <ul *ngIf="field.value.length > 0" class="array-list">
+                <li *ngFor="let item of field.value" class="array-item">
+                  <mat-icon class="item-icon">arrow_right</mat-icon>
+                  <span>{{ formatValue(item) }}</span>
+                </li>
+              </ul>
+            </ng-container>
+
+            <!-- Objeto -->
+            <ng-container *ngIf="field.type === 'object'">
+              <span class="object-badge">[Objeto]</span>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end" class="dialog-actions">
+    <button mat-button class="cancel-button" (click)="onNoClick()">
+      <mat-icon>close</mat-icon>
+      Cancelar
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      class="confirm-button"
+      (click)="onYesClick()"
+    >
+      <mat-icon>check</mat-icon>
+      Confirmar
+    </button>
+  </mat-dialog-actions>
+</div>

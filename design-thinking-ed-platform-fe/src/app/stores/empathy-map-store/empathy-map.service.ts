@@ -2,65 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { IUser } from '../../common/interfaces/user.interface';
-
-export enum ResponseType {
-  THINK = 'think',
-  FEEL = 'feel',
-  SAY = 'say',
-  DO = 'do',
-  PAINS = 'pains',
-  NEEDS = 'needs',
-}
-
-export interface EmpathyMapEntry {
-  id: number;
-  think: string;
-  feel: string;
-  say: string;
-  do: string;
-  pains: string;
-  needs: string;
-  userId: number;
-  user?: IUser;
-  projectId: number;
-  upvotes: number;
-  isSelected: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface EmpathyMapResponse {
-  id: number;
-  type: ResponseType;
-  content: string;
-  userId: number;
-  user?: IUser;
-  projectId: number;
-  upvotes: number;
-  isSelected: boolean;
-  hasVoted?: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface CreateEmpathyMapDto {
-  think: string;
-  feel: string;
-  say: string;
-  do: string;
-  pains: string;
-  needs: string;
-  userId: number;
-  projectId: number;
-}
-
-export interface CreateEmpathyMapResponseDto {
-  type: ResponseType;
-  content: string;
-  userId: number;
-  projectId: number;
-}
+import {
+  CreateEmpathyMapResponseDto,
+  EmpathyMapEntry,
+  EmpathyMapResponse,
+} from 'src/app/common/interfaces/empathy-map.interface';
 
 @Injectable({
   providedIn: 'root',

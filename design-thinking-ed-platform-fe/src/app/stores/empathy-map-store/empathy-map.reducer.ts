@@ -1,5 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
-import { EmpathyMapEntry, EmpathyMapResponse } from './empathy-map.service';
+import {
+  EmpathyMapEntry,
+  EmpathyMapResponse,
+} from 'src/app/common/interfaces/empathy-map.interface';
 import * as EmpathyMapActions from './empathy-map.actions';
 
 export interface EmpathyMapState {

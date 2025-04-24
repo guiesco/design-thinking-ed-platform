@@ -1,4 +1,4 @@
-import { ResponseType as EmpathyMapResponseType } from 'src/app/stores/empathy-map-store/empathy-map.service';
+import { ResponseType as EmpathyMapResponseType } from 'src/app/common/interfaces/empathy-map.interface';
 import { ResponseType as ChallengeResponseType } from './challenge-definition-response.interface';
 import { IUser } from './user.interface';
 import { ProblemDefinitionQuadrant } from '../enum/problem-definition-quadrant.enum';

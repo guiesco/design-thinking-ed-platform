@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import {
+  CreateEmpathyMapResponseDto,
   EmpathyMapEntry,
   EmpathyMapResponse,
-  CreateEmpathyMapResponseDto,
   ResponseType,
-} from 'src/app/stores/empathy-map-store/empathy-map.service';
+} from 'src/app/common/interfaces/empathy-map.interface';
 import * as EmpathyMapActions from './empathy-map.actions';
 import * as EmpathyMapSelectors from './empathy-map.selectors';
 

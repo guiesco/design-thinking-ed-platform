@@ -15,8 +15,12 @@ import {
   upvoteProblemDefinitionResponse,
   upvoteProblemDefinitionResponseSuccess,
   upvoteProblemDefinitionResponseFailure,
+  toggleProblemDefinitionResponseSelection,
+  toggleProblemDefinitionResponseSelectionSuccess,
+  toggleProblemDefinitionResponseSelectionFailure,
 } from './problem-definition.actions';
 import { ProblemDefinitionResponse } from '../../common/interfaces/problem-definition-response.interface';
+import { toggleResponseSelection } from '../empathy-map-store/empathy-map.actions';
 
 export interface ProblemDefinitionState {
   responses: ProblemDefinitionResponse[];
@@ -110,5 +114,25 @@ export const problemDefinitionReducer = createReducer(
     ...state,
     error,
     loading: false,
+  })),
+  on(toggleProblemDefinitionResponseSelection, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(
+    toggleProblemDefinitionResponseSelectionSuccess,
+    (state, { response }) => ({
+      ...state,
+      responses: state.responses.map((r) =>
+        r.id === response.id ? response : r
+      ),
+      loading: false,
+    })
+  ),
+  on(toggleProblemDefinitionResponseSelectionFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
   }))
 );

@@ -1,24 +1,205 @@
+.dialog-container {
+    --primary-color: #3f51b5;
+    --secondary-color: #f5f5f5;
+    --border-color: #e0e0e0;
+    --text-color: #333;
+    --accent-color: #ff4081;
+    --success-color: #4caf50;
+    --odd-row-color: rgba(63, 81, 181, 0.05);
+
+    font-family: 'Roboto', sans-serif;
+    color: var(--text-color);
+}
+
+.dialog-title {
+    display: flex;
+    align-items: center;
+    padding: 34px 27px 9px 32px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: -24px -24px 16px -24px;
+}
+
+.title-icon {
+    margin-right: 8px;
+}
+
+.dialog-content {
+    padding: 0 8px;
+}
+
+.dialog-message {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    padding: 0 8px;
+}
+
 .entity-preview {
     margin-top: 20px;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    padding: 10px;
-    background-color: #f5f5f5;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--secondary-color);
+    max-height: 400px;
+    overflow-y: auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-pre {
-    overflow: auto;
-    max-height: 300px;
+.preview-title {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: var(--primary-color);
+    color: white;
     margin: 0;
-    white-space: pre-wrap;
-}
-
-h3 {
-    margin-bottom: 10px;
     font-size: 16px;
     font-weight: 500;
+    border-radius: 8px 8px 0 0;
 }
 
-mat-dialog-actions {
-    margin-top: 20px;
+.section-icon {
+    margin-right: 8px;
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+}
+
+.entity-fields {
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+}
+
+.field-row {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s;
+    border-radius: 4px;
+    margin: 4px 0;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.02);
+    }
+}
+
+.odd-row {
+    background-color: var(--odd-row-color);
+}
+
+.field-label {
+    font-weight: 500;
+    min-width: 150px;
+    flex: 0 0 30%;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+}
+
+.label-text::after {
+    content: ':';
+    margin-left: 2px;
+}
+
+.field-value {
+    flex: 1;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    padding: 0 8px;
+}
+
+.value-text {
+    display: inline-block;
+    padding: 2px 0;
+}
+
+.array-list {
+    margin: 8px 0 0 0;
+    padding-left: 0;
+    list-style-type: none;
+
+    .array-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 8px;
+        padding: 4px 8px;
+        background-color: rgba(255, 255, 255, 0.7);
+        border-radius: 4px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        .item-icon {
+            margin-right: 4px;
+            color: var(--primary-color);
+            font-size: 18px;
+            height: 18px;
+            width: 18px;
+        }
+    }
+}
+
+.empty-list {
+    color: #888;
+    font-style: italic;
+    padding: 4px 8px;
+}
+
+.object-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background-color: rgba(63, 81, 181, 0.1);
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--primary-color);
+}
+
+.dialog-actions {
+    margin-top: 24px;
+    padding: 8px 0;
+}
+
+.cancel-button,
+.confirm-button {
+    display: flex;
+    align-items: center;
+
+    mat-icon {
+        margin-right: 4px;
+    }
+}
+
+.confirm-button {
+    transition: all 0.2s ease;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(63, 81, 181, 0.3);
+    border-radius: 4px;
+
+    &:hover {
+        background: rgba(63, 81, 181, 0.5);
+    }
 }

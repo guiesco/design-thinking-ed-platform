@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { EmpathyMapState, empathyMapReducer } from './empathy-map.reducer';
-import { ResponseType } from './empathy-map.service';
+import { EmpathyMapState } from './empathy-map.reducer';
+import { ResponseType } from 'src/app/common/interfaces/empathy-map.interface';
 
 export const selectEmpathyMapState =
   createFeatureSelector<EmpathyMapState>('empathyMap');

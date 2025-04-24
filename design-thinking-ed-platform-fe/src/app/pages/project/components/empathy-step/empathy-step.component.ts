@@ -5,18 +5,16 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { EmpathyMapFacade } from 'src/app/stores/empathy-map-store/empathy-map.facade';
-import {
-  EmpathyMapEntry,
-  EmpathyMapResponse,
-  CreateEmpathyMapResponseDto,
-  ResponseType,
-} from 'src/app/stores/empathy-map-store/empathy-map.service';
 import { UserFacade } from 'src/app/stores/user-state-store/user.facade';
 import { Store } from '@ngrx/store';
 import * as EmpathyMapActions from 'src/app/stores/empathy-map-store/empathy-map.actions';
 import { IResponseFormField } from 'src/app/common/components/response-form/response-form.component';
 import { IResponse } from 'src/app/common/interfaces/response.interface';
 import { BaseStepComponent } from 'src/app/common/components/base-step/base-step.component';
+import {
+  CreateEmpathyMapResponseDto,
+  ResponseType,
+} from 'src/app/common/interfaces/empathy-map.interface';
 
 @Component({
   selector: 'app-empathy-step',

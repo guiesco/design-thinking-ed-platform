@@ -4,7 +4,7 @@ import {
   CreateEmpathyMapDto,
   EmpathyMapResponse,
   CreateEmpathyMapResponseDto,
-} from 'src/app/stores/empathy-map-store/empathy-map.service';
+} from 'src/app/common/interfaces/empathy-map.interface';
 
 export const loadEmpathyMaps = createAction(
   '[EmpathyMap] Load Empathy Maps',

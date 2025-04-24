@@ -101,7 +101,7 @@ export abstract class BaseStepComponent implements OnInit {
     }
 
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '500px',
+      width: '1200px',
       data: {
         title: 'Confirmar submissão',
         message: 'Você tem certeza que deseja submeter estas respostas?',
