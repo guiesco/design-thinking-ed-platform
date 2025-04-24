@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { ProblemDefinitionResponse } from 'src/app/common/interfaces/problem-definition-response.interface';
+import {
+  ProblemDefinition,
+  ProblemDefinitionResponse,
+} from 'src/app/common/interfaces/problem-definition-response.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -67,7 +70,12 @@ export class ProblemDefinitionService {
     );
   }
 
-  createProblemDefinition(problemDefinition: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}`, problemDefinition);
+  createProblemDefinition(
+    problemDefinition: any
+  ): Observable<ProblemDefinition[]> {
+    return this.http.post<ProblemDefinition[]>(
+      `${this.apiUrl}`,
+      problemDefinition
+    );
   }
 }

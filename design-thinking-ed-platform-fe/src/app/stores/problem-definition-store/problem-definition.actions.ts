@@ -1,5 +1,8 @@
 import { createAction, props } from '@ngrx/store';
-import { ProblemDefinitionResponse } from '../../common/interfaces/problem-definition-response.interface';
+import {
+  ProblemDefinition,
+  ProblemDefinitionResponse,
+} from '../../common/interfaces/problem-definition-response.interface';
 
 export const loadProblemDefinitionResponses = createAction(
   '[Problem Definition] Load Responses',
@@ -23,7 +26,7 @@ export const loadProblemDefinition = createAction(
 
 export const loadProblemDefinitionSuccess = createAction(
   '[Problem Definition] Load Problem Definition Success',
-  props<{ problemDefinition: any }>()
+  props<{ problemDefinition: ProblemDefinition[] }>()
 );
 
 export const loadProblemDefinitionFailure = createAction(

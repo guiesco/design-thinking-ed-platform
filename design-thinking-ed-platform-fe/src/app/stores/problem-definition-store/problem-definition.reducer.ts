@@ -60,7 +60,7 @@ export const problemDefinitionReducer = createReducer(
   })),
   on(loadProblemDefinitionSuccess, (state, { problemDefinition }) => ({
     ...state,
-    problemDefinition,
+    problemDefinition: problemDefinition[0],
     loading: false,
   })),
   on(loadProblemDefinitionFailure, (state, { error }) => ({

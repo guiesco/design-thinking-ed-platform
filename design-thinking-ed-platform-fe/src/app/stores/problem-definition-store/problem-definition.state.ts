@@ -1,8 +1,11 @@
-import { ProblemDefinitionResponse } from '../../common/interfaces/problem-definition-response.interface';
+import {
+  ProblemDefinition,
+  ProblemDefinitionResponse,
+} from '../../common/interfaces/problem-definition-response.interface';
 
 export interface ProblemDefinitionState {
   responses: ProblemDefinitionResponse[];
-  problemDefinition: any | null;
+  problemDefinition: ProblemDefinition | null;
   loading: boolean;
   error: string | null;
 }
