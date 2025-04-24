@@ -21,6 +21,10 @@ export class ProblemDefinitionService {
     );
   }
 
+  getProblemDefinition(projectId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/project/${projectId}`);
+  }
+
   createResponses(
     responses: Omit<ProblemDefinitionResponse, 'id'>[]
   ): Observable<ProblemDefinitionResponse[]> {

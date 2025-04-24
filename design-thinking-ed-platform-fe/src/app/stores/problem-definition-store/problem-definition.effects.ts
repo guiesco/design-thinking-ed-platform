@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { map, catchError, switchMap } from 'rxjs/operators';
+import { map, catchError, switchMap, tap } from 'rxjs/operators';
 import { ProblemDefinitionService } from './problem-definition.service';
 import * as ProblemDefinitionActions from './problem-definition.actions';
 
@@ -20,6 +20,28 @@ export class ProblemDefinitionEffects {
           catchError((error) =>
             of(
               ProblemDefinitionActions.loadProblemDefinitionResponsesFailure({
+                error: error.message,
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  loadProblemDefinition$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ProblemDefinitionActions.loadProblemDefinition),
+      switchMap(({ projectId }) =>
+        this.problemDefinitionService.getProblemDefinition(projectId).pipe(
+          map((problemDefinition) =>
+            ProblemDefinitionActions.loadProblemDefinitionSuccess({
+              problemDefinition,
+            })
+          ),
+          catchError((error) =>
+            of(
+              ProblemDefinitionActions.loadProblemDefinitionFailure({
                 error: error.message,
               })
             )

@@ -1,4 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
+import { ProblemDefinitionState } from './problem-definition.state';
 import {
   loadProblemDefinitionResponses,
   loadProblemDefinitionResponsesSuccess,
@@ -18,18 +19,19 @@ import {
   toggleProblemDefinitionResponseSelection,
   toggleProblemDefinitionResponseSelectionSuccess,
   toggleProblemDefinitionResponseSelectionFailure,
+  createProblemDefinition,
+  createProblemDefinitionSuccess,
+  createProblemDefinitionFailure,
+  loadProblemDefinition,
+  loadProblemDefinitionSuccess,
+  loadProblemDefinitionFailure,
 } from './problem-definition.actions';
 import { ProblemDefinitionResponse } from '../../common/interfaces/problem-definition-response.interface';
 import { toggleResponseSelection } from '../empathy-map-store/empathy-map.actions';
 
-export interface ProblemDefinitionState {
-  responses: ProblemDefinitionResponse[];
-  loading: boolean;
-  error: string | null;
-}
-
 export const initialState: ProblemDefinitionState = {
   responses: [],
+  problemDefinition: null,
   loading: false,
   error: null,
 };
@@ -47,6 +49,21 @@ export const problemDefinitionReducer = createReducer(
     loading: false,
   })),
   on(loadProblemDefinitionResponsesFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false,
+  })),
+  on(loadProblemDefinition, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(loadProblemDefinitionSuccess, (state, { problemDefinition }) => ({
+    ...state,
+    problemDefinition,
+    loading: false,
+  })),
+  on(loadProblemDefinitionFailure, (state, { error }) => ({
     ...state,
     error,
     loading: false,
@@ -132,7 +149,22 @@ export const problemDefinitionReducer = createReducer(
   ),
   on(toggleProblemDefinitionResponseSelectionFailure, (state, { error }) => ({
     ...state,
-    loading: false,
     error,
+    loading: false,
+  })),
+  on(createProblemDefinition, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(createProblemDefinitionSuccess, (state, { problemDefinition }) => ({
+    ...state,
+    problemDefinition,
+    loading: false,
+  })),
+  on(createProblemDefinitionFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false,
   }))
 );

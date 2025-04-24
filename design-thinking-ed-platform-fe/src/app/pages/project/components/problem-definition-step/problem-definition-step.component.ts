@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
@@ -27,6 +27,8 @@ export class ProblemDefinitionStepComponent
   responses$: Observable<ProblemDefinitionResponse[]>;
   loading$: Observable<boolean>;
   error$: Observable<string | null>;
+  problemDefinition$: Observable<any>;
+  hasProblemDefinition$: Observable<boolean>;
   quadrants = Object.values(ProblemDefinitionQuadrant);
 
   override formFields: IResponseFormField[] = [
@@ -79,11 +81,16 @@ export class ProblemDefinitionStepComponent
     this.responses$ = this.problemDefinitionFacade.responses$;
     this.loading$ = this.problemDefinitionFacade.loading$;
     this.error$ = this.problemDefinitionFacade.error$;
+    this.problemDefinition$ = this.problemDefinitionFacade.problemDefinition$;
+    this.hasProblemDefinition$ = this.problemDefinition$.pipe(
+      map((definition) => !!definition)
+    );
   }
 
   override ngOnInit(): void {
     super.ngOnInit();
     this.loadResponses();
+    this.loadProblemDefinition();
   }
 
   protected override loadResponses(): void {
@@ -91,6 +98,12 @@ export class ProblemDefinitionStepComponent
       this.projectId,
       this.currentUserId
     );
+  }
+
+  protected loadProblemDefinition(): void {
+    if (this.projectId) {
+      this.problemDefinitionFacade.loadProblemDefinition(this.projectId);
+    }
   }
 
   protected override getResponsesByType(
@@ -190,6 +203,7 @@ export class ProblemDefinitionStepComponent
 
   protected override refreshData(): void {
     this.loadResponses();
+    this.loadProblemDefinition();
   }
 
   protected override showError(message: string): void {

@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { map, catchError, switchMap } from 'rxjs/operators';
-import { ChallengeDefinitionService } from './challenge-definition.service';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import * as ChallengeDefinitionActions from './challenge-definition.actions';
-import { ResponseType } from '../../common/interfaces/challenge-definition-response.interface';
+import { ChallengeDefinitionService } from './challenge-definition.service';
 
 @Injectable()
 export class ChallengeDefinitionEffects {
@@ -22,9 +21,37 @@ export class ChallengeDefinitionEffects {
             ChallengeDefinitionActions.loadResponsesSuccess({ responses })
           ),
           catchError((error) =>
-            of(ChallengeDefinitionActions.loadResponsesFailure({ error }))
+            of(
+              ChallengeDefinitionActions.loadResponsesFailure({
+                error: error.message,
+              })
+            )
           )
         )
+      )
+    )
+  );
+
+  loadFinalChallengeDefinition$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ChallengeDefinitionActions.loadFinalChallengeDefinition),
+      switchMap(({ projectId }) =>
+        this.challengeDefinitionService
+          .getFinalChallengeDefinition(projectId)
+          .pipe(
+            map((challengeDefinition) =>
+              ChallengeDefinitionActions.loadFinalChallengeDefinitionSuccess({
+                challengeDefinition,
+              })
+            ),
+            catchError((error) =>
+              of(
+                ChallengeDefinitionActions.loadFinalChallengeDefinitionFailure({
+                  error: error.message,
+                })
+              )
+            )
+          )
       )
     )
   );
@@ -32,17 +59,21 @@ export class ChallengeDefinitionEffects {
   createResponse$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ChallengeDefinitionActions.createResponse),
-      switchMap(({ responseType, content, userId, projectId }) =>
-        this.challengeDefinitionService
-          .createResponse(responseType, content, userId, projectId)
-          .pipe(
-            map((response) =>
-              ChallengeDefinitionActions.createResponseSuccess({ response })
-            ),
-            catchError((error) =>
-              of(ChallengeDefinitionActions.createResponseFailure({ error }))
+      switchMap(({ response }) =>
+        this.challengeDefinitionService.createResponse(response).pipe(
+          map((createdResponse) =>
+            ChallengeDefinitionActions.createResponseSuccess({
+              response: createdResponse,
+            })
+          ),
+          catchError((error) =>
+            of(
+              ChallengeDefinitionActions.createResponseFailure({
+                error: error.message,
+              })
             )
           )
+        )
       )
     )
   );
@@ -52,11 +83,17 @@ export class ChallengeDefinitionEffects {
       ofType(ChallengeDefinitionActions.createResponses),
       switchMap(({ responses }) =>
         this.challengeDefinitionService.createResponses(responses).pipe(
-          map((responses) =>
-            ChallengeDefinitionActions.createResponsesSuccess({ responses })
+          map((createdResponses) =>
+            ChallengeDefinitionActions.createResponsesSuccess({
+              responses: createdResponses,
+            })
           ),
           catchError((error) =>
-            of(ChallengeDefinitionActions.createResponsesFailure({ error }))
+            of(
+              ChallengeDefinitionActions.createResponsesFailure({
+                error: error.message,
+              })
+            )
           )
         )
       )
@@ -70,11 +107,17 @@ export class ChallengeDefinitionEffects {
         this.challengeDefinitionService
           .updateResponse(id, content, userId)
           .pipe(
-            map((response) =>
-              ChallengeDefinitionActions.updateResponseSuccess({ response })
+            map((updatedResponse) =>
+              ChallengeDefinitionActions.updateResponseSuccess({
+                response: updatedResponse,
+              })
             ),
             catchError((error) =>
-              of(ChallengeDefinitionActions.updateResponseFailure({ error }))
+              of(
+                ChallengeDefinitionActions.updateResponseFailure({
+                  error: error.message,
+                })
+              )
             )
           )
       )
@@ -88,7 +131,11 @@ export class ChallengeDefinitionEffects {
         this.challengeDefinitionService.deleteResponse(id, userId).pipe(
           map(() => ChallengeDefinitionActions.deleteResponseSuccess({ id })),
           catchError((error) =>
-            of(ChallengeDefinitionActions.deleteResponseFailure({ error }))
+            of(
+              ChallengeDefinitionActions.deleteResponseFailure({
+                error: error.message,
+              })
+            )
           )
         )
       )
@@ -98,13 +145,19 @@ export class ChallengeDefinitionEffects {
   upvoteResponse$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ChallengeDefinitionActions.upvoteResponse),
-      switchMap(({ id, userId }) =>
-        this.challengeDefinitionService.upvoteResponse(id, userId).pipe(
-          map((response) =>
-            ChallengeDefinitionActions.upvoteResponseSuccess({ response })
+      switchMap(({ responseId, userId }) =>
+        this.challengeDefinitionService.upvoteResponse(responseId, userId).pipe(
+          map((updatedResponse) =>
+            ChallengeDefinitionActions.upvoteResponseSuccess({
+              response: updatedResponse,
+            })
           ),
           catchError((error) =>
-            of(ChallengeDefinitionActions.upvoteResponseFailure({ error }))
+            of(
+              ChallengeDefinitionActions.upvoteResponseFailure({
+                error: error.message,
+              })
+            )
           )
         )
       )
@@ -114,13 +167,19 @@ export class ChallengeDefinitionEffects {
   removeVote$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ChallengeDefinitionActions.removeVote),
-      switchMap(({ id, userId }) =>
-        this.challengeDefinitionService.removeVote(id, userId).pipe(
-          map((response) =>
-            ChallengeDefinitionActions.removeVoteSuccess({ response })
+      switchMap(({ responseId, userId }) =>
+        this.challengeDefinitionService.removeVote(responseId, userId).pipe(
+          map((updatedResponse) =>
+            ChallengeDefinitionActions.removeVoteSuccess({
+              response: updatedResponse,
+            })
           ),
           catchError((error) =>
-            of(ChallengeDefinitionActions.removeVoteFailure({ error }))
+            of(
+              ChallengeDefinitionActions.removeVoteFailure({
+                error: error.message,
+              })
+            )
           )
         )
       )
@@ -130,19 +189,19 @@ export class ChallengeDefinitionEffects {
   toggleResponseSelection$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ChallengeDefinitionActions.toggleResponseSelection),
-      switchMap(({ id, userId }) =>
+      switchMap(({ responseId, userId }) =>
         this.challengeDefinitionService
-          .toggleResponseSelection(id, userId)
+          .toggleResponseSelection(responseId, userId)
           .pipe(
-            map((response) =>
+            map((updatedResponse) =>
               ChallengeDefinitionActions.toggleResponseSelectionSuccess({
-                response,
+                response: updatedResponse,
               })
             ),
             catchError((error) =>
               of(
                 ChallengeDefinitionActions.toggleResponseSelectionFailure({
-                  error,
+                  error: error.message,
                 })
               )
             )
@@ -158,15 +217,15 @@ export class ChallengeDefinitionEffects {
         this.challengeDefinitionService
           .createChallengeDefinition(challengeDefinition)
           .pipe(
-            map((response) =>
+            map((createdChallengeDefinition) =>
               ChallengeDefinitionActions.createChallengeDefinitionSuccess({
-                challengeDefinition,
+                challengeDefinition: createdChallengeDefinition,
               })
             ),
             catchError((error) =>
               of(
                 ChallengeDefinitionActions.createChallengeDefinitionFailure({
-                  error,
+                  error: error.message,
                 })
               )
             )

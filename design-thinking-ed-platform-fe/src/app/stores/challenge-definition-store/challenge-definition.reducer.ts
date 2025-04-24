@@ -7,6 +7,7 @@ export const initialState: ChallengeDefinitionState = {
   responses: [],
   loading: false,
   error: null,
+  challengeDefinition: null,
 };
 
 export const challengeDefinitionReducer = createReducer(
@@ -33,7 +34,52 @@ export const challengeDefinitionReducer = createReducer(
     error,
   })),
 
+  on(ChallengeDefinitionActions.loadFinalChallengeDefinition, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+
+  on(
+    ChallengeDefinitionActions.loadFinalChallengeDefinitionSuccess,
+    (state, { challengeDefinition }) => ({
+      ...state,
+      challengeDefinition,
+      loading: false,
+    })
+  ),
+
+  on(
+    ChallengeDefinitionActions.loadFinalChallengeDefinitionFailure,
+    (state, { error }) => ({
+      ...state,
+      loading: false,
+      error,
+    })
+  ),
+
   on(ChallengeDefinitionActions.createResponse, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+
+  on(
+    ChallengeDefinitionActions.createResponseSuccess,
+    (state, { response }) => ({
+      ...state,
+      responses: [...state.responses, response],
+      loading: false,
+    })
+  ),
+
+  on(ChallengeDefinitionActions.createResponseFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  })),
+
+  on(ChallengeDefinitionActions.createResponses, (state) => ({
     ...state,
     loading: true,
     error: null,
@@ -43,18 +89,12 @@ export const challengeDefinitionReducer = createReducer(
     ChallengeDefinitionActions.createResponsesSuccess,
     (state, { responses }) => ({
       ...state,
-      responses: [...responses, ...state.responses],
+      responses: [...state.responses, ...responses],
       loading: false,
     })
   ),
 
   on(ChallengeDefinitionActions.createResponsesFailure, (state, { error }) => ({
-    ...state,
-    loading: false,
-    error,
-  })),
-
-  on(ChallengeDefinitionActions.createResponseFailure, (state, { error }) => ({
     ...state,
     loading: false,
     error,
@@ -163,6 +203,30 @@ export const challengeDefinitionReducer = createReducer(
 
   on(
     ChallengeDefinitionActions.toggleResponseSelectionFailure,
+    (state, { error }) => ({
+      ...state,
+      loading: false,
+      error,
+    })
+  ),
+
+  on(ChallengeDefinitionActions.createChallengeDefinition, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+
+  on(
+    ChallengeDefinitionActions.createChallengeDefinitionSuccess,
+    (state, { challengeDefinition }) => ({
+      ...state,
+      challengeDefinition,
+      loading: false,
+    })
+  ),
+
+  on(
+    ChallengeDefinitionActions.createChallengeDefinitionFailure,
     (state, { error }) => ({
       ...state,
       loading: false,

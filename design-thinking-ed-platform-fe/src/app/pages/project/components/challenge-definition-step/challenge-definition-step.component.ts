@@ -14,6 +14,7 @@ import { IResponseFormField } from '../../../../common/components/response-form/
 import { IResponse } from '../../../../common/interfaces/response.interface';
 import { CreateChallengeDefinitionResponseDto } from '../../../../common/interfaces/create-challenge-definition-response.interface';
 import { BaseStepComponent } from '../../../../common/components/base-step/base-step.component';
+import { ChallengeDefinition } from '../../../../common/interfaces/challenge-definition.interface';
 
 @Component({
   selector: 'app-challenge-definition-step',
@@ -41,6 +42,11 @@ export class ChallengeDefinitionStepComponent extends BaseStepComponent {
     this.challengeDefinitionFacade.responses$;
   loading$: Observable<boolean> = this.challengeDefinitionFacade.loading$;
   error$: Observable<string | null> = this.challengeDefinitionFacade.error$;
+  challengeDefinition$: Observable<ChallengeDefinition | null> =
+    this.challengeDefinitionFacade.challengeDefinition$;
+  hasChallengeDefinition$: Observable<boolean> = this.challengeDefinition$.pipe(
+    map((challengeDefinition) => !!challengeDefinition)
+  );
 
   override formFields: IResponseFormField[] = [
     {
@@ -64,6 +70,7 @@ export class ChallengeDefinitionStepComponent extends BaseStepComponent {
   override ngOnInit(): void {
     super.ngOnInit();
     this.loadResponses();
+    this.loadChallengeDefinition();
     this.error$.subscribe((error) => {
       if (error) {
         this.showError(`Erro ao carregar respostas: ${error}`);
@@ -76,6 +83,14 @@ export class ChallengeDefinitionStepComponent extends BaseStepComponent {
       this.challengeDefinitionFacade.loadResponses(
         this.projectId,
         this.currentUserId
+      );
+    }
+  }
+
+  loadChallengeDefinition(): void {
+    if (this.projectId) {
+      this.challengeDefinitionFacade.loadFinalChallengeDefinition(
+        this.projectId
       );
     }
   }
@@ -190,6 +205,9 @@ export class ChallengeDefinitionStepComponent extends BaseStepComponent {
       this.challengeDefinitionFacade.loadResponses(
         this.projectId,
         this.currentUserId
+      );
+      this.challengeDefinitionFacade.loadFinalChallengeDefinition(
+        this.projectId
       );
       this.showSuccess('Dados atualizados com sucesso!');
     }

@@ -1,169 +1,260 @@
 <div class="step-container">
-  <div *ngIf="!showBrainstormStep">
-    <div class="step-header">
-      <h1>Definição do Desafio</h1>
-    </div>
-
-    <!-- Perguntas - Problemas -->
-    <div class="step-section">
-      <h2>Problemas</h2>
-      <div class="instructions-section">
-        <h4>Instruções:</h4>
+  <!-- Mostrar o resultado finalizado se já existe -->
+  <ng-container
+    *ngIf="(hasChallengeDefinition$ | async) === true; else showDefinitionForm"
+  >
+    <div
+      class="challenge-definition-view"
+      *ngIf="challengeDefinition$ | async as challengeDefinition"
+    >
+      <div class="step-header">
+        <h1>Definição do Desafio Finalizada</h1>
         <p>
-          Identifique os problemas principais que afetam o seu público-alvo.
-          Considere:
+          A definição do desafio foi finalizada. Abaixo estão os elementos que
+          compõem a definição do desafio para este projeto.
         </p>
-        <ul>
-          <li>Quais são as dificuldades encontradas?</li>
-          <li>Quais são as necessidades não atendidas?</li>
-          <li>Quais são as dores mais significativas?</li>
-        </ul>
       </div>
-      <app-response-form
-        [fields]="formFields"
-        [loading]="(loading$ | async) === true"
-        [error]="error$ | async"
-        (submitForm)="onSubmit(ResponseType.PROBLEMS, $event)"
-      ></app-response-form>
-      <app-response-list
-        [responses$]="getResponsesByType(ResponseType.PROBLEMS)"
-        [currentUserId]="currentUserId"
-        [loading$]="loading$"
-        [displayedColumns]="displayedColumns"
-        (upvote)="onUpvote($event)"
-        (toggleSelection)="onToggleSelection($event)"
-        (delete)="onDelete($event)"
-        (edit)="onEdit($event)"
-        (saveEdit)="onSaveEdit($event)"
-        (refresh)="refreshData()"
-      ></app-response-list>
-    </div>
 
-    <!-- Perguntas - Público-Alvo -->
-    <div class="step-section">
-      <h2>Público-Alvo</h2>
-      <div class="instructions-section">
-        <h4>Instruções:</h4>
-        <p>Defina quem são as pessoas afetadas pelo problema. Considere:</p>
-        <ul>
-          <li>Quais são as características demográficas deste grupo?</li>
-          <li>Quais são seus comportamentos e hábitos?</li>
-          <li>Em que contexto eles enfrentam o problema?</li>
-        </ul>
+      <div class="challenge-definition-grid">
+        <!-- Problemas -->
+        <mat-card
+          *ngIf="challengeDefinition.problems?.length"
+          class="challenge-definition-card"
+        >
+          <mat-card-header>
+            <mat-card-title>Problemas</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ul>
+              <li *ngFor="let item of challengeDefinition.problems">
+                {{ item }}
+              </li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Público-Alvo -->
+        <mat-card
+          *ngIf="challengeDefinition.targetAudience?.length"
+          class="challenge-definition-card"
+        >
+          <mat-card-header>
+            <mat-card-title>Público-Alvo</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ul>
+              <li *ngFor="let item of challengeDefinition.targetAudience">
+                {{ item }}
+              </li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Como Podemos -->
+        <mat-card
+          *ngIf="challengeDefinition.howWeCan?.length"
+          class="challenge-definition-card"
+        >
+          <mat-card-header>
+            <mat-card-title>Como Podemos</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ul>
+              <li *ngFor="let item of challengeDefinition.howWeCan">
+                {{ item }}
+              </li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Brainstorm -->
+        <mat-card
+          *ngIf="challengeDefinition.brainstorm?.length"
+          class="challenge-definition-card"
+        >
+          <mat-card-header>
+            <mat-card-title>Brainstorm</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ul>
+              <li *ngFor="let item of challengeDefinition.brainstorm">
+                {{ item }}
+              </li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
       </div>
-      <app-response-form
-        [fields]="formFields"
-        [loading]="(loading$ | async) === true"
-        [error]="error$ | async"
-        (submitForm)="onSubmit(ResponseType.TARGET_AUDIENCE, $event)"
-      ></app-response-form>
-      <app-response-list
-        [responses$]="getResponsesByType(ResponseType.TARGET_AUDIENCE)"
-        [currentUserId]="currentUserId"
-        [loading$]="loading$"
-        [displayedColumns]="displayedColumns"
-        (upvote)="onUpvote($event)"
-        (toggleSelection)="onToggleSelection($event)"
-        (delete)="onDelete($event)"
-        (edit)="onEdit($event)"
-        (saveEdit)="onSaveEdit($event)"
-        (refresh)="refreshData()"
-      ></app-response-list>
     </div>
+  </ng-container>
 
-    <!-- Perguntas - Como Podemos -->
-    <div class="step-section">
-      <h2>Como Podemos</h2>
-      <div class="instructions-section">
-        <h4>Instruções:</h4>
-        <p>
-          Formule perguntas "Como podemos..." para direcionar o brainstorm.
-          Considere:
-        </p>
-        <ul>
-          <li>Como podemos resolver o problema X para o público Y?</li>
-          <li>Como podemos melhorar a experiência de Z?</li>
-          <li>Como podemos eliminar a barreira W para o grupo K?</li>
-        </ul>
+  <!-- Template para formulário de definição do desafio -->
+  <ng-template #showDefinitionForm>
+    <div *ngIf="!showBrainstormStep">
+      <div class="step-header">
+        <h1>Definição do Desafio</h1>
       </div>
-      <app-response-form
-        [fields]="formFields"
-        [loading]="(loading$ | async) === true"
-        [error]="error$ | async"
-        (submitForm)="onSubmit(ResponseType.HOW_WE_CAN, $event)"
-      ></app-response-form>
-      <app-response-list
-        [responses$]="getResponsesByType(ResponseType.HOW_WE_CAN)"
-        [currentUserId]="currentUserId"
-        [loading$]="loading$"
-        [displayedColumns]="displayedColumns"
-        (upvote)="onUpvote($event)"
-        (toggleSelection)="onToggleSelection($event)"
-        (delete)="onDelete($event)"
-        (edit)="onEdit($event)"
-        (saveEdit)="onSaveEdit($event)"
-        (refresh)="refreshData()"
-      ></app-response-list>
-    </div>
 
-    <div class="navigation-buttons">
-      <button mat-raised-button color="primary" (click)="goToBrainstorm()">
-        Próximo: Brainstorm
-      </button>
-    </div>
-  </div>
-
-  <div *ngIf="showBrainstormStep">
-    <div class="step-header">
-      <h1>Brainstorm</h1>
-    </div>
-
-    <div class="step-section">
-      <div class="instructions-section">
-        <h4>Instruções:</h4>
-        <p>
-          Agora é o momento de propor soluções! Baseado nas questões "Como
-          podemos...", crie ideias para solucionar os problemas identificados.
-        </p>
-        <ul>
-          <li>Pense livremente, sem julgamentos</li>
-          <li>Quantidade é mais importante que qualidade nesta fase</li>
-          <li>Construa sobre as ideias dos outros</li>
-          <li>Incentive ideias diferentes e até improváveis</li>
-        </ul>
+      <!-- Perguntas - Problemas -->
+      <div class="step-section">
+        <h2>Problemas</h2>
+        <div class="instructions-section">
+          <h4>Instruções:</h4>
+          <p>
+            Identifique os problemas principais que afetam o seu público-alvo.
+            Considere:
+          </p>
+          <ul>
+            <li>Quais são as dificuldades encontradas?</li>
+            <li>Quais são as necessidades não atendidas?</li>
+            <li>Quais são as dores mais significativas?</li>
+          </ul>
+        </div>
+        <app-response-form
+          [fields]="formFields"
+          [loading]="(loading$ | async) === true"
+          [error]="error$ | async"
+          (submitForm)="onSubmit(ResponseType.PROBLEMS, $event)"
+        ></app-response-form>
+        <app-response-list
+          [responses$]="getResponsesByType(ResponseType.PROBLEMS)"
+          [currentUserId]="currentUserId"
+          [loading$]="loading$"
+          [displayedColumns]="displayedColumns"
+          (upvote)="onUpvote($event)"
+          (toggleSelection)="onToggleSelection($event)"
+          (delete)="onDelete($event)"
+          (edit)="onEdit($event)"
+          (saveEdit)="onSaveEdit($event)"
+          (refresh)="refreshData()"
+        ></app-response-list>
       </div>
-      <app-response-form
-        [fields]="formFields"
-        [loading]="(loading$ | async) === true"
-        [error]="error$ | async"
-        (submitForm)="onSubmit(ResponseType.BRAINSTORM, $event)"
-      ></app-response-form>
-      <app-response-list
-        [responses$]="getResponsesByType(ResponseType.BRAINSTORM)"
-        [currentUserId]="currentUserId"
-        [loading$]="loading$"
-        [displayedColumns]="displayedColumns"
-        (upvote)="onUpvote($event)"
-        (toggleSelection)="onToggleSelection($event)"
-        (delete)="onDelete($event)"
-        (edit)="onEdit($event)"
-        (saveEdit)="onSaveEdit($event)"
-        (refresh)="refreshData()"
-      ></app-response-list>
+
+      <!-- Perguntas - Público-Alvo -->
+      <div class="step-section">
+        <h2>Público-Alvo</h2>
+        <div class="instructions-section">
+          <h4>Instruções:</h4>
+          <p>Defina quem são as pessoas afetadas pelo problema. Considere:</p>
+          <ul>
+            <li>Quais são as características demográficas deste grupo?</li>
+            <li>Quais são seus comportamentos e hábitos?</li>
+            <li>Em que contexto eles enfrentam o problema?</li>
+          </ul>
+        </div>
+        <app-response-form
+          [fields]="formFields"
+          [loading]="(loading$ | async) === true"
+          [error]="error$ | async"
+          (submitForm)="onSubmit(ResponseType.TARGET_AUDIENCE, $event)"
+        ></app-response-form>
+        <app-response-list
+          [responses$]="getResponsesByType(ResponseType.TARGET_AUDIENCE)"
+          [currentUserId]="currentUserId"
+          [loading$]="loading$"
+          [displayedColumns]="displayedColumns"
+          (upvote)="onUpvote($event)"
+          (toggleSelection)="onToggleSelection($event)"
+          (delete)="onDelete($event)"
+          (edit)="onEdit($event)"
+          (saveEdit)="onSaveEdit($event)"
+          (refresh)="refreshData()"
+        ></app-response-list>
+      </div>
+
+      <!-- Perguntas - Como Podemos -->
+      <div class="step-section">
+        <h2>Como Podemos</h2>
+        <div class="instructions-section">
+          <h4>Instruções:</h4>
+          <p>
+            Formule perguntas "Como podemos..." para direcionar o brainstorm.
+            Considere:
+          </p>
+          <ul>
+            <li>Como podemos resolver o problema X para o público Y?</li>
+            <li>Como podemos melhorar a experiência de Z?</li>
+            <li>Como podemos eliminar a barreira W para o grupo K?</li>
+          </ul>
+        </div>
+        <app-response-form
+          [fields]="formFields"
+          [loading]="(loading$ | async) === true"
+          [error]="error$ | async"
+          (submitForm)="onSubmit(ResponseType.HOW_WE_CAN, $event)"
+        ></app-response-form>
+        <app-response-list
+          [responses$]="getResponsesByType(ResponseType.HOW_WE_CAN)"
+          [currentUserId]="currentUserId"
+          [loading$]="loading$"
+          [displayedColumns]="displayedColumns"
+          (upvote)="onUpvote($event)"
+          (toggleSelection)="onToggleSelection($event)"
+          (delete)="onDelete($event)"
+          (edit)="onEdit($event)"
+          (saveEdit)="onSaveEdit($event)"
+          (refresh)="refreshData()"
+        ></app-response-list>
+      </div>
+
+      <div class="navigation-buttons">
+        <button mat-raised-button color="primary" (click)="goToBrainstorm()">
+          Próximo: Brainstorm
+        </button>
+      </div>
     </div>
 
-    <div class="navigation-buttons">
-      <button mat-raised-button (click)="goBackToDefinition()">
-        Voltar para Definição
-      </button>
-      <button
-        mat-raised-button
-        color="accent"
-        (click)="onFinalSubmit()"
-        class="submit-button"
-      >
-        Submeter Definição do Desafio
-      </button>
+    <div *ngIf="showBrainstormStep">
+      <div class="step-header">
+        <h1>Brainstorm</h1>
+      </div>
+
+      <div class="step-section">
+        <div class="instructions-section">
+          <h4>Instruções:</h4>
+          <p>
+            Agora é o momento de propor soluções! Baseado nas questões "Como
+            podemos...", crie ideias para solucionar os problemas identificados.
+          </p>
+          <ul>
+            <li>Pense livremente, sem julgamentos</li>
+            <li>Quantidade é mais importante que qualidade nesta fase</li>
+            <li>Construa sobre as ideias dos outros</li>
+            <li>Incentive ideias diferentes e até improváveis</li>
+          </ul>
+        </div>
+        <app-response-form
+          [fields]="formFields"
+          [loading]="(loading$ | async) === true"
+          [error]="error$ | async"
+          (submitForm)="onSubmit(ResponseType.BRAINSTORM, $event)"
+        ></app-response-form>
+        <app-response-list
+          [responses$]="getResponsesByType(ResponseType.BRAINSTORM)"
+          [currentUserId]="currentUserId"
+          [loading$]="loading$"
+          [displayedColumns]="displayedColumns"
+          (upvote)="onUpvote($event)"
+          (toggleSelection)="onToggleSelection($event)"
+          (delete)="onDelete($event)"
+          (edit)="onEdit($event)"
+          (saveEdit)="onSaveEdit($event)"
+          (refresh)="refreshData()"
+        ></app-response-list>
+      </div>
+
+      <div class="navigation-buttons">
+        <button mat-raised-button (click)="goBackToDefinition()">
+          Voltar para Definição
+        </button>
+        <button
+          mat-raised-button
+          color="accent"
+          (click)="onFinalSubmit()"
+          class="submit-button"
+        >
+          Submeter Definição do Desafio
+        </button>
+      </div>
     </div>
-  </div>
+  </ng-template>
 </div>

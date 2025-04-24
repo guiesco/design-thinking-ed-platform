@@ -1,23 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
-import {
-  EmpathyMapEntry,
-  EmpathyMapResponse,
-} from 'src/app/common/interfaces/empathy-map.interface';
 import * as EmpathyMapActions from './empathy-map.actions';
-
-export interface EmpathyMapState {
-  entries: EmpathyMapEntry[];
-  responses: EmpathyMapResponse[];
-  loading: boolean;
-  error: any;
-}
-
-export const initialState: EmpathyMapState = {
-  entries: [],
-  responses: [],
-  loading: false,
-  error: null,
-};
+import { initialState } from './empathy-map.state';
 
 export const empathyMapReducer = createReducer(
   initialState,
@@ -33,8 +16,23 @@ export const empathyMapReducer = createReducer(
   })),
   on(EmpathyMapActions.loadEmpathyMapsFailure, (state, { error }) => ({
     ...state,
-    loading: false,
     error,
+    loading: false,
+  })),
+  on(EmpathyMapActions.loadFinalEmpathyMap, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(EmpathyMapActions.loadFinalEmpathyMapSuccess, (state, { empathyMap }) => ({
+    ...state,
+    empathyMap,
+    loading: false,
+  })),
+  on(EmpathyMapActions.loadFinalEmpathyMapFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false,
   })),
   on(EmpathyMapActions.createEmpathyMap, (state) => ({
     ...state,
@@ -43,13 +41,13 @@ export const empathyMapReducer = createReducer(
   })),
   on(EmpathyMapActions.createEmpathyMapSuccess, (state, { entry }) => ({
     ...state,
-    entries: [entry, ...state.entries],
+    empathyMap: entry,
     loading: false,
   })),
   on(EmpathyMapActions.createEmpathyMapFailure, (state, { error }) => ({
     ...state,
-    loading: false,
     error,
+    loading: false,
   })),
   on(EmpathyMapActions.updateEmpathyMap, (state) => ({
     ...state,
@@ -63,8 +61,8 @@ export const empathyMapReducer = createReducer(
   })),
   on(EmpathyMapActions.updateEmpathyMapFailure, (state, { error }) => ({
     ...state,
-    loading: false,
     error,
+    loading: false,
   })),
   on(EmpathyMapActions.deleteEmpathyMap, (state) => ({
     ...state,
@@ -78,8 +76,8 @@ export const empathyMapReducer = createReducer(
   })),
   on(EmpathyMapActions.deleteEmpathyMapFailure, (state, { error }) => ({
     ...state,
-    loading: false,
     error,
+    loading: false,
   })),
   on(EmpathyMapActions.upvoteEmpathyMap, (state) => ({
     ...state,
@@ -93,8 +91,8 @@ export const empathyMapReducer = createReducer(
   })),
   on(EmpathyMapActions.upvoteEmpathyMapFailure, (state, { error }) => ({
     ...state,
-    loading: false,
     error,
+    loading: false,
   })),
   on(EmpathyMapActions.toggleEmpathyMapSelection, (state) => ({
     ...state,
@@ -113,25 +111,10 @@ export const empathyMapReducer = createReducer(
     EmpathyMapActions.toggleEmpathyMapSelectionFailure,
     (state, { error }) => ({
       ...state,
-      loading: false,
       error,
+      loading: false,
     })
   ),
-  on(EmpathyMapActions.createResponse, (state) => ({
-    ...state,
-    loading: true,
-    error: null,
-  })),
-  on(EmpathyMapActions.createResponsesSuccess, (state, { responses }) => ({
-    ...state,
-    responses: [...responses, ...state.responses],
-    loading: false,
-  })),
-  on(EmpathyMapActions.createResponseFailure, (state, { error }) => ({
-    ...state,
-    loading: false,
-    error,
-  })),
   on(EmpathyMapActions.loadResponses, (state) => ({
     ...state,
     loading: true,
@@ -144,8 +127,70 @@ export const empathyMapReducer = createReducer(
   })),
   on(EmpathyMapActions.loadResponsesFailure, (state, { error }) => ({
     ...state,
-    loading: false,
     error,
+    loading: false,
+  })),
+  on(EmpathyMapActions.createResponse, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(EmpathyMapActions.createResponseSuccess, (state, { response }) => ({
+    ...state,
+    responses: [...state.responses, response],
+    loading: false,
+  })),
+  on(EmpathyMapActions.createResponseFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false,
+  })),
+  on(EmpathyMapActions.createResponses, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(EmpathyMapActions.createResponsesSuccess, (state, { responses }) => ({
+    ...state,
+    responses: [...state.responses, ...responses],
+    loading: false,
+  })),
+  on(EmpathyMapActions.createResponsesFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false,
+  })),
+  on(EmpathyMapActions.updateResponse, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(EmpathyMapActions.updateResponseSuccess, (state, { response }) => ({
+    ...state,
+    responses: state.responses.map((r) =>
+      r.id === response.id ? response : r
+    ),
+    loading: false,
+  })),
+  on(EmpathyMapActions.updateResponseFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false,
+  })),
+  on(EmpathyMapActions.deleteResponse, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(EmpathyMapActions.deleteResponseSuccess, (state, { id }) => ({
+    ...state,
+    responses: state.responses.filter((r) => r.id !== id),
+    loading: false,
+  })),
+  on(EmpathyMapActions.deleteResponseFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false,
   })),
   on(EmpathyMapActions.upvoteResponse, (state) => ({
     ...state,
@@ -161,8 +206,8 @@ export const empathyMapReducer = createReducer(
   })),
   on(EmpathyMapActions.upvoteResponseFailure, (state, { error }) => ({
     ...state,
-    loading: false,
     error,
+    loading: false,
   })),
   on(EmpathyMapActions.removeUpvoteResponse, (state) => ({
     ...state,
@@ -178,8 +223,8 @@ export const empathyMapReducer = createReducer(
   })),
   on(EmpathyMapActions.removeUpvoteResponseFailure, (state, { error }) => ({
     ...state,
-    loading: false,
     error,
+    loading: false,
   })),
   on(EmpathyMapActions.toggleResponseSelection, (state) => ({
     ...state,
@@ -198,32 +243,7 @@ export const empathyMapReducer = createReducer(
   ),
   on(EmpathyMapActions.toggleResponseSelectionFailure, (state, { error }) => ({
     ...state,
-    loading: false,
     error,
-  })),
-  on(EmpathyMapActions.deleteResponseSuccess, (state, { id }) => ({
-    ...state,
-    responses: state.responses.filter((response) => response.id !== id),
-  })),
-  on(EmpathyMapActions.deleteResponseFailure, (state, { error }) => ({
-    ...state,
-    error,
-  })),
-  on(EmpathyMapActions.updateResponse, (state) => ({
-    ...state,
-    loading: true,
-    error: null,
-  })),
-  on(EmpathyMapActions.updateResponseSuccess, (state, { response }) => ({
-    ...state,
-    responses: state.responses.map((r) =>
-      r.id === response.id ? response : r
-    ),
     loading: false,
-  })),
-  on(EmpathyMapActions.updateResponseFailure, (state, { error }) => ({
-    ...state,
-    loading: false,
-    error,
   }))
 );

@@ -15,15 +15,20 @@ import * as EmpathyMapSelectors from './empathy-map.selectors';
 })
 export class EmpathyMapFacade {
   entries$: Observable<EmpathyMapEntry[]> = this.store.select(
-    EmpathyMapSelectors.selectAllEntries
+    EmpathyMapSelectors.selectEmpathyMapEntries
   );
   responses$: Observable<EmpathyMapResponse[]> = this.store.select(
-    EmpathyMapSelectors.selectAllResponses
+    EmpathyMapSelectors.selectEmpathyMapResponses
   );
   loading$: Observable<boolean> = this.store.select(
-    EmpathyMapSelectors.selectLoading
+    EmpathyMapSelectors.selectEmpathyMapLoading
   );
-  error$: Observable<any> = this.store.select(EmpathyMapSelectors.selectError);
+  error$: Observable<any> = this.store.select(
+    EmpathyMapSelectors.selectEmpathyMapError
+  );
+  empathyMap$: Observable<any> = this.store.select(
+    EmpathyMapSelectors.selectEmpathyMap
+  );
 
   constructor(private store: Store) {}
 
@@ -31,7 +36,11 @@ export class EmpathyMapFacade {
     this.store.dispatch(EmpathyMapActions.loadEmpathyMaps({ projectId }));
   }
 
-  createEmpathyMap(entry: EmpathyMapEntry): void {
+  loadFinalEmpathyMap(projectId: number): void {
+    this.store.dispatch(EmpathyMapActions.loadFinalEmpathyMap({ projectId }));
+  }
+
+  createEmpathyMap(entry: any): void {
     this.store.dispatch(EmpathyMapActions.createEmpathyMap({ entry }));
   }
 
@@ -43,7 +52,7 @@ export class EmpathyMapFacade {
     this.store.dispatch(EmpathyMapActions.deleteEmpathyMap({ entryId }));
   }
 
-  // Novos métodos para respostas
+  // Métodos para respostas
   createResponse(response: CreateEmpathyMapResponseDto): void {
     this.store.dispatch(EmpathyMapActions.createResponse({ response }));
   }
@@ -74,6 +83,10 @@ export class EmpathyMapFacade {
     );
   }
 
+  deleteResponse(id: number, userId: number): void {
+    this.store.dispatch(EmpathyMapActions.deleteResponse({ id, userId }));
+  }
+
   toggleResponseSelection(responseId: number): void {
     this.store.dispatch(
       EmpathyMapActions.toggleResponseSelection({ responseId })
@@ -81,10 +94,8 @@ export class EmpathyMapFacade {
   }
 
   getResponsesByType(type: ResponseType): Observable<EmpathyMapResponse[]> {
-    return this.store.select(EmpathyMapSelectors.selectResponsesByType(type));
-  }
-
-  getSelectedResponses(): Observable<EmpathyMapResponse[]> {
-    return this.store.select(EmpathyMapSelectors.selectSelectedResponses);
+    return this.store.select(
+      EmpathyMapSelectors.selectEmpathyMapResponsesByType(type)
+    );
   }
 }

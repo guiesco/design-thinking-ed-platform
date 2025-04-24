@@ -124,38 +124,18 @@ export class EmpathyMapEffects {
     )
   );
 
-  createResponses$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(EmpathyMapActions.createResponses),
-      switchMap(({ responses }) =>
-        this.empathyMapService.createResponses(responses).pipe(
-          map((createdResponses) =>
-            EmpathyMapActions.createResponsesSuccess({
-              responses: createdResponses,
-            })
-          ),
-          catchError((error) =>
-            of(EmpathyMapActions.createResponseFailure({ error }))
-          )
-        )
-      )
-    )
-  );
-
   loadResponses$ = createEffect(() =>
     this.actions$.pipe(
       ofType(EmpathyMapActions.loadResponses),
-      mergeMap(({ projectId, userId }) =>
-        this.empathyMapService
-          .findAllResponsesByProject(projectId, userId)
-          .pipe(
-            map((responses) =>
-              EmpathyMapActions.loadResponsesSuccess({ responses })
-            ),
-            catchError((error) =>
-              of(EmpathyMapActions.loadResponsesFailure({ error }))
-            )
+      switchMap(({ projectId, userId }) =>
+        this.empathyMapService.getResponses(projectId, userId).pipe(
+          map((responses) =>
+            EmpathyMapActions.loadResponsesSuccess({ responses })
+          ),
+          catchError((error) =>
+            of(EmpathyMapActions.loadResponsesFailure({ error }))
           )
+        )
       )
     )
   );
@@ -193,15 +173,13 @@ export class EmpathyMapEffects {
   upvoteResponse$ = createEffect(() =>
     this.actions$.pipe(
       ofType(EmpathyMapActions.upvoteResponse),
-      mergeMap(({ responseId, userId }) =>
+      switchMap(({ responseId, userId }) =>
         this.empathyMapService.upvoteResponse(responseId, userId).pipe(
           map((response) =>
             EmpathyMapActions.upvoteResponseSuccess({ response })
           ),
           catchError((error) =>
-            of(
-              EmpathyMapActions.upvoteResponseFailure({ error: error.message })
-            )
+            of(EmpathyMapActions.upvoteResponseFailure({ error }))
           )
         )
       )
@@ -211,17 +189,13 @@ export class EmpathyMapEffects {
   removeUpvoteResponse$ = createEffect(() =>
     this.actions$.pipe(
       ofType(EmpathyMapActions.removeUpvoteResponse),
-      mergeMap(({ responseId, userId }) =>
+      switchMap(({ responseId, userId }) =>
         this.empathyMapService.removeUpvoteResponse(responseId, userId).pipe(
           map((response) =>
             EmpathyMapActions.removeUpvoteResponseSuccess({ response })
           ),
           catchError((error) =>
-            of(
-              EmpathyMapActions.removeUpvoteResponseFailure({
-                error: error.message,
-              })
-            )
+            of(EmpathyMapActions.removeUpvoteResponseFailure({ error }))
           )
         )
       )
@@ -231,15 +205,47 @@ export class EmpathyMapEffects {
   toggleResponseSelection$ = createEffect(() =>
     this.actions$.pipe(
       ofType(EmpathyMapActions.toggleResponseSelection),
-      mergeMap(({ responseId }) =>
+      switchMap(({ responseId }) =>
         this.empathyMapService.toggleResponseSelection(responseId).pipe(
-          map((updatedResponse) =>
-            EmpathyMapActions.toggleResponseSelectionSuccess({
-              response: updatedResponse,
-            })
+          map((response) =>
+            EmpathyMapActions.toggleResponseSelectionSuccess({ response })
           ),
           catchError((error) =>
             of(EmpathyMapActions.toggleResponseSelectionFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  loadFinalEmpathyMap$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(EmpathyMapActions.loadFinalEmpathyMap),
+      switchMap(({ projectId }) =>
+        this.empathyMapService.getFinalEmpathyMap(projectId).pipe(
+          map((empathyMap) =>
+            EmpathyMapActions.loadFinalEmpathyMapSuccess({ empathyMap })
+          ),
+          catchError((error) =>
+            of(EmpathyMapActions.loadFinalEmpathyMapFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  createResponses$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(EmpathyMapActions.createResponses),
+      switchMap(({ responses }) =>
+        this.empathyMapService.createResponses(responses).pipe(
+          map((createdResponses) =>
+            EmpathyMapActions.createResponsesSuccess({
+              responses: createdResponses,
+            })
+          ),
+          catchError((error) =>
+            of(EmpathyMapActions.createResponsesFailure({ error }))
           )
         )
       )

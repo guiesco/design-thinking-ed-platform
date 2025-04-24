@@ -27,7 +27,12 @@ export class ChallengeDefinitionController {
     return this.challengeDefinitionService.create(dto);
   }
 
-  @Get('response/project/:projectId')
+  @Get('project/:projectId')
+  findByProject(@Param('projectId') projectId: string) {
+    return this.challengeDefinitionService.findByProject(+projectId);
+  }
+
+  @Get('project/:projectId/responses')
   findAllResponsesByProject(
     @Param('projectId') projectId: string,
     @Query('userId') userId?: string,
@@ -49,10 +54,6 @@ export class ChallengeDefinitionController {
   createResponses(
     @Body() createResponsesDto: CreateChallengeDefinitionResponsesDto,
   ) {
-    console.log(
-      '🚀 ~ ChallengeDefinitionController ~ createResponsesDto:',
-      createResponsesDto,
-    );
     return this.challengeDefinitionService.createResponses(
       createResponsesDto.responses,
     );

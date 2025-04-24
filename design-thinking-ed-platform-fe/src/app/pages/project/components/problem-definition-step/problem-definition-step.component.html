@@ -7,40 +7,155 @@
     </p>
   </div>
 
-  <div class="step-section">
-    <app-response-form
-      [fields]="formFields"
-      [loading]="(loading$ | async) === true"
-      (submitForm)="onSubmit($event)"
-    ></app-response-form>
-  </div>
-
-  <div class="responses-grid">
-    <div class="step-section" *ngFor="let quadrant of quadrants">
-      <h2>{{ getTypeLabel(quadrant) }}</h2>
-      <app-response-list
-        [responses$]="getResponsesByType(quadrant)"
-        [loading$]="loading$"
-        [currentUserId]="currentUserId"
-        (upvote)="onUpvote($event)"
-        (toggleSelection)="onToggleSelection($event)"
-        (delete)="onDelete($event)"
-        (edit)="onEdit($event)"
-        (saveEdit)="onSaveEdit($event)"
-        (refresh)="refreshData()"
-      ></app-response-list>
+  <!-- Mostrar o form de criação se não existe problem definition -->
+  <ng-container
+    *ngIf="(hasProblemDefinition$ | async) === false; else showDefinition"
+  >
+    <div class="step-section">
+      <app-response-form
+        [fields]="formFields"
+        [loading]="(loading$ | async) === true"
+        (submitForm)="onSubmit($event)"
+      ></app-response-form>
     </div>
-  </div>
 
-  <div class="submit-container">
-    <button
-      mat-raised-button
-      color="primary"
-      (click)="onSubmitDefinition()"
-      class="submit-button"
-      [disabled]="(loading$ | async) === true"
+    <div class="responses-grid">
+      <div class="step-section" *ngFor="let quadrant of quadrants">
+        <h2>{{ getTypeLabel(quadrant) }}</h2>
+        <app-response-list
+          [responses$]="getResponsesByType(quadrant)"
+          [loading$]="loading$"
+          [currentUserId]="currentUserId"
+          (upvote)="onUpvote($event)"
+          (toggleSelection)="onToggleSelection($event)"
+          (delete)="onDelete($event)"
+          (edit)="onEdit($event)"
+          (saveEdit)="onSaveEdit($event)"
+          (refresh)="refreshData()"
+        ></app-response-list>
+      </div>
+    </div>
+
+    <div class="submit-container">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="onSubmitDefinition()"
+        class="submit-button"
+        [disabled]="(loading$ | async) === true"
+      >
+        Submeter Definição do Problema
+      </button>
+    </div>
+  </ng-container>
+
+  <!-- Template para mostrar o problem definition existente -->
+  <ng-template #showDefinition>
+    <div
+      class="definition-view"
+      *ngIf="problemDefinition$ | async as definition"
     >
-      Submeter Definição do Problema
-    </button>
-  </div>
+      <div class="step-header">
+        <h2>Definição do Problema Finalizada</h2>
+      </div>
+
+      <div class="definition-grid">
+        <mat-card
+          *ngIf="definition.mainQuestion?.length"
+          class="definition-card"
+        >
+          <mat-card-header>
+            <mat-card-title>Questão Principal</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ul>
+              <li *ngFor="let item of definition.mainQuestion">
+                {{ item }}
+              </li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card
+          *ngIf="definition.targetAudience?.length"
+          class="definition-card"
+        >
+          <mat-card-header>
+            <mat-card-title>Público Alvo</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ul>
+              <li *ngFor="let item of definition.targetAudience">
+                {{ item }}
+              </li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card
+          *ngIf="definition.consequences?.length"
+          class="definition-card"
+        >
+          <mat-card-header>
+            <mat-card-title>Consequências</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ul>
+              <li *ngFor="let item of definition.consequences">
+                {{ item }}
+              </li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card
+          *ngIf="definition.alternativeView?.length"
+          class="definition-card"
+        >
+          <mat-card-header>
+            <mat-card-title>Visão Alternativa</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ul>
+              <li *ngFor="let item of definition.alternativeView">
+                {{ item }}
+              </li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card
+          *ngIf="definition.socialFactors?.length"
+          class="definition-card"
+        >
+          <mat-card-header>
+            <mat-card-title>Fatores Sociais e Culturais</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ul>
+              <li *ngFor="let item of definition.socialFactors">
+                {{ item }}
+              </li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card
+          *ngIf="definition.problemDefinition?.length"
+          class="definition-card"
+        >
+          <mat-card-header>
+            <mat-card-title>Definição do Problema</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ul>
+              <li *ngFor="let item of definition.problemDefinition">
+                {{ item }}
+              </li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </ng-template>
 </div>

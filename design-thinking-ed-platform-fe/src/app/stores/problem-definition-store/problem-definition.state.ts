@@ -2,12 +2,14 @@ import { ProblemDefinitionResponse } from '../../common/interfaces/problem-defin
 
 export interface ProblemDefinitionState {
   responses: ProblemDefinitionResponse[];
+  problemDefinition: any | null;
   loading: boolean;
   error: string | null;
 }
 
 export const initialState: ProblemDefinitionState = {
   responses: [],
+  problemDefinition: null,
   loading: false,
   error: null,
 };

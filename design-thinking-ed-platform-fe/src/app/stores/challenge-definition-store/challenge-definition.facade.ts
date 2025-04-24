@@ -10,6 +10,7 @@ import * as ChallengeDefinitionSelectors from './challenge-definition.selectors'
 import { ChallengeDefinitionState } from './challenge-definition.state';
 import { ChallengeDefinitionService } from './challenge-definition.service';
 import { CreateChallengeDefinitionResponseDto } from '../../common/interfaces/create-challenge-definition-response.interface';
+import { ChallengeDefinition } from '../../common/interfaces/challenge-definition.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -32,6 +33,9 @@ export class ChallengeDefinitionFacade {
     ChallengeDefinitionSelectors.selectError
   );
 
+  challengeDefinition$: Observable<ChallengeDefinition | null> =
+    this.store.select(ChallengeDefinitionSelectors.selectChallengeDefinition);
+
   getResponsesByType(
     type: ResponseType
   ): Observable<ChallengeDefinitionResponse[]> {
@@ -46,19 +50,15 @@ export class ChallengeDefinitionFacade {
     );
   }
 
-  createResponse(
-    type: ResponseType,
-    content: string,
-    userId: number,
-    projectId: number
-  ): void {
+  loadFinalChallengeDefinition(projectId: number): void {
     this.store.dispatch(
-      ChallengeDefinitionActions.createResponse({
-        responseType: type,
-        content,
-        userId,
-        projectId,
-      })
+      ChallengeDefinitionActions.loadFinalChallengeDefinition({ projectId })
+    );
+  }
+
+  createResponse(response: CreateChallengeDefinitionResponseDto): void {
+    this.store.dispatch(
+      ChallengeDefinitionActions.createResponse({ response })
     );
   }
 
@@ -80,23 +80,25 @@ export class ChallengeDefinitionFacade {
     );
   }
 
-  upvoteResponse(id: number, userId: number): void {
+  upvoteResponse(responseId: number, userId: number): void {
     this.store.dispatch(
-      ChallengeDefinitionActions.upvoteResponse({ id, userId })
+      ChallengeDefinitionActions.upvoteResponse({ responseId, userId })
     );
   }
 
-  removeVote(id: number, userId: number): void {
-    this.store.dispatch(ChallengeDefinitionActions.removeVote({ id, userId }));
-  }
-
-  toggleResponseSelection(id: number, userId: number): void {
+  removeVote(responseId: number, userId: number): void {
     this.store.dispatch(
-      ChallengeDefinitionActions.toggleResponseSelection({ id, userId })
+      ChallengeDefinitionActions.removeVote({ responseId, userId })
     );
   }
 
-  createChallengeDefinition(challengeDefinition: any): void {
+  toggleResponseSelection(responseId: number, userId: number): void {
+    this.store.dispatch(
+      ChallengeDefinitionActions.toggleResponseSelection({ responseId, userId })
+    );
+  }
+
+  createChallengeDefinition(challengeDefinition: ChallengeDefinition): void {
     this.store.dispatch(
       ChallengeDefinitionActions.createChallengeDefinition({
         challengeDefinition,

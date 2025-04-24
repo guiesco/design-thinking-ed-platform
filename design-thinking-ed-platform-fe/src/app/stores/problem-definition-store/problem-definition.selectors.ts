@@ -8,17 +8,22 @@ export const selectProblemDefinitionState =
 
 export const selectProblemDefinitionResponses = createSelector(
   selectProblemDefinitionState,
-  (state: ProblemDefinitionState) => state.responses
+  (state) => state.responses
+);
+
+export const selectProblemDefinition = createSelector(
+  selectProblemDefinitionState,
+  (state) => state.problemDefinition
 );
 
 export const selectProblemDefinitionLoading = createSelector(
   selectProblemDefinitionState,
-  (state: ProblemDefinitionState) => state.loading
+  (state) => state.loading
 );
 
 export const selectProblemDefinitionError = createSelector(
   selectProblemDefinitionState,
-  (state: ProblemDefinitionState) => state.error
+  (state) => state.error
 );
 
 export const selectProblemDefinitionResponsesByQuadrant = (

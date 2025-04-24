@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { ChallengeDefinitionState } from './challenge-definition.state';
-import { ResponseType } from '../../common/interfaces/challenge-definition-response.interface';
+import { ResponseType } from 'src/app/common/interfaces/challenge-definition-response.interface';
 
 export const selectChallengeDefinitionState =
   createFeatureSelector<ChallengeDefinitionState>('challengeDefinition');
@@ -8,6 +8,11 @@ export const selectChallengeDefinitionState =
 export const selectResponses = createSelector(
   selectChallengeDefinitionState,
   (state) => state.responses
+);
+
+export const selectChallengeDefinition = createSelector(
+  selectChallengeDefinitionState,
+  (state) => state.challengeDefinition
 );
 
 export const selectLoading = createSelector(

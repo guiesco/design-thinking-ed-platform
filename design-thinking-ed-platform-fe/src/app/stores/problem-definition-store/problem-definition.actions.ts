@@ -16,6 +16,21 @@ export const loadProblemDefinitionResponsesFailure = createAction(
   props<{ error: string }>()
 );
 
+export const loadProblemDefinition = createAction(
+  '[Problem Definition] Load Problem Definition',
+  props<{ projectId: number }>()
+);
+
+export const loadProblemDefinitionSuccess = createAction(
+  '[Problem Definition] Load Problem Definition Success',
+  props<{ problemDefinition: any }>()
+);
+
+export const loadProblemDefinitionFailure = createAction(
+  '[Problem Definition] Load Problem Definition Failure',
+  props<{ error: string }>()
+);
+
 export const createProblemDefinitionResponses = createAction(
   '[Problem Definition] Create Responses',
   props<{ responses: Omit<ProblemDefinitionResponse, 'id'>[] }>()
@@ -76,21 +91,6 @@ export const upvoteProblemDefinitionResponseFailure = createAction(
   props<{ error: string }>()
 );
 
-export const createProblemDefinition = createAction(
-  '[Problem Definition] Create Problem Definition',
-  props<{ problemDefinition: any }>()
-);
-
-export const createProblemDefinitionSuccess = createAction(
-  '[Problem Definition] Create Problem Definition Success',
-  props<{ problemDefinition: any }>()
-);
-
-export const createProblemDefinitionFailure = createAction(
-  '[Problem Definition] Create Problem Definition Failure',
-  props<{ error: string }>()
-);
-
 export const toggleProblemDefinitionResponseSelection = createAction(
   '[Problem Definition] Toggle Response Selection',
   props<{ responseId: number; userId: number }>()
@@ -103,5 +103,20 @@ export const toggleProblemDefinitionResponseSelectionSuccess = createAction(
 
 export const toggleProblemDefinitionResponseSelectionFailure = createAction(
   '[Problem Definition] Toggle Response Selection Failure',
+  props<{ error: string }>()
+);
+
+export const createProblemDefinition = createAction(
+  '[Problem Definition] Create Problem Definition',
+  props<{ problemDefinition: any }>()
+);
+
+export const createProblemDefinitionSuccess = createAction(
+  '[Problem Definition] Create Problem Definition Success',
+  props<{ problemDefinition: any }>()
+);
+
+export const createProblemDefinitionFailure = createAction(
+  '[Problem Definition] Create Problem Definition Failure',
   props<{ error: string }>()
 );

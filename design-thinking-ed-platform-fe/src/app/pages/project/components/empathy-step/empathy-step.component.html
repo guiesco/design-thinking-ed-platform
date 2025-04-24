@@ -2,48 +2,138 @@
   <div class="step-header">
     <h1>Mapa de Empatia</h1>
     <p>
-      O Mapa de Empatia é uma ferramenta que nos ajuda a entender profundamente
-      o usuário, mapeando seus pensamentos, sentimentos, ações e necessidades.
-      Preencha cada seção com as observações e insights coletados durante a fase
-      de empatia.
+      Use os campos abaixo para registrar informações importantes sobre o
+      público-alvo do projeto, identificando como ele pensa, sente, fala e age
+      em relação ao problema.
     </p>
   </div>
 
-  <div class="step-section">
-    <app-response-form
-      [fields]="formFields"
-      [loading]="(loading$ | async) ?? false"
-      (submitForm)="onSubmit($event)"
-    ></app-response-form>
-  </div>
-
-  <div class="responses-grid">
-    <div class="step-section" *ngFor="let type of responseTypes">
-      <h3>{{ getTypeLabel(type) }}</h3>
-      <app-response-list
-        [responses$]="getResponsesByType(type)"
-        [displayedColumns]="displayedColumns"
-        [currentUserId]="currentUserId"
-        [loading$]="loading$"
-        (upvote)="onUpvote($event)"
-        (toggleSelection)="onToggleSelection($event)"
-        (delete)="onDelete($event)"
-        (edit)="onEdit($event)"
-        (saveEdit)="onSaveEdit($event)"
-        (refresh)="refreshData()"
-      ></app-response-list>
+  <!-- Mostrar o form de criação se não existe empathy map -->
+  <ng-container *ngIf="(hasEmpathyMap$ | async) === false; else showEmpathyMap">
+    <div class="step-section">
+      <app-response-form
+        [fields]="formFields"
+        [loading]="(loading$ | async) === true"
+        (submitForm)="onSubmit($event)"
+      ></app-response-form>
     </div>
-  </div>
 
-  <div class="submit-container">
-    <button
-      mat-raised-button
-      color="primary"
-      (click)="onSubmitEmpathyMap()"
-      class="submit-button"
-      [disabled]="(loading$ | async) === true"
-    >
-      Submeter Mapa de Empatia
-    </button>
-  </div>
+    <div class="responses-grid">
+      <div class="step-section" *ngFor="let type of responseTypes">
+        <h2>{{ getTypeLabel(type) }}</h2>
+        <app-response-list
+          [responses$]="getResponsesByType(type)"
+          [loading$]="loading$"
+          [currentUserId]="currentUserId"
+          (upvote)="onUpvote($event)"
+          (toggleSelection)="onToggleSelection($event)"
+          (delete)="onDelete($event)"
+          (edit)="onEdit($event)"
+          (saveEdit)="onSaveEdit($event)"
+          (refresh)="refreshData()"
+        ></app-response-list>
+      </div>
+    </div>
+
+    <div class="submit-container">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="onSubmitEmpathyMap()"
+        class="submit-button"
+        [disabled]="(loading$ | async) === true"
+      >
+        Submeter Mapa de Empatia
+      </button>
+    </div>
+  </ng-container>
+
+  <!-- Template para mostrar o empathy map existente -->
+  <ng-template #showEmpathyMap>
+    <div class="empathy-map-view" *ngIf="empathyMap$ | async as empathyMap">
+      <div class="step-header">
+        <h2>Mapa de Empatia Finalizado</h2>
+      </div>
+
+      <div class="empathy-map-grid">
+        <mat-card *ngIf="empathyMap.think?.length" class="empathy-map-card">
+          <mat-card-header>
+            <mat-card-title>Pensa</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ul>
+              <li *ngFor="let item of empathyMap.think">
+                {{ item }}
+              </li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card *ngIf="empathyMap.feel?.length" class="empathy-map-card">
+          <mat-card-header>
+            <mat-card-title>Sente</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ul>
+              <li *ngFor="let item of empathyMap.feel">
+                {{ item }}
+              </li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card *ngIf="empathyMap.say?.length" class="empathy-map-card">
+          <mat-card-header>
+            <mat-card-title>Diz</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ul>
+              <li *ngFor="let item of empathyMap.say">
+                {{ item }}
+              </li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card *ngIf="empathyMap.do?.length" class="empathy-map-card">
+          <mat-card-header>
+            <mat-card-title>Faz</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ul>
+              <li *ngFor="let item of empathyMap.do">
+                {{ item }}
+              </li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card *ngIf="empathyMap.pains?.length" class="empathy-map-card">
+          <mat-card-header>
+            <mat-card-title>Dores</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ul>
+              <li *ngFor="let item of empathyMap.pains">
+                {{ item }}
+              </li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card *ngIf="empathyMap.needs?.length" class="empathy-map-card">
+          <mat-card-header>
+            <mat-card-title>Necessidades</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ul>
+              <li *ngFor="let item of empathyMap.needs">
+                {{ item }}
+              </li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </ng-template>
 </div>

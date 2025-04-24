@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { ChallengeDefinitionResponse } from '../../common/interfaces/challenge-definition-response.interface';
 import { CreateChallengeDefinitionResponseDto } from '../../common/interfaces/create-challenge-definition-response.interface';
 import { ResponseType } from '../../common/interfaces/challenge-definition-response.interface';
+import { ChallengeDefinition } from '../../common/interfaces/challenge-definition.interface';
 
 export const loadResponses = createAction(
   '[Challenge Definition] Load Responses',
@@ -18,24 +19,39 @@ export const loadResponsesFailure = createAction(
   props<{ error: string }>()
 );
 
-export const createResponse = createAction(
-  '[Challenge Definition] Create Response',
-  props<{
-    responseType: ResponseType;
-    content: string;
-    userId: number;
-    projectId: number;
-  }>()
+export const loadFinalChallengeDefinition = createAction(
+  '[Challenge Definition] Load Final Challenge Definition',
+  props<{ projectId: number }>()
 );
 
-export const createResponses = createAction(
-  '[Challenge Definition] Create Responses',
-  props<{ responses: CreateChallengeDefinitionResponseDto[] }>()
+export const loadFinalChallengeDefinitionSuccess = createAction(
+  '[Challenge Definition] Load Final Challenge Definition Success',
+  props<{ challengeDefinition: ChallengeDefinition }>()
+);
+
+export const loadFinalChallengeDefinitionFailure = createAction(
+  '[Challenge Definition] Load Final Challenge Definition Failure',
+  props<{ error: string }>()
+);
+
+export const createResponse = createAction(
+  '[Challenge Definition] Create Response',
+  props<{ response: CreateChallengeDefinitionResponseDto }>()
 );
 
 export const createResponseSuccess = createAction(
   '[Challenge Definition] Create Response Success',
   props<{ response: ChallengeDefinitionResponse }>()
+);
+
+export const createResponseFailure = createAction(
+  '[Challenge Definition] Create Response Failure',
+  props<{ error: string }>()
+);
+
+export const createResponses = createAction(
+  '[Challenge Definition] Create Responses',
+  props<{ responses: CreateChallengeDefinitionResponseDto[] }>()
 );
 
 export const createResponsesSuccess = createAction(
@@ -45,11 +61,51 @@ export const createResponsesSuccess = createAction(
 
 export const createResponsesFailure = createAction(
   '[Challenge Definition] Create Responses Failure',
-  props<{ error: any }>()
+  props<{ error: string }>()
 );
 
-export const createResponseFailure = createAction(
-  '[Challenge Definition] Create Response Failure',
+export const upvoteResponse = createAction(
+  '[Challenge Definition] Upvote Response',
+  props<{ responseId: number; userId: number }>()
+);
+
+export const upvoteResponseSuccess = createAction(
+  '[Challenge Definition] Upvote Response Success',
+  props<{ response: ChallengeDefinitionResponse }>()
+);
+
+export const upvoteResponseFailure = createAction(
+  '[Challenge Definition] Upvote Response Failure',
+  props<{ error: string }>()
+);
+
+export const removeVote = createAction(
+  '[Challenge Definition] Remove Vote',
+  props<{ responseId: number; userId: number }>()
+);
+
+export const removeVoteSuccess = createAction(
+  '[Challenge Definition] Remove Vote Success',
+  props<{ response: ChallengeDefinitionResponse }>()
+);
+
+export const removeVoteFailure = createAction(
+  '[Challenge Definition] Remove Vote Failure',
+  props<{ error: string }>()
+);
+
+export const toggleResponseSelection = createAction(
+  '[Challenge Definition] Toggle Response Selection',
+  props<{ responseId: number; userId: number }>()
+);
+
+export const toggleResponseSelectionSuccess = createAction(
+  '[Challenge Definition] Toggle Response Selection Success',
+  props<{ response: ChallengeDefinitionResponse }>()
+);
+
+export const toggleResponseSelectionFailure = createAction(
+  '[Challenge Definition] Toggle Response Selection Failure',
   props<{ error: string }>()
 );
 
@@ -83,59 +139,14 @@ export const deleteResponseFailure = createAction(
   props<{ error: string }>()
 );
 
-export const upvoteResponse = createAction(
-  '[Challenge Definition] Upvote Response',
-  props<{ id: number; userId: number }>()
-);
-
-export const upvoteResponseSuccess = createAction(
-  '[Challenge Definition] Upvote Response Success',
-  props<{ response: ChallengeDefinitionResponse }>()
-);
-
-export const upvoteResponseFailure = createAction(
-  '[Challenge Definition] Upvote Response Failure',
-  props<{ error: string }>()
-);
-
-export const removeVote = createAction(
-  '[Challenge Definition] Remove Vote',
-  props<{ id: number; userId: number }>()
-);
-
-export const removeVoteSuccess = createAction(
-  '[Challenge Definition] Remove Vote Success',
-  props<{ response: ChallengeDefinitionResponse }>()
-);
-
-export const removeVoteFailure = createAction(
-  '[Challenge Definition] Remove Vote Failure',
-  props<{ error: string }>()
-);
-
-export const toggleResponseSelection = createAction(
-  '[Challenge Definition] Toggle Response Selection',
-  props<{ id: number; userId: number }>()
-);
-
-export const toggleResponseSelectionSuccess = createAction(
-  '[Challenge Definition] Toggle Response Selection Success',
-  props<{ response: ChallengeDefinitionResponse }>()
-);
-
-export const toggleResponseSelectionFailure = createAction(
-  '[Challenge Definition] Toggle Response Selection Failure',
-  props<{ error: string }>()
-);
-
 export const createChallengeDefinition = createAction(
   '[Challenge Definition] Create Challenge Definition',
-  props<{ challengeDefinition: any }>()
+  props<{ challengeDefinition: ChallengeDefinition }>()
 );
 
 export const createChallengeDefinitionSuccess = createAction(
   '[Challenge Definition] Create Challenge Definition Success',
-  props<{ challengeDefinition: any }>()
+  props<{ challengeDefinition: ChallengeDefinition }>()
 );
 
 export const createChallengeDefinitionFailure = createAction(

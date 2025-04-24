@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { ChallengeDefinitionResponse } from '../../common/interfaces/challenge-definition-response.interface';
 import { ResponseType } from '../../common/interfaces/challenge-definition-response.interface';
 import { CreateChallengeDefinitionResponseDto } from '../../common/interfaces/create-challenge-definition-response.interface';
+import { ChallengeDefinition } from 'src/app/common/interfaces/challenge-definition.interface';
 
 interface CreateResponseDto {
   type: ResponseType;
@@ -26,75 +27,72 @@ export class ChallengeDefinitionService {
     userId?: number
   ): Observable<ChallengeDefinitionResponse[]> {
     return this.http.get<ChallengeDefinitionResponse[]>(
-      `${this.apiUrl}/response/project/${projectId}${
-        userId ? `?userId=${userId}` : ''
-      }`
+      `${this.apiUrl}/project/${projectId}/responses?userId=${userId}`
+    );
+  }
+
+  getFinalChallengeDefinition(
+    projectId: number
+  ): Observable<ChallengeDefinition> {
+    return this.http.get<ChallengeDefinition>(
+      `${this.apiUrl}/project/${projectId}`
     );
   }
 
   createResponse(
-    type: ResponseType,
-    content: string,
-    userId: number,
-    projectId: number
+    response: CreateChallengeDefinitionResponseDto
   ): Observable<ChallengeDefinitionResponse> {
-    const createResponseDto: CreateResponseDto = {
-      type,
-      content,
-      userId,
-      projectId,
-    };
     return this.http.post<ChallengeDefinitionResponse>(
       `${this.apiUrl}/response`,
-      createResponseDto
+      response
     );
   }
 
   updateResponse(
-    id: number,
+    responseId: number,
     content: string,
     userId: number
   ): Observable<ChallengeDefinitionResponse> {
-    return this.http.patch<ChallengeDefinitionResponse>(
-      `${this.apiUrl}/response/${id}`,
-      {
-        content,
-        userId,
-      }
+    return this.http.put<ChallengeDefinitionResponse>(
+      `${this.apiUrl}/response/${responseId}?userId=${userId}`,
+      { content }
     );
   }
 
-  deleteResponse(id: number, userId: number): Observable<void> {
-    return this.http.delete<void>(
-      `${this.apiUrl}/response/${id}?userId=${userId}`
+  deleteResponse(
+    responseId: number,
+    userId: number
+  ): Observable<ChallengeDefinitionResponse> {
+    return this.http.delete<ChallengeDefinitionResponse>(
+      `${this.apiUrl}/response/${responseId}?userId=${userId}`
     );
   }
 
   upvoteResponse(
-    id: number,
+    responseId: number,
     userId: number
   ): Observable<ChallengeDefinitionResponse> {
-    return this.http.post<ChallengeDefinitionResponse>(
-      `${this.apiUrl}/response/${id}/upvote?userId=${userId}`,
+    return this.http.put<ChallengeDefinitionResponse>(
+      `${this.apiUrl}/response/${responseId}/upvote?userId=${userId}`,
       {}
     );
   }
 
   removeVote(
-    id: number,
+    responseId: number,
     userId: number
   ): Observable<ChallengeDefinitionResponse> {
     return this.http.delete<ChallengeDefinitionResponse>(
-      `${this.apiUrl}/response/${id}/upvote?userId=${userId}`
+      `${this.apiUrl}/response/${responseId}/upvote?userId=${userId}`
     );
   }
 
   toggleResponseSelection(
-    id: number,
+    responseId: number,
     userId: number
   ): Observable<ChallengeDefinitionResponse> {
-    return this.http.post<ChallengeDefinitionResponse>(
-      `${this.apiUrl}/response/${id}/toggle-selection?userId=${userId}`,
+    return this.http.put<ChallengeDefinitionResponse>(
+      `${this.apiUrl}/response/${responseId}/toggle-selection?userId=${userId}`,
       {}
     );
   }
@@ -109,9 +107,9 @@ export class ChallengeDefinitionService {
   }
 
   createChallengeDefinition(
-    challengeDefinition: CreateChallengeDefinitionResponseDto
-  ): Observable<ChallengeDefinitionResponse> {
-    return this.http.post<ChallengeDefinitionResponse>(
+    challengeDefinition: ChallengeDefinition
+  ): Observable<ChallengeDefinition> {
+    return this.http.post<ChallengeDefinition>(
       `${this.apiUrl}`,
       challengeDefinition
     );

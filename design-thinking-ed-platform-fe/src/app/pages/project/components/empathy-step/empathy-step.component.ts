@@ -38,6 +38,10 @@ export class EmpathyStepComponent extends BaseStepComponent {
     map((loading) => loading ?? false)
   );
   error$: Observable<any> = this.empathyMapFacade.error$;
+  empathyMap$: Observable<any> = this.empathyMapFacade.empathyMap$;
+  hasEmpathyMap$: Observable<boolean> = this.empathyMap$.pipe(
+    map((empathyMap) => !!empathyMap)
+  );
 
   override formFields: IResponseFormField[] = [
     {
@@ -92,6 +96,7 @@ export class EmpathyStepComponent extends BaseStepComponent {
   override ngOnInit(): void {
     super.ngOnInit();
     this.loadResponses();
+    this.loadEmpathyMap();
     this.error$.subscribe((error: any) => {
       if (error) {
         this.showError('Erro ao carregar mapa de empatia: ' + error);
@@ -102,6 +107,12 @@ export class EmpathyStepComponent extends BaseStepComponent {
   loadResponses(): void {
     if (this.projectId && this.currentUserId) {
       this.empathyMapFacade.loadResponses(this.projectId, this.currentUserId);
+    }
+  }
+
+  loadEmpathyMap(): void {
+    if (this.projectId) {
+      this.empathyMapFacade.loadFinalEmpathyMap(this.projectId);
     }
   }
 
@@ -216,6 +227,7 @@ export class EmpathyStepComponent extends BaseStepComponent {
   refreshData(): void {
     if (this.projectId && this.currentUserId) {
       this.empathyMapFacade.loadResponses(this.projectId, this.currentUserId);
+      this.empathyMapFacade.loadFinalEmpathyMap(this.projectId);
       this.showSuccess('Dados atualizados com sucesso!');
     }
   }
@@ -268,6 +280,7 @@ export class EmpathyStepComponent extends BaseStepComponent {
 
   protected createEntity(entity: any): void {
     this.empathyMapFacade.createEmpathyMap(entity);
+    this.showSuccess('Mapa de empatia criado com sucesso!');
   }
 
   onSubmitEmpathyMap(): void {

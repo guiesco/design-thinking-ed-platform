@@ -19,6 +19,9 @@ export class ProblemDefinitionFacade {
   error$: Observable<string | null> = this.store.select(
     ProblemDefinitionSelectors.selectProblemDefinitionError
   );
+  problemDefinition$: Observable<any> = this.store.select(
+    ProblemDefinitionSelectors.selectProblemDefinition
+  );
 
   constructor(private store: Store) {}
 
@@ -27,6 +30,14 @@ export class ProblemDefinitionFacade {
       ProblemDefinitionActions.loadProblemDefinitionResponses({
         projectId,
         userId,
+      })
+    );
+  }
+
+  loadProblemDefinition(projectId: number): void {
+    this.store.dispatch(
+      ProblemDefinitionActions.loadProblemDefinition({
+        projectId,
       })
     );
   }

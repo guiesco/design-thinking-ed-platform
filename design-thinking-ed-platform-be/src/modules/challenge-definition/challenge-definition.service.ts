@@ -201,4 +201,8 @@ export class ChallengeDefinitionService {
     const challengeDefinition = this.challengeDefinitionRepository.create(dto);
     return this.challengeDefinitionRepository.save(challengeDefinition);
   }
+
+  async findByProject(projectId: number): Promise<ChallengeDefinition[]> {
+    return this.challengeDefinitionRepository.find({ where: { projectId } });
+  }
 }

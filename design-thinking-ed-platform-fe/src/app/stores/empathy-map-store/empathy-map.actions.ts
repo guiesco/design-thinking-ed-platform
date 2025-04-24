@@ -4,6 +4,7 @@ import {
   CreateEmpathyMapDto,
   EmpathyMapResponse,
   CreateEmpathyMapResponseDto,
+  ResponseType,
 } from 'src/app/common/interfaces/empathy-map.interface';
 
 export const loadEmpathyMaps = createAction(
@@ -23,12 +24,12 @@ export const loadEmpathyMapsFailure = createAction(
 
 export const createEmpathyMap = createAction(
   '[EmpathyMap] Create Empathy Map',
-  props<{ entry: EmpathyMapEntry }>()
+  props<{ entry: any }>()
 );
 
 export const createEmpathyMapSuccess = createAction(
   '[EmpathyMap] Create Empathy Map Success',
-  props<{ entry: EmpathyMapEntry }>()
+  props<{ entry: any }>()
 );
 
 export const createEmpathyMapFailure = createAction(
@@ -122,6 +123,11 @@ export const createResponseFailure = createAction(
   props<{ error: any }>()
 );
 
+export const createResponsesFailure = createAction(
+  '[EmpathyMap] Create Responses Failure',
+  props<{ error: any }>()
+);
+
 export const loadResponses = createAction(
   '[EmpathyMap] Load Responses',
   props<{ projectId: number; userId?: number }>()
@@ -209,5 +215,21 @@ export const toggleResponseSelectionSuccess = createAction(
 
 export const toggleResponseSelectionFailure = createAction(
   '[EmpathyMap] Toggle Response Selection Failure',
+  props<{ error: any }>()
+);
+
+// Ações para carregar mapa de empatia final
+export const loadFinalEmpathyMap = createAction(
+  '[EmpathyMap] Load Final Empathy Map',
+  props<{ projectId: number }>()
+);
+
+export const loadFinalEmpathyMapSuccess = createAction(
+  '[EmpathyMap] Load Final Empathy Map Success',
+  props<{ empathyMap: any }>()
+);
+
+export const loadFinalEmpathyMapFailure = createAction(
+  '[EmpathyMap] Load Final Empathy Map Failure',
   props<{ error: any }>()
 );

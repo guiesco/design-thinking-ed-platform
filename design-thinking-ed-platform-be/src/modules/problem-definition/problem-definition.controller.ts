@@ -106,8 +106,8 @@ export class ProblemDefinitionController {
     return this.problemDefinitionService.findOne(+id);
   }
 
-  @Get()
-  findByProject(@Query('projectId') projectId: string) {
+  @Get('project/:projectId')
+  findByProject(@Param('projectId') projectId: string) {
     return this.problemDefinitionService.findByProject(+projectId);
   }
 
