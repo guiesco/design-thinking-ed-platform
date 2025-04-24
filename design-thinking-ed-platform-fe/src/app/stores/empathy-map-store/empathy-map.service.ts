@@ -22,8 +22,10 @@ export class EmpathyMapService {
     );
   }
 
-  getFinalEmpathyMap(projectId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/project/${projectId}`);
+  getFinalEmpathyMap(projectId: number): Observable<EmpathyMapEntry[]> {
+    return this.http.get<EmpathyMapEntry[]>(
+      `${this.apiUrl}/project/${projectId}`
+    );
   }
 
   createEmpathyMap(entry: EmpathyMapEntry): Observable<EmpathyMapEntry> {

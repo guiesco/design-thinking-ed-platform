@@ -26,7 +26,7 @@ export const empathyMapReducer = createReducer(
   })),
   on(EmpathyMapActions.loadFinalEmpathyMapSuccess, (state, { empathyMap }) => ({
     ...state,
-    empathyMap,
+    empathyMap: empathyMap[0],
     loading: false,
   })),
   on(EmpathyMapActions.loadFinalEmpathyMapFailure, (state, { error }) => ({

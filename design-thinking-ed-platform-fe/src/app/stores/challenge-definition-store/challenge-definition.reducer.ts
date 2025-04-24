@@ -44,7 +44,7 @@ export const challengeDefinitionReducer = createReducer(
     ChallengeDefinitionActions.loadFinalChallengeDefinitionSuccess,
     (state, { challengeDefinition }) => ({
       ...state,
-      challengeDefinition,
+      challengeDefinition: challengeDefinition[0],
       loading: false,
     })
   ),

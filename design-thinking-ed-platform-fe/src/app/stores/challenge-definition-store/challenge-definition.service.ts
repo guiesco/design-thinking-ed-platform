@@ -33,8 +33,8 @@ export class ChallengeDefinitionService {
 
   getFinalChallengeDefinition(
     projectId: number
-  ): Observable<ChallengeDefinition> {
-    return this.http.get<ChallengeDefinition>(
+  ): Observable<ChallengeDefinition[]> {
+    return this.http.get<ChallengeDefinition[]>(
       `${this.apiUrl}/project/${projectId}`
     );
   }

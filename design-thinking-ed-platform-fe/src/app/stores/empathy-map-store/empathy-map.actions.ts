@@ -226,7 +226,7 @@ export const loadFinalEmpathyMap = createAction(
 
 export const loadFinalEmpathyMapSuccess = createAction(
   '[EmpathyMap] Load Final Empathy Map Success',
-  props<{ empathyMap: any }>()
+  props<{ empathyMap: EmpathyMapEntry[] }>()
 );
 
 export const loadFinalEmpathyMapFailure = createAction(

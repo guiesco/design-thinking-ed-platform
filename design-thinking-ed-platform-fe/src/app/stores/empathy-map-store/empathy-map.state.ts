@@ -6,7 +6,7 @@ import {
 export interface EmpathyMapState {
   entries: EmpathyMapEntry[];
   responses: EmpathyMapResponse[];
-  empathyMap: any | null;
+  empathyMap: EmpathyMapEntry | null;
   loading: boolean;
   error: any;
 }

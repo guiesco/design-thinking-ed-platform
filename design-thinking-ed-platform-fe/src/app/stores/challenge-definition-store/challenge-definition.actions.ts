@@ -26,7 +26,7 @@ export const loadFinalChallengeDefinition = createAction(
 
 export const loadFinalChallengeDefinitionSuccess = createAction(
   '[Challenge Definition] Load Final Challenge Definition Success',
-  props<{ challengeDefinition: ChallengeDefinition }>()
+  props<{ challengeDefinition: ChallengeDefinition[] }>()
 );
 
 export const loadFinalChallengeDefinitionFailure = createAction(
