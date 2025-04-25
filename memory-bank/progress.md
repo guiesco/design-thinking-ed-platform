@@ -1,123 +1,188 @@
 # Progresso do Projeto
 
-## Tarefas Atuais
+## Implementações Concluídas
 
-### 1. Entidades Finais
+### Backend
 
-#### ProblemDefinition Entity
+#### Entidades
 
-✅ Criada a entidade ProblemDefinition com:
+- ✅ EmpathyMap
+- ✅ ProblemDefinitionResponse
+- ✅ ChallengeDefinitionResponse
+- ✅ User
+- ✅ Project
+- ✅ ProblemDefinition
+- ✅ ChallengeDefinition
+- ⏳ IdeationIdea
+- ⏳ IdeationPoint
 
-- Campos principais (mainQuestion, targetAudience, consequences, etc.)
-- Relacionamentos com User e Project
-- Timestamps
+#### Serviços
 
-#### ChallengeDefinition Entity
+- ✅ EmpathyMapService
+- ✅ ProblemDefinitionService
+- ✅ ChallengeDefinitionService
+- ✅ StepVerificationService
+- ✅ UserService
+- ✅ ProjectService
+- ⏳ IdeationService
 
-✅ Criada a entidade ChallengeDefinition com:
+### Frontend
 
-- Campos principais (problems, targetAudience, howWeCan, brainstorm)
-- Relacionamentos com User e Project
-- Timestamps
+#### Componentes
 
-#### Project Entity
+- ✅ EmpathyStepComponent
+- ✅ ProblemDefinitionStepComponent
+- ✅ ChallengeDefinitionStepComponent
+- ✅ ResponseFormComponent (reutilizável)
+- ✅ ResponseListComponent (reutilizável)
+- ✅ IdeationStepComponent
+- ✅ IdeaPointsComponent
 
-✅ Atualizada a entidade Project com:
+#### Stores
 
-- Relacionamentos OneToMany com ProblemDefinition e ChallengeDefinition
-- Campos existentes mantidos
+- ✅ EmpathyMapStore
+- ✅ ProblemDefinitionStore
+- ✅ ChallengeDefinitionStore
+- ✅ UserStore
+- ✅ ProjectStore
+- ✅ IdeationStore
 
-### 2. DTOs
+## Nova Etapa: Ideação
 
-#### ProblemDefinition DTOs
+### Backend (Pendente)
 
-✅ Criados os DTOs para ProblemDefinition:
+#### Entidades
 
-- CreateProblemDefinitionDto
-- UpdateProblemDefinitionDto
-- Validações implementadas
+- ⏳ IdeationIdea
 
-#### ChallengeDefinition DTOs
+  - id: number
+  - title: string
+  - projectId: number
+  - userId: number
+  - upvotes: number
+  - timestamps: createdAt, updatedAt
 
-✅ Criados os DTOs para ChallengeDefinition:
+- ⏳ IdeationPoint
+  - id: number
+  - content: string
+  - type: IdeationPointType (PRO/CON)
+  - ideaId: number
+  - userId: number
+  - upvotes: number
+  - timestamps: createdAt, updatedAt
 
-- CreateChallengeDefinitionDto
-- UpdateChallengeDefinitionDto
-- Validações implementadas
+#### DTOs
 
-### 3. Serviços
+- ⏳ CreateIdeationIdeaDto
+- ⏳ UpdateIdeationIdeaDto
+- ⏳ CreateIdeationPointDto
+- ⏳ UpdateIdeationPointDto
 
-#### ProblemDefinitionService
+#### Serviço
 
-✅ Criado o serviço com:
+- ⏳ IdeationService
+  - create, update, delete para Ideias
+  - create, update, delete para Pontos
+  - upvote para Ideias e Pontos
+  - getByProject para listar todas as ideias de um projeto
 
-- Método create
-- Método findOne
-- Método findByProject
-- Método update
+#### Controlador
 
-#### ChallengeDefinitionService
+- ⏳ IdeationController
+  - POST /ideation/idea
+  - GET /ideation/idea/:id
+  - GET /ideation/idea?projectId=:id
+  - PUT /ideation/idea/:id
+  - DELETE /ideation/idea/:id
+  - POST /ideation/idea/:id/upvote
+  - POST /ideation/point
+  - PUT /ideation/point/:id
+  - DELETE /ideation/point/:id
+  - POST /ideation/point/:id/upvote
 
-✅ Criado o serviço com:
+### Frontend (Implementado)
 
-- Método create
-- Método findOne
-- Método findByProject
-- Método update
+#### Interfaces
 
-#### StepVerificationService
+- ✅ IdeationIdea
+- ✅ IdeationPoint
+- ✅ IdeationPointType (enum)
+- ✅ CreateIdeationIdeaDto
+- ✅ CreateIdeationPointDto
+- ✅ UpdateIdeationIdeaDto
+- ✅ UpdateIdeationPointDto
 
-✅ Criado o serviço de verificação de etapas com:
+#### Store
 
-- Enum DesignThinkingStep
-- Interface StepStatus
-- Métodos para verificação de etapas
-- Lógica de acesso às etapas
+- ✅ IdeationStore
+  - ✅ Estado para ideias, pontos, loading, error
+  - ✅ Ações para CRUD de ideias e pontos
+  - ✅ Reducers para atualizar estado
+  - ✅ Efeitos para operações assíncronas
+  - ✅ Selectors para acessar partes do estado
+  - ✅ Facade para abstrair complexidade
 
-### 4. Controladores
+#### Componentes
 
-#### ProblemDefinitionController
+- ✅ IdeationStepComponent (principal)
 
-✅ Criado o controlador com endpoints:
+  - Exibir formulário para adicionar ideias
+  - Listar todas as ideias em cards
+  - Gerenciar estado geral da etapa
 
-- POST /problem-definition
-- GET /problem-definition/:id
-- GET /problem-definition?projectId=:id
-- PUT /problem-definition/:id
+- ✅ IdeaPointsComponent
 
-#### ChallengeDefinitionController
+  - Exibir formulário para adicionar prós/contras
+  - Listar prós/contras
+  - Mostrar botões de upvote, editar, excluir
+  - Layout responsivo
 
-✅ Criado o controlador com endpoints:
+#### Roteamento
 
-- POST /challenge-definition
-- GET /challenge-definition/:id
-- GET /challenge-definition?projectId=:id
-- PUT /challenge-definition/:id
+- ✅ Adicionar rota para IdeationStep em páginas-routing.module.ts
+- ✅ Importar IdeationStepModule no ProjectModule
 
-## Status Atual
+## Próximos Passos Detalhados
 
-- ✅ Estrutura de diretórios criada
-- ✅ Entidades principais implementadas
-- ✅ DTOs criados e validados
-- ✅ Serviços implementados
-- ✅ Controladores REST criados
-- ⏳ Frontend pendente
+### 1. Backend
 
-## Próximas Ações
+1. **Entidades e DTOs**
 
-1. Atualizar componentes frontend para ProblemDefinition
-2. Atualizar componentes frontend para ChallengeDefinition
-3. Atualizar componentes frontend para EmpathyMap
-4. Implementar integração com os novos endpoints
-5. Adicionar verificação de etapas na navegação
+   - Criar entity IdeationIdea
+   - Criar entity IdeationPoint
+   - Criar DTOs correspondentes
+
+2. **Serviço**
+
+   - Implementar IdeationService com métodos CRUD
+   - Adicionar lógica de upvote
+
+3. **Controlador**
+   - Implementar endpoints RESTful
+   - Adicionar validações e tratamento de erros
+
+### 2. Testes e Refinamentos
+
+1. **Testes da Interface**
+
+   - Testar criação e edição de ideias
+   - Testar adição e edição de prós e contras
+   - Verificar sistema de upvote
+   - Testar responsividade em diferentes dispositivos
+
+2. **Melhorias de UX**
+   - Adicionar mensagens de confirmação
+   - Implementar animações para transições
+   - Melhorar feedback visual
 
 ## Bloqueadores
 
-- Nenhum no momento
+- Backend pendente para testes completos da interface
 
 ## Notas
 
-- Manter consistência com EmpathyMap entity
-- Seguir padrões existentes de relacionamentos
-- Garantir integração com o fluxo de navegação
-- Implementar validações nos formulários frontend
+- Interface implementada com Material Design
+- Uso de componentes reutilizáveis para prós e contras
+- Layout responsivo para desktop e dispositivos móveis
+- Sistema completo de CRUD para ideias e pontos
+- Sistema de upvote implementado para ideias e pontos

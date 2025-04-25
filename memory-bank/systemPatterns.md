@@ -39,6 +39,19 @@
   - Inclui timestamps
   - Campos específicos baseados no enum da etapa
 
+### Nova Estrutura para Ideação
+
+- Implementação de estrutura hierárquica:
+  - IdeationIdea (entidade pai)
+    - Título da ideia
+    - Relacionamento com projeto e usuário
+    - Upvotes
+  - IdeationPoint (entidade filha)
+    - Conteúdo do ponto
+    - Tipo (PRO/CON)
+    - Relacionamento com ideia e usuário
+    - Upvotes
+
 ## Padrões de Navegação
 
 - Verificação de etapas anteriores antes de avançar
@@ -59,6 +72,17 @@
 - ResponseForm para criação/edição
 - Reutilização de componentes comuns
 
+### Padrão Específico para Ideação
+
+- Layout em cards com três colunas:
+  - Título da ideia
+  - Prós (formulário + lista)
+  - Contras (formulário + lista)
+- Formulários simples com botões de ação
+- Sistema de upvote para ideias e pontos
+- Ações de edição e exclusão
+- Feedback visual para interações
+
 ## Padrões de API
 
 - RESTful
@@ -77,3 +101,12 @@
 - Testes unitários para serviços
 - Testes de componentes
 - Testes E2E para fluxos completos
+
+## Padrões de UI/UX
+
+- Material Design como base
+- Cards para organização de conteúdo
+- Formulários com validação em tempo real
+- Feedback imediato para ações do usuário
+- Animações sutis para melhoria da experiência
+- Responsividade para diferentes dispositivos

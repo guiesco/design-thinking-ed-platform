@@ -13,6 +13,7 @@ import { EmpathyStepComponent } from './project/components/empathy-step/empathy-
 import { ProjectComponent } from './project/project.component';
 import { ChallengeDefinitionStepComponent } from './project/components/challenge-definition-step/challenge-definition-step.component';
 import { ProblemDefinitionStepComponent } from './project/components/problem-definition-step/problem-definition-step.component';
+import { IdeationStepComponent } from './project/components/ideation-step/ideation-step.component';
 
 const pagesRoutes: Routes = [
   {
@@ -80,6 +81,10 @@ const pagesRoutes: Routes = [
           {
             path: 'problem-definition',
             component: ProblemDefinitionStepComponent,
+          },
+          {
+            path: 'ideate',
+            component: IdeationStepComponent,
           },
           {
             path: '',

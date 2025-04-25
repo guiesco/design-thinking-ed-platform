@@ -43,7 +43,9 @@ import { CommonModule as AppCommonModule } from '../common/common.module';
 import { MatStepperModule } from '@angular/material/stepper';
 import { ProblemDefinitionStepComponent } from './project/components/problem-definition-step/problem-definition-step.component';
 import { ProblemDefinitionStoreModule } from '../stores/problem-definition-store/problem-definition.module';
-
+import { IdeationStepComponent } from './project/components/ideation-step/ideation-step.component';
+import { IdeationStateModule } from '../stores/ideation-store/ideation.module';
+import { IdeaPointsComponent } from './project/components/ideation-step/idea-points/idea-points.component';
 const angularMaterialModules = [
   MatToolbarModule,
   MatSidenavModule,
@@ -75,6 +77,7 @@ const stateModules = [
   ProjectStateModule,
   ChallengeDefinitionModule,
   ProblemDefinitionStoreModule,
+  IdeationStateModule,
 ];
 
 const importModules = [FormsModule, ReactiveFormsModule, ...stateModules];
@@ -100,6 +103,8 @@ const importModules = [FormsModule, ReactiveFormsModule, ...stateModules];
     EmpathyStepComponent,
     ChallengeDefinitionStepComponent,
     ProblemDefinitionStepComponent,
+    IdeationStepComponent,
+    IdeaPointsComponent,
   ],
   exports: [PageWrapperComponent],
 })

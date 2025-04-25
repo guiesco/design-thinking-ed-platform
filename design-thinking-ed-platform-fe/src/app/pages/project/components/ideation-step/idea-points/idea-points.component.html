@@ -1,0 +1,109 @@
+<div class="points-container">
+  <h3
+    class="points-title"
+    [ngClass]="{ pros: type === 'PRO', cons: type === 'CON' }"
+  >
+    {{ getTypeLabel() }}
+  </h3>
+
+  <!-- Formulário para adicionar novo ponto -->
+  <div class="point-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Adicionar {{ getTypeLabel() }}</mat-label>
+      <textarea
+        matInput
+        [(ngModel)]="newPointContent"
+        placeholder="Digite aqui..."
+        rows="2"
+      ></textarea>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      [color]="type === 'PRO' ? 'primary' : 'warn'"
+      (click)="onAddPoint()"
+      [disabled]="!newPointContent.trim()"
+    >
+      <mat-icon>add</mat-icon>
+      Adicionar
+    </button>
+  </div>
+
+  <!-- Lista de pontos -->
+  <div class="points-list" *ngIf="points$ | async as points">
+    <div *ngIf="points.length === 0" class="empty-points">
+      <p>Nenhum item adicionado ainda</p>
+    </div>
+
+    <div *ngFor="let point of points" class="point-item">
+      <!-- Visualização normal do ponto -->
+      <div *ngIf="editingPointId !== point.id" class="point-content">
+        <p>{{ point.content }}</p>
+
+        <div class="point-actions">
+          <div class="point-upvote">
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="onUpvotePoint(point.id)"
+              matTooltip="Curtir"
+            >
+              <mat-icon>{{
+                point.hasVoted ? "favorite" : "favorite_border"
+              }}</mat-icon>
+            </button>
+            <span class="upvote-count">{{ point.upvotes || 0 }}</span>
+          </div>
+
+          <div class="point-edit-actions" *ngIf="userId === point.userId">
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="startEditing(point)"
+              matTooltip="Editar"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="onDeletePoint(point.id)"
+              matTooltip="Excluir"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modo de edição do ponto -->
+      <div *ngIf="editingPointId === point.id" class="point-edit-form">
+        <mat-form-field appearance="outline" class="full-width">
+          <textarea
+            matInput
+            [(ngModel)]="editingPointContent"
+            placeholder="Editar conteúdo"
+            rows="2"
+          ></textarea>
+        </mat-form-field>
+        <div class="edit-actions">
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="saveEditing()"
+            matTooltip="Salvar"
+          >
+            <mat-icon>check</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="cancelEditing()"
+            matTooltip="Cancelar"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

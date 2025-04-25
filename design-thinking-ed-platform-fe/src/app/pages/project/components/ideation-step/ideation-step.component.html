@@ -1,0 +1,152 @@
+<div class="step-container">
+  <div class="step-header">
+    <h1>Ideação</h1>
+    <p>
+      Nesta etapa, você pode criar ideias e adicionar prós e contras para cada
+      uma delas. Avalie as ideias e vote nas mais relevantes para o projeto.
+    </p>
+  </div>
+
+  <!-- Formulário para criar uma nova ideia -->
+  <div class="idea-form">
+    <div class="form-container">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nova Ideia</mat-label>
+        <input
+          matInput
+          [(ngModel)]="newIdeaTitle"
+          placeholder="Digite o título da sua ideia"
+        />
+        <mat-hint>Seja claro e específico</mat-hint>
+      </mat-form-field>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="createIdea()"
+        [disabled]="!newIdeaTitle.trim()"
+      >
+        <mat-icon>add</mat-icon>
+        Adicionar Ideia
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading indicator -->
+  <div *ngIf="(loading$ | async) === true" class="loading-container">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="error$ | async as error" class="error-container">
+    <mat-error>{{
+      error.message || "Ocorreu um erro. Tente novamente."
+    }}</mat-error>
+  </div>
+
+  <!-- Lista de ideias -->
+  <div class="ideas-list" *ngIf="ideas$ | async as ideas">
+    <div *ngIf="ideas.length === 0" class="empty-ideas">
+      <p>Nenhuma ideia criada ainda. Adicione a primeira ideia acima!</p>
+    </div>
+
+    <mat-card *ngFor="let idea of ideas" class="idea-card">
+      <!-- Cabeçalho do card -->
+      <mat-card-header>
+        <div class="card-header-content">
+          <!-- Título da ideia (com modo de edição) -->
+          <div *ngIf="editingIdeaId !== idea.id" class="idea-title-container">
+            <div class="idea-title">
+              <h2>{{ idea.title }}</h2>
+            </div>
+            <div class="idea-actions" *ngIf="currentUserId === idea.userId">
+              <button
+                mat-icon-button
+                color="primary"
+                (click)="startEditingIdea(idea)"
+                matTooltip="Editar"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="confirmDeleteIdea(idea)"
+                matTooltip="Excluir"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <!-- Modo de edição de título -->
+          <div *ngIf="editingIdeaId === idea.id" class="edit-idea-form">
+            <mat-form-field appearance="outline" class="full-width">
+              <input
+                matInput
+                [(ngModel)]="editingIdeaTitle"
+                placeholder="Editar título"
+              />
+            </mat-form-field>
+            <div class="edit-actions">
+              <button
+                mat-icon-button
+                color="primary"
+                (click)="saveEditIdea()"
+                matTooltip="Salvar"
+              >
+                <mat-icon>check</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="cancelEditIdea()"
+                matTooltip="Cancelar"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <!-- Upvote de ideia -->
+          <div class="upvote-container">
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="upvoteIdea(idea)"
+              matTooltip="Curtir ideia"
+            >
+              <mat-icon>{{
+                idea.hasVoted ? "favorite" : "favorite_border"
+              }}</mat-icon>
+            </button>
+            <span class="upvote-count">{{ idea.upvotes || 0 }}</span>
+          </div>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="idea-content">
+          <!-- Coluna de Prós -->
+          <app-idea-points
+            [ideaId]="idea.id"
+            [type]="'PRO'"
+            [userId]="currentUserId"
+            (addPoint)="addPoint($event.ideaId, $event.content, $event.type)"
+            (deletePoint)="deletePoint($event)"
+            (upvotePoint)="upvotePoint($event)"
+          ></app-idea-points>
+
+          <!-- Coluna de Contras -->
+          <app-idea-points
+            [ideaId]="idea.id"
+            [type]="'CON'"
+            [userId]="currentUserId"
+            (addPoint)="addPoint($event.ideaId, $event.content, $event.type)"
+            (deletePoint)="deletePoint($event)"
+            (upvotePoint)="upvotePoint($event)"
+          ></app-idea-points>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

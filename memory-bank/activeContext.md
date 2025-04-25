@@ -2,28 +2,57 @@
 
 ## Foco Atual
 
-- Implementação dos componentes frontend para ProblemDefinition e ChallengeDefinition
-- Integração com os novos endpoints do backend
-- Implementação da verificação de etapas na navegação
+- Implementação da etapa de Ideação na plataforma de Design Thinking
+- Frontend implementado com sucesso, aguardando backend
+- Preparação para testes de integração assim que o backend estiver pronto
 
 ## Decisões Ativas
 
-- Estrutura de backend completa com entidades, DTOs, serviços e controladores
-- Padrão REST seguido em todos os endpoints
-- Validações implementadas nos DTOs
-- Serviço de verificação de etapas pronto para integração
+- A etapa de Ideação segue a sequência natural após Problem Definition
+- Interface implementada conforme especificado:
+  - Input e botão para criar uma nova ideia
+  - Cards para cada ideia com três colunas (título, prós, contras)
+  - Sistema de upvote para todas as entidades
 
-## Próximos Passos
+## Implementações Concluídas
 
-1. Criar componentes frontend para ProblemDefinition
-2. Criar componentes frontend para ChallengeDefinition
-3. Implementar integração com os endpoints
-4. Adicionar verificação de etapas na navegação
+### Frontend
+
+- ✅ Interfaces e DTOs para Ideação
+- ✅ Store completa (estado, ações, reducers, efeitos, selectors, facade)
+- ✅ Componente IdeationStep
+- ✅ Componente IdeaPoints para gerenciar prós e contras
+- ✅ Roteamento atualizado
+- ✅ Estilos responsivos implementados
+
+### Backend (Pendente)
+
+- ⏳ Entidades, DTOs e Controllers
+- ⏳ Serviços e endpoints
+
+## Próximas Etapas
+
+1. **Implementar Backend**
+
+   - Criar entidades e DTOs
+   - Implementar serviços
+   - Criar endpoints RESTful
+
+2. **Testes de Integração**
+
+   - Testar comunicação frontend-backend
+   - Verificar fluxo completo de operações CRUD
+   - Testar sistema de upvote
+
+3. **Refinamentos**
+   - Ajustar UI com base nos testes
+   - Melhorar feedback ao usuário
+   - Otimizar desempenho
 
 ## Considerações
 
-- Manter consistência com os componentes existentes
-- Implementar validações nos formulários frontend
-- Garantir feedback visual para o usuário
-- Seguir padrões de UX estabelecidos
-- Manter tipagem forte em todo o código
+- Interface implementada seguindo padrões Material Design
+- Componentes reutilizáveis para prós e contras
+- Sistema completo de upvote
+- CRUD completo para ideias e pontos
+- Layout responsivo para diversos dispositivos
