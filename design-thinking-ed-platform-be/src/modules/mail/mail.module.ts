@@ -7,16 +7,16 @@ import { MailController } from './mail.controller';
   imports: [
     MailerModule.forRoot({
       transport: {
-        host: "sandbox.smtp.mailtrap.io",
+        host: 'sandbox.smtp.mailtrap.io',
         auth: {
-          user: "9af39f4ae5a7d4",
-          pass: "061f789bc89548"
-        }
-      }
-    })
+          user: '9af39f4ae5a7d4',
+          pass: '061f789bc89548',
+        },
+      },
+    }),
   ],
   providers: [MailService],
   controllers: [MailController],
   exports: [MailService],
 })
-export class MailModule { }
+export class MailModule {}

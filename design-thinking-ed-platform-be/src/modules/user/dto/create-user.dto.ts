@@ -39,5 +39,4 @@ export class CreateUserDto {
 
   @IsOptional()
   studentClass: Partial<ClassEntity>;
-
 }

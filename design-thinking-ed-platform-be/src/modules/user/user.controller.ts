@@ -16,12 +16,15 @@ import { ClassService } from '../class/class.service';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService, readonly classService: ClassService) { }
+  constructor(
+    private readonly userService: UserService,
+    readonly classService: ClassService,
+  ) {}
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     createUserDto.userType = UserTypeEnum.STUDENT;
-    this.classService.removeStudentMail(createUserDto)
+    this.classService.removeStudentMail(createUserDto);
     return this.userService.create(createUserDto);
   }
 
