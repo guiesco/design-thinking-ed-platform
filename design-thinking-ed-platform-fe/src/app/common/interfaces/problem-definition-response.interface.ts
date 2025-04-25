@@ -12,3 +12,15 @@ export interface ProblemDefinitionResponse {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface ProblemDefinition {
+  id: number;
+  projectId: number;
+  userId: number;
+  mainQuestion: string[];
+  targetAudience: string[];
+  consequences: string[];
+  alternativeView: string[];
+  socialFactors: string[];
+  problemDefinition: string[];
+}

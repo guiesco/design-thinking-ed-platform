@@ -28,6 +28,13 @@
 
 .dialog-content {
     padding: 0 8px;
+
+    app-info-display {
+        margin-top: 16px;
+        display: block;
+        max-height: 400px;
+        overflow-y: auto;
+    }
 }
 
 .dialog-message {

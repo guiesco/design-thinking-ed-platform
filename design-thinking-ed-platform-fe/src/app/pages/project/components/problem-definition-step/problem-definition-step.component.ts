@@ -168,10 +168,17 @@ export class ProblemDefinitionStepComponent
     responseId: number;
     hasVoted: boolean;
   }): void {
-    this.problemDefinitionFacade.upvoteResponse(
-      event.responseId,
-      this.currentUserId
-    );
+    if (event.hasVoted) {
+      this.problemDefinitionFacade.removeUpvoteResponse(
+        event.responseId,
+        this.currentUserId
+      );
+    } else {
+      this.problemDefinitionFacade.upvoteResponse(
+        event.responseId,
+        this.currentUserId
+      );
+    }
   }
 
   protected override onToggleSelection(responseId: number): void {
@@ -183,18 +190,17 @@ export class ProblemDefinitionStepComponent
   }
 
   protected override onDelete(responseId: number): void {
-    this.problemDefinitionFacade.deleteResponse(responseId);
-  }
-
-  protected override onEdit(response: IResponse): void {
-    // Implementação específica se necessário
+    this.problemDefinitionFacade.deleteResponse(responseId, this.currentUserId);
   }
 
   protected override onSaveEdit(event: { id: number; content: string }): void {
-    this.problemDefinitionFacade.updateResponse({
-      id: event.id,
-      content: event.content,
-    } as ProblemDefinitionResponse);
+    this.problemDefinitionFacade.updateResponse(
+      {
+        id: event.id,
+        content: event.content,
+      } as ProblemDefinitionResponse,
+      this.currentUserId
+    );
 
     this.snackBar.open('Resposta atualizada com sucesso!', 'Fechar', {
       duration: 3000,

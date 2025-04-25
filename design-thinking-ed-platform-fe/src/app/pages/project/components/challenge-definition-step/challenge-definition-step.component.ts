@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
@@ -178,15 +178,6 @@ export class ChallengeDefinitionStepComponent extends BaseStepComponent {
     if (!this.currentUserId) return;
     this.challengeDefinitionFacade.deleteResponse(
       responseId,
-      this.currentUserId
-    );
-  }
-
-  onEdit(response: IResponse): void {
-    if (!this.currentUserId) return;
-    this.challengeDefinitionFacade.updateResponse(
-      response.id,
-      response.content,
       this.currentUserId
     );
   }

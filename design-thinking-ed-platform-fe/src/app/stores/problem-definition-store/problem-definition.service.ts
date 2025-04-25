@@ -38,16 +38,19 @@ export class ProblemDefinitionService {
   }
 
   updateResponse(
-    response: ProblemDefinitionResponse
+    response: ProblemDefinitionResponse,
+    userId: number
   ): Observable<ProblemDefinitionResponse> {
     return this.http.put<ProblemDefinitionResponse>(
-      `${this.apiUrl}/response/${response.id}`,
+      `${this.apiUrl}/response/${response.id}?userId=${userId}`,
       response
     );
   }
 
-  deleteResponse(responseId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/response/${responseId}`);
+  deleteResponse(responseId: number, userId: number): Observable<void> {
+    return this.http.delete<void>(
+      `${this.apiUrl}/response/${responseId}?userId=${userId}`
+    );
   }
 
   upvoteResponse(
@@ -60,13 +63,22 @@ export class ProblemDefinitionService {
     );
   }
 
+  removeUpvoteResponse(
+    responseId: number,
+    userId: number
+  ): Observable<ProblemDefinitionResponse> {
+    return this.http.delete<ProblemDefinitionResponse>(
+      `${this.apiUrl}/response/${responseId}/upvote?userId=${userId}`
+    );
+  }
+
   toggleResponseSelection(
     responseId: number,
     userId: number
   ): Observable<ProblemDefinitionResponse> {
     return this.http.put<ProblemDefinitionResponse>(
-      `${this.apiUrl}/response/${responseId}/toggle-selection`,
-      { userId }
+      `${this.apiUrl}/response/${responseId}/toggle-selection?userId=${userId}`,
+      {}
     );
   }
 

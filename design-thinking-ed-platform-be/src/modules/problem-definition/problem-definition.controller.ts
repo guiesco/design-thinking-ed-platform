@@ -9,10 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ProblemDefinitionService } from './problem-definition.service';
-import {
-  CreateProblemDefinitionResponseDto,
-  CreateProblemDefinitionResponsesDto,
-} from './dto/create-problem-definition-response.dto';
+import { CreateProblemDefinitionResponsesDto } from './dto/create-problem-definition-response.dto';
 import { ProblemDefinitionType } from './entities/problem-definition-response.entity';
 import { CreateProblemDefinitionDto } from './dto/create-problem-definition.dto';
 import { UpdateProblemDefinitionDto } from './dto/update-problem-definition.dto';
@@ -28,11 +25,22 @@ export class ProblemDefinitionController {
     return this.problemDefinitionService.create(dto);
   }
 
-  @Post('response')
-  createResponse(@Body() createDto: CreateProblemDefinitionResponseDto) {
-    return this.problemDefinitionService.createResponse(createDto);
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.problemDefinitionService.findOne(+id);
   }
 
+  @Get('project/:projectId')
+  findByProject(@Param('projectId') projectId: string) {
+    return this.problemDefinitionService.findByProject(+projectId);
+  }
+
+  @Put(':id')
+  update(@Param('id') id: string, @Body() dto: UpdateProblemDefinitionDto) {
+    return this.problemDefinitionService.update(+id, dto);
+  }
+
+  //responses
   @Post('responses')
   createResponses(@Body() createDto: CreateProblemDefinitionResponsesDto) {
     return this.problemDefinitionService.createResponses(createDto.responses);
@@ -57,11 +65,6 @@ export class ProblemDefinitionController {
     return this.problemDefinitionService.getResponsesByType(+projectId, type);
   }
 
-  @Get('response/:id')
-  findOneResponse(@Param('id') id: string) {
-    return this.problemDefinitionService.findOneResponse(+id);
-  }
-
   @Put('response/:id/upvote')
   upvoteResponse(@Param('id') id: string, @Query('userId') userId: string) {
     return this.problemDefinitionService.upvoteResponse(+id, +userId);
@@ -76,8 +79,11 @@ export class ProblemDefinitionController {
   }
 
   @Put('response/:id/toggle-selection')
-  toggleResponseSelection(@Param('id') id: string) {
-    return this.problemDefinitionService.toggleResponseSelection(+id);
+  toggleResponseSelection(
+    @Param('id') id: string,
+    @Query('userId') userId: string,
+  ) {
+    return this.problemDefinitionService.toggleResponseSelection(+id, +userId);
   }
 
   @Get('project/:projectId/selected-responses')
@@ -99,20 +105,5 @@ export class ProblemDefinitionController {
     @Body('content') content: string,
   ) {
     return this.problemDefinitionService.updateResponse(+id, +userId, content);
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.problemDefinitionService.findOne(+id);
-  }
-
-  @Get('project/:projectId')
-  findByProject(@Param('projectId') projectId: string) {
-    return this.problemDefinitionService.findByProject(+projectId);
-  }
-
-  @Put(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateProblemDefinitionDto) {
-    return this.problemDefinitionService.update(+id, dto);
   }
 }

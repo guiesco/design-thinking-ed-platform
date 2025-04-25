@@ -7,6 +7,7 @@ import {
   Body,
   Param,
   Query,
+  Put,
 } from '@nestjs/common';
 import { ChallengeDefinitionService } from './challenge-definition.service';
 import {
@@ -32,6 +33,8 @@ export class ChallengeDefinitionController {
     return this.challengeDefinitionService.findByProject(+projectId);
   }
 
+  //responses
+
   @Get('project/:projectId/responses')
   findAllResponsesByProject(
     @Param('projectId') projectId: string,
@@ -43,13 +46,6 @@ export class ChallengeDefinitionController {
     );
   }
 
-  @Post('response')
-  createResponse(
-    @Body() createResponseDto: CreateChallengeDefinitionResponseDto,
-  ) {
-    return this.challengeDefinitionService.createResponse(createResponseDto);
-  }
-
   @Post('responses')
   createResponses(
     @Body() createResponsesDto: CreateChallengeDefinitionResponsesDto,
@@ -59,14 +55,15 @@ export class ChallengeDefinitionController {
     );
   }
 
-  @Patch('response/:id')
+  @Put('response/:id')
   updateResponse(
     @Param('id') id: string,
-    @Body() updateResponseDto: { content: string; userId: string },
+    @Query('userId') userId: string,
+    @Body() updateResponseDto: { content: string },
   ) {
     return this.challengeDefinitionService.updateResponse(
       Number(id),
-      Number(updateResponseDto.userId),
+      Number(userId),
       updateResponseDto.content,
     );
   }
@@ -76,7 +73,7 @@ export class ChallengeDefinitionController {
     return this.challengeDefinitionService.deleteResponse(Number(id));
   }
 
-  @Post('response/:id/upvote')
+  @Put('response/:id/upvote')
   upvoteResponse(@Param('id') id: string, @Query('userId') userId: string) {
     return this.challengeDefinitionService.upvoteResponse(
       Number(id),
@@ -92,7 +89,7 @@ export class ChallengeDefinitionController {
     );
   }
 
-  @Post('response/:id/toggle-selection')
+  @Put('response/:id/toggle-selection')
   async toggleResponseSelection(
     @Param('id') id: string,
     @Query('userId') userId: string,

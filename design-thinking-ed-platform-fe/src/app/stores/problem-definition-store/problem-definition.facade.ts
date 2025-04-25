@@ -48,21 +48,36 @@ export class ProblemDefinitionFacade {
     );
   }
 
-  updateResponse(response: ProblemDefinitionResponse): void {
+  updateResponse(response: ProblemDefinitionResponse, userId: number): void {
     this.store.dispatch(
-      ProblemDefinitionActions.updateProblemDefinitionResponse({ response })
+      ProblemDefinitionActions.updateProblemDefinitionResponse({
+        response,
+        userId,
+      })
     );
   }
 
-  deleteResponse(responseId: number): void {
+  deleteResponse(responseId: number, userId: number): void {
     this.store.dispatch(
-      ProblemDefinitionActions.deleteProblemDefinitionResponse({ responseId })
+      ProblemDefinitionActions.deleteProblemDefinitionResponse({
+        responseId,
+        userId,
+      })
     );
   }
 
   upvoteResponse(responseId: number, userId: number): void {
     this.store.dispatch(
       ProblemDefinitionActions.upvoteProblemDefinitionResponse({
+        responseId,
+        userId,
+      })
+    );
+  }
+
+  removeUpvoteResponse(responseId: number, userId: number): void {
+    this.store.dispatch(
+      ProblemDefinitionActions.removeUpvoteProblemDefinitionResponse({
         responseId,
         userId,
       })

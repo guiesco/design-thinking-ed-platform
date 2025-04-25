@@ -76,8 +76,8 @@ export class ProblemDefinitionEffects {
   updateResponse$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ProblemDefinitionActions.updateProblemDefinitionResponse),
-      switchMap(({ response }) =>
-        this.problemDefinitionService.updateResponse(response).pipe(
+      switchMap(({ response, userId }) =>
+        this.problemDefinitionService.updateResponse(response, userId).pipe(
           map((updatedResponse) =>
             ProblemDefinitionActions.updateProblemDefinitionResponseSuccess({
               response: updatedResponse,
@@ -98,8 +98,8 @@ export class ProblemDefinitionEffects {
   deleteResponse$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ProblemDefinitionActions.deleteProblemDefinitionResponse),
-      switchMap(({ responseId }) =>
-        this.problemDefinitionService.deleteResponse(responseId).pipe(
+      switchMap(({ responseId, userId }) =>
+        this.problemDefinitionService.deleteResponse(responseId, userId).pipe(
           map(() =>
             ProblemDefinitionActions.deleteProblemDefinitionResponseSuccess({
               responseId,
@@ -135,6 +135,34 @@ export class ProblemDefinitionEffects {
             )
           )
         )
+      )
+    )
+  );
+
+  removeUpvoteResponse$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ProblemDefinitionActions.removeUpvoteProblemDefinitionResponse),
+      switchMap(({ responseId, userId }) =>
+        this.problemDefinitionService
+          .removeUpvoteResponse(responseId, userId)
+          .pipe(
+            map((updatedResponse) =>
+              ProblemDefinitionActions.removeUpvoteProblemDefinitionResponseSuccess(
+                {
+                  response: updatedResponse,
+                }
+              )
+            ),
+            catchError((error) =>
+              of(
+                ProblemDefinitionActions.removeUpvoteProblemDefinitionResponseFailure(
+                  {
+                    error: error.message,
+                  }
+                )
+              )
+            )
+          )
       )
     )
   );

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
@@ -208,10 +208,6 @@ export class EmpathyStepComponent extends BaseStepComponent {
         })
       );
     }
-  }
-
-  onEdit(response: IResponse): void {
-    // Implementação será feita no componente de lista
   }
 
   onSaveEdit(event: { id: number; content: string }): void {

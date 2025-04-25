@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
@@ -128,9 +128,18 @@ export class ProblemDefinitionService {
 
   async toggleResponseSelection(
     id: number,
+    userId: number,
   ): Promise<ProblemDefinitionResponse> {
     const response = await this.findOneResponse(id);
     response.isSelected = !response.isSelected;
+    if (userId) {
+      const hasVoted = await this.userVoteService.hasVoted(
+        userId,
+        VoteableEntityType.PROBLEM_DEFINITION_RESPONSE,
+        response.id,
+      );
+      response['hasVoted'] = hasVoted;
+    }
     return this.problemDefinitionResponseRepository.save(response);
   }
 
@@ -156,9 +165,13 @@ export class ProblemDefinitionService {
 
   async deleteResponse(id: number, userId: number): Promise<void> {
     const response = await this.findOneResponse(id);
-    if (response && response.userId === userId) {
-      await this.problemDefinitionResponseRepository.remove(response);
+    if (response && response.userId !== userId) {
+      throw new HttpException(
+        'You are not allowed to delete this response',
+        HttpStatus.FORBIDDEN,
+      );
     }
+    await this.problemDefinitionResponseRepository.remove(response);
   }
 
   async updateResponse(
@@ -167,11 +180,20 @@ export class ProblemDefinitionService {
     content: string,
   ): Promise<ProblemDefinitionResponse> {
     const response = await this.findOneResponse(id);
-    if (response && response.userId === userId) {
-      response.content = content;
-      return this.problemDefinitionResponseRepository.save(response);
+    if (response && response.userId !== userId) {
+      throw new HttpException(
+        'You are not allowed to update this response',
+        HttpStatus.FORBIDDEN,
+      );
     }
-    return response;
+    response.content = content;
+    const hasVoted = await this.userVoteService.hasVoted(
+      userId,
+      VoteableEntityType.PROBLEM_DEFINITION_RESPONSE,
+      response.id,
+    );
+    response['hasVoted'] = hasVoted;
+    return this.problemDefinitionResponseRepository.save(response);
   }
 
   async create(dto: CreateProblemDefinitionDto): Promise<ProblemDefinition> {

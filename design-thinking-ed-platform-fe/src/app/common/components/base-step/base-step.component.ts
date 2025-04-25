@@ -141,7 +141,6 @@ export abstract class BaseStepComponent implements OnInit {
   }): void;
   protected abstract onToggleSelection(responseId: number): void;
   protected abstract onDelete(responseId: number): void;
-  protected abstract onEdit(response: IResponse): void;
   protected abstract onSaveEdit(event: { id: number; content: string }): void;
   protected abstract refreshData(): void;
 }

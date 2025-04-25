@@ -51,7 +51,7 @@ export const createProblemDefinitionResponsesFailure = createAction(
 
 export const updateProblemDefinitionResponse = createAction(
   '[Problem Definition] Update Response',
-  props<{ response: ProblemDefinitionResponse }>()
+  props<{ response: ProblemDefinitionResponse; userId: number }>()
 );
 
 export const updateProblemDefinitionResponseSuccess = createAction(
@@ -66,7 +66,7 @@ export const updateProblemDefinitionResponseFailure = createAction(
 
 export const deleteProblemDefinitionResponse = createAction(
   '[Problem Definition] Delete Response',
-  props<{ responseId: number }>()
+  props<{ responseId: number; userId: number }>()
 );
 
 export const deleteProblemDefinitionResponseSuccess = createAction(
@@ -91,6 +91,21 @@ export const upvoteProblemDefinitionResponseSuccess = createAction(
 
 export const upvoteProblemDefinitionResponseFailure = createAction(
   '[Problem Definition] Upvote Response Failure',
+  props<{ error: string }>()
+);
+
+export const removeUpvoteProblemDefinitionResponse = createAction(
+  '[Problem Definition] Remove Upvote Response',
+  props<{ responseId: number; userId: number }>()
+);
+
+export const removeUpvoteProblemDefinitionResponseSuccess = createAction(
+  '[Problem Definition] Remove Upvote Response Success',
+  props<{ response: ProblemDefinitionResponse }>()
+);
+
+export const removeUpvoteProblemDefinitionResponseFailure = createAction(
+  '[Problem Definition] Remove Upvote Response Failure',
   props<{ error: string }>()
 );
 

@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ChallengeDefinitionResponse } from './entities/challenge-definition-response.entity';
@@ -75,18 +80,21 @@ export class ChallengeDefinitionService {
     userId: number,
     content: string,
   ): Promise<ChallengeDefinitionResponse> {
+    console.log('🚀 ~ ChallengeDefinitionService ~ userId:', userId);
     const response = await this.challengeDefinitionResponseRepository.findOne({
       where: { id: responseId },
       relations: ['user'],
     });
+    console.log('🚀 ~ ChallengeDefinitionService ~ response:', response);
 
     if (!response) {
-      throw new Error('Response not found');
+      throw new HttpException('Response not found', HttpStatus.NOT_FOUND);
     }
 
     if (response.user.id !== userId) {
-      throw new Error(
+      throw new HttpException(
         'Unauthorized: Only the creator can update this response',
+        HttpStatus.FORBIDDEN,
       );
     }
 
