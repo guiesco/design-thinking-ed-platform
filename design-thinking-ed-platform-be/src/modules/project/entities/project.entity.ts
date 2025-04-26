@@ -15,6 +15,7 @@ import { ChallengeDefinitionResponse } from '../../challenge-definition/entities
 import { ProblemDefinitionResponse } from 'src/modules/problem-definition/entities/problem-definition-response.entity';
 import { ChallengeDefinition } from 'src/modules/challenge-definition/entities/challenge-definition.entity';
 import { ProblemDefinition } from 'src/modules/problem-definition/entities/problem-definition.entity';
+import { IdeationIdea } from '../../ideation/entities/ideation-idea.entity';
 
 @Entity()
 export class ProjectEntity {
@@ -48,6 +49,9 @@ export class ProjectEntity {
 
   @OneToMany(() => ProblemDefinitionResponse, (response) => response.project)
   problemDefinitionResponses: ProblemDefinitionResponse[];
+
+  @OneToMany(() => IdeationIdea, (idea) => idea.project)
+  ideationIdeas: IdeationIdea[];
 
   @Column({ nullable: true })
   name: string;

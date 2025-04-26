@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 import {
   CreateIdeationIdeaDto,
   CreateIdeationPointDto,
@@ -13,13 +13,15 @@ import {
 } from '../../../../common/interfaces/ideation.interface';
 import { IdeationFacade } from '../../../../stores/ideation-store/ideation.facade';
 import { ConfirmationDialogComponent } from '../../../../common/components/confirmation-dialog/confirmation-dialog.component';
-
+import { IUser } from 'src/app/common/interfaces/user.interface';
+import { UserFacade } from 'src/app/stores/user-state-store/user.facade';
 @Component({
   selector: 'app-ideation-step',
   templateUrl: './ideation-step.component.html',
   styleUrls: ['./ideation-step.component.scss', '../../project.component.scss'],
 })
 export class IdeationStepComponent implements OnInit, OnDestroy {
+  pointType = IdeationPointType;
   projectId!: number;
   currentUserId!: number;
   ideas$!: Observable<IdeationIdea[]>;
@@ -34,6 +36,7 @@ export class IdeationStepComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private ideationFacade: IdeationFacade,
+    private userFacade: UserFacade,
     private snackBar: MatSnackBar,
     private dialog: MatDialog
   ) {}
@@ -42,14 +45,23 @@ export class IdeationStepComponent implements OnInit, OnDestroy {
     this.ideas$ = this.ideationFacade.ideas$;
     this.loading$ = this.ideationFacade.loading$;
     this.error$ = this.ideationFacade.error$;
+    this.userFacade.user$.pipe(take(1)).subscribe((user: IUser | null) => {
+      if (user?.id) {
+        this.currentUserId = Number(user.id);
+      }
+    });
 
-    this.queryParamsSub = this.route.queryParams
-      .pipe(filter((params) => params['userId'] && params['projectId']))
-      .subscribe((params) => {
-        this.currentUserId = +params['userId'];
-        this.projectId = +params['projectId'];
-        this.loadData();
-      });
+    this.route.parent?.params.subscribe((params) => {
+      this.projectId = +params['projectId'];
+      this.loadData();
+    });
+  }
+
+  getIdeaPoints(
+    points: IdeationPoint[],
+    type: IdeationPointType
+  ): IdeationPoint[] {
+    return points?.filter((point) => point.type === type) || [];
   }
 
   ngOnDestroy(): void {
@@ -60,7 +72,10 @@ export class IdeationStepComponent implements OnInit, OnDestroy {
 
   loadData(): void {
     if (this.projectId) {
-      this.ideationFacade.loadIdeasByProject(this.projectId);
+      this.ideationFacade.loadIdeasByProject(
+        this.projectId,
+        this.currentUserId
+      );
     }
   }
 
@@ -75,6 +90,7 @@ export class IdeationStepComponent implements OnInit, OnDestroy {
       projectId: this.projectId,
       userId: this.currentUserId,
     };
+    console.log('🚀 ~ IdeationStepComponent ~ createIdea ~ idea:', idea);
 
     this.ideationFacade.createIdea(idea);
     this.newIdeaTitle = '';
@@ -91,7 +107,7 @@ export class IdeationStepComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.ideationFacade.updateIdea(this.editingIdeaId, {
+    this.ideationFacade.updateIdea(this.editingIdeaId, this.currentUserId, {
       title: this.editingIdeaTitle,
     });
     this.cancelEditIdea();
@@ -113,7 +129,7 @@ export class IdeationStepComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.ideationFacade.deleteIdea(idea.id);
+        this.ideationFacade.deleteIdea(idea.id, this.currentUserId);
       }
     });
   }
@@ -138,7 +154,8 @@ export class IdeationStepComponent implements OnInit, OnDestroy {
     this.ideationFacade.createPoint(point);
   }
 
-  deletePoint(pointId: number): void {
+  deletePoint(event: { pointId: number; ideaId: number }): void {
+    const { pointId, ideaId } = event;
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       data: {
         title: 'Confirmar exclusão',
@@ -150,7 +167,7 @@ export class IdeationStepComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.ideationFacade.deletePoint(pointId);
+        this.ideationFacade.deletePoint(pointId, this.currentUserId, ideaId);
       }
     });
   }

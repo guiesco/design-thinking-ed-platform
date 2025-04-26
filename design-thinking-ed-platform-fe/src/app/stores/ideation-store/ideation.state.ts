@@ -5,14 +5,12 @@ import {
 
 export interface IdeationState {
   ideas: IdeationIdea[];
-  points: IdeationPoint[];
   loading: boolean;
   error: any;
 }
 
 export const initialIdeationState: IdeationState = {
   ideas: [],
-  points: [],
   loading: false,
   error: null,
 };

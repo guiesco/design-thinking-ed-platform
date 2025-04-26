@@ -38,8 +38,10 @@ export class IdeationFacade {
   constructor(private store: Store) {}
 
   // Ideas methods
-  loadIdeasByProject(projectId: number): void {
-    this.store.dispatch(IdeationActions.loadIdeasByProject({ projectId }));
+  loadIdeasByProject(projectId: number, userId?: number): void {
+    this.store.dispatch(
+      IdeationActions.loadIdeasByProject({ projectId, userId })
+    );
   }
 
   getIdeaById(ideaId: number): Observable<IdeationIdea | undefined> {
@@ -50,12 +52,16 @@ export class IdeationFacade {
     this.store.dispatch(IdeationActions.createIdea({ idea }));
   }
 
-  updateIdea(ideaId: number, update: UpdateIdeationIdeaDto): void {
-    this.store.dispatch(IdeationActions.updateIdea({ ideaId, update }));
+  updateIdea(
+    ideaId: number,
+    userId: number,
+    update: UpdateIdeationIdeaDto
+  ): void {
+    this.store.dispatch(IdeationActions.updateIdea({ ideaId, userId, update }));
   }
 
-  deleteIdea(ideaId: number): void {
-    this.store.dispatch(IdeationActions.deleteIdea({ ideaId }));
+  deleteIdea(ideaId: number, userId: number): void {
+    this.store.dispatch(IdeationActions.deleteIdea({ ideaId, userId }));
   }
 
   upvoteIdea(ideaId: number, userId: number): void {
@@ -83,12 +89,20 @@ export class IdeationFacade {
     this.store.dispatch(IdeationActions.createPoint({ point }));
   }
 
-  updatePoint(pointId: number, update: UpdateIdeationPointDto): void {
-    this.store.dispatch(IdeationActions.updatePoint({ pointId, update }));
+  updatePoint(
+    pointId: number,
+    userId: number,
+    update: UpdateIdeationPointDto
+  ): void {
+    this.store.dispatch(
+      IdeationActions.updatePoint({ pointId, userId, update })
+    );
   }
 
-  deletePoint(pointId: number): void {
-    this.store.dispatch(IdeationActions.deletePoint({ pointId }));
+  deletePoint(pointId: number, userId: number, ideaId: number): void {
+    this.store.dispatch(
+      IdeationActions.deletePoint({ pointId, userId, ideaId })
+    );
   }
 
   upvotePoint(pointId: number, userId: number): void {

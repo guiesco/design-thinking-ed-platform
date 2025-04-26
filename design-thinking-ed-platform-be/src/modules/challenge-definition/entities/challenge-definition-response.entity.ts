@@ -53,7 +53,7 @@ export class ChallengeDefinitionResponse {
   @Column({ name: 'project_id' })
   projectId: number;
 
-  @OneToMany(() => UserVote, (vote) => vote.challengeDefinitionResponse)
+  @OneToMany(() => UserVote, (vote) => vote.entityId)
   votes: UserVote[];
 
   @Column({ default: 0 })

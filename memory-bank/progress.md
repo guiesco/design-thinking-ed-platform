@@ -13,8 +13,8 @@
 - ✅ Project
 - ✅ ProblemDefinition
 - ✅ ChallengeDefinition
-- ⏳ IdeationIdea
-- ⏳ IdeationPoint
+- ✅ IdeationIdea
+- ✅ IdeationPoint
 
 #### Serviços
 
@@ -24,7 +24,7 @@
 - ✅ StepVerificationService
 - ✅ UserService
 - ✅ ProjectService
-- ⏳ IdeationService
+- ✅ IdeationService
 
 ### Frontend
 
@@ -47,13 +47,13 @@
 - ✅ ProjectStore
 - ✅ IdeationStore
 
-## Nova Etapa: Ideação
+## Etapa de Ideação
 
-### Backend (Pendente)
+### Backend (Implementado)
 
 #### Entidades
 
-- ⏳ IdeationIdea
+- ✅ IdeationIdea
 
   - id: number
   - title: string
@@ -62,7 +62,7 @@
   - upvotes: number
   - timestamps: createdAt, updatedAt
 
-- ⏳ IdeationPoint
+- ✅ IdeationPoint
   - id: number
   - content: string
   - type: IdeationPointType (PRO/CON)
@@ -73,32 +73,32 @@
 
 #### DTOs
 
-- ⏳ CreateIdeationIdeaDto
-- ⏳ UpdateIdeationIdeaDto
-- ⏳ CreateIdeationPointDto
-- ⏳ UpdateIdeationPointDto
+- ✅ CreateIdeationIdeaDto
+- ✅ UpdateIdeationIdeaDto
+- ✅ CreateIdeationPointDto
+- ✅ UpdateIdeationPointDto
 
 #### Serviço
 
-- ⏳ IdeationService
-  - create, update, delete para Ideias
-  - create, update, delete para Pontos
-  - upvote para Ideias e Pontos
-  - getByProject para listar todas as ideias de um projeto
+- ✅ IdeationService
+  - ✅ create, update, delete para Ideias
+  - ✅ create, update, delete para Pontos
+  - ✅ upvote para Ideias e Pontos
+  - ✅ getByProject para listar todas as ideias de um projeto
 
 #### Controlador
 
-- ⏳ IdeationController
-  - POST /ideation/idea
-  - GET /ideation/idea/:id
-  - GET /ideation/idea?projectId=:id
-  - PUT /ideation/idea/:id
-  - DELETE /ideation/idea/:id
-  - POST /ideation/idea/:id/upvote
-  - POST /ideation/point
-  - PUT /ideation/point/:id
-  - DELETE /ideation/point/:id
-  - POST /ideation/point/:id/upvote
+- ✅ IdeationController
+  - ✅ POST /ideation/idea
+  - ✅ GET /ideation/idea/:id
+  - ✅ GET /ideation/idea?projectId=:id
+  - ✅ PUT /ideation/idea/:id
+  - ✅ DELETE /ideation/idea/:id
+  - ✅ POST /ideation/idea/:id/upvote
+  - ✅ POST /ideation/point
+  - ✅ PUT /ideation/point/:id
+  - ✅ DELETE /ideation/point/:id
+  - ✅ POST /ideation/point/:id/upvote
 
 ### Frontend (Implementado)
 
@@ -144,45 +144,29 @@
 
 ## Próximos Passos Detalhados
 
-### 1. Backend
+### 1. Testes e Integração
 
-1. **Entidades e DTOs**
+1. **Testes de Backend**
 
-   - Criar entity IdeationIdea
-   - Criar entity IdeationPoint
-   - Criar DTOs correspondentes
+   - Implementar testes unitários para IdeationService
+   - Testar endpoints do IdeationController
 
-2. **Serviço**
+2. **Testes de Integração**
 
-   - Implementar IdeationService com métodos CRUD
-   - Adicionar lógica de upvote
+   - Testar comunicação frontend-backend
+   - Verificar fluxo completo de operações CRUD
+   - Testar sistema de upvote
 
-3. **Controlador**
-   - Implementar endpoints RESTful
-   - Adicionar validações e tratamento de erros
-
-### 2. Testes e Refinamentos
-
-1. **Testes da Interface**
-
-   - Testar criação e edição de ideias
-   - Testar adição e edição de prós e contras
-   - Verificar sistema de upvote
-   - Testar responsividade em diferentes dispositivos
-
-2. **Melhorias de UX**
-   - Adicionar mensagens de confirmação
-   - Implementar animações para transições
-   - Melhorar feedback visual
-
-## Bloqueadores
-
-- Backend pendente para testes completos da interface
+3. **Refinamentos**
+   - Ajustar UI com base nos testes
+   - Melhorar feedback ao usuário
+   - Otimizar desempenho
 
 ## Notas
 
-- Interface implementada com Material Design
-- Uso de componentes reutilizáveis para prós e contras
-- Layout responsivo para desktop e dispositivos móveis
-- Sistema completo de CRUD para ideias e pontos
-- Sistema de upvote implementado para ideias e pontos
+- Backend implementado seguindo os padrões da aplicação
+- Entidades e DTOs criados conforme definido
+- Serviço implementado com métodos CRUD e lógica de upvote
+- Controlador com endpoints RESTful para todas as operações necessárias
+- Integração com UserVoteService para gerenciar upvotes
+- Próxima fase: testes e integração com o frontend existente

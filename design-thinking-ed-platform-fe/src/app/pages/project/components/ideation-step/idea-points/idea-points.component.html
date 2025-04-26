@@ -1,7 +1,10 @@
 <div class="points-container">
   <h3
     class="points-title"
-    [ngClass]="{ pros: type === 'PRO', cons: type === 'CON' }"
+    [ngClass]="{
+      pros: type === pointTypeEnum.PRO,
+      cons: type === pointTypeEnum.CON
+    }"
   >
     {{ getTypeLabel() }}
   </h3>
@@ -19,7 +22,7 @@
     </mat-form-field>
     <button
       mat-raised-button
-      [color]="type === 'PRO' ? 'primary' : 'warn'"
+      [color]="type === pointTypeEnum.PRO ? 'primary' : 'warn'"
       (click)="onAddPoint()"
       [disabled]="!newPointContent.trim()"
     >
@@ -29,7 +32,7 @@
   </div>
 
   <!-- Lista de pontos -->
-  <div class="points-list" *ngIf="points$ | async as points">
+  <div class="points-list" *ngIf="points.length > 0">
     <div *ngIf="points.length === 0" class="empty-points">
       <p>Nenhum item adicionado ainda</p>
     </div>
@@ -66,7 +69,7 @@
             <button
               mat-icon-button
               color="warn"
-              (click)="onDeletePoint(point.id)"
+              (click)="onDeletePoint(point.id, ideaId)"
               matTooltip="Excluir"
             >
               <mat-icon>delete</mat-icon>

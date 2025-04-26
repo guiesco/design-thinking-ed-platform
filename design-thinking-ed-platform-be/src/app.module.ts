@@ -10,6 +10,8 @@ import { EmpathyMapModule } from './modules/empathy-map/empathy-map.module';
 import { ChallengeDefinitionModule } from './modules/challenge-definition/challenge-definition.module';
 import { UserVoteModule } from './modules/user-vote/user-vote.module';
 import { ProblemDefinitionModule } from './modules/problem-definition/problem-definition.module';
+import { MailModule } from './modules/mail/mail.module';
+import { IdeationModule } from './modules/ideation/ideation.module';
 
 @Module({
   imports: [
@@ -32,6 +34,8 @@ import { ProblemDefinitionModule } from './modules/problem-definition/problem-de
     UserVoteModule,
     ChallengeDefinitionModule,
     ProblemDefinitionModule,
+    MailModule,
+    IdeationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

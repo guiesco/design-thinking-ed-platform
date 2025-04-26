@@ -17,9 +17,8 @@ export const selectIdeaById = (ideaId: number) =>
   );
 
 // Points selectors
-export const selectAllPoints = createSelector(
-  selectIdeationState,
-  (state) => state.points
+export const selectAllPoints = createSelector(selectIdeationState, (state) =>
+  state.ideas.flatMap((idea) => idea.points)
 );
 
 export const selectPointsByIdeaId = (ideaId: number) =>

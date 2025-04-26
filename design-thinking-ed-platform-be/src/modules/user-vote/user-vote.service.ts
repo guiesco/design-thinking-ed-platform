@@ -64,4 +64,14 @@ export class UserVoteService {
       },
     });
   }
+
+  async deleteVotesByEntity(
+    entityType: VoteableEntityType,
+    entityId: number,
+  ): Promise<void> {
+    await this.userVoteRepository.delete({
+      entityType,
+      entityId,
+    });
+  }
 }

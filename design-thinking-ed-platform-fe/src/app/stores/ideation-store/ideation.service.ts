@@ -20,10 +20,15 @@ export class IdeationService {
   constructor(private http: HttpClient) {}
 
   // Ideas
-  getIdeasByProject(projectId: number): Observable<IdeationIdea[]> {
-    return this.http.get<IdeationIdea[]>(
-      `${this.apiUrl}/idea?projectId=${projectId}`
-    );
+  getIdeasByProject(
+    projectId: number,
+    userId?: number
+  ): Observable<IdeationIdea[]> {
+    let url = `${this.apiUrl}/idea?projectId=${projectId}`;
+    if (userId) {
+      url += `&userId=${userId}`;
+    }
+    return this.http.get<IdeationIdea[]>(url);
   }
 
   getIdeaById(ideaId: number): Observable<IdeationIdea> {
@@ -36,19 +41,25 @@ export class IdeationService {
 
   updateIdea(
     ideaId: number,
+    userId: number,
     update: UpdateIdeationIdeaDto
   ): Observable<IdeationIdea> {
-    return this.http.put<IdeationIdea>(`${this.apiUrl}/idea/${ideaId}`, update);
+    return this.http.put<IdeationIdea>(
+      `${this.apiUrl}/idea/${ideaId}?userId=${userId}`,
+      update
+    );
   }
 
-  deleteIdea(ideaId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/idea/${ideaId}`);
+  deleteIdea(ideaId: number, userId: number): Observable<void> {
+    return this.http.delete<void>(
+      `${this.apiUrl}/idea/${ideaId}?userId=${userId}`
+    );
   }
 
   upvoteIdea(ideaId: number, userId: number): Observable<IdeationIdea> {
     return this.http.post<IdeationIdea>(
-      `${this.apiUrl}/idea/${ideaId}/upvote`,
-      { userId }
+      `${this.apiUrl}/idea/${ideaId}/upvote?userId=${userId}`,
+      {}
     );
   }
 
@@ -65,22 +76,25 @@ export class IdeationService {
 
   updatePoint(
     pointId: number,
+    userId: number,
     update: UpdateIdeationPointDto
   ): Observable<IdeationPoint> {
     return this.http.put<IdeationPoint>(
-      `${this.apiUrl}/point/${pointId}`,
+      `${this.apiUrl}/point/${pointId}?userId=${userId}`,
       update
     );
   }
 
-  deletePoint(pointId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/point/${pointId}`);
+  deletePoint(pointId: number, userId: number): Observable<void> {
+    return this.http.delete<void>(
+      `${this.apiUrl}/point/${pointId}?userId=${userId}`
+    );
   }
 
   upvotePoint(pointId: number, userId: number): Observable<IdeationPoint> {
     return this.http.post<IdeationPoint>(
-      `${this.apiUrl}/point/${pointId}/upvote`,
-      { userId }
+      `${this.apiUrl}/point/${pointId}/upvote?userId=${userId}`,
+      {}
     );
   }
 }

@@ -16,8 +16,8 @@ export class IdeationEffects {
   loadIdeas$ = createEffect(() =>
     this.actions$.pipe(
       ofType(IdeationActions.loadIdeasByProject),
-      mergeMap(({ projectId }) =>
-        this.ideationService.getIdeasByProject(projectId).pipe(
+      mergeMap(({ projectId, userId }) =>
+        this.ideationService.getIdeasByProject(projectId, userId).pipe(
           map((ideas) => IdeationActions.loadIdeasSuccess({ ideas })),
           catchError((error) => of(IdeationActions.loadIdeasFailure({ error })))
         )
@@ -42,8 +42,8 @@ export class IdeationEffects {
   updateIdea$ = createEffect(() =>
     this.actions$.pipe(
       ofType(IdeationActions.updateIdea),
-      mergeMap(({ ideaId, update }) =>
-        this.ideationService.updateIdea(ideaId, update).pipe(
+      mergeMap(({ ideaId, userId, update }) =>
+        this.ideationService.updateIdea(ideaId, userId, update).pipe(
           map((idea) => IdeationActions.updateIdeaSuccess({ idea })),
           catchError((error) =>
             of(IdeationActions.updateIdeaFailure({ error }))
@@ -56,8 +56,8 @@ export class IdeationEffects {
   deleteIdea$ = createEffect(() =>
     this.actions$.pipe(
       ofType(IdeationActions.deleteIdea),
-      mergeMap(({ ideaId }) =>
-        this.ideationService.deleteIdea(ideaId).pipe(
+      mergeMap(({ ideaId, userId }) =>
+        this.ideationService.deleteIdea(ideaId, userId).pipe(
           map(() => IdeationActions.deleteIdeaSuccess({ ideaId })),
           catchError((error) =>
             of(IdeationActions.deleteIdeaFailure({ error }))
@@ -113,8 +113,8 @@ export class IdeationEffects {
   updatePoint$ = createEffect(() =>
     this.actions$.pipe(
       ofType(IdeationActions.updatePoint),
-      mergeMap(({ pointId, update }) =>
-        this.ideationService.updatePoint(pointId, update).pipe(
+      mergeMap(({ pointId, userId, update }) =>
+        this.ideationService.updatePoint(pointId, userId, update).pipe(
           map((point) => IdeationActions.updatePointSuccess({ point })),
           catchError((error) =>
             of(IdeationActions.updatePointFailure({ error }))
@@ -127,9 +127,9 @@ export class IdeationEffects {
   deletePoint$ = createEffect(() =>
     this.actions$.pipe(
       ofType(IdeationActions.deletePoint),
-      mergeMap(({ pointId }) =>
-        this.ideationService.deletePoint(pointId).pipe(
-          map(() => IdeationActions.deletePointSuccess({ pointId })),
+      mergeMap(({ pointId, userId, ideaId }) =>
+        this.ideationService.deletePoint(pointId, userId).pipe(
+          map(() => IdeationActions.deletePointSuccess({ pointId, ideaId })),
           catchError((error) =>
             of(IdeationActions.deletePointFailure({ error }))
           )

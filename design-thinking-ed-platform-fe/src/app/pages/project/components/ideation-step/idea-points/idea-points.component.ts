@@ -1,11 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 import {
   IdeationPoint,
   IdeationPointType,
   IdeationPointTypeLabel,
 } from '../../../../../common/interfaces/ideation.interface';
 import { IdeationFacade } from '../../../../../stores/ideation-store/ideation.facade';
+import { UserFacade } from 'src/app/stores/user-state-store/user.facade';
+import { IUser } from 'src/app/common/interfaces/user.interface';
 
 @Component({
   selector: 'app-idea-points',
@@ -16,35 +18,40 @@ export class IdeaPointsComponent implements OnInit {
   @Input() ideaId!: number;
   @Input() type!: string;
   @Input() userId!: number;
+  @Input() points!: IdeationPoint[];
 
   @Output() addPoint = new EventEmitter<{
     ideaId: number;
     content: string;
     type: IdeationPointType;
   }>();
-  @Output() deletePoint = new EventEmitter<number>();
+  @Output() deletePoint = new EventEmitter<{
+    pointId: number;
+    ideaId: number;
+  }>();
   @Output() upvotePoint = new EventEmitter<number>();
 
-  points$!: Observable<IdeationPoint[]>;
   pointTypeEnum = IdeationPointType;
   pointTypeLabel = IdeationPointTypeLabel;
   newPointContent = '';
   editingPointId: number | null = null;
   editingPointContent = '';
-
-  constructor(private ideationFacade: IdeationFacade) {}
+  currentUserId!: number;
+  constructor(
+    private ideationFacade: IdeationFacade,
+    private userFacade: UserFacade
+  ) {}
 
   ngOnInit(): void {
-    if (this.type === 'PRO') {
-      this.points$ = this.ideationFacade.getProsByIdeaId(this.ideaId);
-    } else {
-      this.points$ = this.ideationFacade.getConsByIdeaId(this.ideaId);
-    }
-    this.ideationFacade.loadPointsByIdea(this.ideaId);
+    this.userFacade.user$.pipe(take(1)).subscribe((user: IUser | null) => {
+      if (user?.id) {
+        this.currentUserId = Number(user.id);
+      }
+    });
   }
 
   getTypeLabel(): string {
-    return this.type === 'PRO' ? 'Prós' : 'Contras';
+    return this.type === IdeationPointType.PRO ? 'Prós' : 'Contras';
   }
 
   onAddPoint(): void {
@@ -54,13 +61,16 @@ export class IdeaPointsComponent implements OnInit {
     this.addPoint.emit({
       ideaId: this.ideaId,
       content: this.newPointContent,
-      type: this.type === 'PRO' ? IdeationPointType.PRO : IdeationPointType.CON,
+      type:
+        this.type === IdeationPointType.PRO
+          ? IdeationPointType.PRO
+          : IdeationPointType.CON,
     });
     this.newPointContent = '';
   }
 
-  onDeletePoint(pointId: number): void {
-    this.deletePoint.emit(pointId);
+  onDeletePoint(pointId: number, ideaId: number): void {
+    this.deletePoint.emit({ pointId, ideaId });
   }
 
   onUpvotePoint(pointId: number): void {
@@ -82,7 +92,7 @@ export class IdeaPointsComponent implements OnInit {
       return;
     }
 
-    this.ideationFacade.updatePoint(this.editingPointId, {
+    this.ideationFacade.updatePoint(this.editingPointId, this.currentUserId, {
       content: this.editingPointContent,
     });
 

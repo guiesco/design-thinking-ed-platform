@@ -129,8 +129,9 @@
           <!-- Coluna de Prós -->
           <app-idea-points
             [ideaId]="idea.id"
-            [type]="'PRO'"
+            [type]="pointType.PRO"
             [userId]="currentUserId"
+            [points]="getIdeaPoints(idea.points, pointType.PRO)"
             (addPoint)="addPoint($event.ideaId, $event.content, $event.type)"
             (deletePoint)="deletePoint($event)"
             (upvotePoint)="upvotePoint($event)"
@@ -139,8 +140,9 @@
           <!-- Coluna de Contras -->
           <app-idea-points
             [ideaId]="idea.id"
-            [type]="'CON'"
+            [type]="pointType.CON"
             [userId]="currentUserId"
+            [points]="getIdeaPoints(idea.points, pointType.CON)"
             (addPoint)="addPoint($event.ideaId, $event.content, $event.type)"
             (deletePoint)="deletePoint($event)"
             (upvotePoint)="upvotePoint($event)"

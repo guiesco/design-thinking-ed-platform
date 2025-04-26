@@ -65,7 +65,6 @@ export const ideationReducer = createReducer(
   on(IdeationActions.deleteIdeaSuccess, (state, { ideaId }) => ({
     ...state,
     ideas: state.ideas.filter((i) => i.id !== ideaId),
-    points: state.points.filter((p) => p.ideaId !== ideaId),
     loading: false,
   })),
 
@@ -84,25 +83,39 @@ export const ideationReducer = createReducer(
 
   on(IdeationActions.createPointSuccess, (state, { point }) => ({
     ...state,
-    points: [...state.points, point],
+    ideas: state.ideas.map((i) =>
+      i.id === point.ideaId ? { ...i, points: [...i.points, point] } : i
+    ),
     loading: false,
   })),
 
   on(IdeationActions.updatePointSuccess, (state, { point }) => ({
     ...state,
-    points: state.points.map((p) => (p.id === point.id ? point : p)),
+    ideas: state.ideas.map((i) =>
+      i.id === point.ideaId
+        ? { ...i, points: i.points.map((p) => (p.id === point.id ? point : p)) }
+        : i
+    ),
     loading: false,
   })),
 
-  on(IdeationActions.deletePointSuccess, (state, { pointId }) => ({
+  on(IdeationActions.deletePointSuccess, (state, { pointId, ideaId }) => ({
     ...state,
-    points: state.points.filter((p) => p.id !== pointId),
+    ideas: state.ideas.map((i) =>
+      i.id === ideaId
+        ? { ...i, points: i.points.filter((p) => p.id !== pointId) }
+        : i
+    ),
     loading: false,
   })),
 
   on(IdeationActions.upvotePointSuccess, (state, { point }) => ({
     ...state,
-    points: state.points.map((p) => (p.id === point.id ? point : p)),
+    ideas: state.ideas.map((i) =>
+      i.id === point.ideaId
+        ? { ...i, points: i.points.map((p) => (p.id === point.id ? point : p)) }
+        : i
+    ),
     loading: false,
   }))
 );

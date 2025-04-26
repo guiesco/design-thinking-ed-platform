@@ -11,6 +11,7 @@ export interface IdeationIdea {
   hasVoted?: boolean;
   createdAt: Date;
   updatedAt: Date;
+  points: IdeationPoint[];
 }
 
 export interface IdeationPoint {
@@ -27,8 +28,8 @@ export interface IdeationPoint {
 }
 
 export enum IdeationPointType {
-  PRO = 'PRO',
-  CON = 'CON',
+  PRO = 'pro',
+  CON = 'con',
 }
 
 export enum IdeationPointTypeLabel {
