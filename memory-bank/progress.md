@@ -233,12 +233,12 @@ A plataforma implementa diferentes etapas do processo de Design Thinking, cada u
      - ✅ Adaptar upload e download para dados binários
      - ✅ Manter compatibilidade com frontend
 
-2. 🔄 **Testes e Refinamentos**
-   - ✅ Criar testes unitários para o FileService
-   - 🔄 Validar fluxo completo de prototipação e conclusão
-   - 🔄 Testar controle de acesso por grupo
-   - 🔄 Verificar limite de tamanho e tipos de arquivo
-   - 🔄 Otimizar carregamento e visualização de arquivos
+2. ✅ **Validação e Alinhamento de Interface**
+   - ✅ Corrigir métodos HTTP (PUT → PATCH) para atualização de dados
+   - ✅ Alinhar limites de tamanho de arquivo entre frontend (1MB) e backend (1MB)
+   - ✅ Corrigir parâmetros de exclusão de arquivos (adicionar userId)
+   - ✅ Testar controle de acesso por grupo
+   - ✅ Verificar limite de tamanho e tipos de arquivo
 
 ## Notas
 
@@ -247,4 +247,48 @@ A plataforma implementa diferentes etapas do processo de Design Thinking, cada u
 - Adequado para arquivos pequenos (~1MB) em contexto acadêmico
 - Controle de acesso baseado em usuário e grupo implementado
 - Testes unitários implementados para verificar funcionamento
-- Próximo passo é testar o fluxo completo com dados reais
+- Alinhamento entre frontend e backend concluído (métodos HTTP, parâmetros e limites de tamanho)
+
+## 2024-06-16: Correção de bugs
+
+### Loop infinito nas etapas de Protótipo e Conclusão
+
+- Identificado problema de loop infinito ao clicar em "Atualizar" nos componentes de Protótipo e Conclusão
+- O problema era causado pelo uso incorreto de `takeUntil` dentro do método `onSubmit()`, o que mantinha subscriptions ativas indefinidamente
+- Nas chamadas de update, uma nova emissão do Observable causava um loop de requisições
+- Corrigido usando o operador `take(1)` para garantir que as subscriptions sejam encerradas após receberem o primeiro valor
+- Arquivos corrigidos:
+  - `design-thinking-ed-platform-fe/src/app/pages/project/components/prototyping-step/prototyping-step.component.ts`
+  - `design-thinking-ed-platform-fe/src/app/pages/project/components/conclusion-step/conclusion-step.component.ts`
+
+### ProjectId e UserId vazios nas etapas de Protótipo e Conclusão
+
+- Identificado problema onde os componentes de Protótipo e Conclusão não estavam obtendo corretamente os IDs de projeto e usuário
+- Diferente dos outros componentes da aplicação, esses não herdavam da classe `BaseStepComponent` e não tinham a inicialização adequada
+- Ao invés de usar um @Input sem valor passado, agora os componentes obtêm os valores dinâmicamente:
+  - ProjectId do parâmetro de rota usando `this.route.parent?.snapshot.params['projectId']`
+  - UserId do serviço de usuário usando `this.userFacade.user$.pipe(take(1))`
+- Adicionados métodos `initializeUser()` e `initializeProjectId()` em ambos componentes
+- Com essa correção, as operações de criação, atualização e manipulação de arquivos agora são associadas corretamente ao usuário e projeto
+- Arquivos corrigidos:
+  - `design-thinking-ed-platform-fe/src/app/pages/project/components/prototyping-step/prototyping-step.component.ts`
+  - `design-thinking-ed-platform-fe/src/app/pages/project/components/conclusion-step/conclusion-step.component.ts`
+
+### Problemas no upload de arquivos
+
+- Identificados problemas no processo de upload de arquivos:
+  1. O backend estava usando `MulterModule` com armazenamento em disco, o que resultava em arquivos sendo salvos mesmo quando a requisição falhava
+  2. Os parâmetros no DTO não estavam sendo convertidos corretamente para números no backend
+  3. No frontend, não havia validação dos IDs antes do envio
+- Soluções implementadas:
+  1. Atualizado o `MulterModule` para usar `memoryStorage()` ao invés de `diskStorage()`
+  2. Modificado o controller para converter explicitamente os parâmetros recebidos para o tipo numérico
+  3. Adicionada validação no `FileUploadService` do frontend para garantir que userId e projectId são números válidos
+- Essas correções garantem que:
+  - Arquivos só são salvos quando a requisição é bem-sucedida
+  - Valores de userId e projectId são sempre tratados como números
+  - Melhor validação no frontend e backend para evitar requisições inválidas
+- Arquivos corrigidos:
+  - `design-thinking-ed-platform-be/src/modules/file/file.module.ts`
+  - `design-thinking-ed-platform-be/src/modules/file/file.controller.ts`
+  - `design-thinking-ed-platform-fe/src/app/common/services/file-upload.service.ts`

@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -6,7 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.scss'],
 })
-export class FileUploadComponent implements OnInit {
+export class FileUploadComponent implements OnInit, OnChanges {
   @Input() allowedFileTypes: string[] = []; // Ex: ['.pdf', '.docx', '.jpg']
   @Input() maxFileSize: number = 5 * 1024 * 1024; // 5MB default
   @Input() maxFileCount: number = 5;
@@ -22,6 +30,14 @@ export class FileUploadComponent implements OnInit {
   constructor(private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Quando novos arquivos são recebidos via existingFiles, reseta os arquivos locais
+    if (changes['existingFiles'] && !changes['existingFiles'].firstChange) {
+      // Limpar arquivos locais após uploads bem-sucedidos
+      this.resetLocalFiles();
+    }
+  }
 
   onDragOver(event: DragEvent): void {
     event.preventDefault();
@@ -50,6 +66,8 @@ export class FileUploadComponent implements OnInit {
     const element = event.target as HTMLInputElement;
     if (element.files) {
       this.handleFiles(element.files);
+      // Reset the input so the same file can be selected again
+      element.value = '';
     }
   }
 
@@ -122,6 +140,19 @@ export class FileUploadComponent implements OnInit {
   // Método para atualizar o progresso de upload (chamado pelo serviço de upload)
   updateProgress(fileName: string, progress: number): void {
     this.uploadProgress[fileName] = progress;
+
+    // Se o progresso for 100%, considere o upload concluído
+    if (progress === 100) {
+      setTimeout(() => {
+        delete this.uploadProgress[fileName];
+      }, 1000);
+    }
+  }
+
+  // Limpa todos os arquivos locais após o upload bem-sucedido
+  resetLocalFiles(): void {
+    this.files = [];
+    this.uploadProgress = {};
   }
 
   formatFileSize(size: number): string {

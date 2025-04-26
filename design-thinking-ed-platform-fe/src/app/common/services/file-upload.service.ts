@@ -48,10 +48,22 @@ export class FileUploadService {
     stepType: FileStepType,
     progressCallback?: (fileName: string, progress: number) => void
   ): Observable<UploadedFile> {
+    // Garantir que userId e projectId são números
+    const userIdNum = Number(userId);
+    const projectIdNum = Number(projectId);
+
+    if (isNaN(userIdNum) || userIdNum <= 0) {
+      throw new Error(`ID de usuário inválido: ${userId}`);
+    }
+
+    if (isNaN(projectIdNum) || projectIdNum <= 0) {
+      throw new Error(`ID de projeto inválido: ${projectId}`);
+    }
+
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('userId', userId.toString());
-    formData.append('projectId', projectId.toString());
+    formData.append('userId', userIdNum.toString());
+    formData.append('projectId', projectIdNum.toString());
     formData.append('stepType', stepType);
 
     const req = new HttpRequest('POST', `${this.baseUrl}/upload`, formData, {

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MulterModule } from '@nestjs/platform-express';
+import { memoryStorage } from 'multer';
 import { UploadedFile } from './entities/uploaded-file.entity';
 import { FileService } from './file.service';
 import { FileController } from './file.controller';
@@ -18,7 +19,7 @@ import { FileController } from './file.controller';
   imports: [
     TypeOrmModule.forFeature([UploadedFile]),
     MulterModule.register({
-      dest: process.env.UPLOAD_DIR || 'uploads',
+      storage: memoryStorage(),
     }),
   ],
   controllers: [FileController],

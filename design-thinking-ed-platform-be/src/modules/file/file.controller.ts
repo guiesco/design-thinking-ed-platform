@@ -24,10 +24,15 @@ export class FileController {
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(
-    @UploadedFile() file: any,
-    @Body() uploadFileDto: UploadFileDto,
-  ) {
+  async uploadFile(@UploadedFile() file: any, @Body() dto: any) {
+    // Converter parâmetros para os tipos corretos
+    const uploadFileDto: UploadFileDto = {
+      projectId: Number(dto.projectId),
+      userId: Number(dto.userId),
+      stepType: dto.stepType,
+      ...(dto.groupId ? { groupId: Number(dto.groupId) } : {}),
+    };
+
     return this.fileService.uploadFile(file, uploadFileDto);
   }
 

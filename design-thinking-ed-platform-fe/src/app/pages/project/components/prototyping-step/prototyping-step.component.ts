@@ -1,11 +1,14 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PrototypeFacade } from '../../../../stores/prototype-store/prototype.facade';
 import { UploadedFile } from '../../../../common/services/file-upload.service';
 import { Prototype } from '../../../../stores/prototype-store/prototype.state';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, take } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { UserFacade } from '../../../../stores/user-state-store/user.facade';
+import { IUser } from '../../../../common/interfaces/user.interface';
 
 @Component({
   selector: 'app-prototyping-step',
@@ -13,9 +16,9 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./prototyping-step.component.scss'],
 })
 export class PrototypingStepComponent implements OnInit, OnDestroy {
-  @Input() projectId: number = 0;
-  @Input() userId: number = 0;
-  @Input() description: string = '';
+  projectId: number = 0;
+  currentUserId: number = 0;
+  description: string = '';
 
   prototypeForm: FormGroup;
   files: UploadedFile[] = [];
@@ -41,7 +44,9 @@ export class PrototypingStepComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
-    private prototypeFacade: PrototypeFacade
+    private prototypeFacade: PrototypeFacade,
+    private userFacade: UserFacade,
+    private route: ActivatedRoute
   ) {
     this.prototypeForm = this.fb.group({
       description: ['', Validators.required],
@@ -55,6 +60,12 @@ export class PrototypingStepComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // Inicializar o usuário atual
+    this.initializeUser();
+
+    // Inicializar o ID do projeto
+    this.initializeProjectId();
+
     // Carregar protótipo existente
     this.prototypeFacade.getPrototypeByProject(this.projectId);
 
@@ -83,11 +94,18 @@ export class PrototypingStepComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
 
-    // Preencher descrição se fornecida
-    if (this.description) {
-      this.prototypeForm.patchValue({ description: this.description });
-    }
+  protected initializeUser(): void {
+    this.userFacade.user$.pipe(take(1)).subscribe((user: IUser | null) => {
+      if (user?.id) {
+        this.currentUserId = Number(user.id);
+      }
+    });
+  }
+
+  protected initializeProjectId(): void {
+    this.projectId = Number(this.route.parent?.snapshot.params['projectId']);
   }
 
   ngOnDestroy(): void {
@@ -102,7 +120,7 @@ export class PrototypingStepComponent implements OnInit, OnDestroy {
 
     const description = this.prototypeForm.value.description;
 
-    this.prototype$.pipe(takeUntil(this.destroyed$)).subscribe((prototype) => {
+    this.prototype$.pipe(take(1)).subscribe((prototype) => {
       if (prototype) {
         // Atualizar protótipo existente
         this.prototypeFacade.updatePrototype(prototype.id, { description });
@@ -110,7 +128,7 @@ export class PrototypingStepComponent implements OnInit, OnDestroy {
         // Criar novo protótipo
         this.prototypeFacade.createPrototype({
           projectId: this.projectId,
-          userId: this.userId,
+          userId: this.currentUserId,
           description,
         });
       }
@@ -120,11 +138,11 @@ export class PrototypingStepComponent implements OnInit, OnDestroy {
   onFilesChanged(files: File[]): void {
     // Upload de cada arquivo
     files.forEach((file) => {
-      this.prototypeFacade.uploadFile(file, this.userId, this.projectId);
+      this.prototypeFacade.uploadFile(file, this.currentUserId, this.projectId);
     });
   }
 
   onFileRemoved(fileId: string | number): void {
-    this.prototypeFacade.deleteFile(+fileId, this.userId);
+    this.prototypeFacade.deleteFile(+fileId, this.currentUserId);
   }
 }

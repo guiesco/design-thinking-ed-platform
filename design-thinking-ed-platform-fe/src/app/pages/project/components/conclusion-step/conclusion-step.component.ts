@@ -1,11 +1,14 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConclusionFacade } from '../../../../stores/conclusion-store/conclusion.facade';
 import { UploadedFile } from '../../../../common/services/file-upload.service';
 import { Conclusion } from '../../../../stores/conclusion-store/conclusion.state';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil, map } from 'rxjs/operators';
+import { takeUntil, map, take } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { UserFacade } from '../../../../stores/user-state-store/user.facade';
+import { IUser } from '../../../../common/interfaces/user.interface';
 
 @Component({
   selector: 'app-conclusion-step',
@@ -13,9 +16,9 @@ import { takeUntil, map } from 'rxjs/operators';
   styleUrls: ['./conclusion-step.component.scss'],
 })
 export class ConclusionStepComponent implements OnInit, OnDestroy {
-  @Input() projectId: number = 0;
-  @Input() userId: number = 0;
-  @Input() description: string = '';
+  projectId: number = 0;
+  currentUserId: number = 0;
+  description: string = '';
 
   conclusionForm: FormGroup;
   files: UploadedFile[] = [];
@@ -41,7 +44,9 @@ export class ConclusionStepComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
-    private conclusionFacade: ConclusionFacade
+    private conclusionFacade: ConclusionFacade,
+    private userFacade: UserFacade,
+    private route: ActivatedRoute
   ) {
     this.conclusionForm = this.fb.group({
       description: ['', Validators.required],
@@ -57,6 +62,12 @@ export class ConclusionStepComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // Inicializar o usuário atual
+    this.initializeUser();
+
+    // Inicializar o ID do projeto
+    this.initializeProjectId();
+
     // Carregar conclusão existente
     this.conclusionFacade.getConclusionByProject(this.projectId);
 
@@ -87,11 +98,18 @@ export class ConclusionStepComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
 
-    // Preencher descrição se fornecida
-    if (this.description) {
-      this.conclusionForm.patchValue({ description: this.description });
-    }
+  protected initializeUser(): void {
+    this.userFacade.user$.pipe(take(1)).subscribe((user: IUser | null) => {
+      if (user?.id) {
+        this.currentUserId = Number(user.id);
+      }
+    });
+  }
+
+  protected initializeProjectId(): void {
+    this.projectId = Number(this.route.parent?.snapshot.params['projectId']);
   }
 
   ngOnDestroy(): void {
@@ -106,33 +124,35 @@ export class ConclusionStepComponent implements OnInit, OnDestroy {
 
     const description = this.conclusionForm.value.description;
 
-    this.conclusion$
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe((conclusion) => {
-        if (conclusion) {
-          // Atualizar conclusão existente
-          this.conclusionFacade.updateConclusion(conclusion.id, {
-            description,
-          });
-        } else {
-          // Criar nova conclusão
-          this.conclusionFacade.createConclusion({
-            projectId: this.projectId,
-            userId: this.userId,
-            description,
-          });
-        }
-      });
+    this.conclusion$.pipe(take(1)).subscribe((conclusion) => {
+      if (conclusion) {
+        // Atualizar conclusão existente
+        this.conclusionFacade.updateConclusion(conclusion.id, {
+          description,
+        });
+      } else {
+        // Criar nova conclusão
+        this.conclusionFacade.createConclusion({
+          projectId: this.projectId,
+          userId: this.currentUserId,
+          description,
+        });
+      }
+    });
   }
 
   onFilesChanged(files: File[]): void {
     // Upload de cada arquivo
     files.forEach((file) => {
-      this.conclusionFacade.uploadFile(file, this.userId, this.projectId);
+      this.conclusionFacade.uploadFile(
+        file,
+        this.currentUserId,
+        this.projectId
+      );
     });
   }
 
   onFileRemoved(fileId: string | number): void {
-    this.conclusionFacade.deleteFile(+fileId, this.userId);
+    this.conclusionFacade.deleteFile(+fileId, this.currentUserId);
   }
 }
