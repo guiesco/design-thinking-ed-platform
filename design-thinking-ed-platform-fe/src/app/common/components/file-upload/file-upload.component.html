@@ -37,11 +37,8 @@
   <div class="file-list" *ngIf="files.length > 0">
     <h3>Arquivos para Upload</h3>
 
-    <mat-list>
-      <mat-list-item
-        *ngFor="let file of files; let i = index"
-        class="file-item"
-      >
+    <div class="file-items-container">
+      <div *ngFor="let file of files; let i = index" class="file-item">
         <div class="file-info">
           <mat-icon class="file-icon">insert_drive_file</mat-icon>
           <div class="file-details">
@@ -52,9 +49,7 @@
 
         <div
           class="progress-container"
-          *ngIf="
-            uploadProgress[file.name] > 0 && uploadProgress[file.name] < 100
-          "
+          *ngIf="uploadProgress[file.name] !== undefined"
         >
           <mat-progress-bar
             mode="determinate"
@@ -73,19 +68,16 @@
             <mat-icon>delete</mat-icon>
           </button>
         </div>
-      </mat-list-item>
-    </mat-list>
+      </div>
+    </div>
   </div>
 
   <!-- Lista de Arquivos Existentes (Já enviados) -->
   <div class="file-list" *ngIf="existingFiles.length > 0">
     <h3>Arquivos Enviados</h3>
 
-    <mat-list>
-      <mat-list-item
-        *ngFor="let file of existingFiles; let i = index"
-        class="file-item"
-      >
+    <div class="file-items-container">
+      <div *ngFor="let file of existingFiles; let i = index" class="file-item">
         <div class="file-info">
           <mat-icon class="file-icon">description</mat-icon>
           <div class="file-details">
@@ -112,7 +104,7 @@
             <mat-icon>delete</mat-icon>
           </button>
         </div>
-      </mat-list-item>
-    </mat-list>
+      </div>
+    </div>
   </div>
 </div>

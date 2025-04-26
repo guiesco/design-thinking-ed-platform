@@ -1,10 +1,9 @@
 <div class="conclusion-step-container">
   <div class="step-header">
-    <h2>Etapa de Conclusão</h2>
+    <h2>Conclusão do Projeto</h2>
     <p class="step-description">
-      Nesta etapa, você pode compartilhar a conclusão do seu projeto com os
-      membros do grupo. Adicione uma descrição e envie os arquivos finais do
-      projeto.
+      Nesta etapa, você pode descrever as conclusões do seu projeto e
+      compartilhar arquivos relevantes com os membros do grupo.
     </p>
   </div>
 
@@ -21,7 +20,7 @@
             matInput
             formControlName="description"
             rows="4"
-            placeholder="Descreva as conclusões do seu projeto..."
+            placeholder="Descreva a conclusão do seu projeto..."
           ></textarea>
           <mat-error
             *ngIf="
@@ -52,11 +51,12 @@
 
   <mat-card class="file-upload-card">
     <mat-card-header>
-      <mat-card-title>Envio de Arquivos</mat-card-title>
+      <mat-card-title>Arquivos da Conclusão</mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
       <app-file-upload
+        #fileUpload
         [allowedFileTypes]="allowedFileTypes"
         [maxFileSize]="maxFileSize"
         [maxFileCount]="maxFileCount"

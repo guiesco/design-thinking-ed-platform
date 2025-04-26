@@ -116,7 +116,7 @@ export class FileUploadComponent implements OnInit, OnChanges {
       }
 
       this.files.push(file);
-      this.uploadProgress[file.name] = 0;
+      this.uploadProgress[file.name] = 0; // Inicializa o progresso
     }
 
     // Iniciar upload se arquivos foram adicionados
@@ -126,26 +126,40 @@ export class FileUploadComponent implements OnInit, OnChanges {
   }
 
   removeFile(index: number): void {
-    const file = this.files[index];
-    this.files.splice(index, 1);
-    delete this.uploadProgress[file.name];
-    this.filesChanged.emit(this.files);
+    if (index >= 0 && index < this.files.length) {
+      const file = this.files[index];
+      this.files.splice(index, 1);
+      delete this.uploadProgress[file.name];
+
+      // Emitir a lista atualizada de arquivos
+      this.filesChanged.emit(this.files);
+    }
   }
 
   removeExistingFile(id: string | number, index: number): void {
-    this.existingFiles.splice(index, 1);
-    this.fileRemoved.emit(id);
+    if (index >= 0 && index < this.existingFiles.length) {
+      // Remover do array local para feedback visual imediato
+      this.existingFiles.splice(index, 1);
+
+      // Emitir evento para o componente pai lidar com a remoção no backend
+      this.fileRemoved.emit(id);
+    }
   }
 
   // Método para atualizar o progresso de upload (chamado pelo serviço de upload)
   updateProgress(fileName: string, progress: number): void {
-    this.uploadProgress[fileName] = progress;
+    if (fileName && progress !== undefined) {
+      this.uploadProgress[fileName] = progress;
 
-    // Se o progresso for 100%, considere o upload concluído
-    if (progress === 100) {
+      // Aplica a atualização de forma segura
       setTimeout(() => {
-        delete this.uploadProgress[fileName];
-      }, 1000);
+        // Se o progresso for 100%, aguarde um pouco antes de remover para dar feedback visual
+        if (progress >= 100) {
+          setTimeout(() => {
+            delete this.uploadProgress[fileName];
+          }, 1000);
+        }
+      }, 0);
     }
   }
 
