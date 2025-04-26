@@ -43,6 +43,16 @@
   - Formulário para descrição
   - Integração com componente de upload
   - Estilo responsivo
+- Store para etapa de Conclusão
+  - Ações, reducers, efeitos, selectors, facade
+  - Serviço para comunicação com backend
+- ConclusionStepComponent para a interface da etapa
+  - Formulário para descrição
+  - Integração com componente de upload
+  - Estilo responsivo
+- Integração com navegação do projeto
+  - Adição de rota para a etapa de conclusão
+  - Inclusão no menu de navegação do projeto
 
 ### Backend
 
@@ -70,14 +80,6 @@
 
 ## Implementações Pendentes
 
-### Frontend
-
-- ConclusionStepComponent
-- Store para gerenciamento de estado da etapa de Conclusão
-  - Ações, reducers, efeitos, selectors, facade
-  - Serviço para comunicação com backend
-- Integração com sistema de grupos para visibilidade de arquivos
-
 ### Testes
 
 - Testes de integração para backend
@@ -86,25 +88,16 @@
 
 ## Próximas Etapas
 
-1. **Implementar Frontend da Etapa de Conclusão**
-
-   - Criar ConclusionStore
-     - Estado, ações, reducers, efeitos, selectors
-     - Serviço para comunicação com backend
-   - Implementar ConclusionStepComponent
-     - Interface para descrição/enunciado
-     - Integração com componente de upload
-     - Visualização de arquivos do grupo
-
-2. **Testes e Refinamentos**
+1. **Testes e Refinamentos**
    - Testar fluxo completo de prototipação e conclusão
    - Verificar visibilidade por grupo
    - Validar compatibilidade com diferentes tipos de arquivo
+   - Corrigir eventuais bugs identificados durante os testes
 
 ## Considerações
 
-- O backend para as etapas de Prototipação e Conclusão foi completamente implementado
+- O frontend e backend para as etapas de Prototipação e Conclusão foram completamente implementados
 - Arquivos são armazenados localmente com estrutura preparada para migração para cloud
 - Controle de acesso implementado por usuário/grupo para garantir visibilidade adequada
 - Interfaces e serviços seguem o padrão estabelecido no restante da aplicação
-- Próximo foco será na implementação do frontend para a etapa de Conclusão
+- Próximo foco será em testes e refinamentos do fluxo completo

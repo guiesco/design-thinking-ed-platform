@@ -1,0 +1,69 @@
+<div class="conclusion-step-container">
+  <div class="step-header">
+    <h2>Etapa de Conclusão</h2>
+    <p class="step-description">
+      Nesta etapa, você pode compartilhar a conclusão do seu projeto com os
+      membros do grupo. Adicione uma descrição e envie os arquivos finais do
+      projeto.
+    </p>
+  </div>
+
+  <mat-card class="conclusion-form-card">
+    <mat-card-header>
+      <mat-card-title>Descrição da Conclusão</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="conclusionForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Descrição</mat-label>
+          <textarea
+            matInput
+            formControlName="description"
+            rows="4"
+            placeholder="Descreva as conclusões do seu projeto..."
+          ></textarea>
+          <mat-error
+            *ngIf="
+              conclusionForm.get('description')?.invalid &&
+              conclusionForm.get('description')?.touched
+            "
+          >
+            A descrição é obrigatória
+          </mat-error>
+        </mat-form-field>
+
+        <div class="form-actions">
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="conclusionForm.invalid || (loading$ | async)"
+          >
+            <mat-icon>save</mat-icon>
+            {{ (isConclusionCreated$ | async) ? "Atualizar" : "Salvar" }}
+          </button>
+
+          <mat-spinner *ngIf="loading$ | async" diameter="24"></mat-spinner>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="file-upload-card">
+    <mat-card-header>
+      <mat-card-title>Envio de Arquivos</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <app-file-upload
+        [allowedFileTypes]="allowedFileTypes"
+        [maxFileSize]="maxFileSize"
+        [maxFileCount]="maxFileCount"
+        [existingFiles]="files"
+        (filesChanged)="onFilesChanged($event)"
+        (fileRemoved)="onFileRemoved($event)"
+      ></app-file-upload>
+    </mat-card-content>
+  </mat-card>
+</div>

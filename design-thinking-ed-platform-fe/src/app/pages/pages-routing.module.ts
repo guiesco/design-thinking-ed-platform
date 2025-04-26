@@ -15,6 +15,7 @@ import { ChallengeDefinitionStepComponent } from './project/components/challenge
 import { ProblemDefinitionStepComponent } from './project/components/problem-definition-step/problem-definition-step.component';
 import { IdeationStepComponent } from './project/components/ideation-step/ideation-step.component';
 import { PrototypingStepComponent } from './project/components/prototyping-step/prototyping-step.component';
+import { ConclusionStepComponent } from './project/components/conclusion-step/conclusion-step.component';
 
 const pagesRoutes: Routes = [
   {
@@ -90,6 +91,10 @@ const pagesRoutes: Routes = [
           {
             path: 'prototype',
             component: PrototypingStepComponent,
+          },
+          {
+            path: 'conclusion',
+            component: ConclusionStepComponent,
           },
           {
             path: '',

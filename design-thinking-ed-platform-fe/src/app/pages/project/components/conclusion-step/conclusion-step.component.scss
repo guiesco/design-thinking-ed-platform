@@ -1,0 +1,88 @@
+.conclusion-step-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+.step-header {
+    margin-bottom: 24px;
+
+    h2 {
+        font-size: 28px;
+        font-weight: 500;
+        color: #333;
+        margin-bottom: 8px;
+    }
+
+    .step-description {
+        font-size: 16px;
+        color: #666;
+        line-height: 1.5;
+    }
+}
+
+.conclusion-form-card,
+.file-upload-card {
+    margin-bottom: 24px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    mat-card-header {
+        padding: 16px 16px 0;
+    }
+
+    mat-card-title {
+        font-size: 20px;
+        font-weight: 500;
+        color: #333;
+    }
+
+    mat-card-content {
+        padding: 16px;
+    }
+}
+
+.full-width {
+    width: 100%;
+}
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    margin-top: 16px;
+
+    button {
+        margin-right: 16px;
+    }
+
+    mat-spinner {
+        margin-left: 8px;
+    }
+}
+
+// Estilos responsivos
+@media (max-width: 768px) {
+    .conclusion-step-container {
+        padding: 12px;
+    }
+
+    .step-header {
+        h2 {
+            font-size: 24px;
+        }
+
+        .step-description {
+            font-size: 14px;
+        }
+    }
+
+    .conclusion-form-card,
+    .file-upload-card {
+        mat-card-title {
+            font-size: 18px;
+        }
+    }
+}

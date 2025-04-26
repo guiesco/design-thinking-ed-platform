@@ -48,6 +48,8 @@ import { IdeationStateModule } from '../stores/ideation-store/ideation.module';
 import { IdeaPointsComponent } from './project/components/ideation-step/idea-points/idea-points.component';
 import { PrototypingStepComponent } from './project/components/prototyping-step/prototyping-step.component';
 import { PrototypeStoreModule } from '../stores/prototype-store/prototype.module';
+import { ConclusionStepComponent } from './project/components/conclusion-step/conclusion-step.component';
+import { ConclusionStoreModule } from '../stores/conclusion-store/conclusion.module';
 
 const angularMaterialModules = [
   MatToolbarModule,
@@ -82,6 +84,7 @@ const stateModules = [
   ProblemDefinitionStoreModule,
   IdeationStateModule,
   PrototypeStoreModule,
+  ConclusionStoreModule,
 ];
 
 const importModules = [FormsModule, ReactiveFormsModule, ...stateModules];
@@ -110,6 +113,7 @@ const importModules = [FormsModule, ReactiveFormsModule, ...stateModules];
     IdeationStepComponent,
     IdeaPointsComponent,
     PrototypingStepComponent,
+    ConclusionStepComponent,
   ],
   exports: [PageWrapperComponent],
 })

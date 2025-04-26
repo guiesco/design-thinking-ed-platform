@@ -1,492 +1,217 @@
-# Progresso do Projeto
+# Progresso
 
-## Implementações Concluídas
+## Etapas do Design Thinking
 
-### Backend
+A plataforma implementa diferentes etapas do processo de Design Thinking, cada uma com suas características e funcionalidades específicas:
 
-#### Entidades
+1. ✅ **Definição do Desafio**
 
-- ✅ EmpathyMap
-- ✅ ProblemDefinitionResponse
-- ✅ ChallengeDefinitionResponse
-- ✅ User
-- ✅ Project
-- ✅ ProblemDefinition
-- ✅ ChallengeDefinition
-- ✅ IdeationIdea
-- ✅ IdeationPoint
-- ✅ UploadedFile (parcial)
-- ✅ Prototype (parcial)
+   - ✅ Criação de desafios pelo professor
+   - ✅ Visualização de desafios pelos alunos
+   - ✅ Edição de desafios existentes
 
-#### Serviços
+2. ✅ **Mapa de Empatia**
 
-- ✅ EmpathyMapService
-- ✅ ProblemDefinitionService
-- ✅ ChallengeDefinitionService
-- ✅ StepVerificationService
-- ✅ UserService
-- ✅ ProjectService
-- ✅ IdeationService
-
-#### DTOs
-
-- ✅ CreatePrototypeDto
-- ✅ UpdatePrototypeDto
-- ✅ UploadFileDto
-
-#### Testes
-
-- ✅ IdeationService (Integração)
+   - ✅ Interface para as 4 quadrantes (Sente, Pensa, Fala, Faz)
+   - ✅ Sistema de envio e visualização de respostas
+   - ✅ Seleção de insights mais relevantes
+   - ✅ Consolidação de respostas selecionadas
 
-### Frontend
+3. ✅ **Definição do Problema**
 
-#### Componentes
+   - ✅ Template para criação de problems statements
+   - ✅ Sistema de upvote para problem statements
+   - ✅ Seleção de problema final
+   - ✅ Consolidação da definição do problema
 
-- ✅ EmpathyStepComponent
-- ✅ ProblemDefinitionStepComponent
-- ✅ ChallengeDefinitionStepComponent
-- ✅ ResponseFormComponent (reutilizável)
-- ✅ ResponseListComponent (reutilizável)
-- ✅ IdeationStepComponent
-- ✅ IdeaPointsComponent
-- ✅ FileUploadComponent (reutilizável)
-- ✅ PrototypingStepComponent
-
-#### Stores
-
-- ✅ EmpathyMapStore
-- ✅ ProblemDefinitionStore
-- ✅ ChallengeDefinitionStore
-- ✅ UserStore
-- ✅ ProjectStore
-- ✅ IdeationStore
-- ✅ PrototypeStore
+4. ✅ **Ideação**
 
-#### Testes
-
-- ✅ IdeationService (Integração)
-- ✅ IdeationStepComponent (Integração)
-
-#### Refinamentos de UI/UX
-
-- ✅ Responsividade para dispositivos móveis
-- ✅ Feedback visual para ações de usuário
-- ✅ Animações e transições
-- ✅ Melhorias de usabilidade
-- ✅ Estilos consistentes
-
-## Etapa de Ideação
-
-### Backend (Implementado)
+   - ✅ Criação e visualização de ideias em formato de cards
+   - ✅ Adição de pontos positivos e negativos para cada ideia
+   - ✅ Sistema de upvote para ideias
+   - ✅ Interface para gerenciamento de pros e cons
 
-#### Entidades
+5. ✅ **Prototipação**
 
-- ✅ IdeationIdea
+   - ✅ Interface para descrição do protótipo
+   - ✅ Funcionalidade de upload de arquivos
+   - ✅ Visualização de arquivos enviados
+   - ✅ Controle de acesso por grupo
 
-  - id: number
-  - title: string
-  - projectId: number
-  - userId: number
-  - upvotes: number
-  - timestamps: createdAt, updatedAt
+6. ✅ **Conclusão**
+   - ✅ Interface para descrição da conclusão
+   - ✅ Funcionalidade de upload de arquivos
+   - ✅ Visualização de arquivos enviados
+   - ✅ Controle de acesso por grupo
 
-- ✅ IdeationPoint
-  - id: number
-  - content: string
-  - type: IdeationPointType (PRO/CON)
-  - ideaId: number
-  - userId: number
-  - upvotes: number
-  - timestamps: createdAt, updatedAt
+## Funcionalidades Implementadas
 
-#### DTOs
+### 1. ✅ Estrutura Base e Autenticação
 
-- ✅ CreateIdeationIdeaDto
-- ✅ UpdateIdeationIdeaDto
-- ✅ CreateIdeationPointDto
-- ✅ UpdateIdeationPointDto
+1. ✅ **Backend Core**
 
-#### Serviço
+   - ✅ Configuração do NestJS e TypeORM
+   - ✅ Estruturação de módulos
+   - ✅ Implementação de entidades base
 
-- ✅ IdeationService
-  - ✅ create, update, delete para Ideias
-  - ✅ create, update, delete para Pontos
-  - ✅ upvote para Ideias e Pontos
-  - ✅ getByProject para listar todas as ideias de um projeto
+2. ✅ **Frontend Core**
 
-#### Controlador
+   - ✅ Configuração do Angular e Material UI
+   - ✅ Implementação do NgRx
+   - ✅ Estrutura base de componentes
 
-- ✅ IdeationController
-  - ✅ POST /ideation/idea
-  - ✅ GET /ideation/idea/:id
-  - ✅ GET /ideation/idea?projectId=:id
-  - ✅ PUT /ideation/idea/:id
-  - ✅ DELETE /ideation/idea/:id
-  - ✅ POST /ideation/idea/:id/upvote
-  - ✅ POST /ideation/point
-  - ✅ PUT /ideation/point/:id
-  - ✅ DELETE /ideation/point/:id
-  - ✅ POST /ideation/point/:id/upvote
+3. ✅ **Autenticação**
+   - ✅ Sistema de registro
+   - ✅ Sistema de login
+   - ✅ Integração com parâmetros de query
 
-#### Testes
+### 2. ✅ Sistema de Turmas e Grupos
 
-- ✅ Testes de Integração para IdeationController
-  - ✅ CRUD de ideias
-  - ✅ CRUD de pontos
-  - ✅ Upvote de ideias e pontos
+1. ✅ **Gerenciamento de Turmas**
 
-### Frontend (Implementado)
+   - ✅ Criação e edição de turmas
+   - ✅ Adição de alunos às turmas
+   - ✅ Visualização de turmas e alunos
 
-#### Interfaces
+2. ✅ **Gerenciamento de Grupos**
+   - ✅ Criação de grupos dentro de turmas
+   - ✅ Gerenciamento de membros de grupos
+   - ✅ Interface para visualização de grupos
 
-- ✅ IdeationIdea
-- ✅ IdeationPoint
-- ✅ IdeationPointType (enum)
-- ✅ CreateIdeationIdeaDto
-- ✅ CreateIdeationPointDto
-- ✅ UpdateIdeationIdeaDto
-- ✅ UpdateIdeationPointDto
+### 3. ✅ Mapa de Empatia
 
-#### Store
+1. ✅ **Backend**
 
-- ✅ IdeationStore
-  - ✅ Estado para ideias, pontos, loading, error
-  - ✅ Ações para CRUD de ideias e pontos
-  - ✅ Reducers para atualizar estado
-  - ✅ Efeitos para operações assíncronas
-  - ✅ Selectors para acessar partes do estado
-  - ✅ Facade para abstrair complexidade
+   - ✅ Implementação de entidades
+   - ✅ Implementação de serviços
+   - ✅ Implementação de controladores
 
-#### Componentes
+2. ✅ **Frontend**
+   - ✅ Componente para visualização dos quadrantes
+   - ✅ Formulário para adição de respostas
+   - ✅ Listagem de respostas com upvote
+   - ✅ Seleção de respostas para consolidação
 
-- ✅ IdeationStepComponent (principal)
+### 4. ✅ Definição do Desafio
 
-  - Exibir formulário para adicionar ideias
-  - Listar todas as ideias em cards
-  - Gerenciar estado geral da etapa
-  - Feedback visual para ações
-  - Layout responsivo
+1. ✅ **Backend**
 
-- ✅ IdeaPointsComponent
+   - ✅ Implementação de entidades
+   - ✅ Implementação de serviços
+   - ✅ Implementação de controladores
 
-  - Exibir formulário para adicionar prós/contras
-  - Listar prós/contras
-  - Mostrar botões de upvote, editar, excluir
-  - Animações para feedback visual
-  - Layout responsivo
+2. ✅ **Frontend**
+   - ✅ Criação de interface para definição de desafios
+   - ✅ Visualização de desafios existentes
+   - ✅ Edição e exclusão de desafios
 
-#### Roteamento
+### 5. ✅ Definição do Problema
 
-- ✅ Adicionar rota para IdeationStep em páginas-routing.module.ts
-- ✅ Importar IdeationStepModule no ProjectModule
+1. ✅ **Backend**
 
-#### Testes
+   - ✅ Implementação de entidades
+   - ✅ Implementação de serviços
+   - ✅ Implementação de controladores
 
-- ✅ Testes do serviço IdeationService
+2. ✅ **Frontend**
+   - ✅ Visualização de insights do mapa de empatia
+   - ✅ Criação de problem statements
+   - ✅ Sistema de upvote para statements
+   - ✅ Seleção e consolidação de problema principal
 
-  - ✅ Verificação de integração com a API
-  - ✅ Testes para todas as operações CRUD
-  - ✅ Testes para upvote
+### 6. ✅ Ideação
 
-- ✅ Testes do componente IdeationStepComponent
-  - ✅ Verificação de integração com o store
-  - ✅ Testes para operações de usuário
-  - ✅ Testes para manipulação de ideias e pontos
+1. ✅ **Backend**
 
-#### Refinamentos Implementados
+   - ✅ Implementação de entidades hierárquicas (ideia -> pontos)
+   - ✅ Implementação de serviços para ideias e pontos
+   - ✅ Implementação de controladores e rotas
 
-- ✅ Design Responsivo
+2. ✅ **Frontend**
+   - ✅ Interface de cards para ideias
+   - ✅ Colunas para pros e cons
+   - ✅ Sistema de upvote para ideias e pontos
+   - ✅ Visualização e gerenciamento de ideias
 
-  - Adaptação para diferentes tamanhos de tela
-  - Layout específico para dispositivos móveis
-  - Melhor utilização do espaço em telas pequenas
+### 7. ✅ Prototipação
 
-- ✅ Feedback Visual
+1. ✅ **Backend**
 
-  - Mensagens de sucesso/erro via SnackBar
-  - Destacar itens recém-criados ou alterados
-  - Animação para indicar ações de upvote
+   - ✅ Implementar Entidades e DTOs
 
-- ✅ Melhorias de UX
+     - ✅ Criar entidade UploadedFile
+     - ✅ Criar entidade Prototype
+     - ✅ Implementar DTOs para validação
 
-  - Tooltip para botões de ação
-  - Destaque visual para hover/focus
-  - Transições suaves entre estados
+   - ✅ Implementar FileService
 
-- ✅ Estilização Aprimorada
-  - Cards com sombreamento e transições
-  - Ícones mais expressivos
-  - Cores consistentes para tipo de pontos (prós/contras)
+     - ✅ Criar métodos para upload, download e exclusão
+     - ✅ Implementar controle de acesso baseado em grupos
+     - ✅ Configurar armazenamento local com FileInterceptor
 
-## Etapas de Prototipação e Conclusão (Em Implementação)
+   - ✅ Implementar PrototypeService
 
-### Tarefas e Passos para Implementação
+     - ✅ Criar métodos CRUD para protótipos
+     - ✅ Implementar validação e manipulação de dados
+     - ✅ Relacionar protótipos com arquivos enviados
 
-#### 1. Componente de Upload de Arquivos (Concluído)
+   - ✅ Implementar Controllers
+     - ✅ Criar endpoints RESTful para operações
+     - ✅ Implementar tratamento de erros
 
-- ✅ **Criado Componente Reutilizável `FileUploadComponent`**
+2. ✅ **Frontend**
 
-  - ✅ Interface de arrastar e soltar (drag-and-drop)
-  - ✅ Seleção de arquivos via diálogo
-  - ✅ Exibição de progresso de upload
-  - ✅ Lista de arquivos enviados com opção de exclusão
-  - ✅ Feedback visual para sucesso/erro
-  - ✅ Configurações para:
-    - ✅ Tipos de arquivo permitidos (variável configurável)
-    - ✅ Tamanho máximo (variável configurável)
-    - ✅ Múltiplos arquivos ou arquivo único
+   - ✅ Componente de Upload de Arquivos
 
-- ✅ **Implementado Serviço `FileUploadService`**
-  - ✅ Método para upload de arquivo
-  - ✅ Método para exclusão de arquivo
-  - ✅ Método para download de arquivo
-  - ✅ Tratamento de erro e progresso
-  - ✅ Integração com HttpClient
+     - ✅ Interface drag-and-drop
+     - ✅ Exibição de progresso de upload
+     - ✅ Validação de tipos de arquivo
+     - ✅ Listagem de arquivos enviados
 
-#### 2. Backend para Gerenciamento de Arquivos (Concluído)
+   - ✅ Implementar PrototypeStore
 
-- ✅ **Entidades**
+     - ✅ Criar actions, reducers, effects e selectors
+     - ✅ Implementar serviço para comunicação com backend
+     - ✅ Gerenciar estado de protótipos e arquivos
 
-  - ✅ `UploadedFile`
+   - ✅ Implementar PrototypingStepComponent
+     - ✅ Criar interface de descrição do protótipo
+     - ✅ Integrar componente de upload
+     - ✅ Implementar visualização de arquivos
+     - ✅ Adicionar estilo responsivo
 
-    - ✅ id: number
-    - ✅ originalName: string
-    - ✅ storedName: string
-    - ✅ path: string
-    - ✅ size: number
-    - ✅ mimeType: string
-    - ✅ userId: number
-    - ✅ projectId: number
-    - ✅ groupId: number (para controle de acesso)
-    - ✅ stepType: enum (PROTOTYPE/CONCLUSION)
-    - ✅ timestamps: createdAt, updatedAt
+### 8. ✅ Conclusão
 
-  - ✅ `Prototype`
+1. ✅ **Backend**
 
-    - ✅ id: number
-    - ✅ projectId: number
-    - ✅ userId: number
-    - ✅ description: string (configurado pelo professor)
-    - ✅ timestamps: createdAt, updatedAt
+   - ✅ **Criar Entidade e DTOs**
 
-  - ✅ `Conclusion`
-    - ✅ id: number
-    - ✅ projectId: number
-    - ✅ userId: number
-    - ✅ description: string (configurado pelo professor)
-    - ✅ timestamps: createdAt, updatedAt
+     - ✅ Implementar entidade Conclusion
+     - ✅ Criar DTOs para operações CRUD
 
-- ✅ **DTOs**
+   - ✅ **Implementar Serviço e Controlador**
+     - ✅ Criar ConclusionService com métodos CRUD
+     - ✅ Implementar ConclusionController com endpoints RESTful
 
-  - ✅ `UploadFileDto`
+2. ✅ **Frontend**
 
-    - ✅ projectId: number
-    - ✅ userId: number
-    - ✅ stepType: StepType
+   - ✅ **Criar ConclusionStore**
 
-  - ✅ `CreatePrototypeDto` / `UpdatePrototypeDto`
+     - ✅ Implementar estado, ações, reducers, efeitos e selectors
+     - ✅ Desenvolver serviço para comunicação com backend
 
-    - ✅ projectId: number
-    - ✅ userId: number
-    - ✅ description: string (opcional)
+   - ✅ **Implementar ConclusionStepComponent**
 
-  - ✅ `CreateConclusionDto` / `UpdateConclusionDto`
-    - ✅ projectId: number
-    - ✅ userId: number
-    - ✅ description: string (opcional)
+     - ✅ Criar interface para edição de descrição
+     - ✅ Integrar com componente de upload
+     - ✅ Implementar visualização de arquivos do grupo
+     - ✅ Adicionar estilos responsivos
 
-- ✅ **Serviços**
+   - ✅ **Integração com o Projeto**
+     - ✅ Adicionar rota para a etapa de conclusão
+     - ✅ Incluir no menu de navegação do projeto
 
-  - ✅ `FileService`
-
-    - ✅ uploadFile(file, userId, projectId, stepType): Promise<UploadedFile>
-    - ✅ deleteFile(fileId, userId): Promise<void>
-    - ✅ getFileById(fileId): Promise<UploadedFile>
-    - ✅ getFilesByProject(projectId, stepType): Promise<UploadedFile[]>
-    - ✅ getFilesByUser(userId, projectId, stepType): Promise<UploadedFile[]>
-    - ✅ getFilesByGroup(groupId, stepType): Promise<UploadedFile[]>
-
-  - ✅ `PrototypeService`
-
-    - ✅ create(dto): Promise<Prototype>
-    - ✅ findById(id): Promise<Prototype>
-    - ✅ findByProjectId(projectId): Promise<Prototype>
-    - ✅ update(id, dto): Promise<Prototype>
-    - ✅ remove(id): Promise<void>
-
-  - ✅ `ConclusionService`
-    - ✅ create(dto): Promise<Conclusion>
-    - ✅ findById(id): Promise<Conclusion>
-    - ✅ findByProjectId(projectId): Promise<Conclusion>
-    - ✅ update(id, dto): Promise<Conclusion>
-    - ✅ remove(id): Promise<void>
-
-- ✅ **Controladores**
-
-  - ✅ `FileController`
-
-    - ✅ POST /files/upload (com FileInterceptor para processamento)
-    - ✅ GET /files/:id
-    - ✅ GET /files/:id/download
-    - ✅ GET /files/project/:projectId
-    - ✅ GET /files/user/:userId/project/:projectId
-    - ✅ GET /files/group/:groupId
-    - ✅ DELETE /files/:id
-
-  - ✅ `PrototypeController`
-
-    - ✅ POST /prototype
-    - ✅ GET /prototype/:id
-    - ✅ GET /prototype/project/:projectId
-    - ✅ PATCH /prototype/:id
-    - ✅ DELETE /prototype/:id
-
-  - ✅ `ConclusionController`
-    - ✅ POST /conclusion
-    - ✅ GET /conclusion/:id
-    - ✅ GET /conclusion/project/:projectId
-    - ✅ PATCH /conclusion/:id
-    - ✅ DELETE /conclusion/:id
-
-#### 3. Frontend para Etapas de Protótipo e Conclusão
-
-- ✅ **Interfaces**
-
-  - ✅ `UploadedFile`
-
-    - ✅ id: number
-    - ✅ originalName: string
-    - ✅ size: number
-    - ✅ mimeType: string
-    - ✅ uploadDate: Date
-    - ✅ userId: number
-    - ✅ downloadUrl: string
-
-  - ✅ `Prototype` / `Conclusion`
-
-    - ✅ id: number
-    - ✅ projectId: number
-    - ✅ userId: number
-    - ✅ description: string
-    - ✅ createdAt: Date
-    - ✅ updatedAt: Date
-
-  - ✅ `CreatePrototypeDto` / `UpdatePrototypeDto`
-    - ✅ projectId: number
-    - ✅ userId: number
-    - ✅ description: string
-
-- ✅ **Stores**
-
-  - ✅ `PrototypeStore`
-
-    - ✅ Estado para protótipos, arquivos, configurações, loading, error
-    - ✅ Ações para CRUD de protótipos e upload/download/delete de arquivos
-    - ✅ Reducers para atualizar estado
-    - ✅ Efeitos para operações assíncronas
-    - ✅ Selectors para acessar partes do estado
-    - ✅ Facade para abstrair complexidade
-
-  - `ConclusionStore` (A implementar)
-
-- ✅ **Componentes**
-
-  - ✅ `PrototypingStepComponent`
-
-    - ✅ Exibir campo para texto configurável (instruções do professor)
-    - ✅ Integrar com FileUploadComponent
-    - ✅ Listar arquivos enviados por membros do grupo
-    - ✅ Exibir/ocultar baseado em existência de protótipo/conclusão
-    - ✅ Botão para finalizar etapa
-    - ✅ Layout responsivo
-
-  - `ConclusionStepComponent` (A implementar)
-
-#### 4. Integração e Testes (A implementar)
-
-- **Integração com Sistema Existente**
-
-  - ✅ Adicionar rota para PrototypingStep
-  - Adicionar rota para ConclusionStep (A implementar)
-  - Atualizar verificação de etapas concluídas (A implementar)
-  - Integrar com sistema de grupos para visibilidade de arquivos (A implementar)
-
-- **Testes**
-  - Testes para FileService e FileController (A implementar)
-  - Testes para PrototypeService/ConclusionService e Controllers (A implementar)
-  - Testes para componentes Frontend (A implementar)
-  - Testes de integração para verificar fluxo completo (A implementar)
-
-#### Passos de Implementação Restantes
-
-1. ✅ **Infraestrutura de Armazenamento**
-
-   - ✅ Configurar FileInterceptor para upload de arquivos
-   - ✅ Criar estrutura de pastas para armazenamento local
-   - ✅ Implementar interface de serviço para futura migração para cloud
-
-2. ✅ **Backend**
-
-   - ✅ Implementar controladores e serviços
-   - ✅ Configurar rotas para upload/download de arquivos
-   - ✅ Implementar controle de acesso baseado em grupos
-
-3. **Frontend - Etapa de Conclusão**
-
-   - Implementar componente de Conclusão
-   - Criar store e serviços
-   - Integrar com componente de upload
-   - Implementar visibilidade de arquivos por grupo
-
-4. **Testes e Refinamentos**
-   - Testar fluxo completo
-   - Verificar visibilidade por grupo
-   - Validar tratamento de erros e edge cases
-
-## Próximos Passos Detalhados
-
-### 1. ✅ Completar Backend para Gerenciamento de Arquivos (Concluído)
-
-1. ✅ **Implementar FileService**
-
-   - ✅ Criar métodos para upload, download e exclusão
-   - ✅ Implementar controle de acesso baseado em grupos
-   - ✅ Configurar armazenamento local com FileInterceptor
-
-2. ✅ **Implementar PrototypeService**
-
-   - ✅ Criar métodos CRUD para protótipos
-   - ✅ Implementar validação e manipulação de dados
-   - ✅ Relacionar protótipos com arquivos enviados
-
-3. ✅ **Implementar Controllers**
-   - ✅ Criar endpoints RESTful para operações
-   - ✅ Implementar tratamento de erros
-
-### 2. ✅ Implementar Backend da Etapa de Conclusão (Concluído)
-
-1. ✅ **Criar Entidade e DTOs**
-
-   - ✅ Implementar entidade Conclusion
-   - ✅ Criar DTOs para operações CRUD
-
-2. ✅ **Implementar Serviço e Controlador**
-   - ✅ Criar ConclusionService com métodos CRUD
-   - ✅ Implementar ConclusionController com endpoints RESTful
-
-### 3. Implementar Frontend da Etapa de Conclusão (Próximo)
-
-1. **Criar ConclusionStore**
-
-   - Implementar estado, ações, reducers, efeitos e selectors
-   - Desenvolver serviço para comunicação com backend
-
-2. **Implementar ConclusionStepComponent**
-   - Criar interface para edição de descrição
-   - Integrar com componente de upload
-   - Implementar visualização de arquivos do grupo
-
-### 4. Testes e Refinamentos
+### 9. Testes e Refinamentos (Próximo)
 
 1. **Testes de Integração**
 
@@ -501,8 +226,8 @@
 
 ## Notas
 
-- Backend para as etapas de Prototipação e Conclusão implementados completamente
+- Frontend e backend para as etapas de Prototipação e Conclusão implementados completamente
 - Módulos de File, Prototype e Conclusion criados seguindo os padrões da aplicação
 - Controle de acesso baseado em usuário e grupo implementado
 - Armazenamento local configurado com estrutura preparada para migração futura
-- Próximo passo é implementar o frontend para a etapa de Conclusão
+- Próximo passo é realizar testes e refinamentos do fluxo completo
