@@ -292,3 +292,82 @@ A plataforma implementa diferentes etapas do processo de Design Thinking, cada u
   - `design-thinking-ed-platform-be/src/modules/file/file.module.ts`
   - `design-thinking-ed-platform-be/src/modules/file/file.controller.ts`
   - `design-thinking-ed-platform-fe/src/app/common/services/file-upload.service.ts`
+
+## 2024-07-08: Bugfixes no Sistema de Upload de Arquivos
+
+### Problemas identificados no componente de upload de arquivos
+
+1. **Arquivos nulos no estado**
+
+   - Problema: Ao adicionar um arquivo no frontend, são inseridos no estado diversos arquivos com valor null
+   - Causa provável: Bug no reducer ou na forma como os arquivos são adicionados ao estado após o upload
+   - Arquivos a serem modificados:
+     - `design-thinking-ed-platform-fe/src/app/stores/prototype-store/prototype.reducer.ts`
+     - `design-thinking-ed-platform-fe/src/app/stores/conclusion-store/conclusion.reducer.ts`
+
+2. **Erro ao remover arquivo existente**
+
+   - Problema: Ao tentar remover um arquivo, ocorre erro no console: "Cannot assign to read only property '3' of object '[object Array]'"
+   - Causa provável: O array existingFiles está sendo modificado diretamente quando é uma propriedade imutável
+   - Arquivo a ser modificado:
+     - `design-thinking-ed-platform-fe/src/app/common/components/file-upload/file-upload.component.ts`
+
+3. **Download de arquivo incorreto**
+   - Problema: Ao baixar um arquivo, é baixado apenas um arquivo HTML em vez do conteúdo real
+   - Causa provável:
+     - Implementação incorreta da URL de download no componente ou serviço
+     - Headers incorretos na resposta HTTP do backend
+   - Arquivos a serem modificados:
+     - `design-thinking-ed-platform-be/src/modules/file/file.controller.ts`
+     - `design-thinking-ed-platform-fe/src/app/common/services/file-upload.service.ts`
+     - `design-thinking-ed-platform-fe/src/app/common/components/file-upload/file-upload.component.html`
+
+### Correções implementadas
+
+1. **Arquivos nulos no estado**
+
+   - ✅ Modificado o reducer em `prototype.reducer.ts` e `conclusion.reducer.ts` para:
+     - Verificar se o arquivo é válido antes de adicioná-lo ao estado
+     - Verificar se o arquivo já existe no estado para evitar duplicatas
+     - Pular arquivos nulos ou inválidos retornando o estado atual sem modificações
+   - Melhoria na robustez do sistema para manipulação de dados inconsistentes
+
+2. **Erro ao remover arquivo existente**
+
+   - ✅ Implementada atualização imutável do array no método `removeExistingFile` em `file-upload.component.ts`:
+     - Criada uma cópia do array `existingFiles` usando spread operator (`[...this.existingFiles]`)
+     - Modificada a cópia e depois atribuída de volta à propriedade
+     - Garantida a imutabilidade para evitar erro de propriedade somente leitura
+
+3. **Download de arquivo incorreto**
+
+   - ✅ Melhorado o endpoint de download no backend em `file.controller.ts`:
+
+     - Adicionados headers HTTP apropriados: Content-Type, Content-Length, Cache-Control
+     - Ajustada a ordem dos headers para garantir compatibilidade com os navegadores
+     - Alterado o método de envio da resposta de `res.send` para `res.end`
+
+   - ✅ Melhorado o serviço de upload no frontend em `file-upload.service.ts`:
+
+     - Adicionada validação de ID de arquivo antes de gerar URL de download
+     - Criado método `processReceivedFiles` para processar arquivos recebidos do backend
+     - Garantido que todos os arquivos tenham URLs de download válidas
+
+   - ✅ Atualizado os effects em `prototype.effects.ts` e `conclusion.effects.ts`:
+
+     - Implementado processamento dos arquivos com URLs de download antes de atualizar o estado
+     - Garantido que arquivos retornados do upload tenham URLs de download válidas
+
+   - ✅ Corrigido o template HTML em `file-upload.component.html`:
+     - Adicionado nome do arquivo ao atributo download para garantir que o navegador use o nome correto
+     - Adicionado `target="_blank"` para melhorar a experiência de download
+
+### Resultados
+
+- Os componentes de upload agora manipulam corretamente os arquivos no estado
+- Não ocorre mais erro ao tentar remover um arquivo existente
+- O download de arquivos funciona corretamente, baixando o conteúdo real com o nome do arquivo original
+- A experiência do usuário foi melhorada com feedback visual mais preciso
+- A robustez do sistema foi aumentada com validações adicionais
+
+Estas correções resolvem os problemas identificados no sistema de upload de arquivos, melhorando a confiabilidade e a experiência do usuário nas etapas de Prototipação e Conclusão.

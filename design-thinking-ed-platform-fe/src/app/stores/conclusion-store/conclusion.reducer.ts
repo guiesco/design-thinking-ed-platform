@@ -88,11 +88,25 @@ export const conclusionReducer = createReducer(
     loading: true,
     error: null,
   })),
-  on(ConclusionActions.uploadFileSuccess, (state, { file }) => ({
-    ...state,
-    files: [...state.files, file],
-    loading: false,
-  })),
+  on(ConclusionActions.uploadFileSuccess, (state, { file }) => {
+    if (!file || file === null || !file.id) {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
+
+    const fileExists = state.files.some(
+      (existingFile) => existingFile.id === file.id
+    );
+
+    return {
+      ...state,
+      files: fileExists ? state.files : [...state.files, file],
+      loading: false,
+    };
+  }),
+
   on(ConclusionActions.uploadFileFailure, (state, { error }) => ({
     ...state,
     error,

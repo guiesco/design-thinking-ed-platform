@@ -120,6 +120,29 @@ export class FileUploadService {
    * @param fileId ID do arquivo
    */
   getDownloadUrl(fileId: number): string {
+    if (!fileId || isNaN(Number(fileId))) {
+      console.error('ID de arquivo inválido para download:', fileId);
+      return '';
+    }
     return `${this.baseUrl}/${fileId}/download`;
+  }
+
+  /**
+   * Processa os arquivos recebidos do backend para adicionar URLs de download
+   * @param files Lista de arquivos do backend
+   */
+  processReceivedFiles(files: UploadedFile[]): UploadedFile[] {
+    if (!files || !Array.isArray(files)) {
+      return [];
+    }
+
+    return files
+      .map((file) => {
+        return {
+          ...file,
+          downloadUrl: this.getDownloadUrl(file?.id),
+        };
+      })
+      .filter((file) => file !== null);
   }
 }

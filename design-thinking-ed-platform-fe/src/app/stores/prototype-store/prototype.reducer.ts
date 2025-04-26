@@ -94,11 +94,26 @@ export const prototypeReducer = createReducer(
     error: null,
   })),
 
-  on(PrototypeActions.uploadFileSuccess, (state, { file }) => ({
-    ...state,
-    files: [...state.files, file],
-    loading: false,
-  })),
+  on(PrototypeActions.uploadFileSuccess, (state, { file }) => {
+    // Verificar se o arquivo é válido antes de adicioná-lo ao estado
+    if (!file || file === null || !file.id) {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
+
+    // Verificar se o arquivo já existe no estado para evitar duplicatas
+    const fileExists = state.files.some(
+      (existingFile) => existingFile.id === file.id
+    );
+
+    return {
+      ...state,
+      files: fileExists ? state.files : [...state.files, file],
+      loading: false,
+    };
+  }),
 
   on(PrototypeActions.uploadFileFailure, (state, { error }) => ({
     ...state,

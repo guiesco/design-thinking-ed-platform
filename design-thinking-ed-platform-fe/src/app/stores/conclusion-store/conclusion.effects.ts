@@ -84,17 +84,20 @@ export class ConclusionEffects {
   loadFiles$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ConclusionActions.loadFiles),
-      switchMap(({ projectId }) =>
+      mergeMap(({ projectId }) =>
         this.fileService
           .getFilesByProject(projectId, FileStepType.CONCLUSION)
           .pipe(
-            map((files) => ConclusionActions.loadFilesSuccess({ files })),
+            map((files) => {
+              // Processar os arquivos para adicionar URLs de download
+              const processedFiles =
+                this.fileService.processReceivedFiles(files);
+              return ConclusionActions.loadFilesSuccess({
+                files: processedFiles,
+              });
+            }),
             catchError((error) =>
-              of(
-                ConclusionActions.loadFilesFailure({
-                  error: error.message,
-                })
-              )
+              of(ConclusionActions.loadFilesFailure({ error: error.message }))
             )
           )
       )
@@ -108,9 +111,17 @@ export class ConclusionEffects {
         this.fileService
           .uploadFile(file, userId, projectId, FileStepType.CONCLUSION)
           .pipe(
-            map((uploadedFile) =>
-              ConclusionActions.uploadFileSuccess({ file: uploadedFile })
-            ),
+            map((uploadedFile) => {
+              // Garantir que o arquivo retornado tenha uma URL de download
+              if (uploadedFile && uploadedFile.id) {
+                uploadedFile.downloadUrl = this.fileService.getDownloadUrl(
+                  uploadedFile.id
+                );
+              }
+              return ConclusionActions.uploadFileSuccess({
+                file: uploadedFile,
+              });
+            }),
             catchError((error) =>
               of(ConclusionActions.uploadFileFailure({ error: error.message }))
             )

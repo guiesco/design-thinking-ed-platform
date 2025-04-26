@@ -138,8 +138,12 @@ export class FileUploadComponent implements OnInit, OnChanges {
 
   removeExistingFile(id: string | number, index: number): void {
     if (index >= 0 && index < this.existingFiles.length) {
-      // Remover do array local para feedback visual imediato
-      this.existingFiles.splice(index, 1);
+      // Criar uma cópia do array antes de modificá-lo para evitar erro de propriedade readonly
+      const updatedFiles = [...this.existingFiles];
+      updatedFiles.splice(index, 1);
+
+      // Atualizar a propriedade local
+      this.existingFiles = updatedFiles;
 
       // Emitir evento para o componente pai lidar com a remoção no backend
       this.fileRemoved.emit(id);

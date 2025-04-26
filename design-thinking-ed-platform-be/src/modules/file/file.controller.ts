@@ -49,14 +49,16 @@ export class FileController {
     const file = await this.fileService.getFileById(id);
 
     // Definir headers para download
+    res.setHeader('Content-Type', file.mimeType);
     res.setHeader(
       'Content-Disposition',
       `attachment; filename="${encodeURIComponent(file.originalName)}"`,
     );
-    res.setHeader('Content-Type', file.mimeType);
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Content-Length', file.size);
 
     // Enviar o conteúdo binário como resposta
-    res.send(file.content);
+    res.end(file.content);
   }
 
   @Get('project/:projectId')

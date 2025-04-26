@@ -83,7 +83,13 @@ export class PrototypeEffects {
         this.fileUploadService
           .getFilesByProject(projectId, FileStepType.PROTOTYPE)
           .pipe(
-            map((files) => PrototypeActions.loadFilesSuccess({ files })),
+            map((files) => {
+              const processedFiles =
+                this.fileUploadService.processReceivedFiles(files);
+              return PrototypeActions.loadFilesSuccess({
+                files: processedFiles,
+              });
+            }),
             catchError((error) =>
               of(PrototypeActions.loadFilesFailure({ error: error.message }))
             )
@@ -99,7 +105,13 @@ export class PrototypeEffects {
         this.fileUploadService
           .uploadFile(file, userId, projectId, FileStepType.PROTOTYPE)
           .pipe(
-            map((file) => PrototypeActions.uploadFileSuccess({ file })),
+            map((uploadedFile) => {
+              if (uploadedFile && uploadedFile.id) {
+                uploadedFile.downloadUrl =
+                  this.fileUploadService.getDownloadUrl(uploadedFile.id);
+              }
+              return PrototypeActions.uploadFileSuccess({ file: uploadedFile });
+            }),
             catchError((error) =>
               of(PrototypeActions.uploadFileFailure({ error: error.message }))
             )

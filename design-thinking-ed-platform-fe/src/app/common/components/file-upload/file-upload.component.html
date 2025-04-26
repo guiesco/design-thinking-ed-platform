@@ -90,7 +90,8 @@
           <a
             mat-icon-button
             [href]="file.downloadUrl"
-            download
+            download="{{ file.originalName }}"
+            target="_blank"
             matTooltip="Download"
           >
             <mat-icon>file_download</mat-icon>
