@@ -47,12 +47,26 @@
 ### Backend
 
 - Entidades para gerenciamento de arquivos e protótipos
-  - UploadedFile
-  - Prototype
+  - UploadedFile (completa)
+  - Prototype (completa)
+  - Conclusion (completa)
 - DTOs para validação de dados
-  - CreatePrototypeDto
-  - UpdatePrototypeDto
+  - CreatePrototypeDto / UpdatePrototypeDto
   - UploadFileDto
+  - CreateConclusionDto / UpdateConclusionDto
+- Serviços para gerenciamento de arquivos e protótipos
+  - FileService (completo)
+  - PrototypeService (completo)
+  - ConclusionService (completo)
+- Controladores com endpoints RESTful
+  - FileController (completo)
+  - PrototypeController (completo)
+  - ConclusionController (completo)
+- Infraestrutura de armazenamento
+  - Configuração do FileInterceptor
+  - Criação de diretórios dinâmicos por projeto
+  - Interface para migração futura para cloud
+- Controle de acesso baseado em usuário/grupo
 
 ## Implementações Pendentes
 
@@ -60,38 +74,37 @@
 
 - ConclusionStepComponent
 - Store para gerenciamento de estado da etapa de Conclusão
+  - Ações, reducers, efeitos, selectors, facade
+  - Serviço para comunicação com backend
+- Integração com sistema de grupos para visibilidade de arquivos
 
-### Backend
+### Testes
 
-- Entidade Conclusion
-- Service para upload/download de arquivos
-- Controladores com endpoints RESTful
-- Gerenciamento de acesso baseado em grupos
+- Testes de integração para backend
+- Testes de componentes para frontend
+- Validação de fluxo completo do processo
 
 ## Próximas Etapas
 
-1. **Completar Backend**
+1. **Implementar Frontend da Etapa de Conclusão**
 
-   - Implementar FileService e FileController
-   - Implementar PrototypeService e PrototypeController
-   - Configurar armazenamento local de arquivos
-   - Implementar controle de acesso por grupo
+   - Criar ConclusionStore
+     - Estado, ações, reducers, efeitos, selectors
+     - Serviço para comunicação com backend
+   - Implementar ConclusionStepComponent
+     - Interface para descrição/enunciado
+     - Integração com componente de upload
+     - Visualização de arquivos do grupo
 
-2. **Etapa de Conclusão**
-
-   - Implementar interfaces e serviços
-   - Criar componente ConclusionStepComponent
-   - Integrar com componente de upload
-
-3. **Testes e Refinamentos**
-   - Testar upload/download de arquivos
+2. **Testes e Refinamentos**
+   - Testar fluxo completo de prototipação e conclusão
    - Verificar visibilidade por grupo
    - Validar compatibilidade com diferentes tipos de arquivo
 
 ## Considerações
 
-- Componente de upload genérico implementado para reutilização
-- Armazenamento local deve ter interface clara para futura migração para cloud
-- Controle de acesso deve considerar a estrutura de grupos existente
-- Frontend implementado com feedback claro sobre sucesso/falha de uploads
-- Variáveis de configuração para limites futuros implementadas desde o início
+- O backend para as etapas de Prototipação e Conclusão foi completamente implementado
+- Arquivos são armazenados localmente com estrutura preparada para migração para cloud
+- Controle de acesso implementado por usuário/grupo para garantir visibilidade adequada
+- Interfaces e serviços seguem o padrão estabelecido no restante da aplicação
+- Próximo foco será na implementação do frontend para a etapa de Conclusão

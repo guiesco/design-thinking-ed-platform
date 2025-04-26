@@ -243,7 +243,7 @@
   - ✅ Tratamento de erro e progresso
   - ✅ Integração com HttpClient
 
-#### 2. Backend para Gerenciamento de Arquivos (Parcialmente Concluído)
+#### 2. Backend para Gerenciamento de Arquivos (Concluído)
 
 - ✅ **Entidades**
 
@@ -269,12 +269,12 @@
     - ✅ description: string (configurado pelo professor)
     - ✅ timestamps: createdAt, updatedAt
 
-  - `Conclusion` (A implementar)
-    - id: number
-    - projectId: number
-    - userId: number
-    - description: string (configurado pelo professor)
-    - timestamps: createdAt, updatedAt
+  - ✅ `Conclusion`
+    - ✅ id: number
+    - ✅ projectId: number
+    - ✅ userId: number
+    - ✅ description: string (configurado pelo professor)
+    - ✅ timestamps: createdAt, updatedAt
 
 - ✅ **DTOs**
 
@@ -285,42 +285,68 @@
     - ✅ stepType: StepType
 
   - ✅ `CreatePrototypeDto` / `UpdatePrototypeDto`
+
     - ✅ projectId: number
     - ✅ userId: number
     - ✅ description: string (opcional)
 
-- **Serviços** (A implementar)
+  - ✅ `CreateConclusionDto` / `UpdateConclusionDto`
+    - ✅ projectId: number
+    - ✅ userId: number
+    - ✅ description: string (opcional)
 
-  - `FileService`
+- ✅ **Serviços**
 
-    - uploadFile(file, userId, projectId, stepType): Promise<UploadedFile>
-    - deleteFile(fileId, userId): Promise<void>
-    - getFileById(fileId): Promise<UploadedFile>
-    - getFilesByProject(projectId, stepType): Promise<UploadedFile[]>
-    - getFilesByUser(userId, projectId, stepType): Promise<UploadedFile[]>
-    - getFilesByGroup(groupId, stepType): Promise<UploadedFile[]>
+  - ✅ `FileService`
 
-  - `PrototypeService` / `ConclusionService`
-    - createPrototype(dto): Promise<Prototype>
-    - getPrototypeByProject(projectId): Promise<Prototype>
-    - updatePrototype(id, dto): Promise<Prototype>
-    - getPrototypeById(id): Promise<Prototype>
+    - ✅ uploadFile(file, userId, projectId, stepType): Promise<UploadedFile>
+    - ✅ deleteFile(fileId, userId): Promise<void>
+    - ✅ getFileById(fileId): Promise<UploadedFile>
+    - ✅ getFilesByProject(projectId, stepType): Promise<UploadedFile[]>
+    - ✅ getFilesByUser(userId, projectId, stepType): Promise<UploadedFile[]>
+    - ✅ getFilesByGroup(groupId, stepType): Promise<UploadedFile[]>
 
-- **Controladores** (A implementar)
+  - ✅ `PrototypeService`
 
-  - `FileController`
+    - ✅ create(dto): Promise<Prototype>
+    - ✅ findById(id): Promise<Prototype>
+    - ✅ findByProjectId(projectId): Promise<Prototype>
+    - ✅ update(id, dto): Promise<Prototype>
+    - ✅ remove(id): Promise<void>
 
-    - POST /files/upload (com Multer para processamento)
-    - GET /files/:id
-    - GET /files/project/:projectId
-    - DELETE /files/:id
+  - ✅ `ConclusionService`
+    - ✅ create(dto): Promise<Conclusion>
+    - ✅ findById(id): Promise<Conclusion>
+    - ✅ findByProjectId(projectId): Promise<Conclusion>
+    - ✅ update(id, dto): Promise<Conclusion>
+    - ✅ remove(id): Promise<void>
 
-  - `PrototypeController` / `ConclusionController`
-    - POST /prototype
-    - GET /prototype/:id
-    - GET /prototype/project/:projectId
-    - PUT /prototype/:id
-    - Endpoints equivalentes para conclusão
+- ✅ **Controladores**
+
+  - ✅ `FileController`
+
+    - ✅ POST /files/upload (com FileInterceptor para processamento)
+    - ✅ GET /files/:id
+    - ✅ GET /files/:id/download
+    - ✅ GET /files/project/:projectId
+    - ✅ GET /files/user/:userId/project/:projectId
+    - ✅ GET /files/group/:groupId
+    - ✅ DELETE /files/:id
+
+  - ✅ `PrototypeController`
+
+    - ✅ POST /prototype
+    - ✅ GET /prototype/:id
+    - ✅ GET /prototype/project/:projectId
+    - ✅ PATCH /prototype/:id
+    - ✅ DELETE /prototype/:id
+
+  - ✅ `ConclusionController`
+    - ✅ POST /conclusion
+    - ✅ GET /conclusion/:id
+    - ✅ GET /conclusion/project/:projectId
+    - ✅ PATCH /conclusion/:id
+    - ✅ DELETE /conclusion/:id
 
 #### 3. Frontend para Etapas de Protótipo e Conclusão
 
@@ -393,17 +419,17 @@
 
 #### Passos de Implementação Restantes
 
-1. **Infraestrutura de Armazenamento**
+1. ✅ **Infraestrutura de Armazenamento**
 
-   - Configurar Multer para upload de arquivos
-   - Criar estrutura de pastas para armazenamento local
-   - Implementar interface de serviço para futura migração para cloud
+   - ✅ Configurar FileInterceptor para upload de arquivos
+   - ✅ Criar estrutura de pastas para armazenamento local
+   - ✅ Implementar interface de serviço para futura migração para cloud
 
-2. **Backend**
+2. ✅ **Backend**
 
-   - Implementar controladores e serviços
-   - Configurar rotas para upload/download de arquivos
-   - Implementar controle de acesso baseado em grupos
+   - ✅ Implementar controladores e serviços
+   - ✅ Configurar rotas para upload/download de arquivos
+   - ✅ Implementar controle de acesso baseado em grupos
 
 3. **Frontend - Etapa de Conclusão**
 
@@ -417,67 +443,54 @@
    - Verificar visibilidade por grupo
    - Validar tratamento de erros e edge cases
 
-## Notas Importantes para Implementação
-
-- **Armazenamento de Arquivos**
-
-  - Inicialmente armazenar no servidor local em pasta configurável
-  - Criar interface abstrata para facilitar migração futura para cloud
-  - Implementar variáveis de configuração para:
-    - Tamanho máximo de arquivo
-    - Tipos de arquivo permitidos
-    - Número máximo de arquivos por etapa
-
-- **Controle de Acesso**
-
-  - Verificar pertencimento ao grupo antes de exibir arquivos
-  - Permitir que apenas o proprietário exclua seus arquivos
-  - Professores têm acesso a todos os arquivos da turma
-
-- **UI/UX**
-  - Seguir padrões visuais do resto da aplicação
-  - Feedback claro para sucesso/erro de uploads
-  - Indicações visuais para arquivos em processamento
-  - Layout responsivo para todos os tamanhos de tela
-
 ## Próximos Passos Detalhados
 
-### 1. Completar Backend para Gerenciamento de Arquivos
+### 1. ✅ Completar Backend para Gerenciamento de Arquivos (Concluído)
 
-1. **Implementar FileService**
+1. ✅ **Implementar FileService**
 
-   - Criar métodos para upload, download e exclusão
-   - Implementar controle de acesso baseado em grupos
-   - Configurar armazenamento local com Multer
+   - ✅ Criar métodos para upload, download e exclusão
+   - ✅ Implementar controle de acesso baseado em grupos
+   - ✅ Configurar armazenamento local com FileInterceptor
 
-2. **Implementar PrototypeService**
+2. ✅ **Implementar PrototypeService**
 
-   - Criar métodos CRUD para protótipos
-   - Implementar validação e manipulação de dados
-   - Relacionar protótipos com arquivos enviados
+   - ✅ Criar métodos CRUD para protótipos
+   - ✅ Implementar validação e manipulação de dados
+   - ✅ Relacionar protótipos com arquivos enviados
 
-3. **Implementar Controllers**
-   - Criar endpoints RESTful para operações
-   - Documentar API com Swagger
-   - Implementar tratamento de erros
+3. ✅ **Implementar Controllers**
+   - ✅ Criar endpoints RESTful para operações
+   - ✅ Implementar tratamento de erros
 
-### 2. Implementar Etapa de Conclusão
+### 2. ✅ Implementar Backend da Etapa de Conclusão (Concluído)
 
-1. **Criar Entidade e DTOs**
+1. ✅ **Criar Entidade e DTOs**
 
-   - Implementar entidade Conclusion
-   - Criar DTOs para operações CRUD
+   - ✅ Implementar entidade Conclusion
+   - ✅ Criar DTOs para operações CRUD
 
-2. **Implementar Store e Componente**
-   - Criar ConclusionStore seguindo padrão do PrototypeStore
-   - Implementar ConclusionStepComponent
+2. ✅ **Implementar Serviço e Controlador**
+   - ✅ Criar ConclusionService com métodos CRUD
+   - ✅ Implementar ConclusionController com endpoints RESTful
+
+### 3. Implementar Frontend da Etapa de Conclusão (Próximo)
+
+1. **Criar ConclusionStore**
+
+   - Implementar estado, ações, reducers, efeitos e selectors
+   - Desenvolver serviço para comunicação com backend
+
+2. **Implementar ConclusionStepComponent**
+   - Criar interface para edição de descrição
    - Integrar com componente de upload
+   - Implementar visualização de arquivos do grupo
 
-### 3. Testes e Refinamentos
+### 4. Testes e Refinamentos
 
 1. **Testes de Integração**
 
-   - Validar fluxo completo de prototipação
+   - Validar fluxo completo de prototipação e conclusão
    - Testar controle de acesso por grupo
    - Verificar limite de tamanho e tipos de arquivo
 
@@ -488,7 +501,8 @@
 
 ## Notas
 
-- Backend e frontend implementados seguindo os padrões da aplicação
-- Entidades e DTOs criados conforme definido
-- Implementação parcial concluída com componente reutilizável de upload
-- Estrutura preparada para adição da etapa de Conclusão
+- Backend para as etapas de Prototipação e Conclusão implementados completamente
+- Módulos de File, Prototype e Conclusion criados seguindo os padrões da aplicação
+- Controle de acesso baseado em usuário e grupo implementado
+- Armazenamento local configurado com estrutura preparada para migração futura
+- Próximo passo é implementar o frontend para a etapa de Conclusão
