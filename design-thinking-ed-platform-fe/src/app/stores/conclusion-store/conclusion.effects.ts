@@ -122,8 +122,8 @@ export class ConclusionEffects {
   deleteFile$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ConclusionActions.deleteFile),
-      mergeMap(({ fileId }) =>
-        this.fileService.deleteFile(fileId).pipe(
+      mergeMap(({ fileId, userId }) =>
+        this.fileService.deleteFile(fileId, userId).pipe(
           map(() => ConclusionActions.deleteFileSuccess({ fileId })),
           catchError((error) =>
             of(ConclusionActions.deleteFileFailure({ error: error.message }))

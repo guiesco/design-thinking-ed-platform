@@ -82,8 +82,9 @@ export class ConclusionFacade {
   /**
    * Remove um arquivo
    * @param fileId ID do arquivo
+   * @param userId ID do usuário
    */
-  deleteFile(fileId: number): void {
-    this.store.dispatch(ConclusionActions.deleteFile({ fileId }));
+  deleteFile(fileId: number, userId: number): void {
+    this.store.dispatch(ConclusionActions.deleteFile({ fileId, userId }));
   }
 }

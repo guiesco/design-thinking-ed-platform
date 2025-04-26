@@ -27,7 +27,7 @@ export class ConclusionStepComponent implements OnInit, OnDestroy {
     '.jpeg',
     '.png',
   ];
-  maxFileSize: number = 10 * 1024 * 1024; // 10MB
+  maxFileSize: number = 1024 * 1024; // 1MB
   maxFileCount: number = 5;
 
   conclusion$: Observable<Conclusion | null>;
@@ -133,6 +133,6 @@ export class ConclusionStepComponent implements OnInit, OnDestroy {
   }
 
   onFileRemoved(fileId: string | number): void {
-    this.conclusionFacade.deleteFile(+fileId);
+    this.conclusionFacade.deleteFile(+fileId, this.userId);
   }
 }

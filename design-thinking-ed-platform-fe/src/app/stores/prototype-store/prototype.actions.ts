@@ -93,7 +93,7 @@ export const uploadFileFailure = createAction(
 
 export const deleteFile = createAction(
   '[Prototype] Delete File',
-  props<{ fileId: number }>()
+  props<{ fileId: number; userId: number }>()
 );
 
 export const deleteFileSuccess = createAction(

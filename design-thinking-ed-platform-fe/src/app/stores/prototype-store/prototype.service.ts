@@ -46,6 +46,6 @@ export class PrototypeService {
    * @param dto Dados para atualização
    */
   updatePrototype(id: number, dto: UpdatePrototypeDto): Observable<Prototype> {
-    return this.http.put<Prototype>(`${this.baseUrl}/${id}`, dto);
+    return this.http.patch<Prototype>(`${this.baseUrl}/${id}`, dto);
   }
 }

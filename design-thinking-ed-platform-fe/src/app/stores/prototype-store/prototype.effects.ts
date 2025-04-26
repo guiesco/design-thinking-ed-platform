@@ -111,8 +111,8 @@ export class PrototypeEffects {
   deleteFile$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PrototypeActions.deleteFile),
-      mergeMap(({ fileId }) =>
-        this.fileUploadService.deleteFile(fileId).pipe(
+      mergeMap(({ fileId, userId }) =>
+        this.fileUploadService.deleteFile(fileId, userId).pipe(
           map(() => PrototypeActions.deleteFileSuccess({ fileId })),
           catchError((error) =>
             of(PrototypeActions.deleteFileFailure({ error: error.message }))

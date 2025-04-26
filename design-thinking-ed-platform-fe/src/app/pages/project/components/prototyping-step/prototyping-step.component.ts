@@ -27,7 +27,7 @@ export class PrototypingStepComponent implements OnInit, OnDestroy {
     '.jpeg',
     '.png',
   ];
-  maxFileSize: number = 10 * 1024 * 1024; // 10MB
+  maxFileSize: number = 1024 * 1024; // 1MB
   maxFileCount: number = 5;
 
   prototype$: Observable<Prototype | null>;
@@ -125,6 +125,6 @@ export class PrototypingStepComponent implements OnInit, OnDestroy {
   }
 
   onFileRemoved(fileId: string | number): void {
-    this.prototypeFacade.deleteFile(+fileId);
+    this.prototypeFacade.deleteFile(+fileId, this.userId);
   }
 }

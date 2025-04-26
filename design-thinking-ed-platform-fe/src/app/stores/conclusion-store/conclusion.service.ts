@@ -49,6 +49,6 @@ export class ConclusionService {
     id: number,
     dto: UpdateConclusionDto
   ): Observable<Conclusion> {
-    return this.http.put<Conclusion>(`${this.baseUrl}/${id}`, dto);
+    return this.http.patch<Conclusion>(`${this.baseUrl}/${id}`, dto);
   }
 }

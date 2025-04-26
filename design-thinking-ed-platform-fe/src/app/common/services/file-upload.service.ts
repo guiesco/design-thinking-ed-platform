@@ -97,9 +97,10 @@ export class FileUploadService {
   /**
    * Remove um arquivo pelo ID
    * @param fileId ID do arquivo
+   * @param userId ID do usuário
    */
-  deleteFile(fileId: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${fileId}`);
+  deleteFile(fileId: number, userId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${fileId}?userId=${userId}`);
   }
 
   /**
