@@ -2,61 +2,79 @@
 
 ## Foco Atual
 
-- Implementação completa da etapa de Ideação na plataforma de Design Thinking
-- Backend implementado com sucesso
-- Próximo passo: testes de integração com o frontend
+- Implementação das etapas de Prototipação e Conclusão na plataforma de Design Thinking
+- Adição de funcionalidade para upload de arquivos para ambas as etapas
+- Implementação de campo para texto configurável pelo professor (enunciado/critérios de avaliação)
+- Visibilidade de arquivos compartilhada entre membros do mesmo grupo
 
 ## Decisões Ativas
 
-- A etapa de Ideação segue a sequência natural após Problem Definition
-- Interface implementada conforme especificado:
-  - Input e botão para criar uma nova ideia
-  - Cards para cada ideia com três colunas (título, prós, contras)
-  - Sistema de upvote para todas as entidades
+- As etapas de Prototipação e Conclusão completam o fluxo de Design Thinking
+- Adição de um componente reutilizável para upload de arquivos:
+  - Suporte a drag-and-drop
+  - Exibição de progresso de upload
+  - Listagem de arquivos enviados
+  - Funcionalidade para remoção de arquivos
+- Armazenamento de arquivos inicialmente no servidor:
+  - Estrutura preparada para futura migração para cloud
+  - Variáveis de configuração para limites de tamanho e tipos de arquivo
 - Backend implementado seguindo os padrões dos outros módulos:
   - Entidades com relacionamentos apropriados
   - DTOs para validação de dados
-  - Serviço com operações CRUD e upvote
-  - Controlador com endpoints RESTful
+  - Serviços com operações CRUD
+  - Controladores com endpoints RESTful
+- Visibilidade de arquivos:
+  - Membros do mesmo grupo podem visualizar uploads
+  - Sem interações (comentários, avaliações) nas últimas etapas
 
-## Implementações Concluídas
+## Implementações Pendentes
 
 ### Frontend
 
-- ✅ Interfaces e DTOs para Ideação
-- ✅ Store completa (estado, ações, reducers, efeitos, selectors, facade)
-- ✅ Componente IdeationStep
-- ✅ Componente IdeaPoints para gerenciar prós e contras
-- ✅ Roteamento atualizado
-- ✅ Estilos responsivos implementados
+- Componente FileUpload reutilizável
+- PrototypingStepComponent
+- ConclusionStepComponent
+- Stores para gerenciamento de estado das etapas
+- Integração com roteamento existente
+- Estilos responsivos para os novos componentes
 
 ### Backend
 
-- ✅ Entidades (IdeationIdea e IdeationPoint)
-- ✅ DTOs para criação e atualização
-- ✅ Serviço IdeationService com métodos CRUD e upvote
-- ✅ Controlador com endpoints RESTful
-- ✅ Integração com UserVoteService para gerenciar upvotes
+- Entidades (Prototype e Conclusion)
+- Service para upload/download de arquivos
+- DTOs para criação e atualização
+- Controllers com endpoints RESTful
+- Gerenciamento de acesso baseado em grupos
 
 ## Próximas Etapas
 
-1. **Testes de Integração**
+1. **Implementação de Componente de Upload**
 
-   - Testar comunicação frontend-backend
-   - Verificar fluxo completo de operações CRUD
-   - Testar sistema de upvote
-   - Confirmar que o frontend está chamando os endpoints corretamente
+   - Criar componente FileUpload reutilizável
+   - Implementar interface e estilos
+   - Adicionar funcionalidades de drag-and-drop e progresso
 
-2. **Refinamentos**
-   - Ajustar UI com base nos testes
-   - Melhorar feedback ao usuário
-   - Otimizar desempenho
-   - Corrigir eventuais bugs
+2. **Implementação das Etapas**
+
+   - Criar componentes para Protótipo e Conclusão
+   - Implementar interfaces e serviços
+   - Integrar com componente de upload
+
+3. **Backend e Armazenamento**
+
+   - Implementar endpoints para upload/download
+   - Configurar armazenamento local com interface extensível
+   - Implementar controle de acesso por grupo
+
+4. **Testes e Refinamentos**
+   - Testar upload/download de arquivos
+   - Verificar visibilidade por grupo
+   - Validar compatibilidade com diferentes tipos de arquivo
 
 ## Considerações
 
-- Backend e frontend implementados seguindo os padrões da aplicação
-- Todas as funcionalidades requeridas para a etapa de Ideação estão implementadas
-- Sistema de upvote integrado com UserVoteService para manter consistência
-- Roteamento e navegação entre etapas funcionando corretamente
-- Próximo foco: garantir a integração perfeita entre frontend e backend
+- Componente de upload precisa ser genérico para reutilização
+- Armazenamento local deve ter interface clara para futura migração para cloud
+- Controle de acesso deve considerar a estrutura de grupos existente
+- Frontend deve fornecer feedback claro sobre sucesso/falha de uploads
+- Variáveis de configuração para limites futuros devem ser implementadas desde o início

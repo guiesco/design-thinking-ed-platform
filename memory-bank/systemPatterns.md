@@ -52,6 +52,19 @@
     - Relacionamento com ideia e usuário
     - Upvotes
 
+### Estrutura para Protótipo e Conclusão
+
+- Padrão para gerenciamento de arquivos:
+  - UploadedFile (entidade base)
+    - Metadados do arquivo (nome, tamanho, tipo)
+    - Informação de armazenamento (path, nome armazenado)
+    - Relacionamentos (usuário, projeto, grupo)
+    - Tipo de etapa (enum)
+  - Prototype/Conclusion (entidades finais)
+    - Descrição configurável (enunciado do professor)
+    - Referências para arquivos enviados
+    - Relacionamentos com usuário e projeto
+
 ## Padrões de Navegação
 
 - Verificação de etapas anteriores antes de avançar
@@ -82,6 +95,22 @@
 - Sistema de upvote para ideias e pontos
 - Ações de edição e exclusão
 - Feedback visual para interações
+
+### Padrão para Upload de Arquivos
+
+- Componente reutilizável FileUpload:
+  - Interface drag-and-drop
+  - Progresso visual de upload
+  - Configuração flexível (tipos, tamanhos)
+  - Validação visual de arquivos
+- Padrão de armazenamento:
+  - Abstração do mecanismo de armazenamento
+  - Interface única para local e cloud
+  - Metadados no banco de dados
+- Visibilidade baseada em grupos:
+  - Acesso compartilhado dentro do grupo
+  - Controle de propriedade para exclusão
+  - Acesso total para professores
 
 ## Padrões de API
 
