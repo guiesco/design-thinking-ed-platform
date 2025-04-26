@@ -1,0 +1,166 @@
+.file-upload-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+.drop-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 16px;
+
+    &:hover {
+        background-color: #edf2f7;
+        border-color: #b3d1ff;
+    }
+
+    &.active {
+        background-color: #e3f2fd;
+        border-color: #2196f3;
+    }
+}
+
+.upload-icon {
+    font-size: 48px;
+    height: 48px;
+    width: 48px;
+    color: #2196f3;
+    margin-bottom: 16px;
+}
+
+.upload-text {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #444;
+}
+
+.upload-text-small {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 16px;
+}
+
+.upload-info {
+    font-size: 12px;
+    color: #777;
+    margin-top: 16px;
+    text-align: center;
+}
+
+.file-list {
+    margin-top: 16px;
+
+    h3 {
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: #444;
+    }
+}
+
+.file-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+    padding: 8px 0;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.file-icon {
+    margin-right: 12px;
+    color: #555;
+}
+
+.file-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.file-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+
+    @media (max-width: 600px) {
+        max-width: 120px;
+    }
+}
+
+.file-size {
+    font-size: 12px;
+    color: #777;
+}
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    width: 150px;
+    margin: 0 12px;
+
+    @media (max-width: 600px) {
+        width: 100px;
+    }
+}
+
+.progress-text {
+    font-size: 12px;
+    color: #666;
+    margin-left: 8px;
+    width: 32px;
+}
+
+.file-actions {
+    display: flex;
+}
+
+/* Estilos para telas pequenas */
+@media (max-width: 600px) {
+    .drop-zone {
+        padding: 24px 12px;
+    }
+
+    .upload-icon {
+        font-size: 36px;
+        height: 36px;
+        width: 36px;
+        margin-bottom: 12px;
+    }
+
+    .upload-text {
+        font-size: 16px;
+    }
+
+    .file-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .file-actions {
+        margin-top: 8px;
+        align-self: flex-end;
+    }
+}

@@ -15,6 +15,8 @@
 - ✅ ChallengeDefinition
 - ✅ IdeationIdea
 - ✅ IdeationPoint
+- ✅ UploadedFile (parcial)
+- ✅ Prototype (parcial)
 
 #### Serviços
 
@@ -25,6 +27,12 @@
 - ✅ UserService
 - ✅ ProjectService
 - ✅ IdeationService
+
+#### DTOs
+
+- ✅ CreatePrototypeDto
+- ✅ UpdatePrototypeDto
+- ✅ UploadFileDto
 
 #### Testes
 
@@ -41,6 +49,8 @@
 - ✅ ResponseListComponent (reutilizável)
 - ✅ IdeationStepComponent
 - ✅ IdeaPointsComponent
+- ✅ FileUploadComponent (reutilizável)
+- ✅ PrototypingStepComponent
 
 #### Stores
 
@@ -50,6 +60,7 @@
 - ✅ UserStore
 - ✅ ProjectStore
 - ✅ IdeationStore
+- ✅ PrototypeStore
 
 #### Testes
 
@@ -207,81 +218,78 @@
   - Ícones mais expressivos
   - Cores consistentes para tipo de pontos (prós/contras)
 
-## Etapas de Prototipação e Conclusão (A Implementar)
+## Etapas de Prototipação e Conclusão (Em Implementação)
 
 ### Tarefas e Passos para Implementação
 
-#### 1. Componente de Upload de Arquivos
+#### 1. Componente de Upload de Arquivos (Concluído)
 
-- **Criar Componente Reutilizável `FileUploadComponent`**
+- ✅ **Criado Componente Reutilizável `FileUploadComponent`**
 
-  - Interface de arrastar e soltar (drag-and-drop)
-  - Seleção de arquivos via diálogo
-  - Exibição de progresso de upload
-  - Lista de arquivos enviados com opção de exclusão
-  - Feedback visual para sucesso/erro
-  - Configurações para:
-    - Tipos de arquivo permitidos (variável configurável)
-    - Tamanho máximo (variável configurável)
-    - Múltiplos arquivos ou arquivo único
+  - ✅ Interface de arrastar e soltar (drag-and-drop)
+  - ✅ Seleção de arquivos via diálogo
+  - ✅ Exibição de progresso de upload
+  - ✅ Lista de arquivos enviados com opção de exclusão
+  - ✅ Feedback visual para sucesso/erro
+  - ✅ Configurações para:
+    - ✅ Tipos de arquivo permitidos (variável configurável)
+    - ✅ Tamanho máximo (variável configurável)
+    - ✅ Múltiplos arquivos ou arquivo único
 
-- **Implementar Serviço `FileUploadService`**
-  - Método para upload de arquivo
-  - Método para exclusão de arquivo
-  - Método para download de arquivo
-  - Tratamento de erro e progresso
-  - Integração com HttpClient
+- ✅ **Implementado Serviço `FileUploadService`**
+  - ✅ Método para upload de arquivo
+  - ✅ Método para exclusão de arquivo
+  - ✅ Método para download de arquivo
+  - ✅ Tratamento de erro e progresso
+  - ✅ Integração com HttpClient
 
-#### 2. Backend para Gerenciamento de Arquivos
+#### 2. Backend para Gerenciamento de Arquivos (Parcialmente Concluído)
 
-- **Entidades**
+- ✅ **Entidades**
 
-  - `UploadedFile`
+  - ✅ `UploadedFile`
 
-    - id: number
-    - originalName: string
-    - storedName: string
-    - path: string
-    - size: number
-    - mimeType: string
-    - userId: number
-    - projectId: number
-    - groupId: number (para controle de acesso)
-    - stepType: enum (PROTOTYPE/CONCLUSION)
-    - timestamps: createdAt, updatedAt
+    - ✅ id: number
+    - ✅ originalName: string
+    - ✅ storedName: string
+    - ✅ path: string
+    - ✅ size: number
+    - ✅ mimeType: string
+    - ✅ userId: number
+    - ✅ projectId: number
+    - ✅ groupId: number (para controle de acesso)
+    - ✅ stepType: enum (PROTOTYPE/CONCLUSION)
+    - ✅ timestamps: createdAt, updatedAt
 
-  - `Prototype`
+  - ✅ `Prototype`
 
+    - ✅ id: number
+    - ✅ projectId: number
+    - ✅ userId: number
+    - ✅ description: string (configurado pelo professor)
+    - ✅ timestamps: createdAt, updatedAt
+
+  - `Conclusion` (A implementar)
     - id: number
     - projectId: number
     - userId: number
     - description: string (configurado pelo professor)
-    - fileIds: number[] (referência aos arquivos)
     - timestamps: createdAt, updatedAt
 
-  - `Conclusion`
-    - id: number
-    - projectId: number
-    - userId: number
-    - description: string (configurado pelo professor)
-    - fileIds: number[] (referência aos arquivos)
-    - timestamps: createdAt, updatedAt
+- ✅ **DTOs**
 
-- **DTOs**
+  - ✅ `UploadFileDto`
 
-  - `UploadFileDto`
+    - ✅ projectId: number
+    - ✅ userId: number
+    - ✅ stepType: StepType
 
-    - file: Express.Multer.File
-    - projectId: number
-    - userId: number
-    - stepType: StepType
+  - ✅ `CreatePrototypeDto` / `UpdatePrototypeDto`
+    - ✅ projectId: number
+    - ✅ userId: number
+    - ✅ description: string (opcional)
 
-  - `CreatePrototypeDto` / `CreateConclusionDto`
-    - projectId: number
-    - userId: number
-    - description: string (opcional, usado pelo professor)
-
-- **Serviços**
+- **Serviços** (A implementar)
 
   - `FileService`
 
@@ -298,7 +306,7 @@
     - updatePrototype(id, dto): Promise<Prototype>
     - getPrototypeById(id): Promise<Prototype>
 
-- **Controladores**
+- **Controladores** (A implementar)
 
   - `FileController`
 
@@ -316,76 +324,74 @@
 
 #### 3. Frontend para Etapas de Protótipo e Conclusão
 
-- **Interfaces**
+- ✅ **Interfaces**
 
-  - `UploadedFile`
+  - ✅ `UploadedFile`
 
-    - id: number
-    - originalName: string
-    - size: number
-    - mimeType: string
-    - uploadDate: Date
-    - userId: number
-    - downloadUrl: string
+    - ✅ id: number
+    - ✅ originalName: string
+    - ✅ size: number
+    - ✅ mimeType: string
+    - ✅ uploadDate: Date
+    - ✅ userId: number
+    - ✅ downloadUrl: string
 
-  - `Prototype` / `Conclusion`
+  - ✅ `Prototype` / `Conclusion`
 
-    - id: number
-    - projectId: number
-    - userId: number
-    - description: string
-    - files: UploadedFile[]
-    - createdAt: Date
-    - updatedAt: Date
+    - ✅ id: number
+    - ✅ projectId: number
+    - ✅ userId: number
+    - ✅ description: string
+    - ✅ createdAt: Date
+    - ✅ updatedAt: Date
 
-  - `PrototypeStepConfig` / `ConclusionStepConfig`
-    - descriptionTemplate: string
-    - allowedFileTypes: string[]
-    - maxFileSize: number
-    - maxFileCount: number
+  - ✅ `CreatePrototypeDto` / `UpdatePrototypeDto`
+    - ✅ projectId: number
+    - ✅ userId: number
+    - ✅ description: string
 
-- **Stores**
+- ✅ **Stores**
 
-  - `PrototypeStore` / `ConclusionStore`
-    - Estado para protótipos/conclusões, arquivos, configurações, loading, error
-    - Ações para CRUD de protótipos/conclusões e upload/download/delete de arquivos
-    - Reducers para atualizar estado
-    - Efeitos para operações assíncronas
-    - Selectors para acessar partes do estado
-    - Facade para abstrair complexidade
+  - ✅ `PrototypeStore`
 
-- **Componentes**
+    - ✅ Estado para protótipos, arquivos, configurações, loading, error
+    - ✅ Ações para CRUD de protótipos e upload/download/delete de arquivos
+    - ✅ Reducers para atualizar estado
+    - ✅ Efeitos para operações assíncronas
+    - ✅ Selectors para acessar partes do estado
+    - ✅ Facade para abstrair complexidade
 
-  - `PrototypingStepComponent` / `ConclusionStepComponent`
+  - `ConclusionStore` (A implementar)
 
-    - Exibir campo para texto configurável (instruções do professor)
-    - Integrar com FileUploadComponent
-    - Listar arquivos enviados por membros do grupo
-    - Exibir/ocultar baseado em existência de protótipo/conclusão
-    - Botão para finalizar etapa
-    - Layout responsivo
+- ✅ **Componentes**
 
-  - `FileListComponent`
-    - Exibir lista de arquivos enviados
-    - Opções para download e exclusão
-    - Exibição de metadados (tamanho, tipo, data)
-    - Organização por usuário/data
+  - ✅ `PrototypingStepComponent`
 
-#### 4. Integração e Testes
+    - ✅ Exibir campo para texto configurável (instruções do professor)
+    - ✅ Integrar com FileUploadComponent
+    - ✅ Listar arquivos enviados por membros do grupo
+    - ✅ Exibir/ocultar baseado em existência de protótipo/conclusão
+    - ✅ Botão para finalizar etapa
+    - ✅ Layout responsivo
+
+  - `ConclusionStepComponent` (A implementar)
+
+#### 4. Integração e Testes (A implementar)
 
 - **Integração com Sistema Existente**
 
-  - Adicionar rota para PrototypingStep e ConclusionStep
-  - Atualizar verificação de etapas concluídas
-  - Integrar com sistema de grupos para visibilidade de arquivos
+  - ✅ Adicionar rota para PrototypingStep
+  - Adicionar rota para ConclusionStep (A implementar)
+  - Atualizar verificação de etapas concluídas (A implementar)
+  - Integrar com sistema de grupos para visibilidade de arquivos (A implementar)
 
 - **Testes**
-  - Testes para FileService e FileController
-  - Testes para PrototypeService/ConclusionService e Controllers
-  - Testes para componentes Frontend
-  - Testes de integração para verificar fluxo completo
+  - Testes para FileService e FileController (A implementar)
+  - Testes para PrototypeService/ConclusionService e Controllers (A implementar)
+  - Testes para componentes Frontend (A implementar)
+  - Testes de integração para verificar fluxo completo (A implementar)
 
-#### Passos de Implementação
+#### Passos de Implementação Restantes
 
 1. **Infraestrutura de Armazenamento**
 
@@ -395,24 +401,18 @@
 
 2. **Backend**
 
-   - Implementar entidades, repositórios, serviços e controladores
+   - Implementar controladores e serviços
    - Configurar rotas para upload/download de arquivos
    - Implementar controle de acesso baseado em grupos
 
-3. **Frontend - Componente de Upload**
+3. **Frontend - Etapa de Conclusão**
 
-   - Criar componente reutilizável
-   - Implementar funcionalidades de arrastar e soltar
-   - Adicionar feedback visual e tratamento de erros
-
-4. **Frontend - Etapas**
-
-   - Implementar componentes para Protótipo e Conclusão
-   - Criar stores e serviços
+   - Implementar componente de Conclusão
+   - Criar store e serviços
    - Integrar com componente de upload
    - Implementar visibilidade de arquivos por grupo
 
-5. **Testes e Refinamentos**
+4. **Testes e Refinamentos**
    - Testar fluxo completo
    - Verificar visibilidade por grupo
    - Validar tratamento de erros e edge cases
@@ -442,46 +442,53 @@
 
 ## Próximos Passos Detalhados
 
-### 1. Documentação
+### 1. Completar Backend para Gerenciamento de Arquivos
 
-1. **Documentação da API**
+1. **Implementar FileService**
 
-   - Documentar todos os endpoints
-   - Incluir exemplos de requisição/resposta
-   - Documentar parâmetros e possíveis erros
+   - Criar métodos para upload, download e exclusão
+   - Implementar controle de acesso baseado em grupos
+   - Configurar armazenamento local com Multer
 
-2. **Documentação do Código**
+2. **Implementar PrototypeService**
 
-   - Adicionar documentação para componentes
-   - Documentar funções e métodos principais
-   - Atualizar comentários onde necessário
+   - Criar métodos CRUD para protótipos
+   - Implementar validação e manipulação de dados
+   - Relacionar protótipos com arquivos enviados
 
-3. **Documentação de UI/UX**
-   - Documentar padrões visuais implementados
-   - Documentar padrões de interação
-   - Criar guia de estilo para futuros desenvolvimentos
+3. **Implementar Controllers**
+   - Criar endpoints RESTful para operações
+   - Documentar API com Swagger
+   - Implementar tratamento de erros
 
-### 2. Otimizações Finais
+### 2. Implementar Etapa de Conclusão
 
-1. **Otimização de Performance**
+1. **Criar Entidade e DTOs**
 
-   - Revisar memoização de dados no store
-   - Otimizar renderização de componentes
-   - Melhorar carregamento inicial de dados
+   - Implementar entidade Conclusion
+   - Criar DTOs para operações CRUD
 
-2. **Refatoração**
-   - Identificar código duplicado
-   - Extrair lógica comum para helpers/services
-   - Revisar nomenclatura para consistência
+2. **Implementar Store e Componente**
+   - Criar ConclusionStore seguindo padrão do PrototypeStore
+   - Implementar ConclusionStepComponent
+   - Integrar com componente de upload
+
+### 3. Testes e Refinamentos
+
+1. **Testes de Integração**
+
+   - Validar fluxo completo de prototipação
+   - Testar controle de acesso por grupo
+   - Verificar limite de tamanho e tipos de arquivo
+
+2. **Otimizações Finais**
+   - Refinar UI/UX para melhor experiência
+   - Otimizar carregamento de arquivos
+   - Melhorar feedback visual
 
 ## Notas
 
 - Backend e frontend implementados seguindo os padrões da aplicação
 - Entidades e DTOs criados conforme definido
-- Serviço implementado com métodos CRUD e lógica de upvote
-- Controlador com endpoints RESTful para todas as operações necessárias
-- Integração com UserVoteService para gerenciar upvotes
-- Testes de integração implementados para garantir o funcionamento correto
-- Refinamentos de UI/UX implementados para melhorar a experiência do usuário
-- Fases completadas: implementação do backend, implementação do frontend, testes de integração, refinamentos
-- Próxima fase: documentação e otimizações finais
+- Implementação parcial concluída com componente reutilizável de upload
+- Estrutura preparada para adição da etapa de Conclusão

@@ -27,54 +27,71 @@
   - Membros do mesmo grupo podem visualizar uploads
   - Sem interações (comentários, avaliações) nas últimas etapas
 
-## Implementações Pendentes
+## Implementações Concluídas
 
 ### Frontend
 
 - Componente FileUpload reutilizável
-- PrototypingStepComponent
-- ConclusionStepComponent
-- Stores para gerenciamento de estado das etapas
-- Integração com roteamento existente
-- Estilos responsivos para os novos componentes
+  - Interface de arrastar e soltar (drag-and-drop)
+  - Exibição de progresso de upload
+  - Listagem de arquivos enviados
+  - Funcionalidade para exclusão de arquivos
+- Store para etapa de Prototipação
+  - Ações, reducers, efeitos, selectors, facade
+  - Serviços para comunicação com backend
+- PrototypingStepComponent para a interface da etapa
+  - Formulário para descrição
+  - Integração com componente de upload
+  - Estilo responsivo
 
 ### Backend
 
-- Entidades (Prototype e Conclusion)
+- Entidades para gerenciamento de arquivos e protótipos
+  - UploadedFile
+  - Prototype
+- DTOs para validação de dados
+  - CreatePrototypeDto
+  - UpdatePrototypeDto
+  - UploadFileDto
+
+## Implementações Pendentes
+
+### Frontend
+
+- ConclusionStepComponent
+- Store para gerenciamento de estado da etapa de Conclusão
+
+### Backend
+
+- Entidade Conclusion
 - Service para upload/download de arquivos
-- DTOs para criação e atualização
-- Controllers com endpoints RESTful
+- Controladores com endpoints RESTful
 - Gerenciamento de acesso baseado em grupos
 
 ## Próximas Etapas
 
-1. **Implementação de Componente de Upload**
+1. **Completar Backend**
 
-   - Criar componente FileUpload reutilizável
-   - Implementar interface e estilos
-   - Adicionar funcionalidades de drag-and-drop e progresso
-
-2. **Implementação das Etapas**
-
-   - Criar componentes para Protótipo e Conclusão
-   - Implementar interfaces e serviços
-   - Integrar com componente de upload
-
-3. **Backend e Armazenamento**
-
-   - Implementar endpoints para upload/download
-   - Configurar armazenamento local com interface extensível
+   - Implementar FileService e FileController
+   - Implementar PrototypeService e PrototypeController
+   - Configurar armazenamento local de arquivos
    - Implementar controle de acesso por grupo
 
-4. **Testes e Refinamentos**
+2. **Etapa de Conclusão**
+
+   - Implementar interfaces e serviços
+   - Criar componente ConclusionStepComponent
+   - Integrar com componente de upload
+
+3. **Testes e Refinamentos**
    - Testar upload/download de arquivos
    - Verificar visibilidade por grupo
    - Validar compatibilidade com diferentes tipos de arquivo
 
 ## Considerações
 
-- Componente de upload precisa ser genérico para reutilização
+- Componente de upload genérico implementado para reutilização
 - Armazenamento local deve ter interface clara para futura migração para cloud
 - Controle de acesso deve considerar a estrutura de grupos existente
-- Frontend deve fornecer feedback claro sobre sucesso/falha de uploads
-- Variáveis de configuração para limites futuros devem ser implementadas desde o início
+- Frontend implementado com feedback claro sobre sucesso/falha de uploads
+- Variáveis de configuração para limites futuros implementadas desde o início
