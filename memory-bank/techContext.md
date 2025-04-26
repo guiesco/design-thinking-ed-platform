@@ -35,6 +35,13 @@
 - ProblemDefinitionFinal
 - ChallengeDefinitionFinal
 
+### Armazenamento de Arquivos
+
+- Uso do tipo de dados `bytea` do PostgreSQL para armazenamento direto de arquivos no banco
+- Adequado para arquivos pequenos (~1MB)
+- Solução simples sem necessidade de infraestrutura adicional
+- Preparado para futura migração para sistemas de armazenamento em nuvem, se necessário
+
 ## Padrões de Desenvolvimento
 
 ### Frontend

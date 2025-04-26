@@ -14,12 +14,9 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
-import { createReadStream } from 'fs';
 import { FileService } from './file.service';
 import { FileStepType } from './entities/uploaded-file.entity';
 import { UploadFileDto } from './dto/upload-file.dto';
-import * as fs from 'fs';
-import * as path from 'path';
 
 @Controller('files')
 export class FileController {
@@ -46,11 +43,6 @@ export class FileController {
   ) {
     const file = await this.fileService.getFileById(id);
 
-    // Verificar se o arquivo existe
-    if (!fs.existsSync(file.path)) {
-      throw new NotFoundException('Arquivo não encontrado no servidor');
-    }
-
     // Definir headers para download
     res.setHeader(
       'Content-Disposition',
@@ -58,9 +50,8 @@ export class FileController {
     );
     res.setHeader('Content-Type', file.mimeType);
 
-    // Enviar o arquivo como stream
-    const fileStream = createReadStream(file.path);
-    fileStream.pipe(res);
+    // Enviar o conteúdo binário como resposta
+    res.send(file.content);
   }
 
   @Get('project/:projectId')

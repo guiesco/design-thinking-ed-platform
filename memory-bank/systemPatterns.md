@@ -57,7 +57,7 @@
 - Padrão para gerenciamento de arquivos:
   - UploadedFile (entidade base)
     - Metadados do arquivo (nome, tamanho, tipo)
-    - Informação de armazenamento (path, nome armazenado)
+    - Conteúdo do arquivo armazenado como bytea
     - Relacionamentos (usuário, projeto, grupo)
     - Tipo de etapa (enum)
   - Prototype/Conclusion (entidades finais)
@@ -104,9 +104,10 @@
   - Configuração flexível (tipos, tamanhos)
   - Validação visual de arquivos
 - Padrão de armazenamento:
-  - Abstração do mecanismo de armazenamento
-  - Interface única para local e cloud
-  - Metadados no banco de dados
+  - Armazenamento direto no PostgreSQL usando bytea
+  - Adequado para arquivos pequenos (~1MB)
+  - Limite de tamanho para manter performance
+  - Metadados associados no mesmo registro
 - Visibilidade baseada em grupos:
   - Acesso compartilhado dentro do grupo
   - Controle de propriedade para exclusão

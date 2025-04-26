@@ -19,11 +19,11 @@ export class UploadedFile {
   @Column()
   originalName: string;
 
-  @Column()
-  storedName: string;
-
-  @Column()
-  path: string;
+  @Column({
+    type: 'bytea',
+    nullable: false,
+  })
+  content: Buffer;
 
   @Column()
   size: number;

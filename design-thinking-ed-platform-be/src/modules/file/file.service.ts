@@ -1,16 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UploadedFile, FileStepType } from './entities/uploaded-file.entity';
 import { UploadFileDto } from './dto/upload-file.dto';
-import * as fs from 'fs';
-import * as path from 'path';
-import { promisify } from 'util';
-import { v4 as uuidv4 } from 'uuid';
-
-const unlinkAsync = promisify(fs.unlink);
-const existsAsync = promisify(fs.exists);
-const mkdirAsync = promisify(fs.mkdir);
 
 // Interface para representar arquivos do Multer
 interface MulterFile {
@@ -19,37 +15,18 @@ interface MulterFile {
   encoding: string;
   mimetype: string;
   size: number;
-  destination?: string;
-  filename?: string;
-  path?: string;
   buffer: Buffer;
 }
 
 @Injectable()
 export class FileService {
-  private readonly uploadDir: string;
+  // Tamanho máximo de arquivo permitido (1MB)
+  private readonly MAX_FILE_SIZE = 1024 * 1024;
 
   constructor(
     @InjectRepository(UploadedFile)
     private readonly uploadedFileRepository: Repository<UploadedFile>,
-  ) {
-    this.uploadDir = process.env.UPLOAD_DIR || 'uploads';
-    this.ensureUploadDirExists();
-  }
-
-  /**
-   * Garante que o diretório de upload exista
-   */
-  private async ensureUploadDirExists(): Promise<void> {
-    try {
-      const exists = await existsAsync(this.uploadDir);
-      if (!exists) {
-        await mkdirAsync(this.uploadDir, { recursive: true });
-      }
-    } catch (error) {
-      console.error('Erro ao criar diretório de upload:', error);
-    }
-  }
+  ) {}
 
   /**
    * Salva um arquivo enviado e registra os metadados no banco de dados
@@ -60,27 +37,19 @@ export class FileService {
   ): Promise<UploadedFile> {
     const { projectId, userId, stepType, groupId } = uploadFileDto;
 
-    // Gerar nome único para o arquivo
-    const storedName = `${uuidv4()}-${file.originalname}`;
-    const filePath = path.join(this.uploadDir, storedName);
-
-    // Criar diretório específico para o projeto, se necessário
-    const projectDir = path.join(this.uploadDir, `project-${projectId}`);
-    if (!(await existsAsync(projectDir))) {
-      await mkdirAsync(projectDir, { recursive: true });
+    // Verificar tamanho do arquivo
+    if (file.size > this.MAX_FILE_SIZE) {
+      throw new BadRequestException(
+        `Tamanho do arquivo excede o limite máximo de ${
+          this.MAX_FILE_SIZE / 1024 / 1024
+        }MB`,
+      );
     }
 
-    // Caminho final do arquivo
-    const finalPath = path.join(projectDir, storedName);
-
-    // Mover o arquivo para o diretório específico do projeto
-    fs.writeFileSync(finalPath, file.buffer);
-
-    // Criar registro no banco de dados
+    // Criar registro no banco de dados com o conteúdo binário
     const uploadedFile = this.uploadedFileRepository.create({
       originalName: file.originalname,
-      storedName,
-      path: finalPath,
+      content: file.buffer,
       size: file.size,
       mimeType: file.mimetype,
       userId,
@@ -113,6 +82,19 @@ export class FileService {
     return this.uploadedFileRepository.find({
       where: { projectId, stepType },
       order: { createdAt: 'DESC' },
+      // Não retornar o conteúdo binário na listagem para economizar banda
+      select: [
+        'id',
+        'originalName',
+        'size',
+        'mimeType',
+        'userId',
+        'projectId',
+        'groupId',
+        'stepType',
+        'createdAt',
+        'updatedAt',
+      ],
     });
   }
 
@@ -127,6 +109,19 @@ export class FileService {
     return this.uploadedFileRepository.find({
       where: { userId, projectId, stepType },
       order: { createdAt: 'DESC' },
+      // Não retornar o conteúdo binário na listagem para economizar banda
+      select: [
+        'id',
+        'originalName',
+        'size',
+        'mimeType',
+        'userId',
+        'projectId',
+        'groupId',
+        'stepType',
+        'createdAt',
+        'updatedAt',
+      ],
     });
   }
 
@@ -140,6 +135,19 @@ export class FileService {
     return this.uploadedFileRepository.find({
       where: { groupId, stepType },
       order: { createdAt: 'DESC' },
+      // Não retornar o conteúdo binário na listagem para economizar banda
+      select: [
+        'id',
+        'originalName',
+        'size',
+        'mimeType',
+        'userId',
+        'projectId',
+        'groupId',
+        'stepType',
+        'createdAt',
+        'updatedAt',
+      ],
     });
   }
 
@@ -154,14 +162,6 @@ export class FileService {
       throw new NotFoundException(
         'Você não tem permissão para excluir este arquivo',
       );
-    }
-
-    // Remover o arquivo físico
-    try {
-      await unlinkAsync(file.path);
-    } catch (error) {
-      console.error(`Erro ao excluir arquivo ${file.path}:`, error);
-      // Continua mesmo se falhar a exclusão do arquivo físico
     }
 
     // Remover do banco de dados

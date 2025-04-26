@@ -37,12 +37,14 @@ A plataforma implementa diferentes etapas do processo de Design Thinking, cada u
    - ✅ Funcionalidade de upload de arquivos
    - ✅ Visualização de arquivos enviados
    - ✅ Controle de acesso por grupo
+   - ✅ Armazenamento em banco de dados (bytea)
 
 6. ✅ **Conclusão**
    - ✅ Interface para descrição da conclusão
    - ✅ Funcionalidade de upload de arquivos
    - ✅ Visualização de arquivos enviados
    - ✅ Controle de acesso por grupo
+   - ✅ Armazenamento em banco de dados (bytea)
 
 ## Funcionalidades Implementadas
 
@@ -147,7 +149,7 @@ A plataforma implementa diferentes etapas do processo de Design Thinking, cada u
 
      - ✅ Criar métodos para upload, download e exclusão
      - ✅ Implementar controle de acesso baseado em grupos
-     - ✅ Configurar armazenamento local com FileInterceptor
+     - ✅ Migrar de armazenamento em sistema de arquivos para PostgreSQL (bytea)
 
    - ✅ Implementar PrototypeService
 
@@ -158,6 +160,7 @@ A plataforma implementa diferentes etapas do processo de Design Thinking, cada u
    - ✅ Implementar Controllers
      - ✅ Criar endpoints RESTful para operações
      - ✅ Implementar tratamento de erros
+     - ✅ Atualizar para suportar arquivos em bytea
 
 2. ✅ **Frontend**
 
@@ -192,6 +195,7 @@ A plataforma implementa diferentes etapas do processo de Design Thinking, cada u
    - ✅ **Implementar Serviço e Controlador**
      - ✅ Criar ConclusionService com métodos CRUD
      - ✅ Implementar ConclusionController com endpoints RESTful
+     - ✅ Atualizar para suportar arquivos em bytea
 
 2. ✅ **Frontend**
 
@@ -211,23 +215,36 @@ A plataforma implementa diferentes etapas do processo de Design Thinking, cada u
      - ✅ Adicionar rota para a etapa de conclusão
      - ✅ Incluir no menu de navegação do projeto
 
-### 9. Testes e Refinamentos (Próximo)
+### 9. ✅ Armazenamento de Arquivos
 
-1. **Testes de Integração**
+1. ✅ **Migração para Banco de Dados**
 
-   - Validar fluxo completo de prototipação e conclusão
-   - Testar controle de acesso por grupo
-   - Verificar limite de tamanho e tipos de arquivo
+   - ✅ **Atualizar Entidade UploadedFile**
 
-2. **Otimizações Finais**
-   - Refinar UI/UX para melhor experiência
-   - Otimizar carregamento de arquivos
-   - Melhorar feedback visual
+     - ✅ Adicionar campo para conteúdo binário (bytea)
+     - ✅ Remover campos relacionados ao sistema de arquivos
+
+   - ✅ **Modificar FileService**
+
+     - ✅ Atualizar métodos para trabalhar com dados binários
+     - ✅ Implementar limite de tamanho de arquivo (1MB)
+
+   - ✅ **Atualizar Controllers**
+     - ✅ Adaptar upload e download para dados binários
+     - ✅ Manter compatibilidade com frontend
+
+2. 🔄 **Testes e Refinamentos**
+   - ✅ Criar testes unitários para o FileService
+   - 🔄 Validar fluxo completo de prototipação e conclusão
+   - 🔄 Testar controle de acesso por grupo
+   - 🔄 Verificar limite de tamanho e tipos de arquivo
+   - 🔄 Otimizar carregamento e visualização de arquivos
 
 ## Notas
 
-- Frontend e backend para as etapas de Prototipação e Conclusão implementados completamente
-- Módulos de File, Prototype e Conclusion criados seguindo os padrões da aplicação
+- Frontend e backend para as etapas de Prototipação e Conclusão implementados
+- Migração do armazenamento de arquivos do sistema de arquivos para PostgreSQL usando bytea concluída
+- Adequado para arquivos pequenos (~1MB) em contexto acadêmico
 - Controle de acesso baseado em usuário e grupo implementado
-- Armazenamento local configurado com estrutura preparada para migração futura
-- Próximo passo é realizar testes e refinamentos do fluxo completo
+- Testes unitários implementados para verificar funcionamento
+- Próximo passo é testar o fluxo completo com dados reais
