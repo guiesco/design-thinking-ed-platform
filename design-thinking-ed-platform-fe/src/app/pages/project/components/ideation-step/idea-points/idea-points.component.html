@@ -37,13 +37,20 @@
       <p>Nenhum item adicionado ainda</p>
     </div>
 
-    <div *ngFor="let point of points" class="point-item">
+    <div
+      *ngFor="let point of points"
+      class="point-item"
+      [ngClass]="{ 'new-point': shouldHighlightPoint(point.id) }"
+    >
       <!-- Visualização normal do ponto -->
       <div *ngIf="editingPointId !== point.id" class="point-content">
         <p>{{ point.content }}</p>
 
         <div class="point-actions">
-          <div class="point-upvote">
+          <div
+            class="point-upvote"
+            [ngClass]="{ pulse: shouldHighlightPoint(point.id) }"
+          >
             <button
               mat-icon-button
               color="warn"
@@ -86,6 +93,8 @@
             [(ngModel)]="editingPointContent"
             placeholder="Editar conteúdo"
             rows="2"
+            #editTextarea
+            [autofocus]="true"
           ></textarea>
         </mat-form-field>
         <div class="edit-actions">

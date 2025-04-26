@@ -215,3 +215,23 @@
         grid-template-columns: 1fr;
     }
 }
+
+::ng-deep {
+    .error-snackbar {
+        background-color: #f44336;
+        color: white;
+
+        .mat-simple-snackbar-action {
+            color: white;
+        }
+    }
+
+    .success-snackbar {
+        background-color: #4caf50;
+        color: white;
+
+        .mat-simple-snackbar-action {
+            color: white;
+        }
+    }
+}

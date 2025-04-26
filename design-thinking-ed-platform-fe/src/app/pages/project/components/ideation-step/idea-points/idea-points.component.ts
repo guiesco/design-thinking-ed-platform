@@ -19,6 +19,7 @@ export class IdeaPointsComponent implements OnInit {
   @Input() type!: string;
   @Input() userId!: number;
   @Input() points!: IdeationPoint[];
+  @Input() highlightedPointId: number | null = null;
 
   @Output() addPoint = new EventEmitter<{
     ideaId: number;
@@ -37,6 +38,7 @@ export class IdeaPointsComponent implements OnInit {
   editingPointId: number | null = null;
   editingPointContent = '';
   currentUserId!: number;
+
   constructor(
     private ideationFacade: IdeationFacade,
     private userFacade: UserFacade
@@ -51,21 +53,22 @@ export class IdeaPointsComponent implements OnInit {
   }
 
   getTypeLabel(): string {
-    return this.type === IdeationPointType.PRO ? 'Prós' : 'Contras';
+    return this.type === IdeationPointType.PRO
+      ? IdeationPointTypeLabel.PRO
+      : IdeationPointTypeLabel.CON;
   }
 
   onAddPoint(): void {
     if (!this.newPointContent.trim()) {
       return;
     }
+
     this.addPoint.emit({
       ideaId: this.ideaId,
       content: this.newPointContent,
-      type:
-        this.type === IdeationPointType.PRO
-          ? IdeationPointType.PRO
-          : IdeationPointType.CON,
+      type: this.type as IdeationPointType,
     });
+
     this.newPointContent = '';
   }
 
@@ -82,20 +85,25 @@ export class IdeaPointsComponent implements OnInit {
     this.editingPointContent = point.content;
   }
 
-  cancelEditing(): void {
-    this.editingPointId = null;
-    this.editingPointContent = '';
-  }
-
   saveEditing(): void {
     if (!this.editingPointContent.trim() || !this.editingPointId) {
       return;
     }
 
-    this.ideationFacade.updatePoint(this.editingPointId, this.currentUserId, {
+    this.ideationFacade.updatePoint(this.editingPointId, this.userId, {
       content: this.editingPointContent,
     });
 
     this.cancelEditing();
+  }
+
+  cancelEditing(): void {
+    this.editingPointId = null;
+    this.editingPointContent = '';
+  }
+
+  // Verificar se um ponto deve ser destacado
+  shouldHighlightPoint(pointId: number): boolean {
+    return this.highlightedPointId === pointId;
   }
 }
