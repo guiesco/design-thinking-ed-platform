@@ -1,0 +1,111 @@
+<div class="file-upload-container">
+  <!-- Área de Drag and Drop -->
+  <div
+    class="drop-zone"
+    [class.active]="isDragging"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave($event)"
+    (drop)="onDrop($event)"
+  >
+    <mat-icon class="upload-icon">cloud_upload</mat-icon>
+    <p class="upload-text">Arraste e solte arquivos aqui</p>
+    <p class="upload-text-small">OU</p>
+
+    <button mat-raised-button color="primary" (click)="fileInput.click()">
+      Selecionar Arquivos
+    </button>
+
+    <input
+      #fileInput
+      type="file"
+      style="display: none"
+      (change)="onFileSelected($event)"
+      [multiple]="maxFileCount > 1"
+      [accept]="allowedFileTypes.join(',')"
+    />
+
+    <p class="upload-info">
+      <ng-container *ngIf="allowedFileTypes.length > 0">
+        Tipos permitidos: {{ allowedFileTypes.join(", ") }} |
+      </ng-container>
+      Tamanho máximo: {{ formatFileSize(maxFileSize) }} | Máximo de
+      {{ maxFileCount }} arquivo(s)
+    </p>
+  </div>
+
+  <!-- Lista de Arquivos Selecionados para Upload -->
+  <div class="file-list" *ngIf="files.length > 0">
+    <h3>Arquivos para Upload</h3>
+
+    <div class="file-items-container">
+      <div *ngFor="let file of files; let i = index" class="file-item">
+        <div class="file-info">
+          <mat-icon class="file-icon">insert_drive_file</mat-icon>
+          <div class="file-details">
+            <span class="file-name">{{ file.name }}</span>
+            <span class="file-size">{{ formatFileSize(file.size) }}</span>
+          </div>
+        </div>
+
+        <div
+          class="progress-container"
+          *ngIf="uploadProgress[file.name] !== undefined"
+        >
+          <mat-progress-bar
+            mode="determinate"
+            [value]="uploadProgress[file.name]"
+          ></mat-progress-bar>
+          <span class="progress-text">{{ uploadProgress[file.name] }}%</span>
+        </div>
+
+        <div class="file-actions">
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="removeFile(i)"
+            matTooltip="Remover arquivo"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lista de Arquivos Existentes (Já enviados) -->
+  <div class="file-list" *ngIf="existingFiles.length > 0">
+    <h3>Arquivos Enviados</h3>
+
+    <div class="file-items-container">
+      <div *ngFor="let file of existingFiles; let i = index" class="file-item">
+        <div class="file-info">
+          <mat-icon class="file-icon">description</mat-icon>
+          <div class="file-details">
+            <span class="file-name">{{ file.originalName }}</span>
+            <span class="file-size">{{ formatFileSize(file.size) }}</span>
+          </div>
+        </div>
+
+        <div class="file-actions">
+          <a
+            mat-icon-button
+            [href]="file.downloadUrl"
+            download="{{ file.originalName }}"
+            target="_blank"
+            matTooltip="Download"
+          >
+            <mat-icon>file_download</mat-icon>
+          </a>
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="removeExistingFile(file.id, i)"
+            matTooltip="Remover arquivo"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -12,6 +12,9 @@ import { UserVoteModule } from './modules/user-vote/user-vote.module';
 import { ProblemDefinitionModule } from './modules/problem-definition/problem-definition.module';
 import { MailModule } from './modules/mail/mail.module';
 import { IdeationModule } from './modules/ideation/ideation.module';
+import { FileModule } from './modules/file/file.module';
+import { PrototypeModule } from './modules/prototype/prototype.module';
+import { ConclusionModule } from './modules/conclusion/conclusion.module';
 
 @Module({
   imports: [
@@ -36,6 +39,9 @@ import { IdeationModule } from './modules/ideation/ideation.module';
     ProblemDefinitionModule,
     MailModule,
     IdeationModule,
+    FileModule,
+    PrototypeModule,
+    ConclusionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
