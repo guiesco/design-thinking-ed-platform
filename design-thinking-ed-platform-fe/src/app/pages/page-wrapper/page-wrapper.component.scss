@@ -14,3 +14,75 @@
     bottom: 0;
     width: 100%;
 }
+
+// Estilos para a sidenav
+mat-sidenav {
+    min-width: 250px;
+    padding: 0;
+}
+
+// Cabeçalho da seção de navegação
+.sidenav-header {
+    background-color: #f5f5f5;
+    padding: 8px 16px;
+    margin-bottom: 0;
+
+    h3 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 500;
+    }
+}
+
+// Árvore de artefatos
+.artifact-tree {
+    .parent-node {
+        font-weight: 500;
+
+        mat-icon {
+            font-size: 18px;
+            height: 18px;
+            width: 18px;
+            margin-right: 8px;
+            transition: transform 0.3s ease;
+        }
+    }
+
+    .child-nodes {
+        background-color: #f9f9f9;
+
+        .child-node {
+            padding-left: 16px;
+
+            .child-node-content {
+                padding-left: 26px;
+                font-size: 14px;
+            }
+        }
+    }
+
+    .selected {
+        background-color: rgba(0, 0, 0, 0.04);
+    }
+}
+
+// Área de detalhes
+.artifact-details {
+    padding: 16px;
+
+    mat-divider {
+        margin: 8px 0;
+    }
+}
+
+// Responsividade
+@media (max-width: 768px) {
+    mat-sidenav {
+        width: 85%;
+    }
+
+    .parent-node,
+    .child-node {
+        padding: 4px 8px;
+    }
+}

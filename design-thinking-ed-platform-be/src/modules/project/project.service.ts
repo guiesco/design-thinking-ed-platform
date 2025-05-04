@@ -40,7 +40,24 @@ export class ProjectService {
   findOne(id: number) {
     return this.projectRepository.findOne({
       where: { id },
-      relations: ['group'],
+      relations: [
+        'group',
+        'empathyMap',
+        'challengeDefinition',
+        'problemDefinition',
+      ],
+    });
+  }
+
+  findOneByGroup(groupId: number) {
+    return this.projectRepository.findOne({
+      where: { group: { id: groupId } },
+      relations: [
+        'group',
+        'empathyMap',
+        'challengeDefinition',
+        'problemDefinition',
+      ],
     });
   }
 

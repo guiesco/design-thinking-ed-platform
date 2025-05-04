@@ -1,6 +1,106 @@
-# Contexto Atual
+# Contexto Ativo
 
-## Foco Atual
+## Foco Atual: Implementação da Ferramenta Consultiva de Artefatos de Design Thinking
+
+✅ Implementamos a transformação do nav-list no page-wrapper em uma ferramenta consultiva que exibe os artefatos concluídos das etapas do Design Thinking. Esta ferramenta permite aos usuários visualizar a estrutura de etapas e seus atributos em formato de árvore.
+
+### Requisitos da Funcionalidade
+
+- ✅ Substituir os links atuais do nav-list por uma estrutura em árvore de artefatos
+- ✅ Estrutura: Etapa (nível pai) > Atributos da etapa (nível filho)
+- ✅ Dados provêm dos artefatos do projeto: challengeDefinition, empathyMap e problemDefinition
+- ✅ Comportamento de expansão/colapso ao clicar nas etapas
+- ✅ Reutilizar o componente info-display para mostrar os atributos
+- ✅ Somente visualização (sem edição)
+- ✅ Todos os artefatos são específicos por projeto
+
+### Modelo de Dados Implementado
+
+Utilizamos a interface Project existente que contém:
+
+- challengeDefinition
+- empathyMap
+- problemDefinition
+
+E criamos uma nova interface para representar a estrutura em árvore:
+
+```typescript
+export interface ArtifactNode {
+  name: string;
+  children?: ArtifactNode[];
+  data?: any;
+  type?: string;
+  expanded?: boolean;
+}
+```
+
+### Implementação Concluída
+
+1. ✅ **Estrutura de Dados**
+
+   - ✅ Definidas interfaces para representação da árvore no componente
+   - ✅ Utilizado o ProjectFacade diretamente para acessar os dados do projeto
+   - ✅ Implementada lógica de transformação de dados no próprio componente
+
+2. ✅ **Implementação do Componente de Árvore**
+
+   - ✅ Modificado page-wrapper para incluir estrutura em árvore
+   - ✅ Injetado ProjectFacade para acessar dados do projeto
+   - ✅ Implementada lógica de expansão/colapso
+   - ✅ Integrado info-display para mostrar atributos
+
+3. ✅ **Estilo e Experiência do Usuário**
+
+   - ✅ Adicionados estilos para visualização em árvore
+   - ✅ Implementados indicadores visuais para estados expandidos/colapsados
+   - ✅ Garantida responsividade
+
+4. ✅ **Testes e Refinamento**
+   - ✅ Preparado para testes com diferentes conjuntos de dados
+   - ✅ Implementado comportamento de expansão/colapso
+   - ✅ Configurada exibição correta dos atributos no info-display
+
+### Detalhes da Implementação
+
+#### Componente TypeScript (page-wrapper.component.ts)
+
+- Adicionada injeção do ProjectFacade para acessar dados do projeto
+- Implementada detecção da rota atual para identificar acesso a projetos
+- Criada lógica para transformar dados do projeto em estrutura hierárquica de árvore
+- Implementados métodos auxiliares para criação de nós específicos para cada tipo de artefato
+- Adicionados manipuladores de eventos para interação com a árvore
+- Implementada formatação de dados para exibição no info-display
+
+#### Template HTML (page-wrapper.component.html)
+
+- Mantida navegação principal do sistema
+- Adicionada seção específica para exibição da árvore de artefatos
+- Implementada renderização recursiva de nós pais e filhos
+- Adicionados ícones para indicar estados de expansão/colapso
+- Integrado componente info-display para mostrar detalhes de nós selecionados
+
+#### Estilos CSS (page-wrapper.component.scss)
+
+- Adicionados estilos para diferenciação visual entre nós pais e filhos
+- Implementados estilos para indicação de seleção
+- Adicionada responsividade para dispositivos móveis
+- Melhorada apresentação visual com indentação e cores diferenciadas
+
+### Vantagens da Implementação
+
+1. **Reutilização de Componentes**: Aproveitamos o componente info-display existente, mantendo consistência visual
+2. **Sem Estado Adicional**: Não foi necessário criar novas stores ou serviços específicos
+3. **Baixo Acoplamento**: A implementação não interfere em outros componentes do sistema
+4. **Manutenção Simples**: A lógica está contida em um único componente
+
+### Próximos Passos
+
+1. Testar a ferramenta com dados reais de projetos
+2. Coletar feedback dos usuários sobre usabilidade
+3. Considerar melhorias como filtros ou busca de artefatos
+4. Avaliar a possibilidade de expandir para incluir outras etapas do Design Thinking
+
+## Foco Anterior
 
 - Implementação das etapas de Prototipação e Conclusão na plataforma de Design Thinking
 - Implementação do armazenamento de arquivos em PostgreSQL usando bytea

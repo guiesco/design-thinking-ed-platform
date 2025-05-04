@@ -371,3 +371,60 @@ A plataforma implementa diferentes etapas do processo de Design Thinking, cada u
 - A robustez do sistema foi aumentada com validações adicionais
 
 Estas correções resolvem os problemas identificados no sistema de upload de arquivos, melhorando a confiabilidade e a experiência do usuário nas etapas de Prototipação e Conclusão.
+
+# Progresso do Projeto
+
+## Status Atual
+
+### Concluído
+
+- ✅ **Ferramenta Consultiva de Artefatos de Design Thinking**
+  - ✅ Transformação do nav-list em árvore de artefatos
+  - ✅ Exibição hierárquica de etapas e seus atributos
+  - ✅ Integração com componente info-display
+  - ✅ Navegação interativa entre artefatos
+  - ✅ Estilização responsiva
+
+### Em Desenvolvimento
+
+- Melhorias na ferramenta consultiva de artefatos
+  - Objetivo: Refinar a experiência do usuário e expandir funcionalidades
+  - Status: Planejado
+  - Prioridade: Média
+
+### Próximos Passos
+
+1. Testar a ferramenta com dados reais de projetos
+2. Coletar feedback dos usuários sobre usabilidade
+3. Considerar melhorias como filtros ou busca de artefatos
+4. Avaliar a possibilidade de expandir para incluir outras etapas do Design Thinking
+
+### Funcionalidades Concluídas Anteriormente
+
+- Análise de requisitos para a ferramenta consultiva
+- Planejamento da estrutura de dados e componentes
+- Identificação das entidades do projeto a serem exibidas (challengeDefinition, empathyMap, problemDefinition)
+- Decisão de utilizar diretamente o ProjectFacade sem criar um serviço separado
+
+## Questões em Aberto
+
+- Definir exatamente quais atributos de cada etapa serão exibidos no info-display
+- Determinar se precisamos de paginação ou limitação de dados caso uma etapa tenha muitos atributos
+- Avaliar o desempenho da solução com grandes conjuntos de dados
+
+## Problemas Conhecidos
+
+Nenhum problema identificado até o momento, pois a implementação ainda não começou.
+
+## Lista de Tarefas
+
+- [x] Definir requisitos da ferramenta consultiva
+- [x] Identificar dados disponíveis através do ProjectFacade
+- [x] Planejar estrutura e comportamento da árvore
+- [x] Decidir sobre a arquitetura (usar diretamente ProjectFacade)
+- [ ] Implementar interface para representação das etapas e atributos
+- [ ] Criar lógica de transformação dos dados no page-wrapper
+- [ ] Adaptar page-wrapper para exibir a árvore
+- [ ] Integrar componente info-display
+- [ ] Adicionar estilos e comportamento de expansão/colapso
+- [ ] Testar funcionalidade com diferentes conjuntos de dados

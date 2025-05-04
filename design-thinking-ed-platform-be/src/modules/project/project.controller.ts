@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { ProjectService } from './project.service';
 import { CreateProjectDto } from './dto/create-project.dto';
@@ -28,6 +29,11 @@ export class ProjectController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.projectService.findOne(+id);
+  }
+
+  @Get('group/:groupId')
+  findOneByGroup(@Param('groupId') groupId: string) {
+    return this.projectService.findOneByGroup(groupId);
   }
 
   @Patch(':id')
