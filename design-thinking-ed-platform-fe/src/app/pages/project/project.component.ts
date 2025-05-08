@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { filter, Subscription } from 'rxjs';
+import { filter, Subscription, take } from 'rxjs';
+import { UserFacade } from 'src/app/stores/user-state-store/user.facade';
 
 @Component({
   selector: 'app-project',
@@ -10,9 +11,14 @@ import { filter, Subscription } from 'rxjs';
 export class ProjectComponent implements OnInit, OnDestroy {
   projectId: number = 0;
   currentStep: string = '';
+  isProfessor: boolean = false;
   private routerSubscription: Subscription = new Subscription();
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private userFacade: UserFacade
+  ) {}
 
   private updateCurrentStep(): void {
     const urlSegments = this.router.url.split('/');
@@ -25,6 +31,13 @@ export class ProjectComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.projectId = +params['projectId'];
+    });
+
+    // Verificar se o usuário é professor
+    this.userFacade.user$.pipe(take(1)).subscribe((user) => {
+      if (user) {
+        this.isProfessor = user.userType === 'professor';
+      }
     });
 
     // Atualiza o currentStep na inicialização

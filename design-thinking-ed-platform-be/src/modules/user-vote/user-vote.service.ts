@@ -74,4 +74,12 @@ export class UserVoteService {
       entityId,
     });
   }
+
+  async countVotesByUser(userId: number): Promise<number> {
+    return this.userVoteRepository.count({
+      where: {
+        user: { id: userId },
+      },
+    });
+  }
 }

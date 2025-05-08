@@ -40,11 +40,18 @@ A plataforma implementa diferentes etapas do processo de Design Thinking, cada u
    - ✅ Armazenamento em banco de dados (bytea)
 
 6. ✅ **Conclusão**
+
    - ✅ Interface para descrição da conclusão
    - ✅ Funcionalidade de upload de arquivos
    - ✅ Visualização de arquivos enviados
    - ✅ Controle de acesso por grupo
    - ✅ Armazenamento em banco de dados (bytea)
+
+7. ⬜ **Métricas para Professores**
+   - ⬜ Visualização de métricas de interação dos alunos
+   - ⬜ Tabela com informações de likes, respostas e seleções
+   - ⬜ Filtro por etapa do processo de Design Thinking
+   - ⬜ Acesso restrito a usuários do tipo professor
 
 ## Funcionalidades Implementadas
 
@@ -239,6 +246,34 @@ A plataforma implementa diferentes etapas do processo de Design Thinking, cada u
    - ✅ Corrigir parâmetros de exclusão de arquivos (adicionar userId)
    - ✅ Testar controle de acesso por grupo
    - ✅ Verificar limite de tamanho e tipos de arquivo
+
+### 10. ✅ Métricas para Professores
+
+1. ✅ **Backend**
+
+   - ✅ **Criar Módulo Dedicado para Métricas**
+     - ✅ Implementar `MetricsModule` separado
+     - ✅ Criar `MetricsController` com endpoint próprio
+     - ✅ Desenvolver `MetricsService` para lógica de métricas
+     - ✅ Implementar DTO específico para dados de métricas
+   - ✅ **Implementar Lógica de Métricas**
+     - ✅ Criar lógica para contagem de interações dos alunos
+     - ✅ Desenvolver cálculos para diferentes tipos de interação
+     - ✅ Configurar acesso restrito para professores
+
+2. ✅ **Frontend**
+
+   - ✅ **Criar MetricsStore**
+     - ✅ Implementar estado, ações, reducers, efeitos e selectors
+     - ✅ Desenvolver serviço para comunicação com o novo endpoint
+   - ✅ **Implementar MetricsStepComponent**
+     - ✅ Criar interface de tabela para métricas
+     - ✅ Implementar visualização de dados de interações e contribuições
+     - ✅ Adicionar estilos responsivos para apresentação das métricas
+   - ✅ **Integração com o Projeto**
+     - ✅ Adicionar rota para a seção de métricas
+     - ✅ Exibir opção apenas para usuários do tipo professor
+     - ✅ Implementar guard para proteção de rota
 
 ## Notas
 

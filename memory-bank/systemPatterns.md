@@ -9,6 +9,10 @@
 - Clean Architecture
 - Repository Pattern
 - DTOs para transferência de dados
+- Módulos dedicados para funcionalidades específicas
+  - Cada recurso/funcionalidade possui seu próprio módulo
+  - Separação clara de responsabilidades entre módulos
+  - Melhor manutenibilidade e testabilidade
 
 ### Frontend
 

@@ -50,6 +50,11 @@ import { PrototypingStepComponent } from './project/components/prototyping-step/
 import { PrototypeStoreModule } from '../stores/prototype-store/prototype.module';
 import { ConclusionStepComponent } from './project/components/conclusion-step/conclusion-step.component';
 import { ConclusionStoreModule } from '../stores/conclusion-store/conclusion.module';
+import { MetricsStepComponent } from './project/components/metrics-step/metrics-step.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { metricsReducer } from '../stores/metrics-store/metrics.reducer';
+import { MetricsEffects } from '../stores/metrics-store/metrics.effects';
 
 const angularMaterialModules = [
   MatToolbarModule,
@@ -96,6 +101,8 @@ const importModules = [FormsModule, ReactiveFormsModule, ...stateModules];
     PagesRoutingModule,
     ...angularMaterialModules,
     ...importModules,
+    StoreModule.forFeature('metrics', metricsReducer),
+    EffectsModule.forFeature([MetricsEffects]),
   ],
   declarations: [
     PageWrapperComponent,
@@ -114,6 +121,7 @@ const importModules = [FormsModule, ReactiveFormsModule, ...stateModules];
     IdeaPointsComponent,
     PrototypingStepComponent,
     ConclusionStepComponent,
+    MetricsStepComponent,
   ],
   exports: [PageWrapperComponent],
 })

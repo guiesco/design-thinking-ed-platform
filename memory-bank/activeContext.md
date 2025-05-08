@@ -2,13 +2,94 @@
 
 ## Foco Atual
 
-- Implementação das etapas de Prototipação e Conclusão na plataforma de Design Thinking
-- Implementação do armazenamento de arquivos em PostgreSQL usando bytea
-- Testes e refinamentos das funcionalidades implementadas
-- Validação do fluxo completo de Design Thinking
+- ✅ Implementação de uma seção de Métricas para professores no módulo de projeto
+- ✅ A seção mostra métricas e estatísticas dos alunos do projeto/grupo
+- ✅ Métricas incluem quantidade de interações, likes, respostas e respostas selecionadas
+- ✅ Apenas usuários do tipo professor têm acesso a esta funcionalidade
+- ✅ Implementação segue o padrão da aplicação com uma rota separada dentro do módulo de projeto
+
+## Plano para Implementação da Página de Métricas
+
+### 1. Estrutura do Componente
+
+- Criar um novo componente de métricas como uma rota adicional dentro do módulo de projeto
+- Adicionar uma nova opção "Métricas" no menu de navegação, visível apenas para usuários do tipo PROFESSOR
+- Implementar guard para proteger a rota apenas para professores
+
+### 2. Backend
+
+- Criar um novo endpoint no controller de projeto para buscar métricas por projeto
+- Implementar serviço que agrega dados de:
+  - Contagem total de interações (likes dados, respostas criadas) por aluno
+  - Contagem de likes recebidos por aluno
+  - Contagem de respostas criadas por aluno
+  - Contagem de respostas selecionadas (isSelected: true) por aluno
+- Implementar filtro por etapa do Design Thinking
+
+### 3. Frontend
+
+- Criar store para gerenciar os dados de métricas
+- Implementar componente de tabela principal com colunas:
+  - Nome do aluno
+  - Total de interações
+  - Likes dados
+  - Respostas criadas
+  - Respostas selecionadas
+- Adicionar filtro por etapa do projeto (Definição, Empatia, Problema, Ideação, etc)
+- Implementar loading state e tratamento de erros
+
+### 4. Integração
+
+- Integrar a nova rota no módulo de projeto
+- Atualizar o menu de navegação para incluir o link para métricas (apenas para professores)
+- Testar a visibilidade condicional baseada no tipo de usuário
+
+### 5. Testes
+
+- Implementar testes unitários para os novos componentes e serviços
+- Testar os diferentes filtros e visualizações
+
+## Tarefas para Implementação
+
+### Backend
+
+1. Criar DTO para resposta de métricas (StudentMetricsDto)
+2. Implementar método no ProjectService para coletar métricas por projeto
+3. Adicionar endpoint `/metrics/:projectId` no ProjectController
+4. Implementar lógica para contagem de interações no UserVoteService
+5. Criar query para recuperar respostas selecionadas por aluno
+6. Implementar filtro por etapa do projeto nos dados de métricas
+
+### Frontend
+
+1. Criar interface para modelo de métricas (student-metrics.interface.ts)
+2. Criar store para métricas (metrics-store)
+   - Criar ações, reducers, efeitos e selectors
+   - Implementar facade para acesso simplificado
+3. Criar serviço para comunicação com backend (metrics.service.ts)
+4. Implementar componente de métricas (metrics-step.component)
+   - Criar template com tabela de métricas
+   - Implementar filtro por etapa
+   - Adicionar lógica para exibição condicional
+5. Adicionar rota para o componente de métricas
+6. Atualizar menu de navegação do projeto para exibir opção de métricas apenas para professores
+
+### Testes e Integração
+
+1. Implementar testes unitários para serviços de backend
+2. Implementar testes unitários para componentes de frontend
+3. Testar visibilidade condicional (professor vs. aluno)
+4. Verificar funcionamento dos filtros por etapa
+5. Validar dados de métricas com cenários reais
 
 ## Decisões Ativas
 
+- As métricas serão específicas para cada projeto, não comparando entre diferentes projetos
+- A interface inicial será baseada em tabelas, sem gráficos visuais
+- Será implementado um filtro por etapa do Design Thinking, mas não por aluno individual
+- As métricas qualitativas serão baseadas na contagem de respostas marcadas como isSelected
+- A visualização será restrita apenas aos usuários do tipo professor
+- Não será implementada exportação de dados (CSV, PDF)
 - As etapas de Prototipação e Conclusão completam o fluxo de Design Thinking
 - Adição de um componente reutilizável para upload de arquivos:
   - Suporte a drag-and-drop
@@ -95,14 +176,20 @@
 
 ## Próximas Etapas
 
-1. **Testes de Integração e E2E**
+1. **Implementação da Seção de Métricas**
+
+   - Desenvolver backend para agregar métricas dos alunos
+   - Implementar componente frontend para visualização
+   - Controlar acesso baseado no tipo de usuário
+
+2. **Testes de Integração e E2E**
 
    - Testar todas as etapas do Design Thinking em sequência
    - Verificar persistência e recuperação de dados entre etapas
    - Validar integridade dos arquivos armazenados em bytea
    - Testar limites de upload e downloads múltiplos
 
-2. **Refinamentos e Otimizações**
+3. **Refinamentos e Otimizações**
    - Otimizar carregamento de arquivos grandes
    - Melhorar feedback visual durante operações de upload/download
    - Implementar paginação para listagens com muitos arquivos
@@ -183,3 +270,56 @@
 - Ao usar Multer, prefira `memoryStorage()` quando o destino final não é o sistema de arquivos
 - Sempre valide e converta explicitamente tipos em FormData, pois todos os valores são enviados como strings
 - Implemente validações tanto no frontend quanto no backend para garantir integridade dos dados
+
+## Implementações Recentes
+
+### Refatoração: Módulo Dedicado para Métricas
+
+Realizamos uma importante refatoração na arquitetura do backend para melhorar a separação de responsabilidades:
+
+1. **Criação de Módulo Dedicado para Métricas**
+
+   - Criamos um módulo separado para as métricas (`MetricsModule`)
+   - Movemos toda a lógica de métricas do `ProjectModule` para o novo módulo
+   - Implementamos um endpoint próprio: `GET /metrics/project/:id`
+
+2. **Benefícios da Mudança**
+
+   - Melhor separação de responsabilidades
+   - Código mais organizado e manutenível
+   - Facilidade para expansão futura da funcionalidade de métricas
+   - Módulo de projeto mais enxuto e focado em suas responsabilidades principais
+
+3. **Arquivos Criados**
+
+   - `metrics.module.ts` - Definição do módulo e suas dependências
+   - `metrics.controller.ts` - Controller com endpoint para acesso às métricas
+   - `metrics.service.ts` - Serviço com a lógica de negócio para métricas
+   - `dto/student-metrics.dto.ts` - DTOs para estruturas de dados de métricas
+
+4. **Atualizações no Frontend**
+   - Atualizado o serviço de métricas para apontar para o novo endpoint
+   - Mantido o funcionamento existente da interface de usuário
+
+Esta mudança fortalece a arquitetura do sistema, aplicando melhor os princípios da programação modular e da separação de responsabilidades, sem afetar a experiência do usuário.
+
+## Próximas Etapas
+
+Com a conclusão da implementação da seção de métricas, todas as funcionalidades planejadas para o projeto foram implementadas. As próximas etapas incluem:
+
+1. **Testes e Validações**
+
+   - Realizar testes completos de todas as funcionalidades implementadas
+   - Validar o funcionamento em diferentes ambientes e dispositivos
+   - Verificar edge cases e situações de erro
+
+2. **Documentação Completa**
+
+   - Atualizar a documentação do projeto
+   - Documentar APIs e componentes
+   - Criar guias de uso para diferentes tipos de usuário
+
+3. **Otimizações de Performance**
+   - Identificar e resolver gargalos de desempenho
+   - Otimizar queries de banco de dados
+   - Melhorar a experiência do usuário em conexões lentas

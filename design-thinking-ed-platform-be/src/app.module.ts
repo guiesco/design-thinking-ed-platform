@@ -15,6 +15,7 @@ import { IdeationModule } from './modules/ideation/ideation.module';
 import { FileModule } from './modules/file/file.module';
 import { PrototypeModule } from './modules/prototype/prototype.module';
 import { ConclusionModule } from './modules/conclusion/conclusion.module';
+import { MetricsModule } from './modules/metrics/metrics.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { ConclusionModule } from './modules/conclusion/conclusion.module';
     FileModule,
     PrototypeModule,
     ConclusionModule,
+    MetricsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

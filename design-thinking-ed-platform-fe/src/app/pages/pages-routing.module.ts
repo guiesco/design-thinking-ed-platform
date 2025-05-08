@@ -16,6 +16,7 @@ import { ProblemDefinitionStepComponent } from './project/components/problem-def
 import { IdeationStepComponent } from './project/components/ideation-step/ideation-step.component';
 import { PrototypingStepComponent } from './project/components/prototyping-step/prototyping-step.component';
 import { ConclusionStepComponent } from './project/components/conclusion-step/conclusion-step.component';
+import { MetricsStepComponent } from './project/components/metrics-step/metrics-step.component';
 
 const pagesRoutes: Routes = [
   {
@@ -95,6 +96,15 @@ const pagesRoutes: Routes = [
           {
             path: 'conclusion',
             component: ConclusionStepComponent,
+          },
+          {
+            path: 'metrics',
+            component: MetricsStepComponent,
+            canActivate: [hasRoleGuard],
+            data: {
+              roles: [UserTypeEnum.PROFESSOR],
+              redirectPath: 'home',
+            },
           },
           {
             path: '',

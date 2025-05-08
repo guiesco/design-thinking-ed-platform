@@ -33,6 +33,12 @@
         [class.active]="currentStep === 'conclusion'"
         >Conclusão</a
       >
+      <a
+        *ngIf="isProfessor"
+        [routerLink]="['/project', projectId, 'metrics']"
+        [class.active]="currentStep === 'metrics'"
+        >Métricas</a
+      >
     </div>
   </div>
 
