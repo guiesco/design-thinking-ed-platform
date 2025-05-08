@@ -301,7 +301,30 @@ Realizamos uma importante refatoração na arquitetura do backend para melhorar 
    - Atualizado o serviço de métricas para apontar para o novo endpoint
    - Mantido o funcionamento existente da interface de usuário
 
-Esta mudança fortalece a arquitetura do sistema, aplicando melhor os princípios da programação modular e da separação de responsabilidades, sem afetar a experiência do usuário.
+### Melhorias na Seção de Métricas
+
+Implementamos duas importantes melhorias na funcionalidade de métricas:
+
+1. **Filtro por Etapa do Design Thinking**
+
+   - Adicionada capacidade de filtrar métricas por etapa específica do processo de Design Thinking
+   - Implementada enumeração `DesignThinkingStage` para padronizar as etapas disponíveis
+   - Criado seletor no frontend para escolher a etapa desejada
+   - Backend adaptado para filtrar as métricas com base na etapa selecionada
+   - As métricas mudam dinamicamente ao selecionar uma etapa diferente
+
+2. **Verificação de Perfil de Professor**
+
+   - Implementada validação no backend para garantir que apenas professores possam acessar as métricas
+   - Controller agora verifica o tipo de usuário antes de fornecer os dados
+   - Adicionadas mensagens de erro apropriadas para acesso não autorizado
+   - Mantida a segurança da API mesmo com chamadas diretas
+
+3. **Benefícios das Melhorias**
+   - Melhor experiência do usuário com análises mais específicas por etapa
+   - Aumento da segurança com verificação explícita de perfil
+   - Interface mais intuitiva com feedback visual sobre a etapa selecionada
+   - Capacidade de análise mais granular do progresso dos alunos
 
 ## Próximas Etapas
 

@@ -1,3 +1,13 @@
+export enum DesignThinkingStage {
+  EMPATHY = 'empathy',
+  PROBLEM_DEFINITION = 'problem_definition',
+  CHALLENGE_DEFINITION = 'challenge_definition',
+  IDEATION = 'ideation',
+  PROTOTYPING = 'prototyping',
+  CONCLUSION = 'conclusion',
+  ALL = 'all',
+}
+
 export interface StudentMetrics {
   userId: number;
   name: string;

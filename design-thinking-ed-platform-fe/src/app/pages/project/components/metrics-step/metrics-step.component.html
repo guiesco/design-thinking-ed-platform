@@ -4,6 +4,23 @@
     <p>Visualize as interações e contribuições dos alunos neste projeto.</p>
   </div>
 
+  <div class="stage-filter">
+    <mat-form-field appearance="fill">
+      <mat-label>Filtrar por etapa</mat-label>
+      <mat-select
+        [value]="currentStage"
+        (selectionChange)="onStageChange($event.value)"
+      >
+        <mat-option
+          *ngFor="let stage of designThinkingStages"
+          [value]="stage.value"
+        >
+          {{ stage.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
   <div class="loading-container" *ngIf="isLoading">
     <mat-spinner diameter="40"></mat-spinner>
     <p>Carregando métricas...</p>
@@ -15,6 +32,14 @@
   </div>
 
   <div class="metrics-content" *ngIf="!isLoading && !error && metrics">
+    <div class="stage-indicator" *ngIf="currentStage !== 'all'">
+      <mat-chip-listbox>
+        <mat-chip color="primary" selected>
+          {{ getSelectedStage() }}
+        </mat-chip>
+      </mat-chip-listbox>
+    </div>
+
     <div class="table-container">
       <table mat-table [dataSource]="metrics.students" class="mat-elevation-z8">
         <!-- Nome Column -->

@@ -15,8 +15,8 @@ export class MetricsEffects {
   loadMetrics$ = createEffect(() =>
     this.actions$.pipe(
       ofType(MetricsActions.loadMetrics),
-      switchMap(({ projectId, userId }) =>
-        this.metricsService.getProjectMetrics(projectId, userId).pipe(
+      switchMap(({ projectId, userId, stage }) =>
+        this.metricsService.getProjectMetrics(projectId, userId, stage).pipe(
           map((metrics) => MetricsActions.loadMetricsSuccess({ metrics })),
           catchError((error) =>
             of(

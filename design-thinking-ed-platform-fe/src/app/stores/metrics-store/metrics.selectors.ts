@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { MetricsState } from './metrics.interface';
+import { MetricsState } from './metrics.reducer';
 
 export const selectMetricsState =
   createFeatureSelector<MetricsState>('metrics');
@@ -17,4 +17,9 @@ export const selectIsLoading = createSelector(
 export const selectError = createSelector(
   selectMetricsState,
   (state: MetricsState) => state.error
+);
+
+export const selectCurrentStage = createSelector(
+  selectMetricsState,
+  (state: MetricsState) => state.currentStage
 );

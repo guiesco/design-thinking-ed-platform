@@ -16,7 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatChipsModule } from '@angular/material/chips';
+import { MatChip, MatChipsModule } from '@angular/material/chips';
 
 import { PagesRoutingModule } from './pages-routing.module';
 import { LoginComponent } from './login/login.component';
@@ -77,6 +77,7 @@ const angularMaterialModules = [
   MatChipsModule,
   MatExpansionModule,
   MatStepperModule,
+  MatChipsModule,
 ];
 
 const stateModules = [

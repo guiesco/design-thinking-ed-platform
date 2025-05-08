@@ -260,16 +260,26 @@ A plataforma implementa diferentes etapas do processo de Design Thinking, cada u
      - ✅ Criar lógica para contagem de interações dos alunos
      - ✅ Desenvolver cálculos para diferentes tipos de interação
      - ✅ Configurar acesso restrito para professores
+   - ✅ **Adicionar Filtro por Etapa**
+     - ✅ Implementar enumeração `DesignThinkingStage`
+     - ✅ Modificar serviços para suportar filtragem por etapa
+     - ✅ Adaptar contagem de interações específicas por etapa
+   - ✅ **Implementar Verificação de Perfil**
+     - ✅ Adicionar validação de tipo de usuário no controller
+     - ✅ Implementar tratamento de exceções para acesso não autorizado
+     - ✅ Garantir segurança da API para métricas
 
 2. ✅ **Frontend**
 
    - ✅ **Criar MetricsStore**
      - ✅ Implementar estado, ações, reducers, efeitos e selectors
      - ✅ Desenvolver serviço para comunicação com o novo endpoint
+     - ✅ Adicionar suporte para filtro por etapa
    - ✅ **Implementar MetricsStepComponent**
      - ✅ Criar interface de tabela para métricas
      - ✅ Implementar visualização de dados de interações e contribuições
      - ✅ Adicionar estilos responsivos para apresentação das métricas
+     - ✅ Implementar seletor de etapas com estilo Material
    - ✅ **Integração com o Projeto**
      - ✅ Adicionar rota para a seção de métricas
      - ✅ Exibir opção apenas para usuários do tipo professor
@@ -283,6 +293,8 @@ A plataforma implementa diferentes etapas do processo de Design Thinking, cada u
 - Controle de acesso baseado em usuário e grupo implementado
 - Testes unitários implementados para verificar funcionamento
 - Alinhamento entre frontend e backend concluído (métodos HTTP, parâmetros e limites de tamanho)
+- Métricas de interação agora podem ser filtradas por etapa do Design Thinking
+- Verificação de perfil implementada para garantir que apenas professores acessem as métricas
 
 ## 2024-06-16: Correção de bugs
 
@@ -406,3 +418,45 @@ A plataforma implementa diferentes etapas do processo de Design Thinking, cada u
 - A robustez do sistema foi aumentada com validações adicionais
 
 Estas correções resolvem os problemas identificados no sistema de upload de arquivos, melhorando a confiabilidade e a experiência do usuário nas etapas de Prototipação e Conclusão.
+
+## 2024-07-22: Melhorias na Funcionalidade de Métricas
+
+### Adição de Filtro por Etapa de Design Thinking
+
+1. **Backend**
+
+   - ✅ **Implementação da Enumeração de Etapas**
+     - Criada enumeração `DesignThinkingStage` com todas as etapas do processo
+     - Adicionada como opção no DTO de métricas para filtrar resultados
+   - ✅ **Modificação do Serviço de Métricas**
+     - Atualizado `MetricsService` para filtrar dados com base na etapa selecionada
+     - Implementada lógica condicional para contar apenas interações da etapa específica
+   - ✅ **Atualização do Serviço de Votos**
+     - Modificado `UserVoteService` para filtrar votos por tipo de entidade
+     - Mapeamento entre etapas e tipos de entidades para filtrar corretamente
+
+2. **Frontend**
+
+   - ✅ **Atualização da Interface e Store**
+     - Adicionada enumeração `DesignThinkingStage` ao frontend
+     - Implementado estado para armazenar a etapa atual selecionada
+     - Criadas ações e reducers para gerenciar a mudança de etapa
+   - ✅ **Implementação do Seletor de Etapa**
+     - Adicionado componente de seleção de etapa com Material Design
+     - Estilização adequada para garantir boa experiência do usuário
+     - Feedback visual da etapa atualmente selecionada
+
+### Implementação de Verificação de Perfil
+
+1. **Backend**
+
+   - ✅ **Validação de Permissão**
+     - Adicionada verificação de tipo de usuário no controller
+     - Implementado fluxo de validação para garantir que apenas professores acessem as métricas
+     - Adicionados tratamentos de erro apropriados
+
+2. **Benefícios das Melhorias**
+   - Métricas mais precisas e relevantes com o filtro por etapa
+   - Melhor experiência do usuário com análises específicas
+   - Aumento da segurança na API de métricas
+   - Interface mais intuitiva com opções claras de filtragem

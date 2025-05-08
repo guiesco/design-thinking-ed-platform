@@ -1,3 +1,13 @@
+export enum DesignThinkingStage {
+  EMPATHY = 'empathy',
+  PROBLEM_DEFINITION = 'problem_definition',
+  CHALLENGE_DEFINITION = 'challenge_definition',
+  IDEATION = 'ideation',
+  PROTOTYPING = 'prototyping',
+  CONCLUSION = 'conclusion',
+  ALL = 'all',
+}
+
 export class StudentMetricsDto {
   userId: number;
   name: string;
@@ -9,4 +19,8 @@ export class StudentMetricsDto {
 
 export class ProjectMetricsResponseDto {
   students: StudentMetricsDto[];
+}
+
+export class MetricsQueryDto {
+  stage?: DesignThinkingStage;
 }

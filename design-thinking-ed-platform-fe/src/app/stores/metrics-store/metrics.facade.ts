@@ -2,8 +2,12 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import * as MetricsActions from './metrics.actions';
-import { ProjectMetricsResponse } from './metrics.interface';
 import * as MetricsSelectors from './metrics.selectors';
+import {
+  DesignThinkingStage,
+  ProjectMetricsResponse,
+} from './metrics.interface';
+import { MetricsState } from './metrics.reducer';
 
 @Injectable({
   providedIn: 'root',
@@ -21,9 +25,23 @@ export class MetricsFacade {
     MetricsSelectors.selectError
   );
 
-  constructor(private store: Store) {}
+  currentStage$: Observable<DesignThinkingStage> = this.store.select(
+    MetricsSelectors.selectCurrentStage
+  );
 
-  loadMetrics(projectId: number, userId: number): void {
-    this.store.dispatch(MetricsActions.loadMetrics({ projectId, userId }));
+  constructor(private store: Store<MetricsState>) {}
+
+  loadMetrics(
+    projectId: number,
+    userId: number,
+    stage?: DesignThinkingStage
+  ): void {
+    this.store.dispatch(
+      MetricsActions.loadMetrics({ projectId, userId, stage })
+    );
+  }
+
+  setCurrentStage(stage: DesignThinkingStage): void {
+    this.store.dispatch(MetricsActions.setCurrentStage({ stage }));
   }
 }

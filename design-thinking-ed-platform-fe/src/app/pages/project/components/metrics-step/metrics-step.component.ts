@@ -5,6 +5,7 @@ import { take, takeUntil } from 'rxjs/operators';
 import { UserFacade } from 'src/app/stores/user-state-store/user.facade';
 import { MetricsFacade } from 'src/app/stores/metrics-store/metrics.facade';
 import {
+  DesignThinkingStage,
   ProjectMetricsResponse,
   StudentMetrics,
 } from 'src/app/stores/metrics-store/metrics.interface';
@@ -32,6 +33,25 @@ export class MetricsStepComponent implements OnInit, OnDestroy {
     'selectedResponses',
   ];
 
+  // Opções de etapas para o seletor
+  designThinkingStages = [
+    { value: DesignThinkingStage.ALL, label: 'Todas as etapas' },
+    { value: DesignThinkingStage.EMPATHY, label: 'Mapa de Empatia' },
+    {
+      value: DesignThinkingStage.PROBLEM_DEFINITION,
+      label: 'Definição do Problema',
+    },
+    {
+      value: DesignThinkingStage.CHALLENGE_DEFINITION,
+      label: 'Definição do Desafio',
+    },
+    { value: DesignThinkingStage.IDEATION, label: 'Ideação' },
+    { value: DesignThinkingStage.PROTOTYPING, label: 'Prototipação' },
+    { value: DesignThinkingStage.CONCLUSION, label: 'Conclusão' },
+  ];
+
+  currentStage: DesignThinkingStage = DesignThinkingStage.ALL;
+
   constructor(
     private route: ActivatedRoute,
     private userFacade: UserFacade,
@@ -47,6 +67,20 @@ export class MetricsStepComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();
+  }
+
+  onStageChange(stage: DesignThinkingStage): void {
+    this.metricsFacade.setCurrentStage(stage);
+    if (this.projectId && this.currentUserId) {
+      this.metricsFacade.loadMetrics(this.projectId, this.currentUserId, stage);
+    }
+  }
+
+  getSelectedStage(): string {
+    return (
+      this.designThinkingStages.find((s) => s.value === this.currentStage)
+        ?.label || 'Todas as etapas'
+    );
   }
 
   getTotalInteractions(): number {
@@ -117,6 +151,12 @@ export class MetricsStepComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroyed$))
       .subscribe((error) => {
         this.error = error;
+      });
+
+    this.metricsFacade.currentStage$
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((stage) => {
+        this.currentStage = stage;
       });
 
     // Carregar métricas apenas se tiver projectId e userId

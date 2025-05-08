@@ -15,6 +15,20 @@
         }
     }
 
+    .stage-filter {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: flex-end;
+
+        mat-form-field {
+            width: 250px;
+        }
+    }
+
+    .stage-indicator {
+        margin-bottom: 16px;
+    }
+
     .loading-container {
         display: flex;
         flex-direction: column;
