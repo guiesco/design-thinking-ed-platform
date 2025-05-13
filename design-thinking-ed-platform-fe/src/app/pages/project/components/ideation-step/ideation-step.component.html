@@ -43,6 +43,31 @@
     }}</mat-error>
   </div>
 
+  <!-- Botão de Finalizar Etapa -->
+  <div class="finalize-container">
+    <button
+      mat-raised-button
+      color="accent"
+      (click)="finalizeIdeation()"
+      [disabled]="(selectedIdeasCount$ | async) !== 1"
+    >
+      <mat-icon>check_circle</mat-icon>
+      Finalizar Ideação
+    </button>
+    <p *ngIf="(selectedIdeasCount$ | async) === 0" class="warn-text">
+      Selecione exatamente uma ideia para finalizar esta etapa.
+    </p>
+    <p
+      *ngIf="
+        (selectedIdeasCount$ | async) !== 0 &&
+        (selectedIdeasCount$ | async) !== 1
+      "
+      class="warn-text"
+    >
+      Selecione apenas uma ideia para finalizar esta etapa.
+    </p>
+  </div>
+
   <!-- Lista de ideias -->
   <div class="ideas-list" *ngIf="ideas$ | async as ideas">
     <div *ngIf="ideas.length === 0" class="empty-ideas">
@@ -52,7 +77,10 @@
     <mat-card
       *ngFor="let idea of ideas"
       class="idea-card"
-      [ngClass]="{ highlight: shouldHighlightIdea(idea.id) }"
+      [ngClass]="{
+        highlight: shouldHighlightIdea(idea.id),
+        'selected-idea': idea.isSelected
+      }"
     >
       <!-- Cabeçalho do card -->
       <mat-card-header>
@@ -61,6 +89,9 @@
           <div *ngIf="editingIdeaId !== idea.id" class="idea-title-container">
             <div class="idea-title">
               <h2>{{ idea.title }}</h2>
+              <mat-chip-listbox *ngIf="idea.isSelected">
+                <mat-chip color="accent" selected>Selecionada</mat-chip>
+              </mat-chip-listbox>
             </div>
             <div class="idea-actions" *ngIf="currentUserId === idea.userId">
               <button
@@ -129,6 +160,24 @@
               }}</mat-icon>
             </button>
             <span class="upvote-count">{{ idea.upvotes || 0 }}</span>
+          </div>
+
+          <!-- Botão de selecionar -->
+          <div class="select-container">
+            <button
+              mat-icon-button
+              color="accent"
+              (click)="toggleIdeaSelection(idea)"
+              matTooltip="{{
+                idea.isSelected
+                  ? 'Desmarcar ideia'
+                  : 'Selecionar como ideia final'
+              }}"
+            >
+              <mat-icon>{{
+                idea.isSelected ? "check_circle" : "radio_button_unchecked"
+              }}</mat-icon>
+            </button>
           </div>
         </div>
       </mat-card-header>

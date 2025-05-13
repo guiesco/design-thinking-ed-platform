@@ -460,3 +460,120 @@ Estas correções resolvem os problemas identificados no sistema de upload de ar
    - Melhor experiência do usuário com análises específicas
    - Aumento da segurança na API de métricas
    - Interface mais intuitiva com opções claras de filtragem
+
+## 2024-08-01: Tarefas Pendentes para Finalização do Projeto
+
+### 1. Responsividade Mobile
+
+⬜ **Objetivo**: Tornar todas as páginas responsivas para uso adequado em dispositivos móveis, principalmente na orientação portrait.
+
+- ⬜ **Criação de Mixins e Utilitários Responsivos**
+
+  - ⬜ Arquivo de mixins SCSS para breakpoints consistentes
+  - ⬜ Classes utilitárias para visibilidade responsiva
+  - ⬜ Variáveis para tamanhos e espaçamentos em mobile
+
+- ⬜ **Adaptação das Etapas de Design Thinking**
+
+  - ⬜ Etapa de Definição do Desafio (grid para coluna única)
+  - ⬜ Etapa de Mapa de Empatia (quadrantes em layout vertical)
+  - ⬜ Etapa de Definição do Problema (visualização de insights)
+  - ⬜ Etapa de Ideação (cards e prós/contras adaptados)
+  - ⬜ Etapas de Prototipação e Conclusão (otimização do upload)
+  - ⬜ Página de Métricas (tabelas responsivas)
+
+- ⬜ **Melhorias para Interação em Touchscreen**
+  - ⬜ Áreas de toque maiores para botões e controles
+  - ⬜ Ajustes em formulários para entrada em dispositivos móveis
+  - ⬜ Feedback visual otimizado para telas pequenas
+
+### 2. Funcionalidade de "Submit Final"
+
+⬜ **Objetivo**: Implementar a funcionalidade de finalização nas etapas que ainda não possuem essa feature.
+
+- ⬜ **Etapa de Ideação**
+
+  - ⬜ Frontend: atributo isSelected, UI para seleção e validações
+  - ⬜ Backend: campo na entidade e endpoints para seleção/finalização
+
+- ⬜ **Etapa de Prototipação**
+
+  - ⬜ Frontend: botão de finalização com validações
+  - ⬜ Backend: status de finalização e endpoint
+
+- ⬜ **Etapa de Conclusão**
+  - ⬜ Frontend: botão para finalizar projeto com validações
+  - ⬜ Backend: status de finalização e endpoint
+
+### 3. Transformação do Modal de Turmas em Página
+
+⬜ **Objetivo**: Substituir o modal por uma página completa com funcionalidades expandidas para o professor.
+
+- ⬜ **Nova Página de Turma**
+
+  - ⬜ Componente e rota para detalhes da turma
+  - ⬜ Layout base seguindo padrões da aplicação
+
+- ⬜ **Funcionalidades para Professor**
+
+  - ⬜ Visualização de alunos convidados e registrados
+  - ⬜ Gerenciamento detalhado de grupos
+  - ⬜ Seletor para alterar etapa atual da turma
+  - ⬜ Configuração de enunciados para protótipo e conclusão
+
+- ⬜ **Backend e Integração**
+  - ⬜ Endpoints para novas funcionalidades
+  - ⬜ Serviços para gerenciamento de enunciados
+  - ⬜ Remoção do modal após implementação completa
+
+## 2024-08-06: Implementação de Submit Final para Ideação
+
+### Funcionalidade de Seleção e Finalização
+
+Implementamos a funcionalidade "Submit Final" para a etapa de Ideação, permitindo aos usuários selecionar ideias como finais e concluir a etapa:
+
+1. **Backend**
+
+   - ✅ **Atualização de Modelo de Dados**
+     - Adicionado campo `isSelected` à entidade `IdeationIdea`
+     - Implementada migração de banco de dados para suportar o novo campo
+   - ✅ **Implementação de Novos Endpoints**
+     - Criado endpoint `/idea/:id/toggle-selection` para alternar seleção de ideias
+     - Criado endpoint `/selected` para obter ideias selecionadas de um projeto
+   - ✅ **Atualização de DTOs**
+     - Modificado `UpdateIdeationIdeaDto` para incluir campo `isSelected`
+
+2. **Frontend**
+
+   - ✅ **Atualização da Store**
+     - Adicionadas novas ações para toggle de seleção e carregamento de ideias selecionadas
+     - Atualização do reducer e efeitos para suportar as novas ações
+     - Adicionado seletor para ideias marcadas como selecionadas
+   - ✅ **Atualização da Interface**
+     - Adicionado botão para marcar/desmarcar ideias como selecionadas
+     - Adição de indicador visual (chip) para ideias selecionadas
+     - Implementado botão para finalizar etapa de ideação
+     - Adicionada validação para garantir que pelo menos uma ideia seja selecionada
+
+3. **UX Improvements**
+   - ✅ **Feedback Visual**
+     - Estilização especial para ideias selecionadas
+     - Mensagens de confirmação ao selecionar/desmarcar ideias
+     - Diálogo de confirmação ao finalizar a etapa
+   - ✅ **Validações**
+     - Verificação de quantidade de ideias selecionadas
+     - Desabilitação do botão de finalizar quando nenhuma ideia está selecionada
+     - Mensagens de erro explicativas
+
+### Resultados
+
+- A funcionalidade permite que os usuários marquem ideias como finais, facilitando a transição para a próxima etapa
+- A validação garante que pelo menos uma ideia seja selecionada antes de finalizar a etapa
+- O feedback visual claro melhora a experiência do usuário
+- A solução segue o mesmo padrão das outras etapas da aplicação
+
+### Próximos Passos
+
+- Implementar funcionalidade similar para as etapas de Prototipação e Conclusão
+- Adicionar sistema de progresso para mostrar o status de cada etapa
+- Implementar responsividade para dispositivos móveis

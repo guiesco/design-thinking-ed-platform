@@ -59,6 +59,19 @@ export class IdeationController {
     return this.ideationService.upvoteIdea(+id, +userId);
   }
 
+  @Post('idea/:id/toggle-selection')
+  toggleIdeaSelection(
+    @Param('id') id: string,
+    @Query('userId') userId: string,
+  ) {
+    return this.ideationService.toggleIdeaSelection(+id, +userId);
+  }
+
+  @Get('selected')
+  getSelectedIdeasByProject(@Query('projectId') projectId: string) {
+    return this.ideationService.getSelectedIdeasByProject(+projectId);
+  }
+
   // Points endpoints
   @Post('point')
   createPoint(@Body() createDto: CreateIdeationPointDto) {

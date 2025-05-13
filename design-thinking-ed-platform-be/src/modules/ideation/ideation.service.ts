@@ -155,6 +155,29 @@ export class IdeationService {
     return idea;
   }
 
+  async toggleIdeaSelection(id: number, userId: number): Promise<IdeationIdea> {
+    const idea = await this.findOneIdea(id);
+    idea.isSelected = !idea.isSelected;
+
+    if (userId) {
+      const hasVoted = await this.userVoteService.hasVoted(
+        userId,
+        VoteableEntityType.IDEATION_IDEA,
+        idea.id,
+      );
+      idea['hasVoted'] = hasVoted;
+    }
+
+    return this.ideaRepository.save(idea);
+  }
+
+  async getSelectedIdeasByProject(projectId: number): Promise<IdeationIdea[]> {
+    return this.ideaRepository.find({
+      where: { projectId, isSelected: true },
+      relations: ['points', 'user'],
+    });
+  }
+
   // Points CRUD operations
   async createPoint(createDto: CreateIdeationPointDto): Promise<IdeationPoint> {
     const idea = await this.findOneIdea(createDto.ideaId);

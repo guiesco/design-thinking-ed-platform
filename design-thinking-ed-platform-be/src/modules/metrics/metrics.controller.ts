@@ -9,7 +9,6 @@ import {
 import { MetricsService } from './metrics.service';
 import {
   DesignThinkingStage,
-  MetricsQueryDto,
   ProjectMetricsResponseDto,
 } from './dto/student-metrics.dto';
 import { InjectRepository } from '@nestjs/typeorm';

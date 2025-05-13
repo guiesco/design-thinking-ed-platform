@@ -1,7 +1,11 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsOptional, IsBoolean, IsString } from 'class-validator';
 
 export class UpdateIdeationIdeaDto {
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
-  title: string;
+  title?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  isSelected?: boolean;
 }

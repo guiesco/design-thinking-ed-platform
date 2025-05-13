@@ -8,6 +8,7 @@ export interface IdeationIdea {
   userId: number;
   user?: IUser;
   upvotes: number;
+  isSelected?: boolean;
   hasVoted?: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -52,6 +53,7 @@ export interface CreateIdeationPointDto {
 
 export interface UpdateIdeationIdeaDto {
   title?: string;
+  isSelected?: boolean;
 }
 
 export interface UpdateIdeationPointDto {

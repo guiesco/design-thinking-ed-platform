@@ -19,7 +19,7 @@ export class IdeationService {
 
   constructor(private http: HttpClient) {}
 
-  // Ideas
+  // Ideation Ideas
   getIdeasByProject(
     projectId: number,
     userId?: number
@@ -31,8 +31,8 @@ export class IdeationService {
     return this.http.get<IdeationIdea[]>(url);
   }
 
-  getIdeaById(ideaId: number): Observable<IdeationIdea> {
-    return this.http.get<IdeationIdea>(`${this.apiUrl}/idea/${ideaId}`);
+  getIdeaById(id: number): Observable<IdeationIdea> {
+    return this.http.get<IdeationIdea>(`${this.apiUrl}/idea/${id}`);
   }
 
   createIdea(idea: CreateIdeationIdeaDto): Observable<IdeationIdea> {
@@ -40,30 +40,41 @@ export class IdeationService {
   }
 
   updateIdea(
-    ideaId: number,
+    id: number,
     userId: number,
-    update: UpdateIdeationIdeaDto
+    idea: UpdateIdeationIdeaDto
   ): Observable<IdeationIdea> {
     return this.http.put<IdeationIdea>(
-      `${this.apiUrl}/idea/${ideaId}?userId=${userId}`,
-      update
+      `${this.apiUrl}/idea/${id}?userId=${userId}`,
+      idea
     );
   }
 
-  deleteIdea(ideaId: number, userId: number): Observable<void> {
-    return this.http.delete<void>(
-      `${this.apiUrl}/idea/${ideaId}?userId=${userId}`
-    );
+  deleteIdea(id: number, userId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/idea/${id}?userId=${userId}`);
   }
 
-  upvoteIdea(ideaId: number, userId: number): Observable<IdeationIdea> {
+  upvoteIdea(id: number, userId: number): Observable<IdeationIdea> {
     return this.http.post<IdeationIdea>(
-      `${this.apiUrl}/idea/${ideaId}/upvote?userId=${userId}`,
+      `${this.apiUrl}/idea/${id}/upvote?userId=${userId}`,
       {}
     );
   }
 
-  // Points
+  toggleIdeaSelection(id: number, userId: number): Observable<IdeationIdea> {
+    return this.http.post<IdeationIdea>(
+      `${this.apiUrl}/idea/${id}/toggle-selection?userId=${userId}`,
+      {}
+    );
+  }
+
+  getSelectedIdeasByProject(projectId: number): Observable<IdeationIdea[]> {
+    return this.http.get<IdeationIdea[]>(
+      `${this.apiUrl}/selected?projectId=${projectId}`
+    );
+  }
+
+  // Ideation Points
   getPointsByIdea(ideaId: number): Observable<IdeationPoint[]> {
     return this.http.get<IdeationPoint[]>(
       `${this.apiUrl}/point?ideaId=${ideaId}`
@@ -75,25 +86,25 @@ export class IdeationService {
   }
 
   updatePoint(
-    pointId: number,
+    id: number,
     userId: number,
-    update: UpdateIdeationPointDto
+    point: UpdateIdeationPointDto
   ): Observable<IdeationPoint> {
     return this.http.put<IdeationPoint>(
-      `${this.apiUrl}/point/${pointId}?userId=${userId}`,
-      update
+      `${this.apiUrl}/point/${id}?userId=${userId}`,
+      point
     );
   }
 
-  deletePoint(pointId: number, userId: number): Observable<void> {
+  deletePoint(id: number, userId: number): Observable<void> {
     return this.http.delete<void>(
-      `${this.apiUrl}/point/${pointId}?userId=${userId}`
+      `${this.apiUrl}/point/${id}?userId=${userId}`
     );
   }
 
-  upvotePoint(pointId: number, userId: number): Observable<IdeationPoint> {
+  upvotePoint(id: number, userId: number): Observable<IdeationPoint> {
     return this.http.post<IdeationPoint>(
-      `${this.apiUrl}/point/${pointId}/upvote?userId=${userId}`,
+      `${this.apiUrl}/point/${id}/upvote?userId=${userId}`,
       {}
     );
   }

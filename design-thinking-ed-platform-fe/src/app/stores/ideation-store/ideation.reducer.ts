@@ -1,121 +1,229 @@
 import { createReducer, on } from '@ngrx/store';
-import { initialIdeationState } from './ideation.state';
 import * as IdeationActions from './ideation.actions';
+import { IdeationState } from './ideation.state';
+
+export const initialState: IdeationState = {
+  ideas: [],
+  loading: false,
+  error: null,
+};
 
 export const ideationReducer = createReducer(
-  initialIdeationState,
+  initialState,
 
-  // Loading state
-  on(
-    IdeationActions.loadIdeasByProject,
-    IdeationActions.createIdea,
-    IdeationActions.updateIdea,
-    IdeationActions.deleteIdea,
-    IdeationActions.upvoteIdea,
-    IdeationActions.loadPointsByIdea,
-    IdeationActions.createPoint,
-    IdeationActions.updatePoint,
-    IdeationActions.deletePoint,
-    IdeationActions.upvotePoint,
-    (state) => ({
-      ...state,
-      loading: true,
-      error: null,
-    })
-  ),
-
-  // Error state
-  on(
-    IdeationActions.loadIdeasFailure,
-    IdeationActions.createIdeaFailure,
-    IdeationActions.updateIdeaFailure,
-    IdeationActions.deleteIdeaFailure,
-    IdeationActions.upvoteIdeaFailure,
-    IdeationActions.loadPointsFailure,
-    IdeationActions.createPointFailure,
-    IdeationActions.updatePointFailure,
-    IdeationActions.deletePointFailure,
-    IdeationActions.upvotePointFailure,
-    (state, { error }) => ({
-      ...state,
-      loading: false,
-      error,
-    })
-  ),
-
-  // Ideas actions
-  on(IdeationActions.loadIdeasSuccess, (state, { ideas }) => ({
+  // Load Ideas
+  on(IdeationActions.loadIdeasByProject, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(IdeationActions.loadIdeasByProjectSuccess, (state, { ideas }) => ({
     ...state,
     ideas,
     loading: false,
   })),
+  on(IdeationActions.loadIdeasByProjectFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false,
+  })),
 
+  // Create Idea
+  on(IdeationActions.createIdea, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
   on(IdeationActions.createIdeaSuccess, (state, { idea }) => ({
     ...state,
     ideas: [...state.ideas, idea],
     loading: false,
   })),
+  on(IdeationActions.createIdeaFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false,
+  })),
 
+  // Update Idea
+  on(IdeationActions.updateIdea, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
   on(IdeationActions.updateIdeaSuccess, (state, { idea }) => ({
     ...state,
     ideas: state.ideas.map((i) => (i.id === idea.id ? idea : i)),
     loading: false,
   })),
-
-  on(IdeationActions.deleteIdeaSuccess, (state, { ideaId }) => ({
+  on(IdeationActions.updateIdeaFailure, (state, { error }) => ({
     ...state,
-    ideas: state.ideas.filter((i) => i.id !== ideaId),
+    error,
     loading: false,
   })),
 
+  // Delete Idea
+  on(IdeationActions.deleteIdea, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(IdeationActions.deleteIdeaSuccess, (state, { id }) => ({
+    ...state,
+    ideas: state.ideas.filter((idea) => idea.id !== id),
+    loading: false,
+  })),
+  on(IdeationActions.deleteIdeaFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false,
+  })),
+
+  // Upvote Idea
+  on(IdeationActions.upvoteIdea, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
   on(IdeationActions.upvoteIdeaSuccess, (state, { idea }) => ({
     ...state,
     ideas: state.ideas.map((i) => (i.id === idea.id ? idea : i)),
     loading: false,
   })),
-
-  // Points actions
-  on(IdeationActions.loadPointsSuccess, (state, { points }) => ({
+  on(IdeationActions.upvoteIdeaFailure, (state, { error }) => ({
     ...state,
-    points,
+    error,
     loading: false,
   })),
 
-  on(IdeationActions.createPointSuccess, (state, { point }) => ({
+  // Toggle Idea Selection
+  on(IdeationActions.toggleIdeaSelection, (state) => ({
     ...state,
-    ideas: state.ideas.map((i) =>
-      i.id === point.ideaId ? { ...i, points: [...i.points, point] } : i
-    ),
+    loading: true,
+    error: null,
+  })),
+  on(IdeationActions.toggleIdeaSelectionSuccess, (state, { idea }) => ({
+    ...state,
+    ideas: state.ideas.map((i) => (i.id === idea.id ? idea : i)),
+    loading: false,
+  })),
+  on(IdeationActions.toggleIdeaSelectionFailure, (state, { error }) => ({
+    ...state,
+    error,
     loading: false,
   })),
 
-  on(IdeationActions.updatePointSuccess, (state, { point }) => ({
+  // Load Selected Ideas
+  on(IdeationActions.loadSelectedIdeas, (state) => ({
     ...state,
-    ideas: state.ideas.map((i) =>
-      i.id === point.ideaId
-        ? { ...i, points: i.points.map((p) => (p.id === point.id ? point : p)) }
-        : i
-    ),
+    loading: true,
+    error: null,
+  })),
+  on(IdeationActions.loadSelectedIdeasSuccess, (state, { ideas }) => ({
+    ...state,
+    ideas,
+    loading: false,
+  })),
+  on(IdeationActions.loadSelectedIdeasFailure, (state, { error }) => ({
+    ...state,
+    error,
     loading: false,
   })),
 
-  on(IdeationActions.deletePointSuccess, (state, { pointId, ideaId }) => ({
+  // Create Point
+  on(IdeationActions.createPoint, (state) => ({
     ...state,
-    ideas: state.ideas.map((i) =>
-      i.id === ideaId
-        ? { ...i, points: i.points.filter((p) => p.id !== pointId) }
-        : i
+    loading: true,
+    error: null,
+  })),
+  on(IdeationActions.createPointSuccess, (state, { point, ideaId }) => ({
+    ...state,
+    ideas: state.ideas.map((idea) =>
+      idea.id === ideaId
+        ? { ...idea, points: [...(idea.points || []), point] }
+        : idea
     ),
     loading: false,
   })),
-
-  on(IdeationActions.upvotePointSuccess, (state, { point }) => ({
+  on(IdeationActions.createPointFailure, (state, { error }) => ({
     ...state,
-    ideas: state.ideas.map((i) =>
-      i.id === point.ideaId
-        ? { ...i, points: i.points.map((p) => (p.id === point.id ? point : p)) }
-        : i
+    error,
+    loading: false,
+  })),
+
+  // Update Point
+  on(IdeationActions.updatePoint, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(IdeationActions.updatePointSuccess, (state, { point, ideaId }) => ({
+    ...state,
+    ideas: state.ideas.map((idea) =>
+      idea.id === ideaId
+        ? {
+            ...idea,
+            points: (idea.points || []).map((p) =>
+              p.id === point.id ? point : p
+            ),
+          }
+        : idea
     ),
+    loading: false,
+  })),
+  on(IdeationActions.updatePointFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false,
+  })),
+
+  // Delete Point
+  on(IdeationActions.deletePoint, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(IdeationActions.deletePointSuccess, (state, { id, ideaId }) => ({
+    ...state,
+    ideas: state.ideas.map((idea) =>
+      idea.id === ideaId
+        ? {
+            ...idea,
+            points: (idea.points || []).filter((point) => point.id !== id),
+          }
+        : idea
+    ),
+    loading: false,
+  })),
+  on(IdeationActions.deletePointFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false,
+  })),
+
+  // Upvote Point
+  on(IdeationActions.upvotePoint, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(IdeationActions.upvotePointSuccess, (state, { point, ideaId }) => ({
+    ...state,
+    ideas: state.ideas.map((idea) =>
+      idea.id === ideaId
+        ? {
+            ...idea,
+            points: (idea.points || []).map((p) =>
+              p.id === point.id ? point : p
+            ),
+          }
+        : idea
+    ),
+    loading: false,
+  })),
+  on(IdeationActions.upvotePointFailure, (state, { error }) => ({
+    ...state,
+    error,
     loading: false,
   }))
 );

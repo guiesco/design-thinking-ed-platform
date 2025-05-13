@@ -6,6 +6,7 @@ import {
   CreateIdeationPointDto,
   IdeationIdea,
   IdeationPoint,
+  IdeationPointType,
   UpdateIdeationIdeaDto,
   UpdateIdeationPointDto,
 } from '../../common/interfaces/ideation.interface';
@@ -49,23 +50,33 @@ export class IdeationFacade {
   }
 
   createIdea(idea: CreateIdeationIdeaDto): void {
-    this.store.dispatch(IdeationActions.createIdea({ idea }));
+    this.store.dispatch(
+      IdeationActions.createIdea({
+        title: idea.title,
+        projectId: idea.projectId,
+        userId: idea.userId,
+      })
+    );
   }
 
-  updateIdea(
-    ideaId: number,
-    userId: number,
-    update: UpdateIdeationIdeaDto
-  ): void {
-    this.store.dispatch(IdeationActions.updateIdea({ ideaId, userId, update }));
+  updateIdea(id: number, userId: number, update: UpdateIdeationIdeaDto): void {
+    this.store.dispatch(IdeationActions.updateIdea({ id, userId, update }));
   }
 
-  deleteIdea(ideaId: number, userId: number): void {
-    this.store.dispatch(IdeationActions.deleteIdea({ ideaId, userId }));
+  deleteIdea(id: number, userId: number): void {
+    this.store.dispatch(IdeationActions.deleteIdea({ id, userId }));
   }
 
-  upvoteIdea(ideaId: number, userId: number): void {
-    this.store.dispatch(IdeationActions.upvoteIdea({ ideaId, userId }));
+  upvoteIdea(id: number, userId: number): void {
+    this.store.dispatch(IdeationActions.upvoteIdea({ id, userId }));
+  }
+
+  toggleIdeaSelection(id: number, userId: number): void {
+    this.store.dispatch(IdeationActions.toggleIdeaSelection({ id, userId }));
+  }
+
+  loadSelectedIdeasByProject(projectId: number): void {
+    this.store.dispatch(IdeationActions.loadSelectedIdeas({ projectId }));
   }
 
   // Points methods
@@ -85,27 +96,35 @@ export class IdeationFacade {
     this.store.dispatch(IdeationActions.loadPointsByIdea({ ideaId }));
   }
 
-  createPoint(point: CreateIdeationPointDto): void {
-    this.store.dispatch(IdeationActions.createPoint({ point }));
+  createPoint(
+    content: string,
+    type: IdeationPointType,
+    ideaId: number,
+    userId: number
+  ): void {
+    this.store.dispatch(
+      IdeationActions.createPoint({
+        content,
+        pointType: type,
+        ideaId,
+        userId,
+      })
+    );
   }
 
   updatePoint(
-    pointId: number,
+    id: number,
     userId: number,
     update: UpdateIdeationPointDto
   ): void {
-    this.store.dispatch(
-      IdeationActions.updatePoint({ pointId, userId, update })
-    );
+    this.store.dispatch(IdeationActions.updatePoint({ id, userId, update }));
   }
 
-  deletePoint(pointId: number, userId: number, ideaId: number): void {
-    this.store.dispatch(
-      IdeationActions.deletePoint({ pointId, userId, ideaId })
-    );
+  deletePoint(id: number, userId: number, ideaId: number): void {
+    this.store.dispatch(IdeationActions.deletePoint({ id, userId, ideaId }));
   }
 
-  upvotePoint(pointId: number, userId: number): void {
-    this.store.dispatch(IdeationActions.upvotePoint({ pointId, userId }));
+  upvotePoint(id: number, userId: number, ideaId: number): void {
+    this.store.dispatch(IdeationActions.upvotePoint({ id, userId, ideaId }));
   }
 }

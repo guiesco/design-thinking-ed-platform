@@ -4,6 +4,7 @@ import {
   CreateIdeationPointDto,
   IdeationIdea,
   IdeationPoint,
+  IdeationPointType,
   UpdateIdeationIdeaDto,
   UpdateIdeationPointDto,
 } from '../../common/interfaces/ideation.interface';
@@ -14,19 +15,19 @@ export const loadIdeasByProject = createAction(
   props<{ projectId: number; userId?: number }>()
 );
 
-export const loadIdeasSuccess = createAction(
-  '[Ideation] Load Ideas Success',
+export const loadIdeasByProjectSuccess = createAction(
+  '[Ideation] Load Ideas By Project Success',
   props<{ ideas: IdeationIdea[] }>()
 );
 
-export const loadIdeasFailure = createAction(
-  '[Ideation] Load Ideas Failure',
+export const loadIdeasByProjectFailure = createAction(
+  '[Ideation] Load Ideas By Project Failure',
   props<{ error: any }>()
 );
 
 export const createIdea = createAction(
   '[Ideation] Create Idea',
-  props<{ idea: CreateIdeationIdeaDto }>()
+  props<{ title: string; projectId: number; userId: number }>()
 );
 
 export const createIdeaSuccess = createAction(
@@ -41,7 +42,7 @@ export const createIdeaFailure = createAction(
 
 export const updateIdea = createAction(
   '[Ideation] Update Idea',
-  props<{ ideaId: number; userId: number; update: UpdateIdeationIdeaDto }>()
+  props<{ id: number; userId: number; update: UpdateIdeationIdeaDto }>()
 );
 
 export const updateIdeaSuccess = createAction(
@@ -56,12 +57,12 @@ export const updateIdeaFailure = createAction(
 
 export const deleteIdea = createAction(
   '[Ideation] Delete Idea',
-  props<{ ideaId: number; userId: number }>()
+  props<{ id: number; userId: number }>()
 );
 
 export const deleteIdeaSuccess = createAction(
   '[Ideation] Delete Idea Success',
-  props<{ ideaId: number }>()
+  props<{ id: number }>()
 );
 
 export const deleteIdeaFailure = createAction(
@@ -71,7 +72,7 @@ export const deleteIdeaFailure = createAction(
 
 export const upvoteIdea = createAction(
   '[Ideation] Upvote Idea',
-  props<{ ideaId: number; userId: number }>()
+  props<{ id: number; userId: number }>()
 );
 
 export const upvoteIdeaSuccess = createAction(
@@ -81,6 +82,36 @@ export const upvoteIdeaSuccess = createAction(
 
 export const upvoteIdeaFailure = createAction(
   '[Ideation] Upvote Idea Failure',
+  props<{ error: any }>()
+);
+
+export const toggleIdeaSelection = createAction(
+  '[Ideation] Toggle Idea Selection',
+  props<{ id: number; userId: number }>()
+);
+
+export const toggleIdeaSelectionSuccess = createAction(
+  '[Ideation] Toggle Idea Selection Success',
+  props<{ idea: IdeationIdea }>()
+);
+
+export const toggleIdeaSelectionFailure = createAction(
+  '[Ideation] Toggle Idea Selection Failure',
+  props<{ error: any }>()
+);
+
+export const loadSelectedIdeas = createAction(
+  '[Ideation] Load Selected Ideas',
+  props<{ projectId: number }>()
+);
+
+export const loadSelectedIdeasSuccess = createAction(
+  '[Ideation] Load Selected Ideas Success',
+  props<{ ideas: IdeationIdea[] }>()
+);
+
+export const loadSelectedIdeasFailure = createAction(
+  '[Ideation] Load Selected Ideas Failure',
   props<{ error: any }>()
 );
 
@@ -102,12 +133,17 @@ export const loadPointsFailure = createAction(
 
 export const createPoint = createAction(
   '[Ideation] Create Point',
-  props<{ point: CreateIdeationPointDto }>()
+  props<{
+    content: string;
+    pointType: IdeationPointType;
+    ideaId: number;
+    userId: number;
+  }>()
 );
 
 export const createPointSuccess = createAction(
   '[Ideation] Create Point Success',
-  props<{ point: IdeationPoint }>()
+  props<{ point: IdeationPoint; ideaId: number }>()
 );
 
 export const createPointFailure = createAction(
@@ -117,12 +153,12 @@ export const createPointFailure = createAction(
 
 export const updatePoint = createAction(
   '[Ideation] Update Point',
-  props<{ pointId: number; userId: number; update: UpdateIdeationPointDto }>()
+  props<{ id: number; userId: number; update: UpdateIdeationPointDto }>()
 );
 
 export const updatePointSuccess = createAction(
   '[Ideation] Update Point Success',
-  props<{ point: IdeationPoint }>()
+  props<{ point: IdeationPoint; ideaId: number }>()
 );
 
 export const updatePointFailure = createAction(
@@ -132,12 +168,12 @@ export const updatePointFailure = createAction(
 
 export const deletePoint = createAction(
   '[Ideation] Delete Point',
-  props<{ pointId: number; userId: number; ideaId: number }>()
+  props<{ id: number; userId: number; ideaId: number }>()
 );
 
 export const deletePointSuccess = createAction(
   '[Ideation] Delete Point Success',
-  props<{ pointId: number; ideaId: number }>()
+  props<{ id: number; ideaId: number }>()
 );
 
 export const deletePointFailure = createAction(
@@ -147,12 +183,12 @@ export const deletePointFailure = createAction(
 
 export const upvotePoint = createAction(
   '[Ideation] Upvote Point',
-  props<{ pointId: number; userId: number }>()
+  props<{ id: number; userId: number; ideaId: number }>()
 );
 
 export const upvotePointSuccess = createAction(
   '[Ideation] Upvote Point Success',
-  props<{ point: IdeationPoint }>()
+  props<{ point: IdeationPoint; ideaId: number }>()
 );
 
 export const upvotePointFailure = createAction(

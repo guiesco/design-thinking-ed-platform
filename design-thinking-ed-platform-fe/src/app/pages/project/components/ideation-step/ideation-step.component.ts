@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
-import { filter, take } from 'rxjs/operators';
+import { filter, map, take } from 'rxjs/operators';
 import {
   CreateIdeationIdeaDto,
   CreateIdeationPointDto,
@@ -28,6 +28,7 @@ export class IdeationStepComponent implements OnInit, OnDestroy {
   ideas$!: Observable<IdeationIdea[]>;
   loading$!: Observable<boolean>;
   error$!: Observable<any>;
+  selectedIdeasCount$!: Observable<number>;
 
   private queryParamsSub!: Subscription;
   private ideaSubscription!: Subscription;
@@ -54,6 +55,9 @@ export class IdeationStepComponent implements OnInit, OnDestroy {
     this.ideas$ = this.ideationFacade.ideas$;
     this.loading$ = this.ideationFacade.loading$;
     this.error$ = this.ideationFacade.error$;
+    this.selectedIdeasCount$ = this.ideas$.pipe(
+      map((ideas) => ideas.filter((idea) => idea.isSelected).length)
+    );
 
     // Observar erros para mostrar feedback
     this.ideaSubscription = this.ideationFacade.error$.subscribe((error) => {
@@ -198,72 +202,122 @@ export class IdeationStepComponent implements OnInit, OnDestroy {
   upvoteIdea(idea: IdeationIdea): void {
     this.ideationFacade.upvoteIdea(idea.id, this.currentUserId);
 
-    // Guardar o ID da ideia com upvote para feedback visual
+    // Guardar o ID da ideia para animação de upvote
     this.lastUpvotedIdeaId = idea.id;
 
     // Limpar o feedback visual após alguns segundos
     setTimeout(() => {
       this.lastUpvotedIdeaId = null;
-    }, 1500);
+    }, 1000);
+  }
 
-    this.showSuccess(idea.hasVoted ? 'Voto removido!' : 'Voto adicionado!');
+  toggleIdeaSelection(idea: IdeationIdea): void {
+    this.ideationFacade.toggleIdeaSelection(idea.id, this.currentUserId);
+
+    if (!idea.isSelected) {
+      this.showSuccess('Ideia selecionada como finalista!');
+    } else {
+      this.showSuccess('Ideia removida das finalistas.');
+    }
+  }
+
+  finalizeIdeation(): void {
+    this.ideas$
+      .pipe(
+        take(1),
+        map((ideas) => {
+          const selectedCount = ideas.filter((idea) => idea.isSelected).length;
+          return { valid: selectedCount === 1, count: selectedCount };
+        })
+      )
+      .subscribe((result) => {
+        if (!result.valid) {
+          if (result.count === 0) {
+            this.showError(
+              'Selecione exatamente uma ideia para finalizar esta etapa.'
+            );
+          } else if (result.count > 1) {
+            this.showError(
+              'Selecione apenas uma ideia para finalizar esta etapa.'
+            );
+          }
+          return;
+        }
+
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+          data: {
+            title: 'Finalizar Etapa de Ideação',
+            message:
+              'Tem certeza que deseja finalizar a etapa de Ideação? A ideia selecionada será considerada como final para a próxima etapa.',
+          },
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result) {
+            // Aqui poderia ir uma chamada para o backend para registrar a conclusão da etapa
+            // Por enquanto, apenas mostramos uma mensagem de sucesso
+            this.showSuccess('Etapa de Ideação finalizada com sucesso!');
+          }
+        });
+      });
   }
 
   addPoint(ideaId: number, content: string, type: IdeationPointType): void {
     if (!content.trim()) {
-      this.showError('O conteúdo não pode estar vazio');
+      this.showError('O conteúdo do ponto não pode estar vazio');
       return;
     }
 
-    const point: CreateIdeationPointDto = {
-      content,
-      type,
-      ideaId,
-      userId: this.currentUserId,
-    };
-
-    this.ideationFacade.createPoint(point);
+    this.ideationFacade.createPoint(content, type, ideaId, this.currentUserId);
     this.showSuccess(
-      type === IdeationPointType.PRO
-        ? 'Ponto positivo adicionado!'
-        : 'Ponto negativo adicionado!'
+      `Ponto ${
+        type === IdeationPointType.PRO ? 'positivo' : 'negativo'
+      } adicionado!`
     );
   }
 
   deletePoint(event: { pointId: number; ideaId: number }): void {
-    const { pointId, ideaId } = event;
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       data: {
         title: 'Confirmar exclusão',
-        message:
-          'Tem certeza que deseja excluir este item? Esta ação não pode ser desfeita.',
-        entity: { id: pointId },
+        message: `Tem certeza que deseja excluir este ponto? Esta ação não pode ser desfeita.`,
       },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.ideationFacade.deletePoint(pointId, this.currentUserId, ideaId);
-        this.showSuccess('Item excluído com sucesso!');
+        this.ideationFacade.deletePoint(
+          event.pointId,
+          this.currentUserId,
+          event.ideaId
+        );
+        this.showSuccess('Ponto excluído com sucesso!');
       }
     });
   }
 
   upvotePoint(pointId: number): void {
-    this.ideationFacade.upvotePoint(pointId, this.currentUserId);
+    // Encontrar o ideaId pelo pointId
+    this.ideas$.pipe(take(1)).subscribe((ideas) => {
+      for (const idea of ideas) {
+        const point = idea.points.find((p) => p.id === pointId);
+        if (point) {
+          this.ideationFacade.upvotePoint(pointId, this.currentUserId, idea.id);
 
-    // Guardar o ID do ponto com upvote para feedback visual
-    this.lastUpvotedPointId = pointId;
+          // Guardar o ID do ponto para animação de upvote
+          this.lastUpvotedPointId = pointId;
 
-    // Limpar o feedback visual após alguns segundos
-    setTimeout(() => {
-      this.lastUpvotedPointId = null;
-    }, 1500);
+          // Limpar o feedback visual após alguns segundos
+          setTimeout(() => {
+            this.lastUpvotedPointId = null;
+          }, 1000);
 
-    this.showSuccess('Voto registrado!');
+          break;
+        }
+      }
+    });
   }
 
-  // Verificar se uma ideia deve ser destacada
   shouldHighlightIdea(ideaId: number): boolean {
     return (
       this.lastAddedIdeaId === ideaId ||
@@ -272,14 +326,13 @@ export class IdeationStepComponent implements OnInit, OnDestroy {
     );
   }
 
-  // Verificar se um ponto deve ser destacado
   shouldHighlightPoint(pointId: number): boolean {
     return this.lastUpvotedPointId === pointId;
   }
 
   private showError(message: string): void {
     this.snackBar.open(message, 'Fechar', {
-      duration: 3000,
+      duration: 5000,
       horizontalPosition: 'center',
       verticalPosition: 'bottom',
       panelClass: ['error-snackbar'],
@@ -288,7 +341,7 @@ export class IdeationStepComponent implements OnInit, OnDestroy {
 
   private showSuccess(message: string): void {
     this.snackBar.open(message, 'Fechar', {
-      duration: 2000,
+      duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'bottom',
       panelClass: ['success-snackbar'],

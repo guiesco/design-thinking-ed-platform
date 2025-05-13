@@ -16,6 +16,11 @@ export const selectIdeaById = (ideaId: number) =>
     ideas.find((idea) => idea.id === ideaId)
   );
 
+export const selectSelectedIdeas = createSelector(
+  selectIdeationIdeas,
+  (ideas) => ideas.filter((idea) => idea.isSelected)
+);
+
 // Points selectors
 export const selectAllPoints = createSelector(selectIdeationState, (state) =>
   state.ideas.flatMap((idea) => idea.points)

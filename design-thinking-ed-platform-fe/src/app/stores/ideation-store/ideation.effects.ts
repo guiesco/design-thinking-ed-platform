@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
 import * as IdeationActions from './ideation.actions';
 import { IdeationService } from './ideation.service';
 
@@ -13,13 +13,15 @@ export class IdeationEffects {
   ) {}
 
   // Ideas Effects
-  loadIdeas$ = createEffect(() =>
+  loadIdeasByProject$ = createEffect(() =>
     this.actions$.pipe(
       ofType(IdeationActions.loadIdeasByProject),
-      mergeMap(({ projectId, userId }) =>
+      switchMap(({ projectId, userId }) =>
         this.ideationService.getIdeasByProject(projectId, userId).pipe(
-          map((ideas) => IdeationActions.loadIdeasSuccess({ ideas })),
-          catchError((error) => of(IdeationActions.loadIdeasFailure({ error })))
+          map((ideas) => IdeationActions.loadIdeasByProjectSuccess({ ideas })),
+          catchError((error) =>
+            of(IdeationActions.loadIdeasByProjectFailure({ error }))
+          )
         )
       )
     )
@@ -28,13 +30,19 @@ export class IdeationEffects {
   createIdea$ = createEffect(() =>
     this.actions$.pipe(
       ofType(IdeationActions.createIdea),
-      mergeMap(({ idea }) =>
-        this.ideationService.createIdea(idea).pipe(
-          map((idea) => IdeationActions.createIdeaSuccess({ idea })),
-          catchError((error) =>
-            of(IdeationActions.createIdeaFailure({ error }))
+      switchMap((action) =>
+        this.ideationService
+          .createIdea({
+            title: action.title,
+            projectId: action.projectId,
+            userId: action.userId,
+          })
+          .pipe(
+            map((idea) => IdeationActions.createIdeaSuccess({ idea })),
+            catchError((error) =>
+              of(IdeationActions.createIdeaFailure({ error }))
+            )
           )
-        )
       )
     )
   );
@@ -42,8 +50,8 @@ export class IdeationEffects {
   updateIdea$ = createEffect(() =>
     this.actions$.pipe(
       ofType(IdeationActions.updateIdea),
-      mergeMap(({ ideaId, userId, update }) =>
-        this.ideationService.updateIdea(ideaId, userId, update).pipe(
+      switchMap(({ id, userId, update }) =>
+        this.ideationService.updateIdea(id, userId, update).pipe(
           map((idea) => IdeationActions.updateIdeaSuccess({ idea })),
           catchError((error) =>
             of(IdeationActions.updateIdeaFailure({ error }))
@@ -56,9 +64,9 @@ export class IdeationEffects {
   deleteIdea$ = createEffect(() =>
     this.actions$.pipe(
       ofType(IdeationActions.deleteIdea),
-      mergeMap(({ ideaId, userId }) =>
-        this.ideationService.deleteIdea(ideaId, userId).pipe(
-          map(() => IdeationActions.deleteIdeaSuccess({ ideaId })),
+      switchMap(({ id, userId }) =>
+        this.ideationService.deleteIdea(id, userId).pipe(
+          map(() => IdeationActions.deleteIdeaSuccess({ id })),
           catchError((error) =>
             of(IdeationActions.deleteIdeaFailure({ error }))
           )
@@ -70,11 +78,39 @@ export class IdeationEffects {
   upvoteIdea$ = createEffect(() =>
     this.actions$.pipe(
       ofType(IdeationActions.upvoteIdea),
-      mergeMap(({ ideaId, userId }) =>
-        this.ideationService.upvoteIdea(ideaId, userId).pipe(
+      switchMap(({ id, userId }) =>
+        this.ideationService.upvoteIdea(id, userId).pipe(
           map((idea) => IdeationActions.upvoteIdeaSuccess({ idea })),
           catchError((error) =>
             of(IdeationActions.upvoteIdeaFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  toggleIdeaSelection$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(IdeationActions.toggleIdeaSelection),
+      switchMap(({ id, userId }) =>
+        this.ideationService.toggleIdeaSelection(id, userId).pipe(
+          map((idea) => IdeationActions.toggleIdeaSelectionSuccess({ idea })),
+          catchError((error) =>
+            of(IdeationActions.toggleIdeaSelectionFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  loadSelectedIdeas$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(IdeationActions.loadSelectedIdeas),
+      switchMap(({ projectId }) =>
+        this.ideationService.getSelectedIdeasByProject(projectId).pipe(
+          map((ideas) => IdeationActions.loadSelectedIdeasSuccess({ ideas })),
+          catchError((error) =>
+            of(IdeationActions.loadSelectedIdeasFailure({ error }))
           )
         )
       )
@@ -99,13 +135,25 @@ export class IdeationEffects {
   createPoint$ = createEffect(() =>
     this.actions$.pipe(
       ofType(IdeationActions.createPoint),
-      mergeMap(({ point }) =>
-        this.ideationService.createPoint(point).pipe(
-          map((point) => IdeationActions.createPointSuccess({ point })),
-          catchError((error) =>
-            of(IdeationActions.createPointFailure({ error }))
+      switchMap((action) =>
+        this.ideationService
+          .createPoint({
+            content: action.content,
+            type: action.pointType,
+            ideaId: action.ideaId,
+            userId: action.userId,
+          })
+          .pipe(
+            map((point) =>
+              IdeationActions.createPointSuccess({
+                point,
+                ideaId: action.ideaId,
+              })
+            ),
+            catchError((error) =>
+              of(IdeationActions.createPointFailure({ error }))
+            )
           )
-        )
       )
     )
   );
@@ -113,9 +161,14 @@ export class IdeationEffects {
   updatePoint$ = createEffect(() =>
     this.actions$.pipe(
       ofType(IdeationActions.updatePoint),
-      mergeMap(({ pointId, userId, update }) =>
-        this.ideationService.updatePoint(pointId, userId, update).pipe(
-          map((point) => IdeationActions.updatePointSuccess({ point })),
+      switchMap(({ id, userId, update }) =>
+        this.ideationService.updatePoint(id, userId, update).pipe(
+          map((point) =>
+            IdeationActions.updatePointSuccess({
+              point,
+              ideaId: point.ideaId,
+            })
+          ),
           catchError((error) =>
             of(IdeationActions.updatePointFailure({ error }))
           )
@@ -127,9 +180,9 @@ export class IdeationEffects {
   deletePoint$ = createEffect(() =>
     this.actions$.pipe(
       ofType(IdeationActions.deletePoint),
-      mergeMap(({ pointId, userId, ideaId }) =>
-        this.ideationService.deletePoint(pointId, userId).pipe(
-          map(() => IdeationActions.deletePointSuccess({ pointId, ideaId })),
+      switchMap(({ id, userId, ideaId }) =>
+        this.ideationService.deletePoint(id, userId).pipe(
+          map(() => IdeationActions.deletePointSuccess({ id, ideaId })),
           catchError((error) =>
             of(IdeationActions.deletePointFailure({ error }))
           )
@@ -141,9 +194,9 @@ export class IdeationEffects {
   upvotePoint$ = createEffect(() =>
     this.actions$.pipe(
       ofType(IdeationActions.upvotePoint),
-      mergeMap(({ pointId, userId }) =>
-        this.ideationService.upvotePoint(pointId, userId).pipe(
-          map((point) => IdeationActions.upvotePointSuccess({ point })),
+      switchMap(({ id, userId, ideaId }) =>
+        this.ideationService.upvotePoint(id, userId).pipe(
+          map((point) => IdeationActions.upvotePointSuccess({ point, ideaId })),
           catchError((error) =>
             of(IdeationActions.upvotePointFailure({ error }))
           )

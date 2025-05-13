@@ -206,6 +206,177 @@
 - Testes unitários foram criados para validar comportamentos esperados
 - O alinhamento entre frontend e backend foi concluído, garantindo compatibilidade
 
+## Plano de Implementação de Tarefas Pendentes
+
+### 1. Responsividade Mobile
+
+O objetivo é adaptar todas as páginas do frontend para proporcionar uma boa experiência em dispositivos móveis, com foco na orientação portrait (retrato).
+
+#### Tarefas:
+
+1. **Criação de Mixins e Utilitários (1 dia)**
+
+   - Criar arquivo `responsive-mixins.scss` com breakpoints padrão
+   - Implementar classes utilitárias para visibilidade responsiva
+   - Configurar variáveis para tamanhos de fonte e espaçamento em mobile
+
+2. **Responsividade para Etapa de Definição do Desafio (1 dia)**
+
+   - Adaptar layout de grid para coluna única em dispositivos móveis
+   - Ajustar formulários para utilizar largura total
+   - Melhorar navegação e botões para touchscreen
+
+3. **Responsividade para Etapa de Mapa de Empatia (1 dia)**
+
+   - Reorganizar quadrantes para visualização vertical
+   - Otimizar componentes de lista para touchscreen
+   - Ajustar formulários para entrada em dispositivos móveis
+
+4. **Responsividade para Etapa de Definição do Problema (1 dia)**
+
+   - Adaptar listas de insights para visualização vertical
+   - Aumentar área de toque para ações de upvote
+   - Otimizar cards para leitura em telas pequenas
+
+5. **Responsividade para Etapa de Ideação (2 dias)**
+
+   - Reorganizar layout de cards para coluna única
+   - Adaptar visualização de prós/contras para layout vertical
+   - Melhorar interações de formulário para dispositivos touch
+
+6. **Responsividade para Etapas de Prototipação e Conclusão (1 dia)**
+
+   - Otimizar componente de upload para touchscreen
+   - Melhorar visualização de arquivos em telas pequenas
+   - Ajustar formulários para facilitar entrada em dispositivos móveis
+
+7. **Responsividade para Página de Métricas (1 dia)**
+   - Implementar tabelas responsivas com scroll horizontal
+   - Adaptar filtros para visualização em telas pequenas
+   - Melhorar legibilidade de dados em dispositivos móveis
+
+### 2. Funcionalidade de "Submit Final"
+
+Implementar a funcionalidade de finalização em etapas que ainda não possuem essa feature.
+
+#### Tarefas:
+
+1. **Ideação - Frontend (2 dias)**
+
+   - Adicionar campo `isSelected` na interface `Idea`
+   - Implementar UI para seleção de ideia final
+   - Adicionar botão "Finalizar Ideação" com diálogo de confirmação
+   - Implementar validações (pelo menos uma ideia, uma selecionada)
+
+2. **Ideação - Backend (1 dia)**
+
+   - Adicionar campo `isSelected` na entidade `Idea`
+   - Criar endpoint para atualizar o status de seleção
+   - Implementar endpoint para finalizar a etapa
+
+3. **Prototipação - Frontend (1 dia)**
+
+   - Adicionar botão "Finalizar Prototipação" com diálogo de confirmação
+   - Implementar validações (descrição preenchida, pelo menos um arquivo)
+   - Atualizar store com ações para finalização
+
+4. **Prototipação - Backend (1 dia)**
+
+   - Adicionar status de finalização na entidade `Prototype`
+   - Implementar endpoint para finalizar a etapa
+   - Adicionar validações necessárias
+
+5. **Conclusão - Frontend (1 dia)**
+
+   - Adicionar botão "Finalizar Projeto" com diálogo de confirmação
+   - Implementar validações (descrição preenchida, pelo menos um arquivo)
+   - Atualizar store com ações para finalização
+
+6. **Conclusão - Backend (1 dia)**
+   - Adicionar status de finalização na entidade `Conclusion`
+   - Implementar endpoint para finalizar a etapa
+   - Adicionar validações necessárias
+
+### 3. Transformação do Modal de Turmas em Página
+
+Substituir o modal de turmas por uma página completa com funcionalidades expandidas para o professor.
+
+#### Tarefas:
+
+1. **Estrutura Base da Página (1 dia)**
+
+   - Criar componente `ClassDetailComponent`
+   - Adicionar rota `/class/:classId` no módulo
+   - Implementar layout base seguindo padrões da aplicação
+
+2. **Visualização de Alunos (2 dias)**
+
+   - Implementar listagem de alunos convidados
+   - Criar visualização de alunos registrados
+   - Adicionar indicador de status para cada aluno
+   - Implementar filtros e busca de alunos
+
+3. **Gerenciamento de Grupos (2 dias)**
+
+   - Criar interface para visualização detalhada de grupos
+   - Implementar funcionalidade para criar/editar grupos
+   - Adicionar drag-and-drop para mover alunos entre grupos
+   - Implementar confirmações para ações de grupo
+
+4. **Configuração de Etapas (1 dia)**
+
+   - Adicionar seletor para alterar etapa atual da turma
+   - Implementar atualizações em tempo real do status
+   - Adicionar visualização do progresso dos grupos
+
+5. **Configuração de Enunciados (2 dias)**
+
+   - Criar interface para editar enunciados das etapas
+   - Implementar formulários para protótipo e conclusão
+   - Adicionar editor de texto com formatação básica
+   - Implementar salvamento automático de rascunhos
+
+6. **Backend e Integração (2 dias)**
+
+   - Adicionar endpoints para novas funcionalidades
+   - Implementar serviços para gerenciamento de enunciados
+   - Atualizar modelos de dados conforme necessário
+   - Implementar testes para os novos endpoints
+
+7. **Remoção do Modal e Finalização (1 dia)**
+   - Atualizar links na página principal para direcionar à nova página
+   - Remover componente de diálogo após implementação completa
+   - Testar fluxo completo de navegação
+   - Corrigir eventuais bugs de UI/UX
+
+## Cronograma de Implementação
+
+1. **Fase 1: Responsividade Mobile** (8 dias)
+
+   - Prioridade alta para melhorar experiência em dispositivos móveis
+   - Implementação por etapa para entregas incrementais
+   - Testes em diferentes dispositivos ao longo do desenvolvimento
+
+2. **Fase 2: Submit Final** (7 dias)
+
+   - Implementação em paralelo com responsividade
+   - Priorizar etapa de ideação (mais complexa) primeiro
+   - Testes integrados após implementação de cada etapa
+
+3. **Fase 3: Página de Turma** (9 dias)
+   - Iniciar após conclusão da fase 1
+   - Implementação incremental com entregas por funcionalidade
+   - Remoção do modal somente após página completa
+
+## Considerações para Implementação
+
+- Manter padrões visuais consistentes em toda a aplicação
+- Priorizar a experiência do usuário em dispositivos móveis
+- Garantir validações adequadas antes do submit final
+- Implementar feedback visual claro para todas as ações
+- Testar exaustivamente em diferentes dispositivos e tamanhos de tela
+- Documentar novas funcionalidades e alterações na arquitetura
+
 ## Bugs Corrigidos
 
 ### Loop Infinito nas Etapas de Protótipo e Conclusão
@@ -273,58 +444,48 @@
 
 ## Implementações Recentes
 
-### Refatoração: Módulo Dedicado para Métricas
+### Funcionalidade "Submit Final" para Ideação
 
-Realizamos uma importante refatoração na arquitetura do backend para melhorar a separação de responsabilidades:
+Implementamos a funcionalidade de "Submit Final" para a etapa de Ideação, permitindo aos usuários selecionar ideias finais e concluir a etapa:
 
-1. **Criação de Módulo Dedicado para Métricas**
+1. **Extensão do Modelo de Dados**
 
-   - Criamos um módulo separado para as métricas (`MetricsModule`)
-   - Movemos toda a lógica de métricas do `ProjectModule` para o novo módulo
-   - Implementamos um endpoint próprio: `GET /metrics/project/:id`
+   - Adicionamos o campo `isSelected` à entidade `IdeationIdea`
+   - Atualizamos os DTOs para suportar a marcação/desmarcação de ideias
+   - Mantivemos a compatibilidade com o restante do sistema
 
-2. **Benefícios da Mudança**
+2. **Novas Funcionalidades no Backend**
 
-   - Melhor separação de responsabilidades
-   - Código mais organizado e manutenível
-   - Facilidade para expansão futura da funcionalidade de métricas
-   - Módulo de projeto mais enxuto e focado em suas responsabilidades principais
+   - Implementamos um endpoint `POST /ideation/idea/:id/toggle-selection` para alternar o status de seleção
+   - Adicionamos um endpoint `GET /ideation/selected` para recuperar apenas as ideias selecionadas de um projeto
+   - Seguimos o mesmo padrão de autenticação via userId em queryParams
 
-3. **Arquivos Criados**
+3. **Melhorias na Interface do Usuário**
 
-   - `metrics.module.ts` - Definição do módulo e suas dependências
-   - `metrics.controller.ts` - Controller com endpoint para acesso às métricas
-   - `metrics.service.ts` - Serviço com a lógica de negócio para métricas
-   - `dto/student-metrics.dto.ts` - DTOs para estruturas de dados de métricas
+   - Adicionamos um botão de seleção para cada ideia
+   - Implementamos um chip "Selecionada" para identificar visualmente ideias selecionadas
+   - Criamos um botão de "Finalizar Ideação" com validações apropriadas
+   - Adicionamos estilos visuais para destacar ideias selecionadas
 
-4. **Atualizações no Frontend**
-   - Atualizado o serviço de métricas para apontar para o novo endpoint
-   - Mantido o funcionamento existente da interface de usuário
+4. **Gerenciamento de Estado**
+   - Atualizamos a store de Ideação para suportar as novas ações
+   - Implementamos seletores para contar ideias selecionadas
+   - Adicionamos validações para garantir pelo menos uma ideia selecionada
 
-### Melhorias na Seção de Métricas
+### Melhorias na UX
 
-Implementamos duas importantes melhorias na funcionalidade de métricas:
+1. **Feedback Contextual**
 
-1. **Filtro por Etapa do Design Thinking**
+   - Mensagens de sucesso ao selecionar/desmarcar ideias
+   - Diálogo de confirmação antes de finalizar a etapa
+   - Feedback visual imediato ao realizar ações
 
-   - Adicionada capacidade de filtrar métricas por etapa específica do processo de Design Thinking
-   - Implementada enumeração `DesignThinkingStage` para padronizar as etapas disponíveis
-   - Criado seletor no frontend para escolher a etapa desejada
-   - Backend adaptado para filtrar as métricas com base na etapa selecionada
-   - As métricas mudam dinamicamente ao selecionar uma etapa diferente
+2. **Validações Aprimoradas**
+   - O botão de finalização é desabilitado quando não há ideias selecionadas
+   - Mensagem explicativa orienta o usuário a selecionar pelo menos uma ideia
+   - Prevenção de submissões inválidas
 
-2. **Verificação de Perfil de Professor**
-
-   - Implementada validação no backend para garantir que apenas professores possam acessar as métricas
-   - Controller agora verifica o tipo de usuário antes de fornecer os dados
-   - Adicionadas mensagens de erro apropriadas para acesso não autorizado
-   - Mantida a segurança da API mesmo com chamadas diretas
-
-3. **Benefícios das Melhorias**
-   - Melhor experiência do usuário com análises mais específicas por etapa
-   - Aumento da segurança com verificação explícita de perfil
-   - Interface mais intuitiva com feedback visual sobre a etapa selecionada
-   - Capacidade de análise mais granular do progresso dos alunos
+A implementação segue o mesmo padrão das outras etapas da aplicação (como Definição do Problema), mantendo a coerência da experiência do usuário. A próxima etapa será implementar funcionalidade similar para as etapas de Prototipação e Conclusão.
 
 ## Próximas Etapas
 

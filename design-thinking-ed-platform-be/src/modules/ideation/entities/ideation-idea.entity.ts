@@ -23,6 +23,9 @@ export class IdeationIdea {
   @Column({ default: 0 })
   upvotes: number;
 
+  @Column({ default: false })
+  isSelected: boolean;
+
   hasVoted: boolean;
 
   @ManyToOne(() => UserEntity)
