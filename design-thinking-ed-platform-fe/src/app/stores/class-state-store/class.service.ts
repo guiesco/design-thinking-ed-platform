@@ -27,4 +27,8 @@ export class ClassService {
   deleteClass(id: string) {
     return this.http.delete<IClass>(this.api + '/class/' + id);
   }
+
+  findOne(id: string): Observable<IClass> {
+    return this.http.get<IClass>(this.api + '/class/' + id);
+  }
 }

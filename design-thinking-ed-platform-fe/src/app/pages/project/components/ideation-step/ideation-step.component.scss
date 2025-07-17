@@ -1,37 +1,26 @@
-.step-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+@import '../../../../../styles/responsive-mixins';
 
-    @media (max-width: 600px) {
-        padding: 16px 12px;
-    }
+.step-container {
+    @include responsive-container;
+    margin-bottom: 24px;
 }
 
 .step-header {
-    margin-bottom: 24px;
     text-align: center;
+    margin-bottom: 24px;
 
     h1 {
-        font-size: 2rem;
+        @include responsive-font('h1');
         color: #3f51b5;
         margin-bottom: 16px;
-
-        @media (max-width: 600px) {
-            font-size: 1.8rem;
-        }
     }
 
     p {
-        font-size: 1rem;
+        @include responsive-font('body');
         color: rgba(0, 0, 0, 0.7);
         max-width: 800px;
         margin: 0 auto;
         line-height: 1.5;
-
-        @media (max-width: 600px) {
-            font-size: 0.9rem;
-        }
     }
 }
 
@@ -43,6 +32,11 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     transition: box-shadow 0.3s ease;
 
+    @include mobile-only {
+        padding: 16px;
+        margin-bottom: 24px;
+    }
+
     &:hover {
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     }
@@ -52,7 +46,7 @@
         flex-direction: column;
         gap: 16px;
 
-        @media (min-width: 768px) {
+        @include tablet-up {
             flex-direction: row;
             align-items: center;
         }
@@ -65,28 +59,16 @@
             height: 48px;
             min-width: 160px;
 
-            @media (min-width: 768px) {
-                margin-top: 4px; // Alinhamento com o campo de input
+            @include mobile-only {
+                width: 100%;
+                min-width: auto;
+            }
+
+            @include tablet-up {
+                margin-top: 4px;
             }
         }
     }
-}
-
-.full-width {
-    width: 100%;
-}
-
-.loading-container,
-.error-container {
-    display: flex;
-    justify-content: center;
-    margin: 24px 0;
-}
-
-.error-container {
-    padding: 16px;
-    border-radius: 4px;
-    background-color: rgba(244, 67, 54, 0.1);
 }
 
 .empty-ideas {
@@ -98,29 +80,44 @@
     background-color: #f8f9fa;
     border-radius: 8px;
     border: 1px dashed #ccc;
+
+    @include mobile-only {
+        margin: 24px 0;
+        padding: 24px 16px;
+    }
 }
 
 .ideas-list {
     display: flex;
     flex-direction: column;
     gap: 24px;
+
+    @include mobile-only {
+        gap: 16px;
+    }
 }
 
 .idea-card {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s, box-shadow 0.2s;
-    overflow: hidden; // Garante que o border-radius seja aplicado ao conteúdo interno
+    overflow: hidden;
 
     &:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        @include tablet-up {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
     }
 
     mat-card-header {
         padding: 16px;
         border-bottom: 1px solid #eee;
         background-color: #fcfcfc;
+
+        @include mobile-only {
+            padding: 12px;
+        }
     }
 
     .card-header-content {
@@ -131,7 +128,7 @@
         flex-wrap: wrap;
         gap: 12px;
 
-        @media (max-width: 600px) {
+        @include mobile-only {
             flex-direction: column;
             align-items: flex-start;
         }
@@ -141,23 +138,19 @@
         display: flex;
         align-items: center;
         flex: 1;
-        min-width: 0; // Permite que o texto seja truncado
+        min-width: 0;
 
         .idea-title {
             flex: 1;
-            min-width: 0; // Permite truncamento
+            min-width: 0;
 
             h2 {
                 margin: 0;
-                font-size: 1.4rem;
+                @include responsive-font('h3');
                 color: #333;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
-
-                @media (max-width: 600px) {
-                    font-size: 1.2rem;
-                }
             }
         }
 
@@ -175,7 +168,7 @@
         gap: 16px;
         width: 100%;
 
-        @media (max-width: 600px) {
+        @include mobile-only {
             flex-direction: column;
             align-items: stretch;
         }
@@ -210,6 +203,10 @@
 
     mat-card-content {
         padding: 16px;
+
+        @include mobile-only {
+            padding: 12px;
+        }
     }
 
     .idea-content {
@@ -217,28 +214,90 @@
         grid-template-columns: 1fr;
         gap: 24px;
 
-        @media (min-width: 768px) {
+        @include tablet-up {
             grid-template-columns: 1fr 1fr;
+        }
+
+        @include mobile-only {
+            gap: 16px;
         }
     }
 }
 
-// Animação para feedback visual quando uma ideia é criada ou atualizada
-@keyframes highlight {
-    0% {
-        background-color: rgba(63, 81, 181, 0.1);
+.finalize-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    @include mobile-only {
+        margin: 16px 0;
+        padding: 12px;
     }
 
-    100% {
-        background-color: transparent;
+    button {
+        margin-bottom: 10px;
+        min-height: 44px;
+
+        @include mobile-only {
+            width: 100%;
+            min-height: 48px;
+        }
+    }
+
+    .warn-text {
+        color: #f44336;
+        margin: 5px 0 0;
+        font-size: 14px;
+        text-align: center;
+
+        @include mobile-only {
+            font-size: 13px;
+        }
     }
 }
 
-.highlight {
-    animation: highlight 1.5s ease-out;
+.selected-idea {
+    border-left: 4px solid #3f51b5;
+    background-color: rgba(63, 81, 181, 0.05);
 }
 
-// Animação para upvotes
+.select-container {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+
+    @include mobile-only {
+        margin-left: 0;
+        margin-top: 8px;
+    }
+}
+
+.idea-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    @include mobile-only {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    mat-chip-list {
+        margin-left: 10px;
+
+        @include mobile-only {
+            margin-left: 0;
+        }
+    }
+}
+
+// Animações
 @keyframes pulse {
     0% {
         transform: scale(1);
@@ -256,49 +315,5 @@
 .animate-upvote {
     .upvote-container {
         animation: pulse 0.6s ease-in-out;
-    }
-}
-
-.finalize-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px 0;
-    padding: 15px;
-    background-color: #f5f5f5;
-    border-radius: 4px;
-    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
-        0 1px 3px 0 rgba(0, 0, 0, 0.12);
-
-    button {
-        margin-bottom: 10px;
-    }
-
-    .warn-text {
-        color: #f44336;
-        margin: 5px 0 0;
-        font-size: 14px;
-        text-align: center;
-    }
-}
-
-.selected-idea {
-    border-left: 4px solid #3f51b5;
-    background-color: rgba(63, 81, 181, 0.05);
-}
-
-.select-container {
-    display: flex;
-    align-items: center;
-    margin-left: 10px;
-}
-
-.idea-title {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    mat-chip-list {
-        margin-left: 10px;
     }
 }

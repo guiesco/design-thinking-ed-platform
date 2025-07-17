@@ -76,6 +76,26 @@ export class PrototypeEffects {
     )
   );
 
+  finalizePrototype$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PrototypeActions.finalizePrototype),
+      mergeMap(({ id }) =>
+        this.prototypeService.finalizePrototype(id).pipe(
+          map((prototype) =>
+            PrototypeActions.finalizePrototypeSuccess({ prototype })
+          ),
+          catchError((error) =>
+            of(
+              PrototypeActions.finalizePrototypeFailure({
+                error: error.message,
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
   loadFiles$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PrototypeActions.loadFiles),

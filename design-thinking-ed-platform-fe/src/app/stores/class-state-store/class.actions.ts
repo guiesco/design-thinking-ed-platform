@@ -81,3 +81,21 @@ export const deleteClassError = createAction(
     payload,
   })
 );
+
+export const findOne = createAction('[Class] findOne', (id: string) => ({
+  id,
+}));
+
+export const findOneSuccess = createAction(
+  '[Class] findOneSuccess',
+  (payload: IClass) => ({
+    payload,
+  })
+);
+
+export const findOneError = createAction(
+  '[Class] findOneError',
+  (payload: HttpErrorResponse) => ({
+    payload,
+  })
+);

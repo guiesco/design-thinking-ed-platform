@@ -59,4 +59,16 @@ export class ClassEffects {
       )
     )
   );
+
+  findOne$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.findOne),
+      exhaustMap(({ id }) =>
+        this.classService.findOne(id).pipe(
+          map((data) => actions.findOneSuccess(data)),
+          catchError((error) => of(actions.findOneError(error)))
+        )
+      )
+    )
+  );
 }

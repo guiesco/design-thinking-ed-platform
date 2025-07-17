@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 import { ConclusionFacade } from '../../../../stores/conclusion-store/conclusion.facade';
 import { UploadedFile } from '../../../../common/services/file-upload.service';
 import { Conclusion } from '../../../../stores/conclusion-store/conclusion.state';
@@ -9,6 +10,7 @@ import { takeUntil, map, take } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { UserFacade } from '../../../../stores/user-state-store/user.facade';
 import { IUser } from '../../../../common/interfaces/user.interface';
+import { ConfirmationDialogComponent } from '../../../../common/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-conclusion-step',
@@ -44,6 +46,7 @@ export class ConclusionStepComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
+    private dialog: MatDialog,
     private conclusionFacade: ConclusionFacade,
     private userFacade: UserFacade,
     private route: ActivatedRoute
@@ -154,5 +157,54 @@ export class ConclusionStepComponent implements OnInit, OnDestroy {
 
   onFileRemoved(fileId: string | number): void {
     this.conclusionFacade.deleteFile(+fileId, this.currentUserId);
+  }
+
+  canFinalize(): boolean {
+    const description = this.conclusionForm.get('description')?.value;
+    const hasDescription = description && description.trim().length > 0;
+    const hasFiles = this.files.length > 0;
+    return hasDescription && hasFiles;
+  }
+
+  finalizeConclusion(): void {
+    if (!this.canFinalize()) {
+      this.showError(
+        'Certifique-se de que a descrição está preenchida e pelo menos um arquivo foi enviado.'
+      );
+      return;
+    }
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        title: 'Finalizar Projeto',
+        message:
+          'Tem certeza que deseja finalizar o projeto? Esta ação não pode ser desfeita.',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.conclusion$.pipe(take(1)).subscribe((conclusion) => {
+          if (conclusion) {
+            this.conclusionFacade.finalizeConclusion(conclusion.id);
+            this.showSuccess('Projeto finalizado com sucesso!');
+          }
+        });
+      }
+    });
+  }
+
+  private showSuccess(message: string): void {
+    this.snackBar.open(message, 'Fechar', {
+      duration: 3000,
+      panelClass: ['success-snackbar'],
+    });
+  }
+
+  private showError(message: string): void {
+    this.snackBar.open(message, 'Fechar', {
+      duration: 5000,
+      panelClass: ['error-snackbar'],
+    });
   }
 }

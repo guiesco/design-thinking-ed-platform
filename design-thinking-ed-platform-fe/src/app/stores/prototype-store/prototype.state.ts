@@ -12,6 +12,7 @@ export interface Prototype {
   projectId: number;
   userId: number;
   description: string;
+  isFinalized: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -24,6 +25,7 @@ export interface CreatePrototypeDto {
 
 export interface UpdatePrototypeDto {
   description?: string;
+  isFinalized?: boolean;
 }
 
 export const initialPrototypeState: PrototypeState = {

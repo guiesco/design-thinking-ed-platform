@@ -51,4 +51,12 @@ export class ConclusionService {
   ): Observable<Conclusion> {
     return this.http.patch<Conclusion>(`${this.baseUrl}/${id}`, dto);
   }
+
+  /**
+   * Finaliza a etapa de conclusão
+   * @param id ID da conclusão
+   */
+  finalizeConclusion(id: number): Observable<Conclusion> {
+    return this.http.post<Conclusion>(`${this.baseUrl}/${id}/finalize`, {});
+  }
 }

@@ -56,6 +56,21 @@ export const updatePrototypeFailure = createAction(
   props<{ error: string }>()
 );
 
+export const finalizePrototype = createAction(
+  '[Prototype] Finalize Prototype',
+  props<{ id: number }>()
+);
+
+export const finalizePrototypeSuccess = createAction(
+  '[Prototype] Finalize Prototype Success',
+  props<{ prototype: Prototype }>()
+);
+
+export const finalizePrototypeFailure = createAction(
+  '[Prototype] Finalize Prototype Failure',
+  props<{ error: string }>()
+);
+
 // Ações para Arquivos
 export const loadFiles = createAction(
   '[Prototype] Load Files',

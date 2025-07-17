@@ -23,7 +23,10 @@ export class ClassService {
   }
 
   findOne(id: number) {
-    return this.classRepository.findOne({ where: { id } });
+    return this.classRepository.findOne({
+      where: { id },
+      relations: ['groups', 'groups.students', 'professor', 'students'],
+    });
   }
 
   update(id: number, updateClassDto: UpdateClassDto) {

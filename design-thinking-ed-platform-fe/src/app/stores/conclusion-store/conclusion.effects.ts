@@ -80,6 +80,26 @@ export class ConclusionEffects {
     )
   );
 
+  finalizeConclusion$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ConclusionActions.finalizeConclusion),
+      mergeMap(({ id }) =>
+        this.conclusionService.finalizeConclusion(id).pipe(
+          map((conclusion) =>
+            ConclusionActions.finalizeConclusionSuccess({ conclusion })
+          ),
+          catchError((error) =>
+            of(
+              ConclusionActions.finalizeConclusionFailure({
+                error: error.message,
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
   // Efeitos para operações de arquivo
   loadFiles$ = createEffect(() =>
     this.actions$.pipe(

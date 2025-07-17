@@ -60,6 +60,14 @@ export class ConclusionFacade {
   }
 
   /**
+   * Finaliza a etapa de conclusão
+   * @param id ID da conclusão
+   */
+  finalizeConclusion(id: number): void {
+    this.store.dispatch(ConclusionActions.finalizeConclusion({ id }));
+  }
+
+  /**
    * Carrega os arquivos para o projeto
    * @param projectId ID do projeto
    */

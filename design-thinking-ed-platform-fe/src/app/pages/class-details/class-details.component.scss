@@ -1,0 +1,385 @@
+@import 'src/styles/responsive-mixins.scss';
+
+.class-details-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    @include mobile-only {
+        padding: 16px;
+    }
+}
+
+// Header Section
+.header-section {
+    margin-bottom: 24px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .header-content {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        gap: 16px;
+
+        @include mobile-only {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+        }
+
+        .back-button {
+            flex-shrink: 0;
+        }
+
+        .header-info {
+            flex: 1;
+
+            h1 {
+                margin: 0;
+                font-size: 24px;
+                font-weight: 600;
+                color: #333;
+
+                @include mobile-only {
+                    font-size: 20px;
+                }
+            }
+
+            .semester {
+                margin: 4px 0 0 0;
+                color: #666;
+                font-size: 14px;
+            }
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+
+            @include mobile-only {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            button {
+                @include mobile-only {
+                    flex: 1;
+                    min-width: 0;
+                }
+            }
+        }
+    }
+}
+
+// Loading and Error States
+.loading-container,
+.error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+
+    mat-spinner {
+        margin-bottom: 16px;
+    }
+
+    mat-icon {
+        font-size: 48px;
+        width: 48px;
+        height: 48px;
+        margin-bottom: 16px;
+    }
+
+    p {
+        margin: 0 0 20px 0;
+        color: #666;
+        font-size: 16px;
+    }
+}
+
+// Content Section
+.content-section {
+    display: grid;
+    gap: 24px;
+
+    @include mobile-only {
+        gap: 16px;
+    }
+}
+
+// Cards
+mat-card {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    mat-card-header {
+        padding-bottom: 16px;
+
+        mat-card-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 18px;
+            font-weight: 600;
+
+            mat-icon {
+                color: #1976d2;
+            }
+        }
+
+        mat-card-subtitle {
+            margin-top: 8px;
+        }
+    }
+
+    mat-card-content {
+        padding-top: 0;
+    }
+}
+
+// Info Card
+.info-card {
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+
+        @include mobile-only {
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+
+            label {
+                font-weight: 500;
+                color: #666;
+                font-size: 14px;
+            }
+
+            .info-value {
+                font-size: 16px;
+                color: #333;
+                font-weight: 500;
+            }
+        }
+    }
+}
+
+// Students Card
+.students-card {
+    .students-list {
+        mat-chip-listbox {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+    }
+
+    .no-students {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 20px;
+        text-align: center;
+        color: #666;
+
+        mat-icon {
+            font-size: 48px;
+            width: 48px;
+            height: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        p {
+            margin: 0;
+            font-size: 16px;
+        }
+    }
+}
+
+// Groups Card
+.groups-card {
+    .groups-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 16px;
+
+        @include mobile-only {
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .group-item {
+            border: 1px solid #e0e0e0;
+
+            mat-card-header {
+                padding-bottom: 12px;
+            }
+
+            .group-members {
+                h4 {
+                    margin: 0 0 12px 0;
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #666;
+                }
+
+                mat-list {
+                    padding: 0;
+
+                    mat-list-item {
+                        padding: 8px 0;
+
+                        mat-icon {
+                            color: #1976d2;
+                        }
+                    }
+                }
+            }
+
+            mat-card-actions {
+                padding: 12px 0 0 0;
+                margin: 0;
+                gap: 8px;
+
+                @include mobile-only {
+                    flex-direction: column;
+                    align-items: stretch;
+
+                    button {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+
+    .no-groups {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 20px;
+        text-align: center;
+        color: #666;
+
+        mat-icon {
+            font-size: 48px;
+            width: 48px;
+            height: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        p {
+            margin: 0 0 20px 0;
+            font-size: 16px;
+        }
+    }
+}
+
+// Ungrouped Students Card
+.ungrouped-card {
+    .ungrouped-students {
+        mat-list {
+            padding: 0;
+
+            mat-list-item {
+                padding: 8px 0;
+
+                mat-icon {
+                    color: #f57c00;
+                }
+            }
+        }
+    }
+}
+
+// Responsive adjustments
+@include mobile-only {
+    .class-details-container {
+        .header-section {
+            .header-content {
+                .header-actions {
+                    button {
+                        font-size: 12px;
+                        padding: 8px 12px;
+
+                        mat-icon {
+                            font-size: 18px;
+                            width: 18px;
+                            height: 18px;
+                        }
+                    }
+                }
+            }
+        }
+
+        mat-card {
+            mat-card-header {
+                mat-card-title {
+                    font-size: 16px;
+                }
+            }
+        }
+
+        .groups-card {
+            .groups-grid {
+                .group-item {
+                    mat-card-actions {
+                        button {
+                            font-size: 12px;
+                            padding: 8px 12px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Tablet adjustments
+@include tablet-up {
+    .class-details-container {
+        .header-section {
+            .header-content {
+                .header-actions {
+                    button {
+                        padding: 10px 16px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Desktop adjustments
+@include desktop-up {
+    .class-details-container {
+        .header-section {
+            .header-content {
+                padding: 24px;
+            }
+        }
+
+        .content-section {
+            gap: 32px;
+        }
+
+        .groups-card {
+            .groups-grid {
+                grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+                gap: 20px;
+            }
+        }
+    }
+}

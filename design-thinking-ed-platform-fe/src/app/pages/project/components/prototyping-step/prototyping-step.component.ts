@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 import { PrototypeFacade } from '../../../../stores/prototype-store/prototype.facade';
 import { UploadedFile } from '../../../../common/services/file-upload.service';
 import { Prototype } from '../../../../stores/prototype-store/prototype.state';
@@ -9,6 +10,7 @@ import { takeUntil, take } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { UserFacade } from '../../../../stores/user-state-store/user.facade';
 import { IUser } from '../../../../common/interfaces/user.interface';
+import { ConfirmationDialogComponent } from '../../../../common/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-prototyping-step',
@@ -44,6 +46,7 @@ export class PrototypingStepComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
+    private dialog: MatDialog,
     private prototypeFacade: PrototypeFacade,
     private userFacade: UserFacade,
     private route: ActivatedRoute
@@ -144,5 +147,54 @@ export class PrototypingStepComponent implements OnInit, OnDestroy {
 
   onFileRemoved(fileId: string | number): void {
     this.prototypeFacade.deleteFile(+fileId, this.currentUserId);
+  }
+
+  canFinalize(): boolean {
+    const description = this.prototypeForm.get('description')?.value;
+    const hasDescription = description && description.trim().length > 0;
+    const hasFiles = this.files.length > 0;
+    return hasDescription && hasFiles;
+  }
+
+  finalizePrototype(): void {
+    if (!this.canFinalize()) {
+      this.showError(
+        'Certifique-se de que a descrição está preenchida e pelo menos um arquivo foi enviado.'
+      );
+      return;
+    }
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        title: 'Finalizar Etapa de Prototipação',
+        message:
+          'Tem certeza que deseja finalizar a etapa de Prototipação? Esta ação não pode ser desfeita.',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.prototype$.pipe(take(1)).subscribe((prototype) => {
+          if (prototype) {
+            this.prototypeFacade.finalizePrototype(prototype.id);
+            this.showSuccess('Etapa de Prototipação finalizada com sucesso!');
+          }
+        });
+      }
+    });
+  }
+
+  private showSuccess(message: string): void {
+    this.snackBar.open(message, 'Fechar', {
+      duration: 3000,
+      panelClass: ['success-snackbar'],
+    });
+  }
+
+  private showError(message: string): void {
+    this.snackBar.open(message, 'Fechar', {
+      duration: 5000,
+      panelClass: ['error-snackbar'],
+    });
   }
 }

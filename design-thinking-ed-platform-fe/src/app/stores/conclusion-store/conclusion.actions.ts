@@ -56,6 +56,21 @@ export const updateConclusionFailure = createAction(
   props<{ error: string }>()
 );
 
+export const finalizeConclusion = createAction(
+  '[Conclusion] Finalize Conclusion',
+  props<{ id: number }>()
+);
+
+export const finalizeConclusionSuccess = createAction(
+  '[Conclusion] Finalize Conclusion Success',
+  props<{ conclusion: Conclusion }>()
+);
+
+export const finalizeConclusionFailure = createAction(
+  '[Conclusion] Finalize Conclusion Failure',
+  props<{ error: string }>()
+);
+
 // Ações para Arquivos
 export const loadFiles = createAction(
   '[Conclusion] Load Files',

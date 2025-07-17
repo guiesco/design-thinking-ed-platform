@@ -1,0 +1,370 @@
+// Breakpoints para responsividade
+$breakpoints: (
+    'xs': 0,
+    'sm': 576px,
+    'md': 768px,
+    'lg': 992px,
+    'xl': 1200px,
+    'xxl': 1400px
+);
+
+// Mixins para media queries
+@mixin screen-xs {
+    @media (max-width: #{map-get($breakpoints, 'sm') - 1px}) {
+        @content;
+    }
+}
+
+@mixin screen-sm {
+    @media (min-width: #{map-get($breakpoints, 'sm')}) and (max-width: #{map-get($breakpoints, 'md') - 1px}) {
+        @content;
+    }
+}
+
+@mixin screen-md {
+    @media (min-width: #{map-get($breakpoints, 'md')}) and (max-width: #{map-get($breakpoints, 'lg') - 1px}) {
+        @content;
+    }
+}
+
+@mixin screen-lg {
+    @media (min-width: #{map-get($breakpoints, 'lg')}) and (max-width: #{map-get($breakpoints, 'xl') - 1px}) {
+        @content;
+    }
+}
+
+@mixin screen-xl {
+    @media (min-width: #{map-get($breakpoints, 'xl')}) {
+        @content;
+    }
+}
+
+// Mixins para tamanhos máximos e mínimos
+@mixin mobile-only {
+    @media (max-width: #{map-get($breakpoints, 'md') - 1px}) {
+        @content;
+    }
+}
+
+@mixin tablet-up {
+    @media (min-width: #{map-get($breakpoints, 'md')}) {
+        @content;
+    }
+}
+
+@mixin desktop-up {
+    @media (min-width: #{map-get($breakpoints, 'lg')}) {
+        @content;
+    }
+}
+
+// Variáveis para tamanhos de fonte responsivos
+$font-sizes: (
+    'mobile': ('h1': 1.75rem,
+        'h2': 1.5rem,
+        'h3': 1.25rem,
+        'h4': 1.125rem,
+        'h5': 1rem,
+        'h6': 0.875rem,
+        'body': 0.875rem,
+        'caption': 0.75rem),
+    'desktop': ('h1': 2.5rem,
+        'h2': 2rem,
+        'h3': 1.75rem,
+        'h4': 1.5rem,
+        'h5': 1.25rem,
+        'h6': 1rem,
+        'body': 1rem,
+        'caption': 0.875rem)
+);
+
+// Variáveis para espaçamento responsivo
+$spacing: (
+    'mobile': ('xs': 0.25rem,
+        'sm': 0.5rem,
+        'md': 0.75rem,
+        'lg': 1rem,
+        'xl': 1.5rem),
+    'desktop': ('xs': 0.5rem,
+        'sm': 0.75rem,
+        'md': 1rem,
+        'lg': 1.5rem,
+        'xl': 2rem)
+);
+
+// Mixin para aplicar espaçamento responsivo
+@mixin responsive-spacing($property, $size: 'md') {
+    #{$property}: map-get(map-get($spacing, 'mobile'), $size);
+
+    @include tablet-up {
+        #{$property}: map-get(map-get($spacing, 'desktop'), $size);
+    }
+}
+
+// Mixin para aplicar tipografia responsiva
+@mixin responsive-font($size: 'body') {
+    font-size: map-get(map-get($font-sizes, 'mobile'), $size);
+
+    @include tablet-up {
+        font-size: map-get(map-get($font-sizes, 'desktop'), $size);
+    }
+}
+
+// Mixin para container responsivo
+@mixin responsive-container {
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+
+    @include screen-sm {
+        max-width: 540px;
+    }
+
+    @include screen-md {
+        max-width: 720px;
+    }
+
+    @include screen-lg {
+        max-width: 960px;
+    }
+
+    @include screen-xl {
+        max-width: 1140px;
+    }
+}
+
+// Mixin para grid responsivo
+@mixin responsive-columns($columns: 1, $gap: 1rem) {
+    display: grid;
+    grid-template-columns: repeat($columns, 1fr);
+    gap: $gap;
+
+    @include mobile-only {
+        grid-template-columns: 1fr;
+        gap: calc($gap / 2);
+    }
+}
+
+// Mixin para cards responsivos
+@mixin responsive-card {
+    @include responsive-spacing('padding', 'md');
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    @include mobile-only {
+        @include responsive-spacing('padding', 'sm');
+        border-radius: 4px;
+    }
+}
+
+// Mixin para botões responsivos
+@mixin responsive-button {
+    @include responsive-spacing('padding', 'sm');
+    min-height: 36px;
+
+    @include mobile-only {
+        min-height: 44px; // Área de toque maior para mobile
+        @include responsive-spacing('padding', 'md');
+    }
+}
+
+// Classes utilitárias para visibilidade
+.d-none {
+    display: none !important;
+}
+
+.d-block {
+    display: block !important;
+}
+
+.d-flex {
+    display: flex !important;
+}
+
+.d-inline-block {
+    display: inline-block !important;
+}
+
+// Classes para visibilidade responsiva
+.d-xs-none {
+    @include screen-xs {
+        display: none !important;
+    }
+}
+
+.d-sm-none {
+    @include screen-sm {
+        display: none !important;
+    }
+}
+
+.d-md-none {
+    @include screen-md {
+        display: none !important;
+    }
+}
+
+.d-lg-none {
+    @include screen-lg {
+        display: none !important;
+    }
+}
+
+.d-xl-none {
+    @include screen-xl {
+        display: none !important;
+    }
+}
+
+.d-xs-block {
+    @include screen-xs {
+        display: block !important;
+    }
+}
+
+.d-sm-block {
+    @include screen-sm {
+        display: block !important;
+    }
+}
+
+.d-md-block {
+    @include screen-md {
+        display: block !important;
+    }
+}
+
+.d-lg-block {
+    @include screen-lg {
+        display: block !important;
+    }
+}
+
+.d-xl-block {
+    @include screen-xl {
+        display: block !important;
+    }
+}
+
+.d-mobile-none {
+    @include mobile-only {
+        display: none !important;
+    }
+}
+
+.d-mobile-block {
+    @include mobile-only {
+        display: block !important;
+    }
+}
+
+.d-mobile-flex {
+    @include mobile-only {
+        display: flex !important;
+    }
+}
+
+.d-tablet-up-none {
+    @include tablet-up {
+        display: none !important;
+    }
+}
+
+.d-tablet-up-block {
+    @include tablet-up {
+        display: block !important;
+    }
+}
+
+.d-tablet-up-flex {
+    @include tablet-up {
+        display: flex !important;
+    }
+}
+
+// Classes utilitárias para espaçamento
+.p-xs {
+    @include responsive-spacing('padding', 'xs');
+}
+
+.p-sm {
+    @include responsive-spacing('padding', 'sm');
+}
+
+.p-md {
+    @include responsive-spacing('padding', 'md');
+}
+
+.p-lg {
+    @include responsive-spacing('padding', 'lg');
+}
+
+.p-xl {
+    @include responsive-spacing('padding', 'xl');
+}
+
+.m-xs {
+    @include responsive-spacing('margin', 'xs');
+}
+
+.m-sm {
+    @include responsive-spacing('margin', 'sm');
+}
+
+.m-md {
+    @include responsive-spacing('margin', 'md');
+}
+
+.m-lg {
+    @include responsive-spacing('margin', 'lg');
+}
+
+.m-xl {
+    @include responsive-spacing('margin', 'xl');
+}
+
+// Classes para text alignment responsivo
+.text-mobile-center {
+    @include mobile-only {
+        text-align: center !important;
+    }
+}
+
+.text-mobile-left {
+    @include mobile-only {
+        text-align: left !important;
+    }
+}
+
+.text-mobile-right {
+    @include mobile-only {
+        text-align: right !important;
+    }
+}
+
+// Classes para flexbox responsivo
+.flex-mobile-column {
+    @include mobile-only {
+        flex-direction: column !important;
+    }
+}
+
+.flex-mobile-row {
+    @include mobile-only {
+        flex-direction: row !important;
+    }
+}
+
+.justify-mobile-center {
+    @include mobile-only {
+        justify-content: center !important;
+    }
+}
+
+.align-mobile-center {
+    @include mobile-only {
+        align-items: center !important;
+    }
+}

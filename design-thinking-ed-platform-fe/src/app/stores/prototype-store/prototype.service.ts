@@ -48,4 +48,12 @@ export class PrototypeService {
   updatePrototype(id: number, dto: UpdatePrototypeDto): Observable<Prototype> {
     return this.http.patch<Prototype>(`${this.baseUrl}/${id}`, dto);
   }
+
+  /**
+   * Finaliza a etapa de prototipação
+   * @param id ID do protótipo
+   */
+  finalizePrototype(id: number): Observable<Prototype> {
+    return this.http.post<Prototype>(`${this.baseUrl}/${id}/finalize`, {});
+  }
 }

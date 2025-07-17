@@ -2,42 +2,47 @@
 
 ## Visão Geral
 
-Plataforma educacional focada em Design Thinking para facilitar o aprendizado e aplicação de metodologias de design.
+Plataforma educacional para facilitar o aprendizado e aplicação de metodologias de Design Thinking em ambiente colaborativo.
 
 ## Objetivos Principais
 
-- Fornecer uma plataforma interativa para aprendizado de Design Thinking
-- Facilitar a aplicação prática de metodologias de design
-- Criar um ambiente colaborativo para estudantes e educadores
-- Implementar ferramentas de avaliação e feedback
+- Plataforma interativa para aprendizado de Design Thinking
+- Aplicação prática de metodologias de design
+- Ambiente colaborativo para estudantes e educadores
+- Ferramentas de avaliação e feedback
 
-## Escopo do Projeto
+## Stack Técnico
 
-- Frontend: Angular 16 + Material UI
-- Backend: NestJS + TypeORM
-- Banco de Dados: PostgreSQL
-- Gerenciamento de Estado: NgRx
+- **Frontend**: Angular 16 + Material UI + NgRx
+- **Backend**: NestJS + TypeORM + PostgreSQL
+- **Autenticação**: QueryParams (sem JWT)
+- **Testes**: Karma (Frontend) + Jest (Backend)
 
-## Requisitos Principais
+## Funcionalidades Principais
 
-1. Sistema de Autenticação
-2. Gestão de Usuários
-3. Módulos de Aprendizado
-4. Ferramentas de Colaboração
-5. Sistema de Avaliação
-6. Dashboard e Relatórios
+1. ✅ Sistema de Autenticação (QueryParams)
+2. ✅ Gestão de Turmas e Grupos
+3. ✅ Etapas do Design Thinking:
+   - ✅ Definição do Desafio
+   - ✅ Mapa de Empatia
+   - ✅ Definição do Problema
+   - ✅ Ideação
+   - ✅ Prototipação
+   - ✅ Conclusão
+4. ✅ Upload de Arquivos (PostgreSQL bytea)
+5. ✅ Sistema de Votação e Seleção
+6. ⬜ Métricas para Professores
 
-## Restrições Técnicas
+## Status Atual
 
-- Compatibilidade com navegadores modernos
-- Responsividade para dispositivos móveis
-- Performance otimizada
-- Segurança robusta
-- Escalabilidade
+- **Responsividade Mobile**: ✅ Concluída
+- **Funcionalidade Submit Final**: ✅ Concluída
+- **Upload de Arquivos**: ✅ Concluído
+- **Métricas**: ⬜ Pendente
 
-## Métricas de Sucesso
+## Próximas Prioridades
 
-- Tempo de carregamento < 2s
-- 99.9% de disponibilidade
-- Taxa de conversão > 80%
-- Satisfação do usuário > 4.5/5
+1. Implementação da seção de Métricas para professores
+2. Testes de integração e E2E
+3. Otimizações de performance
+4. Documentação completa

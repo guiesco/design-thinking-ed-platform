@@ -70,7 +70,19 @@ export class ConclusionService {
     if (updateConclusionDto.description !== undefined) {
       conclusion.description = updateConclusionDto.description;
     }
+    if (updateConclusionDto.isFinalized !== undefined) {
+      conclusion.isFinalized = updateConclusionDto.isFinalized;
+    }
 
+    return this.conclusionRepository.save(conclusion);
+  }
+
+  /**
+   * Finaliza a etapa de conclusão
+   */
+  async finalize(id: number): Promise<Conclusion> {
+    const conclusion = await this.findById(id);
+    conclusion.isFinalized = true;
     return this.conclusionRepository.save(conclusion);
   }
 

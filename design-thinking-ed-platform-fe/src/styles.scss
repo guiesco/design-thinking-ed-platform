@@ -1,5 +1,9 @@
 @use '@angular/material' as mat;
 @include mat.core();
+
+// Import responsive mixins and utilities
+@import 'styles/responsive-mixins';
+
 /* You can add global styles to this file, and also import other style files */
 
 html,

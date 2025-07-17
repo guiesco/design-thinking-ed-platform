@@ -10,11 +10,8 @@ import { ProjectSteps } from 'src/app/common/enum/class.enum';
 import { IClass, IFindClass } from 'src/app/common/interfaces/class.interface';
 import { ClassFacade } from 'src/app/stores/class-state-store/class.facade';
 import { UserFacade } from 'src/app/stores/user-state-store/user.facade';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { Title } from '@angular/platform-browser';
-import { ClassDialogComponent } from './class-dialog/class-dialog.component';
+import { Router } from '@angular/router';
 import { IGroup } from 'src/app/common/interfaces/group.interface';
-import { __values } from 'tslib';
 
 @Component({
   selector: 'app-class',
@@ -22,14 +19,14 @@ import { __values } from 'tslib';
   styleUrls: ['./class.component.scss'],
 })
 export class ClassComponent implements OnInit {
-  readonly dialog = inject(MatDialog);
   userId!: number;
   classes$ = this.classFacade.classes$;
   pageConfig: { skip: number; take: number } = { skip: 0, take: 10 };
 
   constructor(
     public classFacade: ClassFacade,
-    private userFacade: UserFacade
+    private userFacade: UserFacade,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -64,14 +61,8 @@ export class ClassComponent implements OnInit {
   deleteClass(id: string) {
     this.classFacade.deleteClass(id);
   }
-  openDialog(classEntity: IClass) {
-    const dialogRef = this.dialog.open(ClassDialogComponent, {
-      data: classEntity,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
-    });
+  openClassDetails(classEntity: IClass) {
+    this.router.navigate(['/class', classEntity.id]);
   }
 
   logData(data: any) {

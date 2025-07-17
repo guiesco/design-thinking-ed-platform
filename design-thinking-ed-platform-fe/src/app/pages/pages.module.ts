@@ -25,12 +25,12 @@ import { UserStateModule } from '../stores/user-state-store/user-state.module';
 import { ClassStateModule } from '../stores/class-state-store/class-state.module';
 import { RegisterComponent } from './register/register.component';
 import { ClassComponent } from './class/class.component';
+import { ClassDetailsComponent } from './class-details/class-details.component';
 import { CreateClassComponent } from './create-class/create-class.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { GroupStateModule } from '../stores/group-state-store/group-state.module';
 import { CreateGroupDialogComponent } from './create-group/create-group.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { ClassDialogComponent } from './class/class-dialog/class-dialog.component';
 import { ProjectComponent } from './project/project.component';
 import { MatOptionModule } from '@angular/material/core';
 import { EmpathyStepComponent } from './project/components/empathy-step/empathy-step.component';
@@ -110,9 +110,9 @@ const importModules = [FormsModule, ReactiveFormsModule, ...stateModules];
     LoginComponent,
     RegisterComponent,
     ClassComponent,
+    ClassDetailsComponent,
     CreateClassComponent,
     HomepageComponent,
-    ClassDialogComponent,
     CreateGroupDialogComponent,
     ProjectComponent,
     EmpathyStepComponent,

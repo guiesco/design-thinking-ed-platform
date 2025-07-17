@@ -68,6 +68,25 @@ export const prototypeReducer = createReducer(
     error,
   })),
 
+  // Finalizar Protótipo
+  on(PrototypeActions.finalizePrototype, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+
+  on(PrototypeActions.finalizePrototypeSuccess, (state, { prototype }) => ({
+    ...state,
+    prototype,
+    loading: false,
+  })),
+
+  on(PrototypeActions.finalizePrototypeFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  })),
+
   // Carregar Arquivos
   on(PrototypeActions.loadFiles, (state) => ({
     ...state,

@@ -68,7 +68,19 @@ export class PrototypeService {
     if (updatePrototypeDto.description !== undefined) {
       prototype.description = updatePrototypeDto.description;
     }
+    if (updatePrototypeDto.isFinalized !== undefined) {
+      prototype.isFinalized = updatePrototypeDto.isFinalized;
+    }
 
+    return this.prototypeRepository.save(prototype);
+  }
+
+  /**
+   * Finaliza a etapa de prototipação
+   */
+  async finalize(id: number): Promise<Prototype> {
+    const prototype = await this.findById(id);
+    prototype.isFinalized = true;
     return this.prototypeRepository.save(prototype);
   }
 

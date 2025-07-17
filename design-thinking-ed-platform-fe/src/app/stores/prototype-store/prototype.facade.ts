@@ -58,6 +58,14 @@ export class PrototypeFacade {
   }
 
   /**
+   * Finaliza a etapa de prototipação
+   * @param id ID do protótipo
+   */
+  finalizePrototype(id: number): void {
+    this.store.dispatch(PrototypeActions.finalizePrototype({ id }));
+  }
+
+  /**
    * Carrega os arquivos do projeto
    * @param projectId ID do projeto
    */

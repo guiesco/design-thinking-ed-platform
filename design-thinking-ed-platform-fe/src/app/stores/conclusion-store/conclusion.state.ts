@@ -12,6 +12,7 @@ export interface Conclusion {
   projectId: number;
   userId: number;
   description: string;
+  isFinalized: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -24,6 +25,7 @@ export interface CreateConclusionDto {
 
 export interface UpdateConclusionDto {
   description?: string;
+  isFinalized?: boolean;
 }
 
 export const initialConclusionState: ConclusionState = {

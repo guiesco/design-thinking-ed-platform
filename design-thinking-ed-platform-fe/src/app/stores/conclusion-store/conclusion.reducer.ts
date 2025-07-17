@@ -66,6 +66,23 @@ export const conclusionReducer = createReducer(
     loading: false,
   })),
 
+  // Finalize Conclusion
+  on(ConclusionActions.finalizeConclusion, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(ConclusionActions.finalizeConclusionSuccess, (state, { conclusion }) => ({
+    ...state,
+    conclusion,
+    loading: false,
+  })),
+  on(ConclusionActions.finalizeConclusionFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false,
+  })),
+
   // File Operations
   on(ConclusionActions.loadFiles, (state) => ({
     ...state,

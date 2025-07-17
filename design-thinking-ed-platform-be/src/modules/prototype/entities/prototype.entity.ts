@@ -20,6 +20,9 @@ export class Prototype {
   @Column({ type: 'text', nullable: true })
   description: string;
 
+  @Column({ default: false })
+  isFinalized: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 

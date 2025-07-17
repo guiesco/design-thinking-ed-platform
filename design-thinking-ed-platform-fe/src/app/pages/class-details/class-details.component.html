@@ -1,0 +1,223 @@
+<div class="class-details-container">
+  <!-- Header com navegação -->
+  <div class="header-section">
+    <div class="header-content">
+      <button mat-icon-button (click)="goBack()" class="back-button">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div class="header-info" *ngIf="classData$ | async as classData">
+        <h1>{{ classData.className }}</h1>
+        <p class="semester">{{ classData.semester }}</p>
+      </div>
+      <div class="header-actions" *ngIf="classData$ | async as classData">
+        <button mat-raised-button color="primary" (click)="editClass()">
+          <mat-icon>edit</mat-icon>
+          Editar Turma
+        </button>
+        <button mat-raised-button color="warn" (click)="deleteClass(classData)">
+          <mat-icon>delete</mat-icon>
+          Excluir Turma
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="loading$ | async">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Carregando detalhes da turma...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-container" *ngIf="error$ | async as error">
+    <mat-icon color="warn">error</mat-icon>
+    <p>{{ error }}</p>
+    <button mat-raised-button color="primary" (click)="goBack()">
+      Voltar para Turmas
+    </button>
+  </div>
+
+  <!-- Content -->
+  <div
+    class="content-section"
+    *ngIf="
+      !(loading$ | async) &&
+      !(error$ | async) &&
+      (classData$ | async) as classData
+    "
+  >
+    <!-- Informações Gerais -->
+    <mat-card class="info-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>info</mat-icon>
+          Informações Gerais
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Etapa do Projeto:</label>
+            <span class="info-value">{{
+              parseProjectStep(classData.projectStep)
+            }}</span>
+          </div>
+          <div class="info-item">
+            <label>Alunos Convidados:</label>
+            <span class="info-value"
+              >{{ classData?.invitedStudents?.length || 0 }} alunos</span
+            >
+          </div>
+          <div class="info-item">
+            <label>Grupos Criados:</label>
+            <span class="info-value"
+              >{{ classData?.groups?.length || 0 }} grupos</span
+            >
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Lista de Alunos -->
+    <mat-card class="students-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>people</mat-icon>
+          Alunos Convidados
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div
+          class="students-list"
+          *ngIf="
+            classData.invitedStudents && classData.invitedStudents.length > 0
+          "
+        >
+          <mat-chip-listbox>
+            <mat-chip
+              *ngFor="let email of classData.invitedStudents"
+              color="primary"
+            >
+              {{ email }}
+            </mat-chip>
+          </mat-chip-listbox>
+        </div>
+        <div
+          class="no-students"
+          *ngIf="
+            !classData.invitedStudents || classData.invitedStudents.length === 0
+          "
+        >
+          <mat-icon>info</mat-icon>
+          <p>Nenhum aluno foi convidado para esta turma.</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Grupos -->
+    <mat-card class="groups-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>group_work</mat-icon>
+          Grupos
+        </mat-card-title>
+        <mat-card-subtitle>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="openCreateGroupDialog()"
+          >
+            <mat-icon>add</mat-icon>
+            Criar Novo Grupo
+          </button>
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div
+          class="groups-grid"
+          *ngIf="groups$ | async as groups; else noGroups"
+        >
+          <ng-container *ngIf="groups.length > 0; else noGroups">
+            <mat-card *ngFor="let group of groups" class="group-item">
+              <mat-card-header>
+                <mat-card-title>{{ group.groupName }}</mat-card-title>
+                <mat-card-subtitle
+                  >{{ group.students.length || 0 }} membros</mat-card-subtitle
+                >
+              </mat-card-header>
+              <mat-card-content>
+                <div
+                  class="group-members"
+                  *ngIf="group.students && group.students.length > 0"
+                >
+                  <h4>Membros:</h4>
+                  <mat-list>
+                    <mat-list-item *ngFor="let student of group.students">
+                      <mat-icon matListItemIcon>person</mat-icon>
+                      <div matListItemTitle>
+                        {{ student.name || student.email }}
+                      </div>
+                    </mat-list-item>
+                  </mat-list>
+                </div>
+              </mat-card-content>
+              <mat-card-actions align="end">
+                <button
+                  mat-button
+                  color="primary"
+                  (click)="navigateToProject(group.id)"
+                >
+                  <mat-icon>visibility</mat-icon>
+                  Ver Projeto
+                </button>
+                <button mat-button color="warn" (click)="deleteGroup(group.id)">
+                  <mat-icon>delete</mat-icon>
+                  Excluir
+                </button>
+              </mat-card-actions>
+            </mat-card>
+          </ng-container>
+        </div>
+        <ng-template #noGroups>
+          <div class="no-groups">
+            <mat-icon>info</mat-icon>
+            <p>Nenhum grupo foi criado nesta turma.</p>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="openCreateGroupDialog()"
+            >
+              <mat-icon>add</mat-icon>
+              Criar Primeiro Grupo
+            </button>
+          </div>
+        </ng-template>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Alunos sem Grupo -->
+    <mat-card
+      class="ungrouped-card"
+      *ngIf="getStudentsWithoutGroup(classData).length > 0"
+    >
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>person_off</mat-icon>
+          Alunos sem Grupo
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="ungrouped-students">
+          <mat-list>
+            <mat-list-item
+              *ngFor="let student of getStudentsWithoutGroup(classData)"
+            >
+              <mat-icon matListItemIcon>person</mat-icon>
+              <div matListItemTitle>{{ student.name || student.email }}</div>
+            </mat-list-item>
+          </mat-list>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

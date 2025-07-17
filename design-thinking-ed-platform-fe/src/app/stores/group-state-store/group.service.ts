@@ -20,8 +20,8 @@ export class GroupService {
     return this.http.get<IGroup[]>(this.api + '/group');
   }
 
-  find(findClassDto: IFindGroup) {
-    return this.http.post<IGroup[]>(this.api + '/group/find', findClassDto);
+  find(findGroupDto: IFindGroup) {
+    return this.http.post<IGroup[]>(this.api + '/group/find', findGroupDto);
   }
 
   delete(id: string) {

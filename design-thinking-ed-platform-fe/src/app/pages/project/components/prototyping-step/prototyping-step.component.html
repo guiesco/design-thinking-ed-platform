@@ -67,4 +67,38 @@
       ></app-file-upload>
     </mat-card-content>
   </mat-card>
+
+  <mat-card class="finalize-card" *ngIf="(prototype$ | async)?.id">
+    <mat-card-header>
+      <mat-card-title>Finalizar Etapa</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <p>
+        Quando estiver satisfeito com seu protótipo, você pode finalizar esta
+        etapa. Certifique-se de que:
+      </p>
+      <ul>
+        <li>A descrição do protótipo está completa</li>
+        <li>Pelo menos um arquivo foi enviado</li>
+      </ul>
+
+      <div class="finalize-actions">
+        <button
+          mat-raised-button
+          color="accent"
+          [disabled]="!canFinalize() || (loading$ | async)"
+          (click)="finalizePrototype()"
+        >
+          <mat-icon>check_circle</mat-icon>
+          Finalizar Prototipação
+        </button>
+
+        <div class="finalize-status" *ngIf="(prototype$ | async)?.isFinalized">
+          <mat-icon color="primary">verified</mat-icon>
+          <span>Etapa finalizada</span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>

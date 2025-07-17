@@ -19,6 +19,18 @@ export class ClassFacade {
     select(selectors.classSelector)
   );
 
+  selectedClass$: Observable<IClass | null> = this.store.pipe(
+    select(selectors.selectedClassSelector)
+  );
+
+  loading$: Observable<boolean> = this.store.pipe(
+    select(selectors.classLoadingSelector)
+  );
+
+  error$: Observable<string | null> = this.store.pipe(
+    select(selectors.classErrorSelector)
+  );
+
   create(payload: ICreateClass) {
     this.store.dispatch(actions.create(payload));
   }
@@ -42,5 +54,9 @@ export class ClassFacade {
 
   deleteClass(id: string) {
     this.store.dispatch(actions.deleteClass(id));
+  }
+
+  findOne(id: string) {
+    this.store.dispatch(actions.findOne(id));
   }
 }

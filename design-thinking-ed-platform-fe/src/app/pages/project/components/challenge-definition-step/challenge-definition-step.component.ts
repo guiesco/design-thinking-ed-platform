@@ -53,7 +53,7 @@ export class ChallengeDefinitionStepComponent extends BaseStepComponent {
       key: 'content',
       label: 'Resposta',
       placeholder: 'Digite sua resposta...',
-      required: true,
+      required: false,
     },
   ];
 

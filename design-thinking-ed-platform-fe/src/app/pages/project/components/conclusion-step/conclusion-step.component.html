@@ -66,4 +66,38 @@
       ></app-file-upload>
     </mat-card-content>
   </mat-card>
+
+  <mat-card class="finalize-card" *ngIf="(conclusion$ | async)?.id">
+    <mat-card-header>
+      <mat-card-title>Finalizar Projeto</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <p>
+        Quando estiver satisfeito com a conclusão do projeto, você pode
+        finalizar todo o processo. Certifique-se de que:
+      </p>
+      <ul>
+        <li>A descrição da conclusão está completa</li>
+        <li>Pelo menos um arquivo foi enviado</li>
+      </ul>
+
+      <div class="finalize-actions">
+        <button
+          mat-raised-button
+          color="accent"
+          [disabled]="!canFinalize() || (loading$ | async)"
+          (click)="finalizeConclusion()"
+        >
+          <mat-icon>check_circle</mat-icon>
+          Finalizar Projeto
+        </button>
+
+        <div class="finalize-status" *ngIf="(conclusion$ | async)?.isFinalized">
+          <mat-icon color="primary">verified</mat-icon>
+          <span>Projeto finalizado</span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>

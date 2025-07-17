@@ -2,7 +2,7 @@
   <mat-card
     *ngFor="let class of classes$ | async"
     class="class-card space-between"
-    (click) = "openDialog(class)"
+    (click)="openClassDetails(class)"
   >
     <mat-card-header>
       <mat-card-title>

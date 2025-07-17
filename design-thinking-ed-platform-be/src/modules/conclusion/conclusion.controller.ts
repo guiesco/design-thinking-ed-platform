@@ -46,6 +46,11 @@ export class ConclusionController {
     return this.conclusionService.update(id, updateConclusionDto);
   }
 
+  @Post(':id/finalize')
+  async finalize(@Param('id', ParseIntPipe) id: number) {
+    return this.conclusionService.finalize(id);
+  }
+
   @Delete(':id')
   async remove(@Param('id', ParseIntPipe) id: number) {
     await this.conclusionService.remove(id);

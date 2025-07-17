@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ClassComponent } from './class/class.component';
+import { ClassDetailsComponent } from './class-details/class-details.component';
 import { CreateClassComponent } from './create-class/create-class.component';
 import { hasRoleGuard } from '../common/guards/has-role.guard';
 import { UserTypeEnum } from '../common/enum/user.enum';
@@ -45,6 +46,15 @@ const pagesRoutes: Routes = [
       {
         path: 'class',
         component: ClassComponent,
+        canActivate: [hasRoleGuard],
+        data: {
+          roles: [UserTypeEnum.PROFESSOR],
+          redirectPath: 'home',
+        },
+      },
+      {
+        path: 'class/:classId',
+        component: ClassDetailsComponent,
         canActivate: [hasRoleGuard],
         data: {
           roles: [UserTypeEnum.PROFESSOR],

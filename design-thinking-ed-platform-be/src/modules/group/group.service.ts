@@ -53,7 +53,9 @@ export class GroupService {
     take: number,
     skip: number,
   ) {
+    console.log('🚀 ~ GroupService ~ query:', query);
     const relations = extractRelations(query);
+    console.log('🚀 ~ GroupService ~ relations:', relations);
 
     return this.groupRepository.find({
       relations,
